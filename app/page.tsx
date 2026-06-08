@@ -99,6 +99,9 @@ export default function Home() {
             <a href={site.github} className="rounded-lg bg-accent px-5 py-2.5 font-semibold text-bg hover:opacity-90">Clone the starter →</a>
             <Link href="/start" className="rounded-lg border border-border px-5 py-2.5 font-semibold text-ink hover:border-accent">How to begin</Link>
           </div>
+          <p className="mt-4 text-sm text-muted">
+            Want the tuned, private systems — the ones with real numbers? <Link href="/vault" className="text-accent hover:underline">The Vault →</Link>
+          </p>
         </div>
       </section>
 
