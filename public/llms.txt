@@ -1,0 +1,32 @@
+# Reality Architect
+
+> Go from AI tool-user to system-builder. The open method for designing agents, automations, and income loops that
+> compound. This site is also an open-source repo — the method, given away free.
+
+## The method: The Architect's Loop (five sequential moves)
+
+- See — build an intelligence layer (a memory vault your agents read)
+- Design — write a spec that separates thinking from doing
+- Build — compose small, single-purpose agents and skills
+- Automate — wire agents into loops that run unattended
+- Compound — add a learning signal so the system improves itself
+
+A person's gap is the FIRST move they haven't locked in; the moves depend on each other in order.
+
+## Key pages
+
+- The Method: https://realityarchitect.ai/method
+- The Architect Assessment (find your gap): https://realityarchitect.ai/assess
+- Start Here: https://realityarchitect.ai/start
+- Source + forkable templates: https://github.com/frankxai/realityarchitect
+
+## Principles
+
+- No mysticism. You engineer a reality, you don't manifest it.
+- Every claim cashes out in a shipped artifact: a repo, an agent, a loop, a number.
+- Built on the Starlight Intelligence Protocol (SIP).
+
+## Proof
+
+- frankx.ai — the architect behind it (enterprise AI, 12k AI songs, 36 shipped repos)
+- agenticincome.ai — the method applied to income systems

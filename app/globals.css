@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #06070c;
+  --color-surface: #0d0f18;
+  --color-border: #1b1f30;
+  --color-ink: #e8eaf2;
+  --color-muted: #969cb2;
+  --color-accent: #5b8cff;
+  --color-accent-2: #a78bfa;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+:root { color-scheme: dark; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background:
+    radial-gradient(1200px 600px at 72% -10%, rgba(91, 140, 255, 0.12), transparent 60%),
+    radial-gradient(900px 500px at 8% 8%, rgba(167, 139, 250, 0.08), transparent 55%),
+    var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Blueprint grid — the architect signature, subtle behind the hero. */
+.blueprint {
+  background-image:
+    linear-gradient(rgba(91, 140, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(91, 140, 255, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.glass {
+  background: color-mix(in oklab, var(--color-surface) 80%, transparent);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(12px);
+}
+
+.prose-ai { max-width: 46rem; line-height: 1.75; }
+.prose-ai h2 { font-size: 1.6rem; font-weight: 700; margin: 2.4rem 0 0.9rem; letter-spacing: -0.01em; }
+.prose-ai h3 { font-size: 1.2rem; font-weight: 600; margin: 1.8rem 0 0.6rem; }
+.prose-ai p { margin: 0.9rem 0; color: var(--color-ink); }
+.prose-ai a { color: var(--color-accent); text-decoration: underline; text-underline-offset: 3px; }
+.prose-ai ul, .prose-ai ol { margin: 0.9rem 0; padding-left: 1.3rem; }
+.prose-ai li { margin: 0.4rem 0; }
+.prose-ai code { font-family: var(--font-mono); background: var(--color-surface); border: 1px solid var(--color-border); padding: 0.1rem 0.4rem; border-radius: 0.35rem; font-size: 0.9em; }
+.prose-ai strong { color: #fff; }
