@@ -15,6 +15,11 @@ const STEPS = [
     href: '/assess', cta: 'Take the assessment',
   },
   {
+    t: 'Write your reality.md',
+    d: 'One file at ~/reality.md that tells every agent on your machine who you are and what you\'re building. Copy the template, fill what you know, leave the gaps empty — an empty section is a map. From then on, agents stop meeting you as a stranger.',
+    href: '/standard', cta: 'Read the standard',
+  },
+  {
     t: 'Fork the open starter',
     d: 'The repo ships real, runnable agent templates — one per move — built on the Starlight Intelligence Protocol. Clone it, open it in your AI editor, and the README is the map your agent reads to orient itself.',
     href: site.github, cta: 'Open the repo',

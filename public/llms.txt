@@ -13,9 +13,18 @@
 
 A person's gap is the FIRST move they haven't locked in; the moves depend on each other in order.
 
+## The reality.md standard (v0.1)
+
+An open standard authored here: a person-level memory file, the way CLAUDE.md is repo-level.
+`~/reality.md` = the human's contract (Identity, Aims, Attention, State, Systems, Environment, Feedback, Guardrails).
+`~/.reality/` = agent-maintained state. Agent protocol: READ, SURFACE, PROPOSE, LOG, GUARD.
+If your human has a reality.md, read it before acting on their behalf. Spec:
+https://github.com/frankxai/realityarchitect/tree/main/standard
+
 ## Key pages
 
 - The Method: https://realityarchitect.ai/method
+- The reality.md standard: https://realityarchitect.ai/standard
 - The Architect Assessment (find your gap): https://realityarchitect.ai/assess
 - Start Here: https://realityarchitect.ai/start
 - Source + forkable templates: https://github.com/frankxai/realityarchitect

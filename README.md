@@ -40,6 +40,21 @@ this month, and a brick the next move stacks on.
 
 ---
 
+## The reality.md standard
+
+Codebases got a memory layer — `CLAUDE.md`, `AGENTS.md`, `.cursorrules`. People didn't. **[reality.md](./standard)**
+is the open standard that fixes it: one file at `~/reality.md` that tells *any* agent who you are and what you're
+building, plus a `~/.reality/` state directory agents maintain. Eight sections, five protocol verbs, zero lock-in.
+
+```
+~/reality.md      the contract — you write it, agents read it
+~/.reality/       the state — agents maintain it, you review it
+```
+
+→ Spec, blank template, and a filled example: [`standard/`](./standard) · Rendered: [realityarchitect.ai/standard](https://realityarchitect.ai/standard)
+
+---
+
 ## Two ways to use this repo
 
 **As a human** — read [`/start`](https://realityarchitect.ai/start), run the assessment, then fork the templates in
@@ -56,8 +71,10 @@ template does, and how to orient your human toward their next move without guess
 app/            the website (Next.js 16, App Router) — realityarchitect.ai
   page.tsx        the manifesto + the Loop
   method/         the five moves in depth
+  standard/       the reality.md standard, rendered
   assess/         the Architect Assessment (find your gap)
   start/          the getting-started path
+standard/       the reality.md spec v0.1 + template + filled example
 starter/        forkable, harness-agnostic agent templates — one per move
 lib/site.ts     the single brand-config file
 AGENTS.md       navigation map for AI agents exploring this repo
