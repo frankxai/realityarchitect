@@ -24,7 +24,7 @@ export function Footer() {
         </div>
         <div className="mt-10 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} {site.name}. Built by {site.author}.</span>
-          <span>Honest tool comparisons. Some links are affiliate links.</span>
+          <span>The method is open source (MIT). Fork it, ship it, make it yours.</span>
         </div>
       </div>
     </footer>

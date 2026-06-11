@@ -23,6 +23,7 @@ export function EmailCapture({ headline = 'Get the stack that earns', sub = 'One
           <input
             type="email"
             required
+            aria-label="Email address"
             placeholder="you@email.com"
             className="flex-1 rounded-lg border border-border bg-bg px-4 py-2.5 text-sm text-ink outline-none focus:border-accent"
           />

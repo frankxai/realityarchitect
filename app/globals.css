@@ -8,13 +8,16 @@
   --color-muted: #969cb2;
   --color-accent: #5b8cff;
   --color-accent-2: #a78bfa;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-grotesk), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jb), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
 :root { color-scheme: dark; }
 
-html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
 
 body {
   background:
@@ -24,6 +27,29 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Display face for headings — Space Grotesk, the architectural register. */
+h1, h2, h3 {
+  font-family: var(--font-display);
+}
+
+/* Interaction polish — every interactive element transitions, none jumps. */
+a, button {
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s, opacity 0.2s;
+}
+button { cursor: pointer; }
+
+/* Keyboard visibility — the focus ring is part of the brand, not an afterthought. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-accent) 35%, transparent);
+  color: #fff;
 }
 
 /* Blueprint grid — the architect signature, subtle behind the hero. */
