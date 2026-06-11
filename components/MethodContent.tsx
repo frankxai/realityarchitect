@@ -248,6 +248,10 @@ export function MethodContent() {
             Assess your gap →
           </Link>
         </div>
+        <div className="mt-10 aspect-video max-h-[360px] w-full overflow-hidden rounded-2xl border border-border glass relative flex items-center justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/loop-blueprint.png" alt="The Architect's Loop Blueprint" className="object-cover w-full h-full opacity-90" loading="lazy" />
+        </div>
       </section>
 
       {/* The One Law */}

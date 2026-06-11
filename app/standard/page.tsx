@@ -51,6 +51,11 @@ export default function Standard() {
         <div className="mt-4 text-muted">No SaaS. No account. No lock-in. A markdown file, readable by every harness that exists.</div>
       </div>
 
+      <div className="mt-6 aspect-video max-h-[320px] w-full overflow-hidden rounded-2xl border border-border glass relative flex items-center justify-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/reality-spec.png" alt="reality.md Standard Specification Blueprint" className="object-cover w-full h-full opacity-90" loading="lazy" />
+      </div>
+
       <h2 className="mt-16 text-2xl font-bold text-ink">Eight sections, eight levers</h2>
       <p className="mt-3 max-w-2xl text-muted">
         Each section is an intervention point on the one chain outcomes actually flow through:

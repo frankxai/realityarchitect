@@ -57,6 +57,10 @@ export default function Home() {
           <Link href="/method" className="text-sm font-medium text-accent hover:underline">Go deep →</Link>
         </div>
         <p className="mt-3 max-w-2xl text-muted">Five moves. Each one is a system you can build this month — and a brick the next move stacks on.</p>
+        <div className="mt-6 aspect-video max-h-[320px] w-full overflow-hidden rounded-2xl border border-border glass relative flex items-center justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/loop-blueprint.png" alt="The Architect's Loop Blueprint" className="object-cover w-full h-full opacity-90" loading="lazy" />
+        </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {LOOP.map((m) => (
             <div key={m.n} className="rounded-xl border border-border glass p-5">
