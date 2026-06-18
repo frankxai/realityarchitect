@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { EmailCapture } from '@/components/EmailCapture'
 
 /**
@@ -99,9 +100,9 @@ export function Assessment() {
           <div className="mt-5 rounded-xl border border-border glass p-5">
             <div className="text-xs font-semibold uppercase tracking-wider text-accent">Set the state for this move</div>
             <p className="mt-2 text-sm text-ink/90">{VIBE[gap]}</p>
-            <a href="/manifestation" className="mt-2 inline-block text-sm font-medium text-accent hover:underline">
+            <Link href="/manifestation" className="mt-2 inline-block text-sm font-medium text-accent hover:underline">
               Architect your state →
-            </a>
+            </Link>
           </div>
           <EmailCapture
             headline={gap === 'done' ? 'Get the advanced loops' : `Get the ${gap} starter`}
