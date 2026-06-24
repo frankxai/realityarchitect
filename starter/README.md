@@ -9,9 +9,11 @@ Don't install all five. Run the [assessment](https://realityarchitect.ai/assess)
 | File | Move | Build |
 |------|------|-------|
 | `01-see-memory-vault.md` | See | An intelligence layer your agents query before acting |
+| `02-design-spec.md` | Design | A written spec for one repeating job — decide once, execute many |
 | `03-build-first-agent.md` | Build | One agent that reliably does one job you used to do by hand |
 | `04-automate-content-loop.md` | Automate | A loop that turns one capture into many finished outputs |
+| `05-compound-learning-signal.md` | Compound | A feedback signal so a loop scores itself and improves on its own |
 
-Moves 02 (Design) and 05 (Compound) ship next. Want them first? → https://realityarchitect.ai/assess
+All five moves now ship. Before you build, set the state the move runs best from → [/manifestation](https://realityarchitect.ai/manifestation).
 
 Built on the Starlight Intelligence Protocol (SIP).
