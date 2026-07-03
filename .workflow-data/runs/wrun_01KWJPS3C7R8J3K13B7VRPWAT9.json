@@ -1,0 +1,26 @@
+{
+  "runId": "wrun_01KWJPS3C7R8J3K13B7VRPWAT9",
+  "deploymentId": "dpl_local@bundled",
+  "workflowName": "workflow//eve//workflowEntry",
+  "specVersion": 5,
+  "executionContext": {
+    "traceCarrier": {},
+    "workflowCoreVersion": "5.0.0-beta.26",
+    "features": {
+      "encryption": false
+    }
+  },
+  "input": {
+    "__type": "Uint8Array",
+    "data": "ZGV2bFtbMV0seyJpbnB1dCI6Miwic2VyaWFsaXplZENvbnRleHQiOjR9LHsibWVzc2FnZSI6MywiY29udGV4dCI6LTEsIm91dHB1dFNjaGVtYSI6LTF9LCJEaWFnbm9zZSBteSBzeXN0ZW0gZ2FwIix7ImV2ZS5idW5kbGUiOjUsImV2ZS5jaGFubmVsIjoxMSwiZXZlLmNoYW5uZWxJbnN0cnVtZW50YXRpb24iOjE0LCJldmUuY29udGludWF0aW9uVG9rZW4iOjE3LCJldmUubW9kZSI6MTgsImV2ZS5hdXRoIjoxOSwiZXZlLmluaXRpYXRvckF1dGgiOjE5LCJldmUuY2FwYWJpbGl0aWVzIjoyM30seyJub2RlSWQiOi0xLCJzb3VyY2UiOjZ9LHsiYXBwUm9vdCI6Nywia2luZCI6OCwibW9kdWxlTWFwTG9hZGVyUGF0aCI6OSwic2FuZGJveEFwcFJvb3QiOjEwfSwiL3ZlcmNlbC9zaGFyZS92MC1wcm9qZWN0Ly5ldmUvZGV2LXJ1bnRpbWUvc25hcHNob3RzL21yNDdqczd6LTNkNmM3NzU2LTljMjktNDVjNC04ZTAxLTk1OWQ3MTE2ZGI2OS9zb3VyY2UiLCJkaXNrIiwiL3ZlcmNlbC9zaGFyZS92MC1wcm9qZWN0L25vZGVfbW9kdWxlcy8ucG5wbS9ldmVAMC4xOS4wX2FpQDcuMC4xNF96b2RANC40LjNfX2RyaXp6bGUtb3JtQDAuNDUuMl9AdHlwZXMrcGdAOC4yMC4wX3BnQDguMjIuMF9faml0aUAyLjcuMC9ub2RlX21vZHVsZXMvZXZlL2Rpc3Qvc3JjL2ludGVybmFsL2F1dGhvcmVkLW1vZHVsZS1tYXAtbG9hZGVyLmpzIiwiL3ZlcmNlbC9zaGFyZS92MC1wcm9qZWN0Iix7ImtpbmQiOjEyLCJzdGF0ZSI6MTN9LCJodHRwIix7fSx7ImtpbmQiOjE1LCJtZXRhZGF0YSI6MTZ9LCJjaGFubmVsOmV2ZSIse30sImV2ZTpldmU6NzFiY2JkMzMtNGU3Yy00NGMyLTg4MDAtOThhYjg1NWM5ZTYwIiwiY29udmVyc2F0aW9uIix7ImF0dHJpYnV0ZXMiOjIwLCJhdXRoZW50aWNhdG9yIjoyMSwicHJpbmNpcGFsSWQiOjIyLCJwcmluY2lwYWxUeXBlIjoyMn0se30sIm5vbmUiLCJhbm9ueW1vdXMiLHsicmVxdWVzdElucHV0IjoyNH0sdHJ1ZV0="
+  },
+  "createdAt": "2026-07-03T00:41:38.969Z",
+  "status": "running",
+  "startedAt": "2026-07-03T00:41:38.969Z",
+  "updatedAt": "2026-07-03T00:41:38.969Z",
+  "attributes": {
+    "$eve.type": "session",
+    "$eve.trigger": "http",
+    "$eve.title": "Diagnose my system gap"
+  }
+}
