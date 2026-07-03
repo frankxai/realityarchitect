@@ -1,0 +1,35 @@
+{
+  "name": "reality-md-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for reality.md — the file your AI agents read before they act. What AGENTS.md is to a repo, reality.md is to you. From realityarchitect.ai.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "reality-md-mcp": "./server.mjs"
+  },
+  "files": [
+    "server.mjs",
+    "README.md"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "reality.md",
+    "agents",
+    "personal-ai",
+    "realityarchitect"
+  ],
+  "homepage": "https://realityarchitect.ai/standard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frankxai/realityarchitect",
+    "directory": "packages/reality-md-mcp"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.25.0"
+  }
+}

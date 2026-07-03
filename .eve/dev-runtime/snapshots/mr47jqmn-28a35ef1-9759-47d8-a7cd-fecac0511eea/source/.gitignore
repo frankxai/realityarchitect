@@ -1,0 +1,23 @@
+/node_modules
+/.next
+/out
+/build
+.DS_Store
+*.pem
+.env*.local
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+
+# Starlight/ACOS temporary files
+.agent/
+*.log
+.system_generated/
+.next-backup/
+temp-*.json
+link-checker-report.json
+link-checker-report.txt
+
+# Starlight/ACOS temporary files
+.starlight/
+.gemini/
