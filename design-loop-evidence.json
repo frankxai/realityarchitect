@@ -114,6 +114,42 @@
       "kind": "visual-qa-metrics",
       "inspected": true,
       "notes": "No horizontal overflow; CSS loaded; five loop cards present."
+    },
+    {
+      "path_or_url": "https://github.com/frankxai/realityarchitect/pull/3",
+      "kind": "draft-pr",
+      "inspected": true,
+      "notes": "Draft PR for the proof-led Architect's Loop hero."
+    },
+    {
+      "path_or_url": "https://realityarchitect-5qy2mws9d-starlight-intelligence.vercel.app/",
+      "kind": "vercel-preview",
+      "inspected": true,
+      "notes": "Protected Vercel preview for dpl_7UkPSQd3wPECiAa6EpHDLYiD7rJv, verified through temporary Vercel share access."
+    },
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-desktop-20260705.png",
+      "kind": "web-screenshot",
+      "inspected": true,
+      "notes": "Desktop screenshot from the Vercel preview deployment."
+    },
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-mobile-20260705.png",
+      "kind": "web-screenshot",
+      "inspected": true,
+      "notes": "Mobile screenshot from the Vercel preview deployment."
+    },
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-reduced-motion-20260705.png",
+      "kind": "web-screenshot",
+      "inspected": true,
+      "notes": "Reduced-motion screenshot from the Vercel preview deployment."
+    },
+    {
+      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-qa-20260705.json",
+      "kind": "visual-qa-metrics",
+      "inspected": true,
+      "notes": "Preview metrics confirm 200 response, no Vercel login page, five loop cards, all five moves present, and no desktop/mobile horizontal overflow."
     }
   ],
   "checks": [
@@ -154,19 +190,30 @@
     },
     {
       "name": "security-scan",
-      "status": "fail",
-      "evidence": "Invoke-RepoSecurityScan found 6 redacted generic-api-key findings only in generated .next cache/manifest files; no findings in edited source files."
+      "status": "pass",
+      "evidence": "Invoke-RepoSecurityScan passed after clearing generated .next cache; SecretScanExitCode 0, DependencyScanExitCode 0, and no leaks found."
+    },
+    {
+      "name": "draft-pr",
+      "status": "pass",
+      "evidence": "Draft PR #3 opened from codex/realityarchitect-hero-map at commit 9ce08354bb0eefb1efd33d1ef63f9818db82183f."
+    },
+    {
+      "name": "vercel-preview",
+      "status": "pass",
+      "evidence": "Vercel deployment dpl_7UkPSQd3wPECiAa6EpHDLYiD7rJv is READY for branch codex/realityarchitect-hero-map; preview screenshots and metrics captured from the protected deployment."
     }
   ],
   "score": {
-    "total": 26,
+    "total": 27,
     "max": 30,
-    "notes": "First read and proof object improved materially. Production promotion still needs lint script cleanup, generated-cache secret scan handling, Vercel preview verification, and final live screenshot."
+    "notes": "First read and proof object improved materially, local gates pass, security scan passes when generated cache is cleared, and Vercel preview QA is green. Production promotion still needs review, merge, and final production-domain screenshot."
   },
-  "decision": "iterate",
+  "decision": "ship",
   "known_risks": [
     "The lint script is repaired to a TypeScript no-emit gate; adding a real ESLint config remains future quality work.",
-    "Security scan currently fails on generated .next cache/manifest files; source edits did not introduce those findings.",
-    "The change has not been committed, pushed, or verified on a Vercel preview/production deployment."
+    "Generated .next cache can create false-positive secret scan findings; clear or exclude generated cache before source security scans.",
+    "The Vercel preview is protected and was verified through temporary share access; production promotion is intentionally still pending draft PR review.",
+    "Vercel project metadata did not list the custom production domain even though realityarchitect.ai returned the production app during audit; domain mapping should be reconciled before final production handoff."
   ]
 }
