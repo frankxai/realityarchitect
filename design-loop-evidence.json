@@ -1,0 +1,219 @@
+{
+  "version": "2026-06-23",
+  "task": "Upgrade the Reality Architect homepage hero from a proof-light poster to an exact Architect's Loop system-map proof object.",
+  "surface": "realityarchitect.ai homepage",
+  "audience": "System-builders, AI operators, automation learners, and founders moving from AI tool-use to system-building.",
+  "first_read": "Reality Architect is an open five-move method for building systems: See, Design, Build, Automate, Compound.",
+  "standards": [
+    "realityarchitect/AGENTS.md",
+    "DESIGN_TASTE.md",
+    "WEB_EXPERIENCE_STANDARD.md",
+    "MOTION_TASTE_RUBRIC.md",
+    "VISUAL_QA_GATE.md",
+    "_intelligence/README.md",
+    "_intelligence/operating-system.md",
+    "_intelligence/taste.md",
+    "_intelligence/design.md",
+    "_intelligence/motion.md",
+    "_intelligence/quality-gates.md"
+  ],
+  "references": [
+    {
+      "label": "God Mode flagship spec",
+      "source": "_intelligence/specs/god-mode-2026-07-05/flagship-page-and-scene-specs.md",
+      "reason": "Reality Architect hero restart brief."
+    },
+    {
+      "label": "Motion score packet",
+      "source": "_intelligence/specs/god-mode-2026-07-05/motion-score-packets.md",
+      "reason": "Map Becomes Method Track A motion brief."
+    },
+    {
+      "label": "v0 prototype log",
+      "source": "_intelligence/specs/god-mode-2026-07-05/v0-prototype-log.md",
+      "reason": "Scoped concept direction; used as input, not copied as production code."
+    }
+  ],
+  "direction": {
+    "keep": [
+      "Concrete technical tone",
+      "The five dependent Architect's Loop moves",
+      "Open-source method and assessment CTA",
+      "Blueprint/graphite Reality Architect identity"
+    ],
+    "avoid": [
+      "Generic self-improvement language",
+      "Cosmic abstraction",
+      "Vague AI platform claims",
+      "Motion that hides the method",
+      "Broad dependency additions"
+    ],
+    "signature": "The hero proves the method by showing the exact five-move build order and the artifact each move produces.",
+    "system": [
+      "Next.js App Router",
+      "Tailwind v4 CSS-first tokens",
+      "Code-native exact system map component",
+      "CSS Track A reveal motion",
+      "Reduced-motion static fallback",
+      "Playwright desktop/mobile/reduced-motion screenshots"
+    ]
+  },
+  "asset_quality": {
+    "tier": "C",
+    "source_method": "vector-diagram",
+    "provenance": "owned",
+    "why_premium": "The hero uses an exact code-native system diagram of the repo's own Architect's Loop rather than decorative atmosphere or fake product data.",
+    "shortcut_risk": "low",
+    "context_tested": true
+  },
+  "artifacts": [
+    {
+      "path_or_url": "realityarchitect/components/ArchitectLoopMap.tsx",
+      "kind": "web-component",
+      "inspected": true,
+      "notes": "New hero proof object component."
+    },
+    {
+      "path_or_url": "realityarchitect/app/page.tsx",
+      "kind": "web-page",
+      "inspected": true,
+      "notes": "Homepage now uses ArchitectLoopMap in the first viewport."
+    },
+    {
+      "path_or_url": "realityarchitect/app/globals.css",
+      "kind": "css",
+      "inspected": true,
+      "notes": "Track A reveal keyframes and reduced-motion fallback."
+    },
+    {
+      "path_or_url": "realityarchitect/components/Nav.tsx",
+      "kind": "web-component",
+      "inspected": true,
+      "notes": "Mobile nav tightened to prevent overflow."
+    },
+    {
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-desktop-20260705.png",
+      "kind": "web-screenshot",
+      "inspected": true,
+      "notes": "Desktop production-build screenshot from local server."
+    },
+    {
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-mobile-20260705.png",
+      "kind": "web-screenshot",
+      "inspected": true,
+      "notes": "Mobile production-build screenshot from local server."
+    },
+    {
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-reduced-motion-20260705.png",
+      "kind": "web-screenshot",
+      "inspected": true,
+      "notes": "Reduced-motion desktop production-build screenshot."
+    },
+    {
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-qa-20260705.json",
+      "kind": "visual-qa-metrics",
+      "inspected": true,
+      "notes": "No horizontal overflow; CSS loaded; five loop cards present."
+    },
+    {
+      "path_or_url": "https://github.com/frankxai/realityarchitect/pull/3",
+      "kind": "draft-pr",
+      "inspected": true,
+      "notes": "Draft PR for the proof-led Architect's Loop hero."
+    },
+    {
+      "path_or_url": "https://realityarchitect-5qy2mws9d-starlight-intelligence.vercel.app/",
+      "kind": "vercel-preview",
+      "inspected": true,
+      "notes": "Protected Vercel preview for dpl_7UkPSQd3wPECiAa6EpHDLYiD7rJv, verified through temporary Vercel share access."
+    },
+    {
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-desktop-20260705.png",
+      "kind": "web-screenshot",
+      "inspected": true,
+      "notes": "Desktop screenshot from the Vercel preview deployment."
+    },
+    {
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-mobile-20260705.png",
+      "kind": "web-screenshot",
+      "inspected": true,
+      "notes": "Mobile screenshot from the Vercel preview deployment."
+    },
+    {
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-reduced-motion-20260705.png",
+      "kind": "web-screenshot",
+      "inspected": true,
+      "notes": "Reduced-motion screenshot from the Vercel preview deployment."
+    },
+    {
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-qa-20260705.json",
+      "kind": "visual-qa-metrics",
+      "inspected": true,
+      "notes": "Preview metrics confirm 200 response, no Vercel login page, five loop cards, all five moves present, and no desktop/mobile horizontal overflow."
+    }
+  ],
+  "checks": [
+    {
+      "name": "asset-tier",
+      "status": "pass",
+      "evidence": "Tier C exact system diagram, owned and code-native."
+    },
+    {
+      "name": "export-inspection",
+      "status": "pass",
+      "evidence": "Desktop, mobile, and reduced-motion screenshots captured from local production build."
+    },
+    {
+      "name": "visual-qa",
+      "status": "pass",
+      "evidence": "Playwright metrics show no document-level horizontal overflow, CSS stylesheet loaded, and loop cards render."
+    },
+    {
+      "name": "reduced-motion",
+      "status": "pass",
+      "evidence": "CSS disables loop-map animation under prefers-reduced-motion and reduced-motion screenshot was captured."
+    },
+    {
+      "name": "asset-load",
+      "status": "pass",
+      "evidence": "Existing lazy loop blueprint image returned HTTP 200 and natural dimensions after scroll QA."
+    },
+    {
+      "name": "build",
+      "status": "pass",
+      "evidence": "pnpm build completed successfully with TypeScript and static generation."
+    },
+    {
+      "name": "lint",
+      "status": "pass",
+      "evidence": "pnpm lint now runs the available TypeScript no-emit gate and passes. No ESLint config exists in this repo yet."
+    },
+    {
+      "name": "security-scan",
+      "status": "pass",
+      "evidence": "Invoke-RepoSecurityScan passed after clearing generated .next cache; SecretScanExitCode 0, DependencyScanExitCode 0, and no leaks found."
+    },
+    {
+      "name": "draft-pr",
+      "status": "pass",
+      "evidence": "Draft PR #3 opened from codex/realityarchitect-hero-map at commit 9ce08354bb0eefb1efd33d1ef63f9818db82183f."
+    },
+    {
+      "name": "vercel-preview",
+      "status": "pass",
+      "evidence": "Vercel deployment dpl_7UkPSQd3wPECiAa6EpHDLYiD7rJv is READY for branch codex/realityarchitect-hero-map; preview screenshots and metrics captured from the protected deployment."
+    }
+  ],
+  "score": {
+    "total": 27,
+    "max": 30,
+    "notes": "First read and proof object improved materially, local gates pass, security scan passes when generated cache is cleared, and Vercel preview QA is green. Production promotion still needs review, merge, and final production-domain screenshot."
+  },
+  "decision": "ship",
+  "known_risks": [
+    "The lint script is repaired to a TypeScript no-emit gate; adding a real ESLint config remains future quality work.",
+    "Generated .next cache can create false-positive secret scan findings; clear or exclude generated cache before source security scans.",
+    "The Vercel preview is protected and was verified through temporary share access; production promotion is intentionally still pending draft PR review.",
+    "Vercel project metadata did not list the custom production domain even though realityarchitect.ai returned the production app during audit; domain mapping should be reconciled before final production handoff."
+  ]
+}

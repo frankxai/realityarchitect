@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { site } from '@/lib/site'
 import { EmailCapture } from '@/components/EmailCapture'
+import { ArchitectLoopMap } from '@/components/ArchitectLoopMap'
 
 const LOOP = [
   { n: '01', move: 'See', d: 'Build an intelligence layer — a second brain your agents can read. You can\'t automate what you can\'t recall.' },
@@ -10,23 +11,45 @@ const LOOP = [
   { n: '05', move: 'Compound', d: 'Add the learning layer. Agents that score their own output and bias toward what worked. The system improves while you sleep.' },
 ]
 
+const PROOF = [
+  'Open-source method',
+  'Agent-ready repo',
+  'Income-loop examples',
+  'Private vault upgrade',
+]
+
 export default function Home() {
   return (
     <>
-      {/* Hero */}
-      <section className="blueprint -mx-5 px-5 py-20 sm:py-28">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent">From tool-user to system-builder</p>
-        <h1 className="mt-4 max-w-3xl text-5xl font-extrabold leading-[1.05] tracking-tight text-ink sm:text-6xl">
-          {site.tagline}
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">{site.description}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/assess" className="rounded-lg bg-accent px-6 py-3 font-semibold text-bg hover:opacity-90">
-            Find your system gap →
-          </Link>
-          <a href={site.github} className="rounded-lg border border-border px-6 py-3 font-semibold text-ink hover:border-accent">
-            Fork the OS on GitHub
-          </a>
+      <section className="blueprint relative -mx-5 overflow-hidden px-5 py-12 sm:py-24">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_14%,rgba(91,140,255,0.18),transparent_34%),radial-gradient(circle_at_18%_18%,rgba(167,139,250,0.12),transparent_30%)]" />
+        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+          <div>
+            <p className="inline-flex rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-accent">
+              From tool-user to system-builder
+            </p>
+            <h1 className="mt-5 max-w-3xl text-4xl font-extrabold leading-[1.02] tracking-tight text-ink sm:text-7xl">
+              {site.tagline}
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:mt-6 sm:text-lg">{site.description}</p>
+            <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
+              <Link href="/assess" className="rounded-full bg-accent px-6 py-3 font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.25)] hover:opacity-90">
+                Find your system gap →
+              </Link>
+              <a href={site.github} className="rounded-full border border-border bg-white/[0.03] px-6 py-3 font-semibold text-ink backdrop-blur hover:border-accent">
+                Fork the OS on GitHub
+              </a>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-2 sm:mt-8">
+              {PROOF.map((item) => (
+                <span key={item} className="rounded-full border border-border bg-white/[0.03] px-3 py-1 text-xs text-muted">
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <ArchitectLoopMap />
         </div>
       </section>
 
@@ -63,7 +86,7 @@ export default function Home() {
         </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {LOOP.map((m) => (
-            <div key={m.n} className="rounded-xl border border-border glass p-5">
+            <div key={m.n} className="rounded-2xl border border-border glass p-5">
               <div className="font-mono text-sm font-bold text-accent">{m.n}</div>
               <div className="mt-2 text-lg font-bold text-ink">{m.move}</div>
               <p className="mt-1.5 text-sm text-muted">{m.d}</p>
