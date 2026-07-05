@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 const MOVES = [
   {
     n: '01',
@@ -91,12 +93,12 @@ export function ArchitectLoopMap() {
             The moves are dependent. Do not automate before you can see. Do not build before the spec is clear.
             The assessment exists to find the first gap.
           </p>
-          <a
+          <Link
             href="/assess"
             className="inline-flex justify-center rounded-md bg-accent px-4 py-2.5 text-sm font-semibold text-bg hover:opacity-90"
           >
             Run the assessment
-          </a>
+          </Link>
         </div>
       </div>
     </div>

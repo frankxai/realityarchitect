@@ -5,32 +5,32 @@
   "audience": "System-builders, AI operators, automation learners, and founders moving from AI tool-use to system-building.",
   "first_read": "Reality Architect is an open five-move method for building systems: See, Design, Build, Automate, Compound.",
   "standards": [
-    "C:/Users/frank/starlight/repos/realityarchitect/AGENTS.md",
-    "C:/Users/frank/starlight/repos/DESIGN_TASTE.md",
-    "C:/Users/frank/starlight/repos/WEB_EXPERIENCE_STANDARD.md",
-    "C:/Users/frank/starlight/repos/MOTION_TASTE_RUBRIC.md",
-    "C:/Users/frank/starlight/repos/VISUAL_QA_GATE.md",
-    "C:/Users/frank/starlight/repos/_intelligence/README.md",
-    "C:/Users/frank/starlight/repos/_intelligence/operating-system.md",
-    "C:/Users/frank/starlight/repos/_intelligence/taste.md",
-    "C:/Users/frank/starlight/repos/_intelligence/design.md",
-    "C:/Users/frank/starlight/repos/_intelligence/motion.md",
-    "C:/Users/frank/starlight/repos/_intelligence/quality-gates.md"
+    "realityarchitect/AGENTS.md",
+    "DESIGN_TASTE.md",
+    "WEB_EXPERIENCE_STANDARD.md",
+    "MOTION_TASTE_RUBRIC.md",
+    "VISUAL_QA_GATE.md",
+    "_intelligence/README.md",
+    "_intelligence/operating-system.md",
+    "_intelligence/taste.md",
+    "_intelligence/design.md",
+    "_intelligence/motion.md",
+    "_intelligence/quality-gates.md"
   ],
   "references": [
     {
       "label": "God Mode flagship spec",
-      "source": "C:/Users/frank/starlight/repos/_intelligence/specs/god-mode-2026-07-05/flagship-page-and-scene-specs.md",
+      "source": "_intelligence/specs/god-mode-2026-07-05/flagship-page-and-scene-specs.md",
       "reason": "Reality Architect hero restart brief."
     },
     {
       "label": "Motion score packet",
-      "source": "C:/Users/frank/starlight/repos/_intelligence/specs/god-mode-2026-07-05/motion-score-packets.md",
+      "source": "_intelligence/specs/god-mode-2026-07-05/motion-score-packets.md",
       "reason": "Map Becomes Method Track A motion brief."
     },
     {
       "label": "v0 prototype log",
-      "source": "C:/Users/frank/starlight/repos/_intelligence/specs/god-mode-2026-07-05/v0-prototype-log.md",
+      "source": "_intelligence/specs/god-mode-2026-07-05/v0-prototype-log.md",
       "reason": "Scoped concept direction; used as input, not copied as production code."
     }
   ],
@@ -68,49 +68,49 @@
   },
   "artifacts": [
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/realityarchitect/components/ArchitectLoopMap.tsx",
+      "path_or_url": "realityarchitect/components/ArchitectLoopMap.tsx",
       "kind": "web-component",
       "inspected": true,
       "notes": "New hero proof object component."
     },
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/realityarchitect/app/page.tsx",
+      "path_or_url": "realityarchitect/app/page.tsx",
       "kind": "web-page",
       "inspected": true,
       "notes": "Homepage now uses ArchitectLoopMap in the first viewport."
     },
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/realityarchitect/app/globals.css",
+      "path_or_url": "realityarchitect/app/globals.css",
       "kind": "css",
       "inspected": true,
       "notes": "Track A reveal keyframes and reduced-motion fallback."
     },
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/realityarchitect/components/Nav.tsx",
+      "path_or_url": "realityarchitect/components/Nav.tsx",
       "kind": "web-component",
       "inspected": true,
       "notes": "Mobile nav tightened to prevent overflow."
     },
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-desktop-20260705.png",
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-desktop-20260705.png",
       "kind": "web-screenshot",
       "inspected": true,
       "notes": "Desktop production-build screenshot from local server."
     },
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-mobile-20260705.png",
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-mobile-20260705.png",
       "kind": "web-screenshot",
       "inspected": true,
       "notes": "Mobile production-build screenshot from local server."
     },
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-reduced-motion-20260705.png",
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-reduced-motion-20260705.png",
       "kind": "web-screenshot",
       "inspected": true,
       "notes": "Reduced-motion desktop production-build screenshot."
     },
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-qa-20260705.json",
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-qa-20260705.json",
       "kind": "visual-qa-metrics",
       "inspected": true,
       "notes": "No horizontal overflow; CSS loaded; five loop cards present."
@@ -128,25 +128,25 @@
       "notes": "Protected Vercel preview for dpl_7UkPSQd3wPECiAa6EpHDLYiD7rJv, verified through temporary Vercel share access."
     },
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-desktop-20260705.png",
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-desktop-20260705.png",
       "kind": "web-screenshot",
       "inspected": true,
       "notes": "Desktop screenshot from the Vercel preview deployment."
     },
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-mobile-20260705.png",
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-mobile-20260705.png",
       "kind": "web-screenshot",
       "inspected": true,
       "notes": "Mobile screenshot from the Vercel preview deployment."
     },
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-reduced-motion-20260705.png",
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-reduced-motion-20260705.png",
       "kind": "web-screenshot",
       "inspected": true,
       "notes": "Reduced-motion screenshot from the Vercel preview deployment."
     },
     {
-      "path_or_url": "C:/Users/frank/starlight/repos/_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-qa-20260705.json",
+      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-qa-20260705.json",
       "kind": "visual-qa-metrics",
       "inspected": true,
       "notes": "Preview metrics confirm 200 response, no Vercel login page, five loop cards, all five moves present, and no desktop/mobile horizontal overflow."
