@@ -19,12 +19,12 @@ export function Nav() {
             <Link
               key={item.href}
               href={item.href}
-              className={item.label === 'Assess' ? 'hover:text-ink' : 'hidden hover:text-ink sm:inline'}
+              className="shrink-0 hover:text-ink"
             >
               {item.label}
             </Link>
           ))}
-          <a href={site.github} className="hidden font-medium text-accent hover:underline sm:inline">GitHub ↗</a>
+          <a href={site.github} className="shrink-0 font-medium text-accent hover:underline">GitHub ↗</a>
         </div>
       </nav>
     </header>
