@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { EmailCapture } from '@/components/EmailCapture'
 
 /**
@@ -23,6 +24,16 @@ const RECO: Record<string, string> = {
   Automate: 'You have agents; now wire them into a loop that runs unattended. This is where time actually comes back.',
   Compound: 'You\'re automating — the last move is the learning layer. Give one system a feedback signal so next week beats this week.',
   done: 'You\'re running the full Loop. Your edge now is depth and breadth — more loops, sharper signals. Fork the starter and pattern-match against how it\'s wired.',
+}
+
+// The state each move runs best from — set it before you build. See /manifestation.
+const VIBE: Record<string, string> = {
+  See: 'Open awareness — 70–90 BPM, major, ambient. Wide and calm surfaces connections.',
+  Design: 'Focused calm — 80–100 BPM, major, instrumental. Clear thinking, decided once.',
+  Build: 'Creative flow — 90–115 BPM, major, piano/strings. Generate without burning out.',
+  Automate: 'Bold energy — 115–135 BPM, major, driving. Momentum through the last 10%.',
+  Compound: 'Steady confidence — 90–110 BPM, major, warm pads. Read your signal honestly.',
+  done: 'Your goal-state, made a standing ritual. Set it deliberately before every session.',
 }
 
 const OPTS = [
@@ -86,6 +97,13 @@ export function Assessment() {
             </h2>
           )}
           <p className="mt-3 max-w-2xl text-ink/90">{RECO[gap]}</p>
+          <div className="mt-5 rounded-xl border border-border glass p-5">
+            <div className="text-xs font-semibold uppercase tracking-wider text-accent">Set the state for this move</div>
+            <p className="mt-2 text-sm text-ink/90">{VIBE[gap]}</p>
+            <Link href="/manifestation" className="mt-2 inline-block text-sm font-medium text-accent hover:underline">
+              Architect your state →
+            </Link>
+          </div>
           <EmailCapture
             headline={gap === 'done' ? 'Get the advanced loops' : `Get the ${gap} starter`}
             sub="I'll send the exact template and the build order for your next move — straight to your inbox."
