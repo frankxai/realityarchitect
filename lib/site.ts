@@ -25,6 +25,7 @@ export const site = {
     { label: 'Assess', href: '/assess' },
     { label: 'Start', href: '/start' },
     { label: 'Vault', href: '/vault' },
+    { label: 'Privacy', href: '/privacy' },
   ],
   vault: {
     status: 'not-open-for-purchase',

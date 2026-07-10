@@ -1,7 +1,7 @@
 {
   "version": "2026-07-10",
-  "task": "Turn Reality Architect into an assessment-to-artifact open-method product with a truthful implementation offer path.",
-  "surface": "Homepage, assessment, architecture brief export, implementation options, metadata, and public/private boundary.",
+  "task": "Turn Reality Architect into an assessment-to-artifact open-method product with a truthful implementation and privacy boundary.",
+  "surface": "Homepage, assessment, architecture brief export, implementation options, metadata, public/private boundary, and local-data privacy route.",
   "audience": "Creators, founders, and operators moving from repeated AI use toward dependable workflow architecture.",
   "first_read": "Find the system gap. Build the next artifact.",
   "standards": [
@@ -88,6 +88,12 @@
       "notes": "Open method, planned digital product, scoped guided service, and private boundary are explicit."
     },
     {
+      "path_or_url": "app/privacy/page.tsx",
+      "kind": "privacy-boundary",
+      "inspected": true,
+      "notes": "Desktop, 390px mobile, and reduced-motion renders inspected. The route distinguishes local assessment state and user-triggered exports from ordinary hosting request logs without claiming zero infrastructure logging."
+    },
+    {
       "path_or_url": "design/visual-qa",
       "kind": "screenshot-set",
       "inspected": true,
@@ -95,6 +101,16 @@
     }
   ],
   "checks": [
+    {
+      "name": "asset-tier",
+      "status": "pass",
+      "evidence": "Tier C is the correct medium: the primary proof is the functional, code-authored assessment and privacy interface rather than decorative media. No new generated or external asset was introduced."
+    },
+    {
+      "name": "export-inspection",
+      "status": "pass",
+      "evidence": "Actual full-page desktop, 390px mobile, and reduced-motion privacy renders plus the completed mobile assessment result were inspected from the production build; composition, hierarchy, overflow, and trust copy passed."
+    },
     {
       "name": "frozen-install",
       "status": "pass",
@@ -113,12 +129,12 @@
     {
       "name": "tests",
       "status": "pass",
-      "evidence": "Seven product-contract tests pass for Markdown export reliability, local privacy/no network primitives, completed-loop review logic, no fake email capture, paid-offer readiness, method claims boundaries, and canonical metadata."
+      "evidence": "Eight product-contract tests pass for Markdown export reliability, sensitive assessment fields having no network/persistence/telemetry sink, the public privacy boundary, completed-loop review logic, no fake email capture, paid-offer readiness, method claims boundaries, and canonical metadata."
     },
     {
       "name": "build",
       "status": "pass",
-      "evidence": "Next.js 16.2.7 production build compiled and prerendered 12 static routes."
+      "evidence": "Next.js 16.2.7 production build compiled and prerendered 13 static routes, including /privacy."
     },
     {
       "name": "security",
@@ -128,12 +144,12 @@
     {
       "name": "metadata",
       "status": "pass",
-      "evidence": "Generated HTML has exact canonical and Open Graph URLs for home, method, standard, assess, start, and Vault; the sitemap includes all six public routes."
+      "evidence": "Generated HTML has exact canonical and Open Graph URLs for home, method, standard, assess, start, Vault, and privacy; the sitemap includes all seven public routes. The privacy route is intentionally index/follow."
     },
     {
       "name": "visual-qa",
       "status": "pass",
-      "evidence": "System Chrome 150 through Playwright 1.59.1 inspected the existing production build: 1440px desktop, 390px mobile, 640 CSS px reflow, reduced motion, visible keyboard focus, both assessment outcomes, valid Markdown download, clipboard export, Start/Vault handoff, six canonical routes, empty browser storage, zero external requests, zero failed requests, and zero console/page errors. One rendered Start-page word-boundary regression was found and fixed."
+      "evidence": "The production build was inspected at 1440px desktop and 390px mobile, including reduced motion: /privacy returns 200 with its exact canonical, index/follow policy, visible navigation/footer access, no overflow, and no console errors. A completed assessment kept private fixture values in the in-page brief, wrote no storage or cookies, and emitted only bodyless same-origin Next.js prefetch GETs."
     }
   ],
   "score": {
@@ -146,6 +162,6 @@
     "The Git preview is Vercel-auth protected; direct browser inspection used the same head production build locally and production remains unchanged.",
     "The digital product is intentionally not purchasable until delivery and commercial terms are complete.",
     "Guided review availability is not guaranteed and must be scoped before payment.",
-    "Analytics for assessment completion and export are not added until consent and data-governance choices are made."
+    "Analytics for assessment completion and export are not added until consent and data-governance choices are made; any future measurement must exclude answers, system names, repeating jobs, and brief text."
   ]
 }

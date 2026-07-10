@@ -24,7 +24,10 @@ export function Footer() {
         </div>
         <div className="mt-10 flex flex-col gap-2 border-t border-border pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} {site.name}. Built by {site.author}.</span>
-          <span>The method is open source (MIT). Fork it, ship it, make it yours.</span>
+          <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <Link href="/privacy" className="text-ink hover:text-accent">Privacy &amp; data boundary</Link>
+            <span>The method is open source (MIT). Fork it, ship it, make it yours.</span>
+          </span>
         </div>
       </div>
     </footer>

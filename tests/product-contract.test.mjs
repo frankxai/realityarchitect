@@ -12,10 +12,26 @@ test('assessment produces downloadable Markdown', () => {
   assert.match(assessment, /setTimeout\(\(\) => URL\.revokeObjectURL/)
 })
 
-test('assessment states that inputs stay local', () => {
+test('assessment content fields have no network, persistence, or telemetry sink', () => {
   const assessment = read('components/Assessment.tsx')
   assert.match(assessment, /stays in this browser/i)
-  assert.doesNotMatch(assessment, /\b(?:fetch|XMLHttpRequest|sendBeacon)\b/)
+  for (const field of ['answers', 'systemName', 'repeatingJob']) {
+    assert.match(assessment, new RegExp(`\\b${field}\\b`))
+  }
+  assert.doesNotMatch(
+    assessment,
+    /\b(?:fetch|XMLHttpRequest|sendBeacon|localStorage|sessionStorage|URLSearchParams|FormData|analytics|telemetry)\b/,
+  )
+  assert.doesNotMatch(assessment, /<form\b|\baction=/)
+})
+
+test('privacy route states the local boundary without claiming zero server logs', () => {
+  const privacy = read('app/privacy/page.tsx')
+  assert.match(privacy, /ordinary server logs still exist/i)
+  assert.match(privacy, /IP address, timestamp, requested path/i)
+  assert.match(privacy, /do not contain your assessment answers, system name, repeating job, or generated brief/i)
+  assert.match(privacy, /No analytics or telemetry provider is active/i)
+  assert.doesNotMatch(privacy, /(?:no|zero) (?:server|hosting|cdn) logs/i)
 })
 
 test('completed loop produces a review artifact instead of rebuilding Compound', () => {
@@ -44,11 +60,15 @@ test('public method stays inside the workflow boundary', () => {
 test('public routes own canonical metadata and sitemap coverage', () => {
   const layout = read('app/layout.tsx')
   assert.doesNotMatch(layout, /alternates:\s*\{\s*canonical:/)
-  for (const route of ['', 'method', 'standard', 'assess', 'start', 'vault']) {
+  for (const route of ['', 'method', 'standard', 'assess', 'start', 'vault', 'privacy']) {
     const page = read(route ? `app/${route}/page.tsx` : 'app/page.tsx')
     const path = route ? `/${route}` : '/'
     assert.match(page, new RegExp(`canonical: ['\"]${path.replace('/', '\\/')}['\"]`))
     assert.match(page, new RegExp(`url: ['\"]${path.replace('/', '\\/')}['\"]`))
   }
-  assert.match(read('app/sitemap.ts'), /'\/standard'/)
+  const sitemap = read('app/sitemap.ts')
+  assert.match(sitemap, /'\/standard'/)
+  assert.match(sitemap, /'\/privacy'/)
+  assert.match(read('lib/site.ts'), /label: 'Privacy', href: '\/privacy'/)
+  assert.match(read('components/Footer.tsx'), /href="\/privacy"/)
 })
