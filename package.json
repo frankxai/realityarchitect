@@ -5,12 +5,16 @@
   "license": "MIT",
   "description": "Reality Architect — the open method for going from AI tool-user to system-builder. This repo is the website and the method.",
   "homepage": "https://realityarchitect.ai",
+  "packageManager": "pnpm@11.5.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "tsc --noEmit --pretty false",
-    "typecheck": "tsc --noEmit --pretty false"
+    "typecheck": "tsc --noEmit --pretty false",
+    "claims:check": "node scripts/check-public-claims.mjs",
+    "test": "node --test",
+    "gate": "pnpm lint && pnpm claims:check && pnpm test && pnpm build"
   },
   "dependencies": {
     "next": "^16.0.0",

@@ -14,7 +14,7 @@ const SECTIONS = [
   { s: 'Aims', d: 'What\'s being built. Specific, written, with if-then triggers.' },
   { s: 'Attention', d: 'What signal agents surface to you, and what they mute.' },
   { s: 'State', d: 'The conditions you act from — sleep, deep-work windows, non-negotiables.' },
-  { s: 'Systems', d: 'What already runs without you: agents, automations, loops.' },
+  { s: 'Systems', d: 'What is already systemized: agents, supervised automations, and review loops.' },
   { s: 'Environment', d: 'The defaults you\'ve engineered. What\'s been removed.' },
   { s: 'Feedback', d: 'Review cadence and the metrics that count.' },
   { s: 'Guardrails', d: 'What agents must never do on your behalf.' },

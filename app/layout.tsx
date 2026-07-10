@@ -11,19 +11,22 @@ const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jb', display
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
+  applicationName: site.name,
   title: { default: `${site.name} — ${site.tagline}`, template: `%s · ${site.name}` },
   description: site.description,
+  alternates: { canonical: '/' },
   openGraph: { title: site.name, description: site.description, url: site.url, siteName: site.name, type: 'website' },
   twitter: { card: 'summary_large_image', title: site.name, description: site.description },
-  robots: { index: true, follow: true },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${grotesk.variable} ${mono.variable}`}>
       <body>
+        <a href="#content" className="skip-link">Skip to content</a>
         <Nav />
-        <main className="mx-auto max-w-5xl px-5">{children}</main>
+        <main id="content" className="mx-auto max-w-5xl px-5">{children}</main>
         <Footer />
       </body>
     </html>

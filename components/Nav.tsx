@@ -4,7 +4,7 @@ import { site } from '@/lib/site'
 export function Nav() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 glass">
-      <nav className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 py-3.5">
+      <nav aria-label="Primary navigation" className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-5 py-3.5">
         <Link href="/" className="flex shrink-0 items-center gap-2.5 font-bold tracking-tight text-ink">
           <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true">
             <rect width="64" height="64" rx="14" fill="#0d0f18" />
