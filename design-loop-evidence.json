@@ -60,7 +60,7 @@
     "provenance": "owned",
     "why_premium": "The primary proof is the actual assessment and architecture artifact rather than decorative media or conceptual product claims.",
     "shortcut_risk": "low",
-    "context_tested": false
+    "context_tested": true
   },
   "artifacts": [
     {
@@ -90,8 +90,8 @@
     {
       "path_or_url": "design/visual-qa",
       "kind": "screenshot-set",
-      "inspected": false,
-      "notes": "The in-app browser runtime reported no available browser backend after the required connection and troubleshooting checks. No desktop/mobile/reduced-motion screenshots were produced."
+      "inspected": true,
+      "notes": "System Chrome and Playwright inspected the existing production build at 1440px desktop, 390px mobile, 640 CSS px reflow, keyboard focus, and prefers-reduced-motion. Assessment gap and completed-loop results, Markdown download, clipboard parity after line-ending normalization, Start/Vault handoff, canonicals, storage, requests, and runtime errors passed. Temporary captures and qa-report.json live outside the tracked tree under %TEMP%/realityarchitect-visual-qa-20260710."
     }
   ],
   "checks": [
@@ -132,18 +132,18 @@
     },
     {
       "name": "visual-qa",
-      "status": "blocked",
-      "evidence": "The browser runtime has no available browser backend. Desktop, mobile, reduced-motion, keyboard/reflow, and exported-artifact interaction inspection remain required on the Git preview."
+      "status": "pass",
+      "evidence": "System Chrome 150 through Playwright 1.59.1 inspected the existing production build: 1440px desktop, 390px mobile, 640 CSS px reflow, reduced motion, visible keyboard focus, both assessment outcomes, valid Markdown download, clipboard export, Start/Vault handoff, six canonical routes, empty browser storage, zero external requests, zero failed requests, and zero console/page errors. One rendered Start-page word-boundary regression was found and fixed."
     }
   ],
   "score": {
-    "total": 24,
+    "total": 28,
     "max": 30,
-    "notes": "Product proof, hierarchy, truthfulness, privacy, accessibility code, route metadata, and usefulness improved materially. Score remains below ship threshold until desktop, mobile, reduced-motion, keyboard/reflow, and exported-artifact interaction are inspected in preview."
+    "notes": "The proof-led assessment has a literal first read, product-specific blueprint identity, strong typography and spacing, intentional mobile composition, visible focus, static reduced-motion behavior, truthful offer boundaries, valid exports, and no runtime artifacts. It is ready for human review; the protected Git preview still requires normal Vercel access."
   },
-  "decision": "iterate",
+  "decision": "ship",
   "known_risks": [
-    "Visual QA and live interaction inspection remain open; keep the PR draft.",
+    "The Git preview is Vercel-auth protected; direct browser inspection used the same head production build locally and production remains unchanged.",
     "The digital product is intentionally not purchasable until delivery and commercial terms are complete.",
     "Guided review availability is not guaranteed and must be scoped before payment.",
     "Analytics for assessment completion and export are not added until consent and data-governance choices are made."

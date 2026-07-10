@@ -44,7 +44,7 @@ export default function Start() {
       <h1 className="text-4xl font-extrabold tracking-tight text-ink">Start here</h1>
       <p className="mt-4 max-w-2xl text-lg text-muted">
         You don&apos;t need to be technical, and you don&apos;t need to build everything. You need to build the <em>right</em> thing
-        in the <em>right</em> order — one system, the one in front of you. Here&apos;s the path.
+        in the <em>right</em>{' '}order — one system, the one in front of you. Here&apos;s the path.
       </p>
 
       <ol className="mt-10 space-y-5">
