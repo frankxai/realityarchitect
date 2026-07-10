@@ -7,6 +7,13 @@ export const metadata: Metadata = {
   title: 'The reality.md Standard',
   description:
     'reality.md — a machine-readable file for a human life, the way CLAUDE.md is for a codebase. One file in your home directory that tells every AI agent who you are and what you\'re building.',
+  alternates: { canonical: '/standard' },
+  openGraph: {
+    title: 'The reality.md Standard',
+    description: 'A user-owned Markdown contract for the context, aims, and guardrails an agent should read.',
+    url: '/standard',
+    type: 'website',
+  },
 }
 
 const SECTIONS = [

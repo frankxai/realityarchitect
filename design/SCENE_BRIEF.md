@@ -23,3 +23,5 @@ Tier C code-native product UI. No generated hero image is needed.
 ## Acceptance
 
 Assessment works without account creation, artifact downloads as Markdown, copy action reports state accessibly, private inputs are not sent, and desktop/mobile/reduced-motion views are inspected.
+
+The result receives focus without announcing the full Markdown body, the completed-loop state resolves to an evidence review, and download URL cleanup is deferred until the browser has started the file transfer.

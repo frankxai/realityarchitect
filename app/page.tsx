@@ -1,7 +1,13 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArchitectLoopMap } from '@/components/ArchitectLoopMap'
 import { EmailCapture } from '@/components/EmailCapture'
 import { site } from '@/lib/site'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+  openGraph: { title: site.name, description: site.description, url: '/', siteName: site.name, type: 'website' },
+}
 
 const ARTIFACT = `# Research loop — Architecture Brief
 

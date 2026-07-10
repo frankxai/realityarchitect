@@ -15,6 +15,12 @@ const blocked = [
   /system that runs itself/i,
   /change your life/i,
   /prompts that actually convert/i,
+  /cannot be debunked/i,
+  /placebo neurobiology/i,
+  /vagal tone/i,
+  /joe dispenza/i,
+  /ancient wisdom and modern science converge/i,
+  /reducing execution friction by 10×/i,
 ]
 
 function walk(dir) {

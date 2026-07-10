@@ -5,6 +5,12 @@ export const metadata: Metadata = {
   title: 'The Architect Assessment',
   description: 'Five questions to find your first AI-system gap, followed by an exportable Markdown architecture brief.',
   alternates: { canonical: '/assess' },
+  openGraph: {
+    title: 'The Architect Assessment',
+    description: 'Five local questions produce an exportable Markdown architecture brief.',
+    url: '/assess',
+    type: 'website',
+  },
 }
 
 export default function Assess() {

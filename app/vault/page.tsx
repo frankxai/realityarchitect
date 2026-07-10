@@ -6,6 +6,12 @@ export const metadata: Metadata = {
   title: 'Implementation Options',
   description: 'The public/private boundary, planned assessment pack, and scoped guided architecture review for Reality Architect.',
   alternates: { canonical: '/vault' },
+  openGraph: {
+    title: 'Reality Architect implementation options',
+    description: 'The public/private boundary, planned assessment pack, and scoped guided architecture review.',
+    url: '/vault',
+    type: 'website',
+  },
 }
 
 const offers = [

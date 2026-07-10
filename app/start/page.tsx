@@ -7,6 +7,12 @@ export const metadata: Metadata = {
   title: 'Start Here',
   description: 'A concrete path into the Architect\'s Loop: assess the gap, export the brief, and build one missing layer.',
   alternates: { canonical: '/start' },
+  openGraph: {
+    title: 'Start with one system gap',
+    description: 'Assess the gap, export the brief, and build one missing layer.',
+    url: '/start',
+    type: 'website',
+  },
 }
 
 const STEPS = [

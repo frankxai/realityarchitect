@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 const MOVES = [
   { move: 'See', q: 'My agents can read the notes, decisions, and constraints relevant to this work.', artifact: 'A scoped memory index', acceptance: 'An agent can find the latest decision and cite its source.', guardrail: 'Exclude secrets and private material that the workflow does not need.' },
@@ -17,6 +17,12 @@ const OPTIONS = [
   { label: 'Locked in', value: 2 },
 ]
 
+const FULL_LOOP_REVIEW = {
+  artifact: 'A full-loop review record',
+  acceptance: 'Each move has current evidence, an owner, and one named correction or an explicit keep decision.',
+  guardrail: 'Do not invent a new layer when the existing loop needs evidence, maintenance, or removal.',
+} as const
+
 function safeName(value: string) {
   return value.trim() || 'My system'
 }
@@ -27,15 +33,21 @@ export function Assessment() {
   const [repeatingJob, setRepeatingJob] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle')
+  const resultRef = useRef<HTMLElement>(null)
 
   const allAnswered = answers.every((answer) => answer >= 0)
   const gapIndex = answers.findIndex((answer) => answer < 2)
   const resolvedIndex = gapIndex === -1 ? MOVES.length - 1 : gapIndex
   const gap = MOVES[resolvedIndex]
+  const recommendation = gapIndex === -1 ? FULL_LOOP_REVIEW : gap
   const status = gapIndex === -1 ? 'Full loop review' : `Move 0${resolvedIndex + 1}: ${gap.move}`
 
+  useEffect(() => {
+    if (submitted) resultRef.current?.focus()
+  }, [submitted])
+
   const brief = useMemo(() => {
-    const scoreLines = MOVES.map((move, index) => `- ${move.move}: ${OPTIONS[answers[index]]?.label ?? 'Not answered'}`).join('\n')
+    const scoreLines = MOVES.map((move, index) => `- ${move.move}: ${OPTIONS.find((option) => option.value === answers[index])?.label ?? 'Not answered'}`).join('\n')
     return `# ${safeName(systemName)} — Architecture Brief
 
 Generated from the Reality Architect assessment. Review before sharing; this file may contain personal context.
@@ -50,18 +62,18 @@ ${scoreLines}
 ${status}
 
 ## Build next
-${gap.artifact}
+${recommendation.artifact}
 
 ## Acceptance test
-${gap.acceptance}
+${recommendation.acceptance}
 
 ## Guardrail
-${gap.guardrail}
+${recommendation.guardrail}
 
 ## Seven-day build order
 1. Write the current input, expected output, owner, and stop condition.
 2. Collect one representative fixture and one failure fixture.
-3. Build the smallest version of ${gap.artifact.toLowerCase()}.
+3. Build the smallest version of ${recommendation.artifact.toLowerCase()}.
 4. Run it once with a human review gate.
 5. Record the result, failure, and next correction.
 6. Run the corrected version against the same fixture.
@@ -70,7 +82,7 @@ ${gap.guardrail}
 ## Privacy
 The assessment ran locally in the browser. Share this artifact only after removing context you do not want another person or agent to read.
 `
-  }, [answers, gap, repeatingJob, status, systemName])
+  }, [answers, recommendation, repeatingJob, status, systemName])
 
   function downloadBrief() {
     const blob = new Blob([brief], { type: 'text/markdown;charset=utf-8' })
@@ -78,8 +90,10 @@ The assessment ran locally in the browser. Share this artifact only after removi
     const anchor = document.createElement('a')
     anchor.href = url
     anchor.download = 'architecture-brief.md'
+    document.body.appendChild(anchor)
     anchor.click()
-    URL.revokeObjectURL(url)
+    anchor.remove()
+    window.setTimeout(() => URL.revokeObjectURL(url), 100)
   }
 
   async function copyBrief() {
@@ -99,11 +113,11 @@ The assessment ran locally in the browser. Share this artifact only after removi
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <label className="text-sm text-muted">
             System name
-            <input value={systemName} onChange={(event) => setSystemName(event.target.value)} placeholder="Creator research loop" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink outline-none focus:border-accent" />
+            <input value={systemName} onChange={(event) => setSystemName(event.target.value)} autoComplete="off" placeholder="Creator research loop" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink outline-none focus:border-accent" />
           </label>
           <label className="text-sm text-muted">
             Repeating job
-            <input value={repeatingJob} onChange={(event) => setRepeatingJob(event.target.value)} placeholder="Turn source notes into a reviewed brief" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink outline-none focus:border-accent" />
+            <input value={repeatingJob} onChange={(event) => setRepeatingJob(event.target.value)} autoComplete="off" placeholder="Turn source notes into a reviewed brief" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink outline-none focus:border-accent" />
           </label>
         </div>
       </div>
@@ -137,15 +151,15 @@ The assessment ran locally in the browser. Share this artifact only after removi
         ))}
       </div>
 
-      <button type="button" disabled={!allAnswered} onClick={() => setSubmitted(true)} className="mt-8 rounded-lg bg-accent px-6 py-3 font-semibold text-bg hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40">
+      <button type="button" disabled={!allAnswered} onClick={() => { setCopyState('idle'); setSubmitted(true) }} className="mt-8 rounded-lg bg-accent px-6 py-3 font-semibold text-bg hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40">
         {allAnswered ? 'Generate architecture brief' : 'Answer all five to continue'}
       </button>
 
       {submitted && (
-        <section aria-live="polite" className="blueprint-resolve mt-10 border border-accent/40 bg-surface p-6 sm:p-8">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">Your first gap</p>
-          <h2 className="mt-2 text-3xl font-bold text-ink">{status}</h2>
-          <p className="mt-3 max-w-2xl text-muted">Build <strong className="text-ink">{gap.artifact.toLowerCase()}</strong> next. The export includes an acceptance test, guardrail, and seven-day build order.</p>
+        <section ref={resultRef} tabIndex={-1} aria-labelledby="assessment-result-title" aria-describedby="assessment-result-summary" className="blueprint-resolve mt-10 border border-accent/40 bg-surface p-6 sm:p-8">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">{gapIndex === -1 ? 'Your review target' : 'Your first gap'}</p>
+          <h2 id="assessment-result-title" className="mt-2 text-3xl font-bold text-ink">{status}</h2>
+          <p id="assessment-result-summary" className="mt-3 max-w-2xl text-muted">Build <strong className="text-ink">{recommendation.artifact.toLowerCase()}</strong> next. The export includes an acceptance test, guardrail, and seven-day build order.</p>
 
           <div className="mt-6 max-h-[28rem] overflow-auto border border-border bg-bg p-4">
             <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed text-muted">{brief}</pre>

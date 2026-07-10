@@ -26,3 +26,10 @@ Homepage proof → assessment → first gap → generated artifact → download/
 ## Success evidence
 
 Assessment completion, artifact generation, export/copy action, and qualified guided-service intent. Analytics wiring is a separate consent and data-governance decision.
+
+## Trust closure
+
+- A completed five-move loop produces a review record, not another Compound build recommendation.
+- The public method describes workflow architecture only; it does not interpret personality, mental or physical health, financial potential, or future outcomes.
+- Every public route owns its canonical and Open Graph URL.
+- Optional assessment context remains browser state and is exported only through an explicit download or copy action.

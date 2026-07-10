@@ -56,7 +56,7 @@
   },
   "asset_quality": {
     "tier": "C",
-    "source_method": "code-native-ui",
+    "source_method": "vector-diagram",
     "provenance": "owned",
     "why_premium": "The primary proof is the actual assessment and architecture artifact rather than decorative media or conceptual product claims.",
     "shortcut_risk": "low",
@@ -67,13 +67,19 @@
       "path_or_url": "components/Assessment.tsx",
       "kind": "interactive-product",
       "inspected": true,
-      "notes": "Local assessment, first-gap logic, Markdown artifact, download, copy, privacy state, and accessibility semantics reviewed in source and compiled."
+      "notes": "Local assessment, first-gap and completed-loop logic, Markdown artifact, deferred download cleanup, copy, browser-state privacy, focused result state, and accessibility semantics reviewed in source and compiled."
     },
     {
       "path_or_url": "app/page.tsx",
       "kind": "product-page",
       "inspected": true,
       "notes": "First viewport now shows an exact artifact preview and literal product promise."
+    },
+    {
+      "path_or_url": "components/MethodContent.tsx",
+      "kind": "method-boundary",
+      "inspected": true,
+      "notes": "The public method now matches the five-move workflow contract and explicitly excludes diagnostic, health, personality, financial-potential, and future-outcome claims."
     },
     {
       "path_or_url": "app/vault/page.tsx",
@@ -85,7 +91,7 @@
       "path_or_url": "design/visual-qa",
       "kind": "screenshot-set",
       "inspected": false,
-      "notes": "Blocked after the one permitted attempt: the local production server did not become ready, so no screenshots were produced."
+      "notes": "The in-app browser runtime reported no available browser backend after the required connection and troubleshooting checks. No desktop/mobile/reduced-motion screenshots were produced."
     }
   ],
   "checks": [
@@ -102,12 +108,12 @@
     {
       "name": "claims",
       "status": "pass",
-      "evidence": "Public claims scan passes across app, components, lib, public, and README sources."
+      "evidence": "Public claims scan passes across 19 app, component, library, public, and README sources, including explicit regression blockers for the removed health/science overclaims."
     },
     {
       "name": "tests",
       "status": "pass",
-      "evidence": "Four product-contract tests pass for Markdown export, local privacy, no fake email capture, and paid-offer readiness boundaries."
+      "evidence": "Seven product-contract tests pass for Markdown export reliability, local privacy/no network primitives, completed-loop review logic, no fake email capture, paid-offer readiness, method claims boundaries, and canonical metadata."
     },
     {
       "name": "build",
@@ -117,18 +123,23 @@
     {
       "name": "security",
       "status": "pass",
-      "evidence": "Source secret and dependency scans pass after clearing generated .next cache; no dependency findings remain."
+      "evidence": "Untrusted-repo intake, source secret scan, frozen dependency audit, and changed-file private-memory marker review pass. The only marker hits are intentional source words such as client component, secrets guardrail, and private-input boundary; no personal or premium Vault content is present."
+    },
+    {
+      "name": "metadata",
+      "status": "pass",
+      "evidence": "Generated HTML has exact canonical and Open Graph URLs for home, method, standard, assess, start, and Vault; the sitemap includes all six public routes."
     },
     {
       "name": "visual-qa",
       "status": "blocked",
-      "evidence": "The single allowed capture attempt failed because the local production server did not become ready. Preview inspection remains required."
+      "evidence": "The browser runtime has no available browser backend. Desktop, mobile, reduced-motion, keyboard/reflow, and exported-artifact interaction inspection remain required on the Git preview."
     }
   ],
   "score": {
     "total": 24,
     "max": 30,
-    "notes": "Product proof, hierarchy, truthfulness, privacy, accessibility code, and usefulness improved materially. Score remains below ship threshold until desktop, mobile, reduced-motion, and exported-artifact interaction are inspected in preview."
+    "notes": "Product proof, hierarchy, truthfulness, privacy, accessibility code, route metadata, and usefulness improved materially. Score remains below ship threshold until desktop, mobile, reduced-motion, keyboard/reflow, and exported-artifact interaction are inspected in preview."
   },
   "decision": "iterate",
   "known_risks": [
