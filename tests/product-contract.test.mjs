@@ -12,6 +12,15 @@ test('assessment produces downloadable Markdown', () => {
   assert.match(assessment, /setTimeout\(\(\) => URL\.revokeObjectURL/)
 })
 
+test('clipboard success and failure feedback is announced accessibly', () => {
+  const assessment = read('components/Assessment.tsx')
+  assert.match(assessment, /role="status"/)
+  assert.match(assessment, /aria-live="polite"/)
+  assert.match(assessment, /aria-atomic="true"/)
+  assert.match(assessment, /copyState === 'copied' \? 'Brief copied\.'/)
+  assert.match(assessment, /copyState === 'failed' \? 'Copy was blocked by the browser; use the download instead\.'/)
+})
+
 test('assessment content fields have no network, persistence, or telemetry sink', () => {
   const assessment = read('components/Assessment.tsx')
   assert.match(assessment, /stays in this browser/i)
@@ -71,4 +80,12 @@ test('public routes own canonical metadata and sitemap coverage', () => {
   assert.match(sitemap, /'\/privacy'/)
   assert.match(read('lib/site.ts'), /label: 'Privacy', href: '\/privacy'/)
   assert.match(read('components/Footer.tsx'), /href="\/privacy"/)
+})
+
+test('security headers prevent embedding and unsafe base or object content', () => {
+  const config = read('next.config.mjs')
+  assert.match(config, /Content-Security-Policy/)
+  assert.match(config, /frame-ancestors 'self'/)
+  assert.match(config, /base-uri 'self'/)
+  assert.match(config, /object-src 'none'/)
 })

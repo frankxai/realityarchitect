@@ -170,7 +170,7 @@ The assessment ran locally in the browser. Share this artifact only after removi
             <button type="button" onClick={copyBrief} className="rounded-lg border border-border px-5 py-2.5 font-semibold text-ink hover:border-accent">Copy brief</button>
             <Link href="/start" className="rounded-lg border border-border px-5 py-2.5 text-center font-semibold text-ink hover:border-accent">Open build path</Link>
           </div>
-          <p className="mt-3 text-sm text-muted">{copyState === 'copied' ? 'Brief copied.' : copyState === 'failed' ? 'Copy was blocked by the browser; use the download instead.' : 'Your input has not left this browser.'}</p>
+          <p role="status" aria-live="polite" aria-atomic="true" className="mt-3 text-sm text-muted">{copyState === 'copied' ? 'Brief copied.' : copyState === 'failed' ? 'Copy was blocked by the browser; use the download instead.' : 'Your input has not left this browser.'}</p>
         </section>
       )}
     </div>
