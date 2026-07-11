@@ -7,6 +7,13 @@ export const metadata: Metadata = {
   title: 'The reality.md Standard',
   description:
     'reality.md — a machine-readable file for a human life, the way CLAUDE.md is for a codebase. One file in your home directory that tells every AI agent who you are and what you\'re building.',
+  alternates: { canonical: '/standard' },
+  openGraph: {
+    title: 'The reality.md Standard',
+    description: 'A user-owned Markdown contract for the context, aims, and guardrails an agent should read.',
+    url: '/standard',
+    type: 'website',
+  },
 }
 
 const SECTIONS = [
@@ -14,7 +21,7 @@ const SECTIONS = [
   { s: 'Aims', d: 'What\'s being built. Specific, written, with if-then triggers.' },
   { s: 'Attention', d: 'What signal agents surface to you, and what they mute.' },
   { s: 'State', d: 'The conditions you act from — sleep, deep-work windows, non-negotiables.' },
-  { s: 'Systems', d: 'What already runs without you: agents, automations, loops.' },
+  { s: 'Systems', d: 'What is already systemized: agents, supervised automations, and review loops.' },
   { s: 'Environment', d: 'The defaults you\'ve engineered. What\'s been removed.' },
   { s: 'Feedback', d: 'Review cadence and the metrics that count.' },
   { s: 'Guardrails', d: 'What agents must never do on your behalf.' },

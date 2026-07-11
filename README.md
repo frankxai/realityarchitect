@@ -1,6 +1,6 @@
 # Reality Architect
 
-**Build the systems that build the life you want.**
+**Find the system gap. Build the next artifact.**
 
 > Go from AI tool-user to system-builder. This repo is two things at once: the **website** at
 > [realityarchitect.ai](https://realityarchitect.ai), and the **open method** itself. Humans read the site.
@@ -12,13 +12,11 @@
 
 Most people use AI like a vending machine: ask, get an answer, start over tomorrow. The work resets every morning.
 
-An **architect** builds the *system* that does the asking — agents that draft, automations that ship, loops that
-earn and learn. Same models. Completely different life. The gap between tool-user and system-builder is the only
-skill that compounds now. This repo is the method for crossing it, given away free.
+An **architect** writes the system around the model: context, specification, bounded agents, supervised automation,
+and a feedback protocol. This repo provides the open method, assessment, and starter artifacts for doing that work.
 
 There is no mysticism here. You don't "manifest" a reality — you **engineer** it: memory, specs, agents, loops, and a
-learning signal. Every claim on the site cashes out in something shipped — a repo to fork, an agent to run, a site
-already earning. Proof first. Inspiration is the doorway; engineering is the room.
+learning signal. Every recommendation on the site must cash out in an inspectable artifact and acceptance test.
 
 ---
 
@@ -32,8 +30,8 @@ this month, and a brick the next move stacks on.
 | 01 | **See** | An intelligence layer — a vault your agents read | You stop re-explaining yourself |
 | 02 | **Design** | A written spec for one repeating job | Decisions stop draining you |
 | 03 | **Build** | One agent that does one job you used to do by hand | The first hour a week comes back |
-| 04 | **Automate** | A loop that runs unattended | Output ships on the days you don't |
-| 05 | **Compound** | A learning signal pointed at your outcome | The system improves while you sleep |
+| 04 | **Automate** | A supervised loop with a receipt | Repeated work has a visible review path |
+| 05 | **Compound** | A comparable outcome signal | The next run can be reviewed against the last |
 
 → Full walkthrough: [realityarchitect.ai/method](https://realityarchitect.ai/method)
 → Find your gap: [realityarchitect.ai/assess](https://realityarchitect.ai/assess)
@@ -59,6 +57,8 @@ building, plus a `~/.reality/` state directory agents maintain. Eight sections, 
 
 **As a human** — read [`/start`](https://realityarchitect.ai/start), run the assessment, then fork the templates in
 [`starter/`](./starter) for whichever move is your gap. Build the one system in front of you, not all five.
+
+The assessment runs locally and exports a Markdown architecture brief. It does not transmit or persist the optional context you enter.
 
 **As an agent** — read [`AGENTS.md`](./AGENTS.md). It's the navigation map: where the method lives, what each starter
 template does, and how to orient your human toward their next move without guessing.

@@ -1,219 +1,167 @@
 {
-  "version": "2026-06-23",
-  "task": "Upgrade the Reality Architect homepage hero from a proof-light poster to an exact Architect's Loop system-map proof object.",
-  "surface": "realityarchitect.ai homepage",
-  "audience": "System-builders, AI operators, automation learners, and founders moving from AI tool-use to system-building.",
-  "first_read": "Reality Architect is an open five-move method for building systems: See, Design, Build, Automate, Compound.",
+  "version": "2026-07-10",
+  "task": "Turn Reality Architect into an assessment-to-artifact open-method product with a truthful implementation and privacy boundary.",
+  "surface": "Homepage, assessment, architecture brief export, implementation options, metadata, public/private boundary, and local-data privacy route.",
+  "audience": "Creators, founders, and operators moving from repeated AI use toward dependable workflow architecture.",
+  "first_read": "Find the system gap. Build the next artifact.",
   "standards": [
-    "realityarchitect/AGENTS.md",
+    "AGENTS.md",
     "DESIGN_TASTE.md",
     "WEB_EXPERIENCE_STANDARD.md",
     "MOTION_TASTE_RUBRIC.md",
     "VISUAL_QA_GATE.md",
-    "_intelligence/README.md",
-    "_intelligence/operating-system.md",
-    "_intelligence/taste.md",
-    "_intelligence/design.md",
-    "_intelligence/motion.md",
+    "design-agent-standards/PREMIUM_ASSET_STANDARD.md",
+    "design-agent-standards/AGENTIC_DESIGN_LOOP.md",
     "_intelligence/quality-gates.md"
   ],
   "references": [
     {
-      "label": "God Mode flagship spec",
-      "source": "_intelligence/specs/god-mode-2026-07-05/flagship-page-and-scene-specs.md",
-      "reason": "Reality Architect hero restart brief."
+      "label": "Reality Architect public method",
+      "source": "README.md",
+      "reason": "Preserves the five dependent moves and open-source contract."
     },
     {
-      "label": "Motion score packet",
-      "source": "_intelligence/specs/god-mode-2026-07-05/motion-score-packets.md",
-      "reason": "Map Becomes Method Track A motion brief."
+      "label": "Private Vault boundary",
+      "source": "C:/Users/frank/starlight/repos/realityarchitect-vault/README.md",
+      "reason": "Informed the boundary without copying private systems, evidence, or paid material."
     },
     {
-      "label": "v0 prototype log",
-      "source": "_intelligence/specs/god-mode-2026-07-05/v0-prototype-log.md",
-      "reason": "Scoped concept direction; used as input, not copied as production code."
+      "label": "Premium Web OS",
+      "source": "C:/Users/frank/starlight/repos/_intelligence/operating-system.md",
+      "reason": "Required a working proof object, named motion, reduced-motion behavior, and honest release evidence."
     }
   ],
   "direction": {
     "keep": [
-      "Concrete technical tone",
-      "The five dependent Architect's Loop moves",
-      "Open-source method and assessment CTA",
-      "Blueprint/graphite Reality Architect identity"
+      "Five dependent Architect Loop moves",
+      "Blueprint and graphite visual world",
+      "Open method and starter templates",
+      "Concrete technical tone"
     ],
     "avoid": [
-      "Generic self-improvement language",
-      "Cosmic abstraction",
-      "Vague AI platform claims",
-      "Motion that hides the method",
-      "Broad dependency additions"
+      "Unsupported life, income, or transformation claims",
+      "Automation without human responsibility",
+      "Fake email capture",
+      "Unverified pricing and scarcity",
+      "Private Vault material in public artifacts"
     ],
-    "signature": "The hero proves the method by showing the exact five-move build order and the artifact each move produces.",
+    "signature": "The assessment resolves one dependency gap into an exportable architecture brief with an acceptance test and guardrail.",
     "system": [
-      "Next.js App Router",
-      "Tailwind v4 CSS-first tokens",
-      "Code-native exact system map component",
-      "CSS Track A reveal motion",
-      "Reduced-motion static fallback",
-      "Playwright desktop/mobile/reduced-motion screenshots"
+      "Tier C code-native assessment UI",
+      "Local-only optional inputs",
+      "Markdown download and clipboard export",
+      "Named blueprint-resolve Track A motion",
+      "Static reduced-motion route"
     ]
   },
   "asset_quality": {
     "tier": "C",
     "source_method": "vector-diagram",
     "provenance": "owned",
-    "why_premium": "The hero uses an exact code-native system diagram of the repo's own Architect's Loop rather than decorative atmosphere or fake product data.",
+    "why_premium": "The primary proof is the actual assessment and architecture artifact rather than decorative media or conceptual product claims.",
     "shortcut_risk": "low",
     "context_tested": true
   },
   "artifacts": [
     {
-      "path_or_url": "realityarchitect/components/ArchitectLoopMap.tsx",
-      "kind": "web-component",
+      "path_or_url": "components/Assessment.tsx",
+      "kind": "interactive-product",
       "inspected": true,
-      "notes": "New hero proof object component."
+      "notes": "Local assessment, first-gap and completed-loop logic, Markdown artifact, deferred download cleanup, copy, browser-state privacy, focused result state, and accessibility semantics reviewed in source and compiled."
     },
     {
-      "path_or_url": "realityarchitect/app/page.tsx",
-      "kind": "web-page",
+      "path_or_url": "app/page.tsx",
+      "kind": "product-page",
       "inspected": true,
-      "notes": "Homepage now uses ArchitectLoopMap in the first viewport."
+      "notes": "First viewport now shows an exact artifact preview and literal product promise."
     },
     {
-      "path_or_url": "realityarchitect/app/globals.css",
-      "kind": "css",
+      "path_or_url": "components/MethodContent.tsx",
+      "kind": "method-boundary",
       "inspected": true,
-      "notes": "Track A reveal keyframes and reduced-motion fallback."
+      "notes": "The public method now matches the five-move workflow contract and explicitly excludes diagnostic, health, personality, financial-potential, and future-outcome claims."
     },
     {
-      "path_or_url": "realityarchitect/components/Nav.tsx",
-      "kind": "web-component",
+      "path_or_url": "app/vault/page.tsx",
+      "kind": "offer-boundary",
       "inspected": true,
-      "notes": "Mobile nav tightened to prevent overflow."
+      "notes": "Open method, planned digital product, scoped guided service, and private boundary are explicit."
     },
     {
-      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-desktop-20260705.png",
-      "kind": "web-screenshot",
+      "path_or_url": "app/privacy/page.tsx",
+      "kind": "privacy-boundary",
       "inspected": true,
-      "notes": "Desktop production-build screenshot from local server."
+      "notes": "Desktop, 390px mobile, and reduced-motion renders inspected. The route distinguishes local assessment state and user-triggered exports from ordinary hosting request logs without claiming zero infrastructure logging."
     },
     {
-      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-mobile-20260705.png",
-      "kind": "web-screenshot",
+      "path_or_url": "design/visual-qa",
+      "kind": "screenshot-set",
       "inspected": true,
-      "notes": "Mobile production-build screenshot from local server."
-    },
-    {
-      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-reduced-motion-20260705.png",
-      "kind": "web-screenshot",
-      "inspected": true,
-      "notes": "Reduced-motion desktop production-build screenshot."
-    },
-    {
-      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-hero-qa-20260705.json",
-      "kind": "visual-qa-metrics",
-      "inspected": true,
-      "notes": "No horizontal overflow; CSS loaded; five loop cards present."
-    },
-    {
-      "path_or_url": "https://github.com/frankxai/realityarchitect/pull/3",
-      "kind": "draft-pr",
-      "inspected": true,
-      "notes": "Draft PR for the proof-led Architect's Loop hero."
-    },
-    {
-      "path_or_url": "https://realityarchitect-5qy2mws9d-starlight-intelligence.vercel.app/",
-      "kind": "vercel-preview",
-      "inspected": true,
-      "notes": "Protected Vercel preview for dpl_7UkPSQd3wPECiAa6EpHDLYiD7rJv, verified through temporary Vercel share access."
-    },
-    {
-      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-desktop-20260705.png",
-      "kind": "web-screenshot",
-      "inspected": true,
-      "notes": "Desktop screenshot from the Vercel preview deployment."
-    },
-    {
-      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-mobile-20260705.png",
-      "kind": "web-screenshot",
-      "inspected": true,
-      "notes": "Mobile screenshot from the Vercel preview deployment."
-    },
-    {
-      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-reduced-motion-20260705.png",
-      "kind": "web-screenshot",
-      "inspected": true,
-      "notes": "Reduced-motion screenshot from the Vercel preview deployment."
-    },
-    {
-      "path_or_url": "_visual-qa/god-mode-visual-audit-2026-07-05/realityarchitect-preview-qa-20260705.json",
-      "kind": "visual-qa-metrics",
-      "inspected": true,
-      "notes": "Preview metrics confirm 200 response, no Vercel login page, five loop cards, all five moves present, and no desktop/mobile horizontal overflow."
+      "notes": "System Chrome and Playwright inspected the existing production build at 1440px desktop, 390px mobile, 640 CSS px reflow, keyboard focus, and prefers-reduced-motion. Assessment gap and completed-loop results, Markdown download, clipboard parity after line-ending normalization, Start/Vault handoff, canonicals, storage, requests, and runtime errors passed. Temporary captures and qa-report.json live outside the tracked tree under %TEMP%/realityarchitect-visual-qa-20260710."
     }
   ],
   "checks": [
     {
       "name": "asset-tier",
       "status": "pass",
-      "evidence": "Tier C exact system diagram, owned and code-native."
+      "evidence": "Tier C is the correct medium: the primary proof is the functional, code-authored assessment and privacy interface rather than decorative media. No new generated or external asset was introduced."
     },
     {
       "name": "export-inspection",
       "status": "pass",
-      "evidence": "Desktop, mobile, and reduced-motion screenshots captured from local production build."
+      "evidence": "Actual full-page desktop, 390px mobile, and reduced-motion privacy renders plus the completed mobile assessment result were inspected from the production build; composition, hierarchy, overflow, and trust copy passed."
     },
     {
-      "name": "visual-qa",
+      "name": "frozen-install",
       "status": "pass",
-      "evidence": "Playwright metrics show no document-level horizontal overflow, CSS stylesheet loaded, and loop cards render."
+      "evidence": "pnpm 11.5.0 frozen install passes; postcss is overridden to 8.5.15 and the prior medium advisory is resolved."
     },
     {
-      "name": "reduced-motion",
+      "name": "lint-and-type",
       "status": "pass",
-      "evidence": "CSS disables loop-map animation under prefers-reduced-motion and reduced-motion screenshot was captured."
+      "evidence": "pnpm lint and pnpm typecheck pass."
     },
     {
-      "name": "asset-load",
+      "name": "claims",
       "status": "pass",
-      "evidence": "Existing lazy loop blueprint image returned HTTP 200 and natural dimensions after scroll QA."
+      "evidence": "Public claims scan passes across 19 app, component, library, public, and README sources, including explicit regression blockers for the removed health/science overclaims."
+    },
+    {
+      "name": "tests",
+      "status": "pass",
+      "evidence": "Eight product-contract tests pass for Markdown export reliability, sensitive assessment fields having no network/persistence/telemetry sink, the public privacy boundary, completed-loop review logic, no fake email capture, paid-offer readiness, method claims boundaries, and canonical metadata."
     },
     {
       "name": "build",
       "status": "pass",
-      "evidence": "pnpm build completed successfully with TypeScript and static generation."
+      "evidence": "Next.js 16.2.7 production build compiled and prerendered 13 static routes, including /privacy."
     },
     {
-      "name": "lint",
+      "name": "security",
       "status": "pass",
-      "evidence": "pnpm lint now runs the available TypeScript no-emit gate and passes. No ESLint config exists in this repo yet."
+      "evidence": "Untrusted-repo intake, source secret scan, frozen dependency audit, and changed-file private-memory marker review pass. The only marker hits are intentional source words such as client component, secrets guardrail, and private-input boundary; no personal or premium Vault content is present."
     },
     {
-      "name": "security-scan",
+      "name": "metadata",
       "status": "pass",
-      "evidence": "Invoke-RepoSecurityScan passed after clearing generated .next cache; SecretScanExitCode 0, DependencyScanExitCode 0, and no leaks found."
+      "evidence": "Generated HTML has exact canonical and Open Graph URLs for home, method, standard, assess, start, Vault, and privacy; the sitemap includes all seven public routes. The privacy route is intentionally index/follow."
     },
     {
-      "name": "draft-pr",
+      "name": "visual-qa",
       "status": "pass",
-      "evidence": "Draft PR #3 opened from codex/realityarchitect-hero-map at commit 9ce08354bb0eefb1efd33d1ef63f9818db82183f."
-    },
-    {
-      "name": "vercel-preview",
-      "status": "pass",
-      "evidence": "Vercel deployment dpl_7UkPSQd3wPECiAa6EpHDLYiD7rJv is READY for branch codex/realityarchitect-hero-map; preview screenshots and metrics captured from the protected deployment."
+      "evidence": "The production build was inspected at 1440px desktop and 390px mobile, including reduced motion: /privacy returns 200 with its exact canonical, index/follow policy, visible navigation/footer access, no overflow, and no console errors. A completed assessment kept private fixture values in the in-page brief, wrote no storage or cookies, and emitted only bodyless same-origin Next.js prefetch GETs."
     }
   ],
   "score": {
-    "total": 27,
+    "total": 28,
     "max": 30,
-    "notes": "First read and proof object improved materially, local gates pass, security scan passes when generated cache is cleared, and Vercel preview QA is green. Production promotion still needs review, merge, and final production-domain screenshot."
+    "notes": "The proof-led assessment has a literal first read, product-specific blueprint identity, strong typography and spacing, intentional mobile composition, visible focus, static reduced-motion behavior, truthful offer boundaries, valid exports, and no runtime artifacts. It is ready for human review; the protected Git preview still requires normal Vercel access."
   },
   "decision": "ship",
   "known_risks": [
-    "The lint script is repaired to a TypeScript no-emit gate; adding a real ESLint config remains future quality work.",
-    "Generated .next cache can create false-positive secret scan findings; clear or exclude generated cache before source security scans.",
-    "The Vercel preview is protected and was verified through temporary share access; production promotion is intentionally still pending draft PR review.",
-    "Vercel project metadata did not list the custom production domain even though realityarchitect.ai returned the production app during audit; domain mapping should be reconciled before final production handoff."
+    "The Git preview is Vercel-auth protected; direct browser inspection used the same head production build locally and production remains unchanged.",
+    "The digital product is intentionally not purchasable until delivery and commercial terms are complete.",
+    "Guided review availability is not guaranteed and must be scoped before payment.",
+    "Analytics for assessment completion and export are not added until consent and data-governance choices are made; any future measurement must exclude answers, system names, repeating jobs, and brief text."
   ]
 }

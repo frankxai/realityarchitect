@@ -26,8 +26,8 @@ const MOVES = [
     n: '04',
     move: 'Automate',
     build: 'one loop',
-    buys: 'output ships unattended',
-    detail: 'A trigger, an agent, a handoff, and a clear done state.',
+    buys: 'repetition becomes supervised',
+    detail: 'A trigger, an agent, a review gate, a handoff, and a clear done state.',
   },
   {
     n: '05',
@@ -67,7 +67,7 @@ export function ArchitectLoopMap() {
           {MOVES.map((move, index) => (
             <article
               key={move.n}
-              className="loop-map-card relative grid gap-2 rounded-lg border border-border bg-surface/86 p-2.5 backdrop-blur sm:grid-cols-[auto_1fr_auto] sm:items-center sm:gap-3 sm:p-3"
+            className="loop-map-card blueprint-resolve relative grid gap-2 rounded-lg border border-border bg-surface/86 p-2.5 backdrop-blur sm:grid-cols-[auto_1fr_auto] sm:items-center sm:gap-3 sm:p-3"
               style={{ animationDelay: `${index * 90}ms` }}
             >
               <div className="flex items-center gap-2">

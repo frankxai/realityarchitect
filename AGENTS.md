@@ -56,3 +56,15 @@ Concrete, technical, understated. No spiritual or hype language. Lead with the r
 speak. If you're tempted to write "manifest," "abundance," or "unlock your potential" — stop, and name the system instead.
 
 Built on the Starlight Intelligence Protocol (SIP). When you extend this repo, attribute with a "Built on SIP" note.
+
+## Product and premium web contract
+
+Before public UI work, read `DESIGN.md`, `TASTE.md`, `SYSTEM.md`, `SKILL.md`, `design/PAGE_SPEC.md`, and `design/SCENE_BRIEF.md`, then apply the shared Premium Web OS and premium asset gate.
+
+- The assessment must produce a real exportable artifact.
+- Assessment inputs stay local unless a user explicitly shares them.
+- Do not expose private Vault material, personal memory, or premium-only systems.
+- Do not publish unsupported psychological, financial, health, income, or transformation claims.
+- Do not advertise a paid product until delivery, price, license, and refund terms are real.
+- Motion needs a named job and reduced-motion route.
+- Production and domain changes remain human-gated.

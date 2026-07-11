@@ -1,138 +1,106 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
-import { site } from '@/lib/site'
-import { EmailCapture } from '@/components/EmailCapture'
 import { ArchitectLoopMap } from '@/components/ArchitectLoopMap'
+import { EmailCapture } from '@/components/EmailCapture'
+import { site } from '@/lib/site'
 
-const LOOP = [
-  { n: '01', move: 'See', d: 'Build an intelligence layer — a second brain your agents can read. You can\'t automate what you can\'t recall.' },
-  { n: '02', move: 'Design', d: 'Spec the system before you build it. Separate the thinking from the doing — decide once, execute many.' },
-  { n: '03', move: 'Build', d: 'Compose your first agents and skills. Small, named, single-purpose — the bricks everything else stacks on.' },
-  { n: '04', move: 'Automate', d: 'Wire agents into loops that run without you. The point isn\'t doing it faster — it\'s not doing it at all.' },
-  { n: '05', move: 'Compound', d: 'Add the learning layer. Agents that score their own output and bias toward what worked. The system improves while you sleep.' },
-]
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+  openGraph: { title: site.name, description: site.description, url: '/', siteName: site.name, type: 'website' },
+}
+
+const ARTIFACT = `# Research loop — Architecture Brief
+
+First gap: Move 02 · Design
+Build next: one-job system specification
+
+Acceptance test:
+Another person can explain the workflow,
+owner, boundary, and stop condition.
+
+Guardrail:
+Do not automate an ambiguous job.`
 
 const PROOF = [
-  'Open-source method',
-  'Agent-ready repo',
-  'Income-loop examples',
-  'Private vault upgrade',
+  ['Local assessment', 'Five dependency checks run in your browser.'],
+  ['Markdown export', 'Download or copy a build brief with no account.'],
+  ['Open method', 'The standard and sanitized starters remain MIT licensed.'],
 ]
 
 export default function Home() {
   return (
     <>
-      <section className="blueprint relative -mx-5 overflow-hidden px-5 py-12 sm:py-24">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_14%,rgba(91,140,255,0.18),transparent_34%),radial-gradient(circle_at_18%_18%,rgba(167,139,250,0.12),transparent_30%)]" />
-        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+      <section className="blueprint relative -mx-5 overflow-hidden px-5 py-14 sm:py-24">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_75%_14%,rgba(91,140,255,0.18),transparent_34%),radial-gradient(circle_at_18%_18%,rgba(167,139,250,0.09),transparent_30%)]" aria-hidden="true" />
+        <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div>
-            <p className="inline-flex rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-accent">
-              From tool-user to system-builder
-            </p>
-            <h1 className="mt-5 max-w-3xl text-4xl font-extrabold leading-[1.02] tracking-tight text-ink sm:text-7xl">
-              {site.tagline}
-            </h1>
-            <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:mt-6 sm:text-lg">{site.description}</p>
-            <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
-              <Link href="/assess" className="rounded-full bg-accent px-6 py-3 font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.25)] hover:opacity-90">
-                Find your system gap →
-              </Link>
-              <a href={site.github} className="rounded-full border border-border bg-white/[0.03] px-6 py-3 font-semibold text-ink backdrop-blur hover:border-accent">
-                Fork the OS on GitHub
-              </a>
+            <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">Open method · working assessment</p>
+            <h1 className="mt-5 max-w-[12ch] text-5xl font-extrabold leading-[0.98] tracking-[-0.05em] text-ink sm:text-7xl">{site.tagline}</h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{site.description}</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <Link href="/assess" className="rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.22)]">Run the assessment</Link>
+              <Link href="/method" className="rounded-lg border border-border bg-bg/40 px-6 py-3 text-center font-semibold text-ink hover:border-accent">Inspect the method</Link>
             </div>
-            <div className="mt-6 flex flex-wrap gap-2 sm:mt-8">
-              {PROOF.map((item) => (
-                <span key={item} className="rounded-full border border-border bg-white/[0.03] px-3 py-1 text-xs text-muted">
-                  {item}
-                </span>
+            <dl className="mt-9 divide-y divide-border border-y border-border">
+              {PROOF.map(([label, value]) => (
+                <div key={label} className="grid gap-1 py-3 sm:grid-cols-[9rem_1fr]">
+                  <dt className="font-mono text-xs uppercase tracking-[0.14em] text-accent">{label}</dt>
+                  <dd className="text-sm text-muted">{value}</dd>
+                </div>
               ))}
-            </div>
+            </dl>
           </div>
 
-          <ArchitectLoopMap />
-        </div>
-      </section>
-
-      {/* The shift */}
-      <section className="border-t border-border py-16">
-        <h2 className="text-3xl font-bold text-ink">Most people use AI. Architects build with it.</h2>
-        <p className="mt-4 max-w-2xl text-lg text-muted">
-          A tool-user opens a chatbot and asks. An architect designs the <strong className="text-ink">system</strong> that
-          does the asking — agents that draft, automations that ship, loops that earn. Same models, completely different life.
-          The gap between the two is the only skill that matters now. This is the method for crossing it.
-        </p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-xl border border-border glass p-6">
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted">Tool-user</div>
-            <p className="mt-2 text-ink">Asks the model. Copies the answer. Starts over tomorrow. The work resets every morning.</p>
-          </div>
-          <div className="rounded-xl border border-accent/40 glass p-6">
-            <div className="text-xs font-semibold uppercase tracking-wider text-accent">Reality Architect</div>
-            <p className="mt-2 text-ink">Builds the system once. It runs, learns, and compounds — producing the income, content, and time the work was always for.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* The Architect's Loop */}
-      <section className="border-t border-border py-16">
-        <div className="flex items-end justify-between">
-          <h2 className="text-3xl font-bold text-ink">The Architect&apos;s Loop</h2>
-          <Link href="/method" className="text-sm font-medium text-accent hover:underline">Go deep →</Link>
-        </div>
-        <p className="mt-3 max-w-2xl text-muted">Five moves. Each one is a system you can build this month — and a brick the next move stacks on.</p>
-        <div className="mt-6 aspect-video max-h-[320px] w-full overflow-hidden rounded-2xl border border-border glass relative flex items-center justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/loop-blueprint.png" alt="The Architect's Loop Blueprint" className="object-cover w-full h-full opacity-90" loading="lazy" />
-        </div>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {LOOP.map((m) => (
-            <div key={m.n} className="rounded-2xl border border-border glass p-5">
-              <div className="font-mono text-sm font-bold text-accent">{m.n}</div>
-              <div className="mt-2 text-lg font-bold text-ink">{m.move}</div>
-              <p className="mt-1.5 text-sm text-muted">{m.d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Proof */}
-      <section className="border-t border-border py-16">
-        <h2 className="text-3xl font-bold text-ink">This isn&apos;t theory. It&apos;s the system already running.</h2>
-        <p className="mt-3 max-w-2xl text-muted">
-          Every claim here cashes out in something shipped — a repo you can fork, an agent you can run, a site earning on autopilot. Proof first.
-        </p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {site.network.map((n) => (
-            <a key={n.url} href={n.url} className="flex items-center justify-between rounded-xl border border-border glass p-5 hover:border-accent">
+          <div className="border border-border bg-surface/90 p-5 shadow-[0_28px_100px_rgba(0,0,0,0.35)] sm:p-7">
+            <div className="flex items-center justify-between gap-4 border-b border-border pb-4">
               <div>
-                <div className="font-semibold text-ink">{n.name}</div>
-                <p className="mt-1 text-sm text-muted">{n.blurb}</p>
+                <p className="font-mono text-[0.66rem] uppercase tracking-[0.18em] text-accent">Export preview</p>
+                <h2 className="mt-1 text-lg font-bold text-ink">A build brief, not a personality score.</h2>
               </div>
-              <span className="text-accent">→</span>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* Fork the OS */}
-      <section className="border-t border-border py-16">
-        <div className="rounded-2xl border border-accent/30 blueprint glass p-8">
-          <h2 className="text-2xl font-bold text-ink">The whole method is open source</h2>
-          <p className="mt-3 max-w-2xl text-muted">
-            This site is the repo. The starter kit ships real agent templates you can fork and run today — built on the
-            Starlight Intelligence Protocol. Read it as a human, or let your agent read it as the map.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <a href={site.github} className="rounded-lg bg-accent px-5 py-2.5 font-semibold text-bg hover:opacity-90">Clone the starter →</a>
-            <Link href="/start" className="rounded-lg border border-border px-5 py-2.5 font-semibold text-ink hover:border-accent">How to begin</Link>
+              <span className="rounded-full border border-accent/35 px-3 py-1 text-xs font-semibold text-accent">Markdown</span>
+            </div>
+            <pre className="blueprint-resolve mt-5 overflow-auto border border-border bg-bg p-5 font-mono text-xs leading-relaxed text-muted">{ARTIFACT}</pre>
+            <p className="mt-4 text-sm leading-relaxed text-muted">The complete export adds five scores, a seven-day build order, privacy note, and a decision to keep, revise, or stop the system.</p>
           </div>
-          <p className="mt-4 text-sm text-muted">
-            Want the tuned, private systems — the ones with real numbers? <Link href="/vault" className="text-accent hover:underline">The Vault →</Link>
-          </p>
         </div>
       </section>
 
-      <EmailCapture headline="Get the architect's playbook" sub="One signal a week: a system worth building, a loop worth stealing, a template worth forking. No noise." />
+      <section className="border-t border-border py-16 sm:py-24" aria-labelledby="loop-title">
+        <div className="mb-8 max-w-2xl">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Dependency map</p>
+          <h2 id="loop-title" className="mt-3 text-3xl font-bold text-ink sm:text-5xl">Build the first missing layer.</h2>
+          <p className="mt-3 text-muted">See, Design, Build, Automate, and Compound are ordered. The assessment stops at the first gap so the recommendation remains buildable.</p>
+        </div>
+        <ArchitectLoopMap />
+      </section>
+
+      <section className="border-t border-border py-16 sm:py-24" aria-labelledby="path-title">
+        <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Product path</p>
+            <h2 id="path-title" className="mt-3 text-3xl font-bold text-ink sm:text-5xl">Open method first. Paid help only where delivery is real.</h2>
+          </div>
+          <div className="divide-y divide-border border-y border-border">
+            {[
+              ['Free now', 'Assessment, architecture brief, method, standard, and starter templates.'],
+              ['Digital product', 'Planned assessment pack; no checkout until the files, license, support, price, and refund terms are complete.'],
+              ['Guided service', 'A scoped architecture review with availability and deliverables confirmed before payment.'],
+            ].map(([label, description], index) => (
+              <div key={label} className="grid gap-3 py-6 sm:grid-cols-[3rem_10rem_1fr]">
+                <span className="font-mono text-xs text-accent">0{index + 1}</span>
+                <h3 className="font-semibold text-ink">{label}</h3>
+                <p className="text-sm leading-relaxed text-muted">{description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <Link href="/vault" className="rounded-lg border border-border px-5 py-2.5 text-center font-semibold text-ink hover:border-accent">See implementation options</Link>
+          <a href={site.github} className="rounded-lg border border-border px-5 py-2.5 text-center font-semibold text-ink hover:border-accent">Fork the open repo</a>
+        </div>
+      </section>
+
+      <EmailCapture />
     </>
   )
 }

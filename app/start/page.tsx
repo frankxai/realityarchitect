@@ -5,13 +5,20 @@ import { EmailCapture } from '@/components/EmailCapture'
 
 export const metadata: Metadata = {
   title: 'Start Here',
-  description: 'The fastest path into the Architect\'s Loop — fork the open starter, build your first agent, and run your first loop this week.',
+  description: 'A concrete path into the Architect\'s Loop: assess the gap, export the brief, and build one missing layer.',
+  alternates: { canonical: '/start' },
+  openGraph: {
+    title: 'Start with one system gap',
+    description: 'Assess the gap, export the brief, and build one missing layer.',
+    url: '/start',
+    type: 'website',
+  },
 }
 
 const STEPS = [
   {
     t: 'Run the assessment',
-    d: 'Find the first move you haven\'t locked in. Don\'t build out of order — the Loop is sequential. Two minutes, no email required to see the result.',
+    d: 'Find the first move you haven\'t locked in. Export the result as a Markdown architecture brief with an acceptance test and guardrail.',
     href: '/assess', cta: 'Take the assessment',
   },
   {
@@ -37,7 +44,7 @@ export default function Start() {
       <h1 className="text-4xl font-extrabold tracking-tight text-ink">Start here</h1>
       <p className="mt-4 max-w-2xl text-lg text-muted">
         You don&apos;t need to be technical, and you don&apos;t need to build everything. You need to build the <em>right</em> thing
-        in the <em>right</em> order — one system, the one in front of you. Here&apos;s the path.
+        in the <em>right</em>{' '}order — one system, the one in front of you. Here&apos;s the path.
       </p>
 
       <ol className="mt-10 space-y-5">
@@ -66,7 +73,7 @@ export default function Start() {
         </p>
       </div>
 
-      <EmailCapture headline="Want the build order as a checklist?" sub="The exact sequence I use to take one move from idea to running loop — in your inbox." />
+      <EmailCapture headline="Need a fresh architecture brief?" sub="Run the local assessment again whenever the workflow changes. No email or account is required." />
     </div>
   )
 }
