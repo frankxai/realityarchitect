@@ -7,7 +7,7 @@
 export const site = {
   name: 'Reality Architect',
   domain: 'realityarchitect.ai',
-  url: 'https://realityarchitect.ai',
+  url: 'https://www.realityarchitect.ai',
   tagline: 'Find the system gap. Build the next artifact.',
   description:
     'An open five-move method, local system-gap assessment, and exportable architecture brief for building dependable AI workflows.',

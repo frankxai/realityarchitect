@@ -34,7 +34,7 @@ harness that exists and every harness that will exist.
 ## Anatomy of `reality.md`
 
 Eight sections. Each one is a *lever that actually moves outcomes* — and each maps to a move of the
-[Architect's Loop](https://realityarchitect.ai/method). Keep the whole file under ~150 lines: it's a contract, not a
+[Architect's Loop](https://www.realityarchitect.ai/method). Keep the whole file under ~150 lines: it's a contract, not a
 journal. (The journal lives in `.reality/`.)
 
 ```markdown
@@ -123,6 +123,6 @@ loop. That's the whole trick — and it's mechanism, not magic, which is why it 
 
 ---
 
-*Authored at [realityarchitect.ai](https://realityarchitect.ai). The method that fills the file is free —
-[start here](https://realityarchitect.ai/start). If your eight sections are mostly empty, that's not a problem,
+*Authored at [realityarchitect.ai](https://www.realityarchitect.ai). The method that fills the file is free —
+[start here](https://www.realityarchitect.ai/start). If your eight sections are mostly empty, that's not a problem,
 that's a map.*

@@ -22,10 +22,10 @@ https://github.com/frankxai/realityarchitect/tree/main/standard
 
 ## Key pages
 
-- The Method: https://realityarchitect.ai/method
-- The reality.md standard: https://realityarchitect.ai/standard
-- The Architect Assessment (find your gap): https://realityarchitect.ai/assess
-- Start Here: https://realityarchitect.ai/start
+- The Method: https://www.realityarchitect.ai/method
+- The reality.md standard: https://www.realityarchitect.ai/standard
+- The Architect Assessment (find your gap): https://www.realityarchitect.ai/assess
+- Start Here: https://www.realityarchitect.ai/start
 - Source + forkable templates: https://github.com/frankxai/realityarchitect
 
 ## Principles
