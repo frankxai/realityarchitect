@@ -67,8 +67,12 @@ test('public method stays inside the workflow boundary', () => {
 })
 
 test('public routes own canonical metadata and sitemap coverage', () => {
+  const canonicalOrigin = 'https://www.realityarchitect.ai'
   const layout = read('app/layout.tsx')
+  const site = read('lib/site.ts')
   assert.doesNotMatch(layout, /alternates:\s*\{\s*canonical:/)
+  assert.match(site, new RegExp(`url: ['"]${canonicalOrigin.replaceAll('.', '\\.') }['"]`))
+  assert.doesNotMatch(site, /url: ['"]https:\/\/realityarchitect\.ai['"]/)
   for (const route of ['', 'method', 'standard', 'assess', 'start', 'vault', 'privacy']) {
     const page = read(route ? `app/${route}/page.tsx` : 'app/page.tsx')
     const path = route ? `/${route}` : '/'
@@ -76,10 +80,28 @@ test('public routes own canonical metadata and sitemap coverage', () => {
     assert.match(page, new RegExp(`url: ['\"]${path.replace('/', '\\/')}['\"]`))
   }
   const sitemap = read('app/sitemap.ts')
+  const robots = read('app/robots.ts')
   assert.match(sitemap, /'\/standard'/)
   assert.match(sitemap, /'\/privacy'/)
+  assert.match(sitemap, /url: `\$\{site\.url\}\$\{path\}`/)
+  assert.match(robots, /sitemap: `\$\{site\.url\}\/sitemap\.xml`/)
   assert.match(read('lib/site.ts'), /label: 'Privacy', href: '\/privacy'/)
   assert.match(read('components/Footer.tsx'), /href="\/privacy"/)
+
+  const seoSources = [
+    'lib/site.ts',
+    'app/layout.tsx',
+    'app/page.tsx',
+    'app/method/page.tsx',
+    'app/standard/page.tsx',
+    'app/assess/page.tsx',
+    'app/start/page.tsx',
+    'app/vault/page.tsx',
+    'app/privacy/page.tsx',
+    'app/robots.ts',
+    'app/sitemap.ts',
+  ].map(read).join('\n')
+  assert.doesNotMatch(seoSources, /https:\/\/realityarchitect\.ai(?:\/|['"])/)
 })
 
 test('security headers prevent embedding and unsafe base or object content', () => {

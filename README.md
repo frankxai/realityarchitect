@@ -3,7 +3,7 @@
 **Find the system gap. Build the next artifact.**
 
 > Go from AI tool-user to system-builder. This repo is two things at once: the **website** at
-> [realityarchitect.ai](https://realityarchitect.ai), and the **open method** itself. Humans read the site.
+> [realityarchitect.ai](https://www.realityarchitect.ai), and the **open method** itself. Humans read the site.
 > Agents read the repo. Both walk the same five moves.
 
 ---
@@ -33,8 +33,8 @@ this month, and a brick the next move stacks on.
 | 04 | **Automate** | A supervised loop with a receipt | Repeated work has a visible review path |
 | 05 | **Compound** | A comparable outcome signal | The next run can be reviewed against the last |
 
-→ Full walkthrough: [realityarchitect.ai/method](https://realityarchitect.ai/method)
-→ Find your gap: [realityarchitect.ai/assess](https://realityarchitect.ai/assess)
+→ Full walkthrough: [realityarchitect.ai/method](https://www.realityarchitect.ai/method)
+→ Find your gap: [realityarchitect.ai/assess](https://www.realityarchitect.ai/assess)
 
 ---
 
@@ -49,13 +49,13 @@ building, plus a `~/.reality/` state directory agents maintain. Eight sections, 
 ~/.reality/       the state — agents maintain it, you review it
 ```
 
-→ Spec, blank template, and a filled example: [`standard/`](./standard) · Rendered: [realityarchitect.ai/standard](https://realityarchitect.ai/standard)
+→ Spec, blank template, and a filled example: [`standard/`](./standard) · Rendered: [realityarchitect.ai/standard](https://www.realityarchitect.ai/standard)
 
 ---
 
 ## Two ways to use this repo
 
-**As a human** — read [`/start`](https://realityarchitect.ai/start), run the assessment, then fork the templates in
+**As a human** — read [`/start`](https://www.realityarchitect.ai/start), run the assessment, then fork the templates in
 [`starter/`](./starter) for whichever move is your gap. Build the one system in front of you, not all five.
 
 The assessment runs locally and exports a Markdown architecture brief. It does not transmit or persist the optional context you enter.
