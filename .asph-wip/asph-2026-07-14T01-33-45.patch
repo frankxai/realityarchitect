@@ -1,0 +1,173 @@
+diff --git a/.asph-wip/asph-2026-07-07T23-43-33.patch b/.asph-wip/asph-2026-07-07T23-43-33.patch
+new file mode 100644
+index 0000000..77fe5de
+--- /dev/null
++++ b/.asph-wip/asph-2026-07-07T23-43-33.patch
+@@ -0,0 +1,167 @@
++diff --git a/.agent-harness.json b/.agent-harness.json
++new file mode 100644
++index 0000000..c185ffa
++--- /dev/null
+++++ b/.agent-harness.json
++@@ -0,0 +1,45 @@
+++﻿{
+++    "name":  "realityarchitect",
+++    "classification":  "production",
+++    "owner":  "FrankX AI",
+++    "updated":  "2026-06-19",
+++    "remote":  "https://github.com/frankxai/realityarchitect.git",
+++    "health":  {
+++                   "primaryCheck":  "npm run build",
+++                   "manualChecks":  [
+++                                        "Review AGENTS.md before edits",
+++                                        "Preserve user work and dirty files",
+++                                        "Scan public outputs for secrets and private memory"
+++                                    ]
+++               },
+++    "agentGuidance":  {
+++                          "readAgentsMd":  true,
+++                          "avoidPrivateMemory":  true,
+++                          "preserveExistingConventions":  true,
+++                          "designTasteKernel":  {
+++                                                    "enabled":  true,
+++                                                    "root":  "C:\\Users\\frank\\starlight\\repos",
+++                                                    "files":  [
+++                                                                  "C:\\Users\\frank\\starlight\\repos\\DESIGN_TASTE.md",
+++                                                                  "C:\\Users\\frank\\starlight\\repos\\WEB_EXPERIENCE_STANDARD.md",
+++                                                                  "C:\\Users\\frank\\starlight\\repos\\MOTION_TASTE_RUBRIC.md",
+++                                                                  "C:\\Users\\frank\\starlight\\repos\\MULTI_AGENT_DESIGN_COUNCIL.md",
+++                                                                  "C:\\Users\\frank\\starlight\\repos\\VISUAL_QA_GATE.md"
+++                                                              ],
+++                                                    "appliesTo":  [
+++                                                                      "site",
+++                                                                      "app",
+++                                                                      "landing-page",
+++                                                                      "dashboard",
+++                                                                      "visual-identity",
+++                                                                      "brand",
+++                                                                      "motion",
+++                                                                      "media",
+++                                                                      "social",
+++                                                                      "frontend"
+++                                                                  ],
+++                                                    "motionPlugin":  "motion-design-studio",
+++                                                    "visualVerificationRequired":  true
+++                                                }
+++                      }
+++}
++diff --git a/.worktrees/claude-email-capture b/.worktrees/claude-email-capture
++new file mode 160000
++index 0000000..7de842f
++--- /dev/null
+++++ b/.worktrees/claude-email-capture
++@@ -0,0 +1 @@
+++Subproject commit 7de842f65b411660fb8bd3758d08ec042fafc10e
++diff --git a/AGENTS.md b/AGENTS.md
++index 8fe7cef..9c8d345 100644
++--- a/AGENTS.md
+++++ b/AGENTS.md
++@@ -1,4 +1,4 @@
++-# AGENTS.md — navigation map for AI agents
+++﻿# AGENTS.md â€” navigation map for AI agents
++ 
++ You are an AI agent exploring the **Reality Architect** repo. This file orients you so you can help your human take
++ their next concrete step. Read it fully before acting.
++@@ -6,37 +6,37 @@ their next concrete step. Read it fully before acting.
++ ## What this repo is
++ 
++ Two things at once: the website at `realityarchitect.ai` (the `app/` directory) and the open method itself
++-(`starter/` + this file). The method teaches a human to go from **AI tool-user → system-builder** via five sequential
+++(`starter/` + this file). The method teaches a human to go from **AI tool-user â†’ system-builder** via five sequential
++ moves called **The Architect's Loop**.
++ 
++ ## The Loop (your mental model)
++ 
++-The moves are **ordered and dependent**. A human's gap is the *first* move they have not locked in — never recommend a
+++The moves are **ordered and dependent**. A human's gap is the *first* move they have not locked in â€” never recommend a
++ later move before an earlier one is in place.
++ 
++-1. **See** — an intelligence/memory layer agents can read. Without it, nothing else holds.
++-2. **Design** — a written spec separating thinking from doing.
++-3. **Build** — small, named, single-purpose agents/skills.
++-4. **Automate** — loops that run unattended.
++-5. **Compound** — a learning signal that makes the system improve itself.
+++1. **See** â€” an intelligence/memory layer agents can read. Without it, nothing else holds.
+++2. **Design** â€” a written spec separating thinking from doing.
+++3. **Build** â€” small, named, single-purpose agents/skills.
+++4. **Automate** â€” loops that run unattended.
+++5. **Compound** â€” a learning signal that makes the system improve itself.
++ 
++ ## How to help a human here
++ 
++-1. **Check for `~/reality.md` first.** If your human has one, read it and follow its agent protocol — it outranks
+++1. **Check for `~/reality.md` first.** If your human has one, read it and follow its agent protocol â€” it outranks
++    guesswork. If they don't, creating one is usually the best first artifact: see `standard/README.md` for the spec
++    and `standard/reality.template.md` for the file to scaffold.
++ 2. If they haven't self-diagnosed, point them to `/assess` (or ask the five questions in `app/assess/` `MOVES`).
++ 3. Identify the **first** move scored below "locked in." That is the gap.
++-4. Open the matching template in `starter/` and adapt it to their context — don't hand them all five.
+++4. Open the matching template in `starter/` and adapt it to their context â€” don't hand them all five.
++ 5. Keep the guardrail: every recommendation must cash out in a buildable artifact (a vault, a spec, an agent, a loop,
++    a signal). No motivation without a mechanism.
++ 
++ ## The reality.md standard
++ 
++-This repo authors the **reality.md standard** (`standard/`) — a person-level memory file, the way CLAUDE.md is
+++This repo authors the **reality.md standard** (`standard/`) â€” a person-level memory file, the way CLAUDE.md is
++ repo-level. `~/reality.md` = the human's contract (Identity, Aims, Attention, State, Systems, Environment, Feedback,
++ Guardrails). `~/.reality/` = agent-maintained state (aims/, log/, evidence.md, systems.md). Five protocol verbs:
++-**READ · SURFACE · PROPOSE · LOG · GUARD.** The human owns the file; you may propose edits, never apply them unasked;
+++**READ Â· SURFACE Â· PROPOSE Â· LOG Â· GUARD.** The human owns the file; you may propose edits, never apply them unasked;
++ you own `.reality/` appends. Never commit a reality.md to a public repo or send it anywhere without explicit consent.
++ 
++ ## Where things live
++@@ -53,6 +53,19 @@ you own `.reality/` appends. Never commit a reality.md to a public repo or send
++ ## Tone
++ 
++ Concrete, technical, understated. No spiritual or hype language. Lead with the result, show the artifact, let the work
++-speak. If you're tempted to write "manifest," "abundance," or "unlock your potential" — stop, and name the system instead.
+++speak. If you're tempted to write "manifest," "abundance," or "unlock your potential" â€” stop, and name the system instead.
++ 
++ Built on the Starlight Intelligence Protocol (SIP). When you extend this repo, attribute with a "Built on SIP" note.
+++
+++## Design Taste Kernel
+++
+++For any site, app, landing page, dashboard, visual identity, brand, motion, media, social, or frontend task, apply the shared Design Taste Kernel before handoff:
+++
+++- C:\Users\frank\starlight\repos\DESIGN_TASTE.md
+++- C:\Users\frank\starlight\repos\WEB_EXPERIENCE_STANDARD.md
+++- C:\Users\frank\starlight\repos\MOTION_TASTE_RUBRIC.md
+++- C:\Users\frank\starlight\repos\MULTI_AGENT_DESIGN_COUNCIL.md
+++- C:\Users\frank\starlight\repos\VISUAL_QA_GATE.md
+++
+++When motion, scroll, generated media, GIF/video, or premium polish matters, route through the Motion Design Studio plugin/skills and verify the result visually.
+++
++diff --git a/public/architect-loop-poster.svg b/public/architect-loop-poster.svg
++new file mode 100644
++index 0000000..ec0f30b
++--- /dev/null
+++++ b/public/architect-loop-poster.svg
++@@ -0,0 +1,23 @@
+++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+++  <title id="title">Reality Architect loop poster</title>
+++  <desc id="desc">A blueprint poster showing the five-step Architect Loop.</desc>
+++  <rect width="1200" height="760" fill="#06070c"/>
+++  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#5b8cff" stroke-opacity=".08"/></pattern>
+++  <rect width="1200" height="760" fill="url(#grid)"/>
+++  <circle cx="600" cy="380" r="220" fill="#5b8cff" opacity=".08"/>
+++  <circle cx="600" cy="380" r="250" fill="none" stroke="#5b8cff" stroke-opacity=".35" stroke-width="3"/>
+++  <g font-family="Inter, Arial" fill="#e8eaf2" font-weight="700">
+++    <text x="150" y="140" fill="#969cb2" font-size="18" letter-spacing="5">ARCHITECT LOOP</text>
+++    <text x="150" y="184" font-size="38">See · Design · Build · Automate · Compound</text>
+++    <circle cx="600" cy="130" r="52" fill="#0d0f18" stroke="#5b8cff"/>
+++    <circle cx="838" cy="303" r="52" fill="#0d0f18" stroke="#a78bfa"/>
+++    <circle cx="747" cy="583" r="52" fill="#0d0f18" stroke="#5b8cff"/>
+++    <circle cx="453" cy="583" r="52" fill="#0d0f18" stroke="#a78bfa"/>
+++    <circle cx="362" cy="303" r="52" fill="#0d0f18" stroke="#5b8cff"/>
+++    <text x="580" y="138" font-size="18">SEE</text>
+++    <text x="807" y="311" font-size="18">DESIGN</text>
+++    <text x="721" y="591" font-size="18">BUILD</text>
+++    <text x="410" y="591" font-size="18">AUTO</text>
+++    <text x="318" y="311" font-size="18">COMPOUND</text>
+++  </g>
+++</svg>
