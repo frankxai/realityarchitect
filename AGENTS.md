@@ -68,3 +68,26 @@ Before public UI work, read `DESIGN.md`, `TASTE.md`, `SYSTEM.md`, `SKILL.md`, `d
 - Do not advertise a paid product until delivery, price, license, and refund terms are real.
 - Motion needs a named job and reduced-motion route.
 - Production and domain changes remain human-gated.
+
+## Working in this repo — branch & PR protocol
+
+This is a **live public site** (realityarchitect.ai) worked by multiple harnesses in parallel. Git is the
+coordination layer.
+
+- **Never push directly to `main`.** Every change ships on a branch named `agent/<harness>/<short-scope>`
+  (e.g. `agent/claude/waitlist-audit`), opened as a **draft PR** (`gh pr create --draft`). Mark it ready
+  (`gh pr ready`) only once it's complete — that's what should fire the full CI run.
+- **Before starting**, check `git branch --show-current` and `git status` so you don't collide with another
+  agent's in-flight work in this tree, and `gh pr list` for open work already in flight.
+- **Batch commits** rather than pushing per-tiny-change.
+- **`[skip ci]`** in the commit subject for docs-only / `.md`-only changes.
+- **Verify locally before pushing:**
+  ```bash
+  pnpm install
+  pnpm lint
+  pnpm build
+  ```
+  `pnpm dev` for local preview. There is no test script yet; add one if the repo grows a test suite.
+- CI (`.github/workflows/ci.yml`) is being added via a separate draft PR — once merged, treat it as the gate.
+- **Never commit `.reality.md`, `.env*`, or any secret.** Production and domain changes remain human-gated (see
+  above).
