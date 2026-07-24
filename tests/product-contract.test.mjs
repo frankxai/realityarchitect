@@ -50,8 +50,18 @@ test('completed loop produces a review artifact instead of rebuilding Compound',
   assert.match(assessment, /gapIndex === -1 \? FULL_LOOP_REVIEW : gap/)
 })
 
-test('no fake email capture ships', () => {
-  assert.doesNotMatch(read('components/EmailCapture.tsx'), /type="email"/)
+test('signup success is impossible without provider acceptance', () => {
+  const capture = read('components/EmailCapture.tsx')
+
+  // Until a provider-backed route exists, this surface is deliberately a pair
+  // of honest product links—not a form that can manufacture a success state.
+  assert.doesNotMatch(capture, /<form\b/)
+  assert.doesNotMatch(capture, /type="email"/)
+  assert.doesNotMatch(capture, /\bfetch\s*\(/)
+  assert.doesNotMatch(capture, /\/api\/(?:subscribe|waitlist)/)
+  assert.doesNotMatch(capture, /(?:you're in|check your inbox|subscribed|signup (?:complete|successful))/i)
+  assert.match(capture, /href="\/assess"/)
+  assert.match(capture, /No account or email required\./)
 })
 
 test('paid offers disclose readiness boundaries', () => {
