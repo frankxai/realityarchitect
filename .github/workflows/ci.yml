@@ -20,19 +20,28 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
+      CI: "true"
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
-      - name: Check out repository
+      - name: Check out exact commit
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
 
-      - name: Install pnpm from packageManager
-        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.0
+      - name: Assert exact commit
+        run: test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha || github.sha }}"
 
       - name: Set up Node.js
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.0.0
         with:
           node-version: 24
-          cache: pnpm
+
+      - name: Enable declared package manager
+        run: |
+          corepack enable pnpm
+          test "$(pnpm --version)" = "11.5.0"
 
       - name: Install frozen dependencies
         run: pnpm install --frozen-lockfile
