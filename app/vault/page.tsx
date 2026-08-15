@@ -31,7 +31,7 @@ const offers = [
     label: 'System Gap Assessment Pack',
     status: 'Planned · not open for purchase',
     description: 'A digital-product layer may add scored fixtures, workshop files, and implementation checklists. Price and checkout stay unpublished until delivery, license, support, and refund terms are complete.',
-    action: <span className="text-muted">No checkout or waitlist is active.</span>,
+    action: <span className="text-muted">Not yet available.</span>,
   },
   {
     label: 'Guided Architecture Review',
