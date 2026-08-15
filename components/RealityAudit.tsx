@@ -27,7 +27,7 @@ function StepHeader({ step, label }: { step: number; label: string }) {
 }
 
 const inputClass =
-  'mt-3 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink outline-none focus:border-accent'
+  'mt-3 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent focus:border-accent'
 
 function TextStep({
   step,
@@ -172,7 +172,7 @@ export function RealityAudit() {
   }
 
   return (
-    <div ref={stepRef} tabIndex={-1} className="outline-none">
+    <div ref={stepRef} tabIndex={-1} className="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
       {step === 0 && (
         <div className="blueprint-resolve">
           <StepHeader step={1} label="Identity" />
