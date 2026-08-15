@@ -23,6 +23,7 @@ export const site = {
     { label: 'The Method', href: '/method' },
     { label: 'reality.md', href: '/standard' },
     { label: 'Assess', href: '/assess' },
+    { label: 'Apply', href: '/apply' },
     { label: 'Start', href: '/start' },
     { label: 'Vault', href: '/vault' },
     { label: 'Privacy', href: '/privacy' },

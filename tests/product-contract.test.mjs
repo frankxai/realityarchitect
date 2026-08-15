@@ -82,7 +82,7 @@ test('public routes own canonical metadata and sitemap coverage', () => {
   assert.doesNotMatch(layout, /alternates:\s*\{\s*canonical:/)
   assert.match(site, /url: ['"]https:\/\/www\.realityarchitect\.ai['"]/)
   assert.doesNotMatch(site, /url: ['"]https:\/\/realityarchitect\.ai['"]/)
-  for (const route of ['', 'method', 'standard', 'assess', 'start', 'vault', 'privacy']) {
+  for (const route of ['', 'method', 'standard', 'assess', 'apply', 'start', 'vault', 'privacy']) {
     const page = read(route ? `app/${route}/page.tsx` : 'app/page.tsx')
     const path = route ? `/${route}` : '/'
     assert.match(page, new RegExp(`canonical: ['\"]${path.replace('/', '\\/')}['\"]`))
@@ -104,6 +104,7 @@ test('public routes own canonical metadata and sitemap coverage', () => {
     'app/method/page.tsx',
     'app/standard/page.tsx',
     'app/assess/page.tsx',
+    'app/apply/page.tsx',
     'app/start/page.tsx',
     'app/vault/page.tsx',
     'app/privacy/page.tsx',
