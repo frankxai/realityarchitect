@@ -24,7 +24,7 @@ const offers = [
   {
     label: 'reality.md Audit',
     status: 'Open · Vault waitlist',
-    description: 'A ten-question application that drafts your reality.md v0.1 and computes one true divergence between the priority you name and the hours you actually log. Completing it applies you to the Vault waitlist — Frank reviews applications by hand; there is no automatic acceptance or live checkout yet.',
+    description: 'A ten-question application that drafts your reality.md v0.1 and computes one true divergence between the priority you name and the hours you actually log. Completing the audit lets you download your draft; joining the Vault waitlist is optional and happens after — Frank reviews applications by hand; there is no automatic acceptance or live checkout yet.',
     action: <Link href="/apply" className="text-accent underline underline-offset-4">Take the audit</Link>,
   },
   {
