@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "1.0",
+  "updatedAt": "2026-08-10",
+  "repository": {
+    "owner": "frankxai",
+    "name": "realityarchitect",
+    "visibility": "public",
+    "role": "open-method-public-site",
+    "publicDomain": "www.realityarchitect.ai",
+    "privateVaultRepository": "realityarchitect-vault"
+  },
+  "production": {
+    "vercelProject": "realityarchitect",
+    "projectId": "prj_MHRvWhrLVzB4zmJbF2WaLiXme4xh",
+    "latestObservedDeployment": "dpl_ADoNzETbG3izc9fQjkg4Ti9bcw4h",
+    "latestObservedCommit": "395cf4ada0138294bf177ae49dc97c87fa16d5a0",
+    "deploymentState": "READY",
+    "publicHome": "200-canonical-www-observed",
+    "apexRedirect": "308-permanent-to-www-observed",
+    "assessment": "200-observed",
+    "publicChangelog": "404-observed",
+    "sitemap": "200-observed",
+    "robots": "200-observed",
+    "observedAt": "2026-08-10T04:36:07Z"
+  },
+  "releasePolicy": {
+    "githubReleaseMode": "draft-only",
+    "versioning": "annotated-semantic-tags-only",
+    "cadence": "meaningful-change-only",
+    "portfolioDiscovery": "central-only",
+    "publicChangelog": "separate-visual-gated-site-lane",
+    "assessmentData": "local-only-not-transmitted-or-persisted",
+    "commercialClaims": "evidence-required",
+    "productionPromotion": "human-gated"
+  },
+  "audit": {
+    "recordedAt": "2026-08-10",
+    "excludedOpenPullRequests": [1, 4, 11, 12],
+    "reason": "Open draft pull requests are not merged product history and cannot be included in a release candidate."
+  },
+  "releases": [
+    {
+      "version": "0.1.0",
+      "status": "draft-candidate",
+      "mergedThrough": "2026-07-30",
+      "recordedAt": "2026-08-10",
+      "title": "The open method and assessment-to-artifact system",
+      "summary": "Established Reality Architect as an open five-move method, a local system-gap assessment, an exportable architecture brief, and a production public site with explicit privacy, evidence, canonical-host, and quality-gate contracts.",
+      "category": "initial-product-foundation",
+      "audience": "ai-tool-users-and-system-builders",
+      "highlights": [
+        "Introduced the See, Design, Build, Automate, and Compound loop together with the open reality.md standard and forkable starter artifacts.",
+        "Turned the local five-move assessment into an exportable Markdown architecture brief with the first unmet dependency, next artifact, acceptance test, guardrail, and seven-day build order.",
+        "Added a proof-led Loop map, typography and interaction polish, technical-blueprint illustrations, canonical metadata, stable sitemap and robots output, security headers, accessibility, and reduced-motion behavior.",
+        "Removed unsupported superlatives, fake capture success, unverified Vault scarcity/pricing, and unattended-operation claims while separating the public method from the private paid Vault.",
+        "Installed the web-excellence gate and an exact-head full CI contract using the declared Node 24 and pnpm 11.5.0 toolchain."
+      ],
+      "sourceCommitRange": {
+        "rootInclusive": "14d1178a3e05530d3d107b782176c3d6445f21e5",
+        "headInclusive": "395cf4ada0138294bf177ae49dc97c87fa16d5a0",
+        "commitCount": 18
+      },
+      "sourcePullRequests": [
+        {
+          "number": 3,
+          "mergeCommit": "89f7b552689705286ccc33b99d5359d557c5495d",
+          "mergedAt": "2026-07-05",
+          "title": "Add the proof-led Architect Loop hero"
+        },
+        {
+          "number": 6,
+          "mergeCommit": "c226fb3e0e698b2be395f3903681fa82f8cc0cbb",
+          "mergedAt": "2026-07-11",
+          "title": "Turn the assessment into an exportable architecture artifact"
+        },
+        {
+          "number": 7,
+          "mergeCommit": "0cfe6bff37ff55d5a98a60245913a8826cf0dfff",
+          "mergedAt": "2026-07-11",
+          "title": "Align canonical URLs with the production www host"
+        },
+        {
+          "number": 14,
+          "mergeCommit": "c0dfed9398e4a0c37380081edd70eaa3f4ddb102",
+          "mergedAt": "2026-07-24",
+          "title": "Lock truthful provider-gated capture behavior"
+        },
+        {
+          "number": 15,
+          "mergeCommit": "49e86d9526f01e173ff2956116484cfeb8eb0b31",
+          "mergedAt": "2026-07-27",
+          "title": "Install the web-excellence gate"
+        },
+        {
+          "number": 16,
+          "mergeCommit": "395cf4ada0138294bf177ae49dc97c87fa16d5a0",
+          "mergedAt": "2026-07-30",
+          "title": "Add the exact-head full quality gate"
+        }
+      ],
+      "limitations": [
+        "This is a reviewed release candidate record, not a tag or published GitHub release; status must change to ready in a reviewed main-branch commit before tagging.",
+        "The public site still returns 404 for /changelog. A customer-facing history requires a separate premium visual, accessibility, performance, and exact-head preview lane.",
+        "The open public method does not expose private Vault content, transmit or persist assessment context, promise unattended outcomes, or prove any paid offer, provider, pricing, scarcity, or enrollment state.",
+        "Open draft PRs #1, #4, #11, and #12 are excluded from this dated history until they merge through current review and evidence gates."
+      ]
+    }
+  ]
+}
