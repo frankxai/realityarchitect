@@ -1,0 +1,40 @@
+changelog:
+  exclude:
+    labels:
+      - skip-changelog
+      - no-user-impact
+  categories:
+    - title: Method, assessment, and artifacts
+      labels:
+        - feature
+        - method
+        - assessment
+        - standard
+        - artifact
+    - title: Trust, privacy, and safety
+      labels:
+        - security
+        - privacy
+        - trust
+        - governance
+        - reliability
+    - title: Experience and discovery
+      labels:
+        - design
+        - accessibility
+        - performance
+        - seo
+        - mobile
+    - title: Platform and release engineering
+      labels:
+        - ci
+        - tooling
+        - infrastructure
+        - release
+    - title: Documentation and evidence
+      labels:
+        - documentation
+        - evidence
+    - title: Other meaningful changes
+      labels:
+        - "*"

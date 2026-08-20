@@ -1,0 +1,90 @@
+name: Draft GitHub release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: realityarchitect-draft-release-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  draft-release:
+    name: Validate tag and create draft
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out full history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+
+      - name: Validate release ledger
+        run: node .github/scripts/validate-release-ledger.mjs
+
+      - name: Require annotated semantic-version tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Expected an annotated tag such as v0.1.0; received $tag" >&2
+            exit 1
+          fi
+          if [[ "$(git cat-file -t "$tag")" != "tag" ]]; then
+            echo "$tag must be an annotated tag." >&2
+            exit 1
+          fi
+
+      - name: Require reviewed main commit and ready ledger entry
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin main --no-tags
+          commit="$(git rev-list -n 1 "$GITHUB_REF_NAME")"
+          if ! git merge-base --is-ancestor "$commit" origin/main; then
+            echo "$GITHUB_REF_NAME does not point to a commit reachable from origin/main." >&2
+            exit 1
+          fi
+          export VERSION="${GITHUB_REF_NAME#v}"
+          export RELEASE_COMMIT="$commit"
+          node --input-type=module - <<'NODE'
+          import { execFileSync } from "node:child_process";
+          import { readFile } from "node:fs/promises";
+
+          const ledger = JSON.parse(await readFile("docs/releases/release-ledger.json", "utf8"));
+          const release = ledger.releases.find((entry) => entry.version === process.env.VERSION);
+          if (!release) throw new Error(`No ledger entry exists for ${process.env.VERSION}.`);
+          if (release.status !== "ready") {
+            throw new Error(`${process.env.VERSION} must have status ready before tagging; received ${release.status}.`);
+          }
+          try {
+            execFileSync(
+              "git",
+              ["merge-base", "--is-ancestor", release.sourceCommitRange?.headInclusive, process.env.RELEASE_COMMIT],
+              { stdio: "ignore" },
+            );
+          } catch {
+            throw new Error("The annotated tag must contain the audited product head in the ledger.");
+          }
+          NODE
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release create "$GITHUB_REF_NAME" \
+            --draft \
+            --generate-notes \
+            --title "Reality Architect ${GITHUB_REF_NAME}"
