@@ -58,6 +58,33 @@ updated: YYYY-MM-DD
 
 Blank template: [`reality.template.md`](./reality.template.md) · Filled example: [`reality.example.md`](./reality.example.md)
 
+## Check it, don't take my word for it
+
+A standard nobody can check is a blog post with a version number. This one ships a validator — zero
+dependencies, no network, node 18+:
+
+```bash
+node bin/reality-md.mjs validate ~/reality.md      # four conformance levels, coded findings
+node bin/reality-md.mjs brief    ~/reality.md      # the next artifact that closes your gap
+node bin/reality-md.mjs emit     ~/reality.md --target claude
+node bin/reality-md.mjs migrate  ./old-notes.md    # a pre-standard file, rewritten as v0.1
+node --test "test/*.test.mjs"                      # 32 acceptance tests
+```
+
+| Level | Name | The claim it earns you |
+|-------|------|------------------------|
+| 1 | Parseable | A machine can read the file and know it is a reality.md. |
+| 2 | Structural | Every canonical section is present. Empty is allowed; absent is not. |
+| 3 | Operative | An agent can act: an identity, an aim with a done-when, a guardrail, a review. |
+| 4 | Portable | Every claim is evaluable and the packet survives a round trip through another harness. |
+
+Full rules and every finding code: [`CONFORMANCE.md`](./CONFORMANCE.md) · Compatibility promises:
+[`VERSIONING.md`](./VERSIONING.md) · Machine schema: [`spec/reality.packet.schema.json`](./spec/reality.packet.schema.json)
+· Types for downstream tools: [`src/index.d.mts`](./src/index.d.mts).
+
+The same modules run in the browser — [realityarchitect.ai/assess](https://realityarchitect.ai/assess) parses,
+scores, emits and re-checks entirely in your tab, and posts nothing.
+
 ## Anatomy of `.reality/`
 
 The state directory. Agents write here; you review it. Append-mostly — history is the point.
@@ -120,6 +147,11 @@ loop. That's the whole trick — and it's mechanism, not magic, which is why it 
    service without explicit consent.
 7. **License:** this spec is MIT. Extend it, fork it, build tools on it. The name `reality.md` stays generic —
    that's how standards survive their authors.
+8. **Conformance:** four levels, defined in [`CONFORMANCE.md`](./CONFORMANCE.md) and decided by
+   `bin/reality-md.mjs`, not by interpretation. Level 2 is the bar for calling a file conformant; level 3 for
+   letting an agent act on it unsupervised.
+9. **Versioning:** minor versions are additive and never invalidate a conformant file; major versions ship an
+   executable migration. See [`VERSIONING.md`](./VERSIONING.md).
 
 ---
 

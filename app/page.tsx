@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { site } from '@/lib/site'
-import { EmailCapture } from '@/components/EmailCapture'
+import { WaitlistForm } from '@/components/WaitlistForm'
 
 const LOOP = [
   { n: '01', move: 'See', d: 'Build an intelligence layer — a second brain your agents can read. You can\'t automate what you can\'t recall.' },
@@ -109,7 +109,11 @@ export default function Home() {
         </div>
       </section>
 
-      <EmailCapture headline="Get the architect's playbook" sub="One signal a week: a system worth building, a loop worth stealing, a template worth forking. No noise." />
+      <WaitlistForm
+        productId="realityarchitect-vault"
+        headline="Want the filled version of all this?"
+        sub="Everything on this site is free and stays free. The Vault — filled contracts, loops with their real numbers — is at concept stage and has no price. Joining the list is how it gets one."
+      />
     </>
   )
 }

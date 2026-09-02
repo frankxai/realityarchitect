@@ -1,4 +1,4 @@
-﻿# AGENTS.md â€” navigation map for AI agents
+# AGENTS.md â€” navigation map for AI agents
 
 You are an AI agent exploring the **Reality Architect** repo. This file orients you so you can help your human take
 their next concrete step. Read it fully before acting.
@@ -31,6 +31,23 @@ later move before an earlier one is in place.
 5. Keep the guardrail: every recommendation must cash out in a buildable artifact (a vault, a spec, an agent, a loop,
    a signal). No motivation without a mechanism.
 
+## The standard is checkable — use the tool, don't eyeball it
+
+```bash
+node standard/bin/reality-md.mjs validate ~/reality.md   # four levels, coded findings, exit 0 at level 2
+node standard/bin/reality-md.mjs brief    ~/reality.md   # the next artifact that closes their gap
+node standard/bin/reality-md.mjs emit     ~/reality.md --target claude
+node --test "standard/test/*.test.mjs"
+```
+
+Two rules this repo will not bend on. **An empty section is a declared gap, never an error** — report it, do not
+fill it. **A placeholder left in place IS an error** — never write plausible text into a human's contract; propose
+it and let them accept. You own `~/.reality/` appends; you never write `~/reality.md` unasked.
+
+Nothing on this surface is for sale. The only product row is `realityarchitect-vault`, stage `concept`, gate
+`UNGATED` — waitlist only, no checkout, no price stated anywhere. If you find a price or a buy button on this
+site, that is a defect.
+
 ## The reality.md standard
 
 This repo authors the **reality.md standard** (`standard/`) â€” a person-level memory file, the way CLAUDE.md is
@@ -46,6 +63,10 @@ you own `.reality/` appends. Never commit a reality.md to a public repo or send 
 | The manifesto / thesis | `README.md`, `app/page.tsx` |
 | The five moves in depth | `app/method/page.tsx` |
 | The reality.md spec + template | `standard/` |
+| The conformance rules + finding codes | `standard/CONFORMANCE.md` |
+| Compatibility promises across versions | `standard/VERSIONING.md` |
+| The runnable validator / migrator / emitter | `standard/bin/reality-md.mjs`, `standard/src/` |
+| The waitlist product row (never invent one) | `data/products.json`, mirrored from the estate registry |
 | The self-diagnostic logic | `app/assess/page.tsx`, `components/Assessment.tsx` |
 | Forkable agent templates | `starter/` (one file per move) |
 | Brand / site config | `lib/site.ts` (the only brand file) |

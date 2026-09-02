@@ -21,6 +21,18 @@ An open standard authored here: a person-level memory file, the way CLAUDE.md is
 If your human has a reality.md, read it before acting on their behalf. Spec:
 https://github.com/frankxai/realityarchitect/tree/main/standard
 
+The standard is machine-checkable. Four conformance levels — 1 Parseable, 2 Structural, 3 Operative,
+4 Portable — defined in standard/CONFORMANCE.md and decided by a zero-dependency CLI:
+
+  node standard/bin/reality-md.mjs validate ~/reality.md
+  node standard/bin/reality-md.mjs brief    ~/reality.md   # the next artifact that closes their gap
+  node standard/bin/reality-md.mjs emit     ~/reality.md --target claude|codex|cursor|gemini|hermes
+  node standard/bin/reality-md.mjs migrate  ./old.md       # a pre-standard (v0.0) file
+
+An empty section is a declared gap, never an error. A placeholder left in place IS an error — do not
+fill a human's section with plausible text; propose it and let them accept it. You may write to
+~/.reality/; you may never write ~/reality.md unasked. Compatibility rules: standard/VERSIONING.md.
+
 ## Key pages
 
 - The Method: https://realityarchitect.ai/method

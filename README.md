@@ -53,6 +53,26 @@ building, plus a `~/.reality/` state directory agents maintain. Eight sections, 
 
 → Spec, blank template, and a filled example: [`standard/`](./standard) · Rendered: [realityarchitect.ai/standard](https://realityarchitect.ai/standard)
 
+And it is **checkable**, which is the part most "standards" skip. Four conformance levels, a zero-dependency
+validator, executable migrations, and one packet that projects into every harness:
+
+```bash
+node standard/bin/reality-md.mjs validate ~/reality.md
+node standard/bin/reality-md.mjs emit ~/reality.md --target claude   # or codex, cursor, gemini, hermes
+pnpm test                                                            # 35 acceptance tests, no deps
+```
+
+| Level | Name | The claim it earns you |
+|---|---|---|
+| 1 | Parseable | A machine can read the file and know it is a reality.md. |
+| 2 | Structural | Every canonical section is present. Empty is allowed; absent is not. |
+| 3 | Operative | An agent can act: an identity, an aim with a done-when, a guardrail, a review. |
+| 4 | Portable | Every claim is evaluable and the packet survives a round trip through another harness. |
+
+Rules: [`CONFORMANCE.md`](./standard/CONFORMANCE.md) · Compatibility: [`VERSIONING.md`](./standard/VERSIONING.md) ·
+Schema: [`spec/`](./standard/spec) · The same engine runs in your browser at
+[/assess](https://realityarchitect.ai/assess), which posts nothing.
+
 ---
 
 ## Two ways to use this repo
@@ -74,8 +94,12 @@ app/            the website (Next.js 16, App Router) — realityarchitect.ai
   standard/       the reality.md standard, rendered
   assess/         the Architect Assessment (find your gap)
   start/          the getting-started path
-standard/       the reality.md spec v0.1 + template + filled example
+standard/       the reality.md standard v0.1 — spec, schema, validator CLI, fixtures, tests
+  spec/           JSON Schema for the packet
+  src/            parser, graph, conformance, migrations, emitters (zero deps, browser-safe)
+  bin/            reality-md — validate | brief | emit | migrate | graph
 starter/        forkable, harness-agnostic agent templates — one per move
+data/           product rows mirrored from the estate registry (waitlist config, never a price)
 lib/site.ts     the single brand-config file
 AGENTS.md       navigation map for AI agents exploring this repo
 ```

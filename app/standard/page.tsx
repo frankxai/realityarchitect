@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { site } from '@/lib/site'
-import { EmailCapture } from '@/components/EmailCapture'
+import { WaitlistForm } from '@/components/WaitlistForm'
 
 export const metadata: Metadata = {
   title: 'The reality.md Standard',
@@ -27,6 +27,25 @@ const VERBS = [
   { v: 'LOG', d: 'Append outcomes to .reality/ — wins, reviews, never silently.' },
   { v: 'GUARD', d: 'Refuse anything that violates the Guardrails.' },
 ]
+
+const LEVELS = [
+  { n: 1, name: 'Parseable', claim: 'A machine can read the file and know it is a reality.md.' },
+  { n: 2, name: 'Structural', claim: 'Every canonical section is present. Empty is allowed; absent is not.' },
+  { n: 3, name: 'Operative', claim: 'An agent can act: an identity, an aim with a done-when, a guardrail, a review.' },
+  { n: 4, name: 'Portable', claim: 'Every claim is evaluable and the packet survives another harness.' },
+]
+
+const CLI = `$ reality-md validate ~/reality.md
+
+  PASS  L1 Parseable   A machine can read the file and know it is a reality.md.
+  PASS  L2 Structural  Every canonical section is present.
+  PASS  L3 Operative   An agent can act without asking you who you are.
+  FAIL  L4 Portable    Every claim is evaluable and the packet survives a round trip.
+
+  Level 3 (Operative) · 27 nodes, 36 edges, 2 aims
+  Loop moves without evidence: Compound
+
+  error AIM_NO_DEADLINE  Aim "Team runbook written once" has no "by YYYY-MM-DD".`
 
 export default function Standard() {
   return (
@@ -84,6 +103,43 @@ export default function Standard() {
         ))}
       </ol>
 
+      <h2 className="mt-16 text-2xl font-bold text-ink">Four conformance levels, checked by a command</h2>
+      <p className="mt-3 max-w-2xl text-muted">
+        A standard nobody can check is a blog post with a version number. This one ships a validator: zero
+        dependencies, no network, and the same rules whether it runs in your terminal or in{' '}
+        <Link href="/assess" className="text-accent hover:underline">
+          the assessment
+        </Link>{' '}
+        in this tab.
+      </p>
+      <div className="mt-8 overflow-x-auto">
+        <table className="w-full min-w-[36rem] border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-border text-left text-xs uppercase tracking-wider text-muted">
+              <th className="py-2 pr-4 font-semibold">Level</th>
+              <th className="py-2 pr-4 font-semibold">Name</th>
+              <th className="py-2 font-semibold">The claim it earns you</th>
+            </tr>
+          </thead>
+          <tbody>
+            {LEVELS.map((l) => (
+              <tr key={l.n} className="border-b border-border/60">
+                <td className="py-3 pr-4 font-mono text-accent">{l.n}</td>
+                <td className="py-3 pr-4 font-semibold text-ink">{l.name}</td>
+                <td className="py-3 text-muted">{l.claim}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="mt-6 overflow-x-auto rounded-2xl border border-border glass p-6">
+        <pre className="font-mono text-xs leading-relaxed text-ink/90">{CLI}</pre>
+      </div>
+      <p className="mt-4 max-w-2xl text-sm text-muted">
+        An empty section is never an error — it is a declared gap, reported as one. A tool that punished you for an
+        honest blank would teach you to fill it with nothing.
+      </p>
+
       <div className="mt-16 rounded-2xl border border-accent/30 blueprint glass p-7">
         <h2 className="text-xl font-bold text-ink">Adopt it in two minutes</h2>
         <ol className="mt-4 space-y-3 text-sm text-muted">
@@ -104,7 +160,11 @@ export default function Standard() {
         and it&apos;s free too.
       </p>
 
-      <EmailCapture headline="Get the reality.md field guide" sub="The full walkthrough for filling all eight sections — with the agent prompts that maintain it for you." />
+      <WaitlistForm
+        productId="realityarchitect-vault"
+        headline="A dozen filled contracts, not one blank template"
+        sub="The spec, the template and the conformance tooling are here and free. What does not exist yet is the collection of real, filled reality.md files with the reasoning behind each section. Say you want it and it moves up the list."
+      />
     </div>
   )
 }

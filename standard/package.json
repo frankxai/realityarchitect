@@ -1,0 +1,21 @@
+{
+  "name": "@realityarchitect/reality-md",
+  "version": "0.1.0",
+  "description": "The reality.md standard v0.1 — parser, graph, conformance validator, migrations, and harness emitters. Zero dependencies.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.mjs",
+  "types": "./src/index.d.mts",
+  "exports": {
+    ".": { "types": "./src/index.d.mts", "default": "./src/index.mjs" },
+    "./schema": "./spec/reality.packet.schema.json"
+  },
+  "bin": { "reality-md": "./bin/reality-md.mjs" },
+  "files": ["src", "bin", "spec", "fixtures", "CONFORMANCE.md", "VERSIONING.md", "README.md"],
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\"",
+    "validate": "node ./bin/reality-md.mjs validate"
+  },
+  "engines": { "node": ">=18" },
+  "keywords": ["reality.md", "agent-context", "personal-context", "standard", "conformance"]
+}

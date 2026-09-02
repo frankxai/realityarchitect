@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { site } from '@/lib/site'
-import { EmailCapture } from '@/components/EmailCapture'
+import { WaitlistForm } from '@/components/WaitlistForm'
 
 export const metadata: Metadata = {
   title: 'Start Here',
@@ -66,7 +66,11 @@ export default function Start() {
         </p>
       </div>
 
-      <EmailCapture headline="Want the build order as a checklist?" sub="The exact sequence I use to take one move from idea to running loop — in your inbox." />
+      <WaitlistForm
+        productId="realityarchitect-vault"
+        headline="When the built version exists"
+        sub="This path is the whole method and it is free. The Vault is the worked version of it — not built yet, no price yet, and this is the list that decides both."
+      />
     </div>
   )
 }

@@ -25,38 +25,23 @@ export const site = {
     { label: 'Start', href: '/start' },
     { label: 'Vault', href: '/vault' },
   ],
-  // The premium layer — open-core. The method is free; the tuned, private systems are paid.
-  // Edit prices/tiers here; the /vault page is fully data-driven from this block.
+  // The premium layer. Concept stage, ungated, no checkout — the product row lives in
+  // data/products.json, mirrored from the estate registry. Nothing here may state a price:
+  // the price hypothesis is what the waitlist question is for, and the answer is not in yet.
   vault: {
-    headline: 'The method is free. The systems aren’t.',
+    productId: 'realityarchitect-vault',
+    headline: 'The method is free. It stays free.',
     sub:
-      'The free starter gives you the map and the templates. The Vault is where the tuned, production systems live — the prompts that actually convert, the income loops with real numbers, and the room where your build gets reviewed. Private for a reason.',
-    // Why some things stay private — the honest mechanism, not mystique.
-    whyPrivate: [
-      { t: 'Edge-decay', d: 'The configs that make money get arbitraged away the moment they’re public. They’re worth more because they’re not.' },
-      { t: 'Real numbers', d: 'Actual revenue, analytics, and client teardowns can’t live on a public site. Inside, you see the receipts.' },
-      { t: 'Access that can’t scale free', d: 'My eyes on your build, the cohort, first access to new loops. It costs because it’s time, not files.' },
+      'The Vault is the other half — filled contracts rather than a blank template, the loops with their real numbers attached, and the wiring for the learning layer that the free method only describes. It is not built, there is nothing to buy, and this page will say so until that changes.',
+    // What is actually in scope, written as things that can exist or not exist.
+    contents: [
+      { t: 'Filled contracts', d: 'A dozen real reality.md files from people running different kinds of work, with the reasoning behind each section.' },
+      { t: 'Loops with their numbers', d: 'The automations, with what they cost to run and what they actually returned. Not a case study — the config and the ledger.' },
+      { t: 'The Compound wiring', d: 'The part the free method describes and does not hand you: the feedback layer, built, with its failure modes.' },
     ],
-    tiers: [
-      {
-        name: 'Starter Pack', price: '€49', cadence: 'one-time', highlight: false,
-        for: 'You’ve run the assessment and want to build faster.',
-        includes: ['Every starter template, tuned (not sanitized)', 'The build-order checklists for all five moves', 'The prompt library behind each agent'],
-        cta: 'Get the pack',
-      },
-      {
-        name: 'The Vault', price: '€497', cadence: 'one-time', highlight: true,
-        for: 'You want the systems that actually run my income and content.',
-        includes: ['Private repo: the full production system library', 'Real-numbers teardowns of live loops', 'The learning-layer wiring (Compound, done for real)', 'Cohort + a review of your own build'],
-        cta: 'Get the Vault',
-      },
-      {
-        name: 'Inner Room', price: '€2,997', cadence: 'per quarter', highlight: false,
-        for: 'You’re building at scale and want me in the loop.',
-        includes: ['Everything in the Vault, kept current', 'First access to new systems before they ship', 'Direct review of your architecture', 'The private guild of architects'],
-        cta: 'Apply to join',
-      },
-    ],
+    // Stated because a waitlist that promises nothing specific measures nothing.
+    founding: 'Lifetime access to every future revision, a name in the founders file, and a vote on the v1 spec.',
+    milestone: 'At 100 people on the list, reality.md v1.0 is ratified and published as an open spec.',
   },
 } as const
 
