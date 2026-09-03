@@ -102,22 +102,50 @@ export function parseRealityMd(text, opts = {}) {
   }
 }
 
-/** `- **Template store live** — done when …, by 2026-08-01.` → structured aim. */
+const DONE_WHEN_RE = /done when\s+([^,.]+(?:,[^,.]*)?)/i
+const DEADLINE_RE = /\bby\s+(\d{4}-\d{2}-\d{2})/i
+const AIM_FILE_RE = /`([^`]*\.reality\/aims\/[^`]+)`/
+
+/** The three facets an aim must carry to be evaluable, wherever they were written. */
+function aimFacets(text) {
+  const doneWhen = DONE_WHEN_RE.exec(text)
+  const deadline = DEADLINE_RE.exec(text)
+  const aimFile = AIM_FILE_RE.exec(text)
+  return {
+    doneWhen: doneWhen ? doneWhen[1].trim() : null,
+    deadline: deadline ? deadline[1] : null,
+    aimFile: aimFile ? aimFile[1] : null,
+  }
+}
+
+/**
+ * Canonical aim form — everything on the aim's own line:
+ *   `- **Template store live** — done when the first order lands, by 2026-08-01.`
+ *
+ * Accepted alternate: the facets live on an immediately nested sub-bullet, because that is
+ * what a generator emitting from a typed graph naturally produces (starlight.you writes
+ * `- <label>` then `  - done when <rule>`). See `parseAimContinuation`; the parser absorbs
+ * the sub-bullet into the aim above it, so both forms build the identical Goal node.
+ */
 export function parseAim(line) {
   const text = line.replace(/^[-*]\s+/, '').trim()
   const bold = /^\*\*(.+?)\*\*\s*(?:[—–-]\s*)?(.*)$/.exec(text)
   const label = (bold ? bold[1] : text.split(/\s+[—–-]\s+/)[0]).trim()
   const rest = bold ? bold[2] : text.slice(label.length)
-  const doneWhen = /done when\s+([^,.]+(?:,[^,.]*)?)/i.exec(rest)
-  const by = /\bby\s+(\d{4}-\d{2}-\d{2})/i.exec(rest)
-  const aimFile = /`([^`]*\.reality\/aims\/[^`]+)`/.exec(rest)
-  return {
-    label,
-    doneWhen: doneWhen ? doneWhen[1].trim() : null,
-    deadline: by ? by[1] : null,
-    aimFile: aimFile ? aimFile[1] : null,
-    raw: text,
-  }
+  return { label, ...aimFacets(rest), raw: text }
+}
+
+/**
+ * A nested sub-bullet under an aim that is not an if-then trigger, e.g.
+ * `  - done when the monthly review runs unattended, by 2026-11-01`.
+ * Returns null when the line carries none of the aim facets, so an unrelated
+ * sub-bullet is left alone rather than silently folded into the aim above it.
+ */
+export function parseAimContinuation(line) {
+  const text = line.replace(/^\s*[-*]\s+/, '').trim()
+  const facets = aimFacets(text)
+  if (!facets.doneWhen && !facets.deadline && !facets.aimFile) return null
+  return { ...facets, raw: text }
 }
 
 /** `- if <trigger>, then I <action>` → structured workflow trigger. */

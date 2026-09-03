@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --test \"standard/test/*.test.mjs\"",
+    "test": "node --test \"standard/test/*.test.mjs\" \"test/*.test.mjs\"",
     "reality-md": "node standard/bin/reality-md.mjs"
   },
   "dependencies": {

@@ -115,3 +115,81 @@ test('parse is pure: the same input twice gives an identical packet', () => {
   const b = buildPacket(parseRealityMd(text))
   assert.deepEqual(a, b)
 })
+
+// ── The two dialects of an aim ──────────────────────────────────────────────
+// Canonical: everything on the aim's own line. Accepted alternate: the facets on an
+// immediately nested sub-bullet, which is what a generator emitting from a typed graph
+// produces. Both must build the identical Goal node, or "downstream emitter" means nothing.
+
+test('a starlight.you-shaped file — done-when on a nested sub-bullet — reaches level 3', () => {
+  const { conformance, packet } = readRealityMd(fx('emitted-by-starlight-you.reality.md'))
+  assert.ok(conformance.level >= 3, `expected >= 3, got ${conformance.level}: ${codes(conformance).join(' ')}`)
+  assert.ok(!codes(conformance).includes('AIM_NO_DONE_WHEN'))
+  const goals = packet.graph.nodes.filter((n) => n.kind === 'Goal')
+  assert.equal(goals.length, 2)
+  for (const g of goals) {
+    assert.ok(g.detail.doneWhen, `${g.id} done-when`)
+    assert.equal(g.evaluation.status, 'open')
+    assert.match(g.evaluation.rule, /^Done when /)
+  }
+})
+
+test('both aim dialects build the identical Goal node', () => {
+  const inline = '## Aims\n- **Ship the thing** — done when the first order lands, by 2026-08-01.\n'
+  const nested = '## Aims\n- **Ship the thing**\n  - done when the first order lands, by 2026-08-01\n'
+  const shell = fx('valid.reality.md')
+  const goalOf = (aims) => {
+    const text = shell.replace(/## Aims\n[\s\S]*?\n\n/, `${aims}\n`)
+    return buildPacket(parseRealityMd(text)).graph.nodes.find((n) => n.id === 'goal:ship-the-thing')
+  }
+  const a = goalOf(inline)
+  const b = goalOf(nested)
+  assert.ok(a && b)
+  assert.equal(a.detail.doneWhen, b.detail.doneWhen)
+  assert.equal(a.detail.deadline, b.detail.deadline)
+  assert.equal(a.evaluation.rule, b.evaluation.rule)
+  assert.equal(a.evaluation.status, 'open')
+})
+
+test('a nested sub-bullet that carries no aim facet is left alone, not absorbed', () => {
+  const shell = fx('valid.reality.md')
+  const text = shell.replace(
+    /## Aims\n[\s\S]*?\n\n/,
+    '## Aims\n- **Ship the thing** — done when the first order lands, by 2026-08-01.\n  - context: the supplier is slow\n\n'
+  )
+  const { packet } = readRealityMd(text)
+  const goal = packet.graph.nodes.find((n) => n.id === 'goal:ship-the-thing')
+  const inline = shell.replace(
+    /## Aims\n[\s\S]*?\n\n/,
+    '## Aims\n- **Ship the thing** — done when the first order lands, by 2026-08-01.\n\n'
+  )
+  const inlineOnly = buildPacket(parseRealityMd(inline)).graph.nodes.find((n) => n.id === 'goal:ship-the-thing')
+  assert.equal(goal.detail.doneWhen, inlineOnly.detail.doneWhen)
+  assert.equal(goal.detail.deadline, '2026-08-01')
+  assert.ok(!/supplier/i.test(goal.evaluation.rule))
+})
+
+// ── The gap engine reads the graph, not section emptiness ───────────────────
+
+test('an automated operator with an empty Environment is not told to Automate', () => {
+  const { packet, conformance } = readRealityMd(fx('sophisticated-operator.reality.md'))
+  assert.deepEqual(packet.sections.environment ?? [], [])
+  assert.deepEqual(packet.sections.state ?? [], [])
+  assert.ok(packet.graph.nodes.some((n) => n.kind === 'Agent' && /unattended/i.test(n.label)))
+  assert.ok(!conformance.counts.unmetMoves.includes('Automate'), 'a nightly unattended loop is evidence of Automate')
+  assert.ok(!conformance.counts.unmetMoves.includes('See'), 'Attention entries are evidence of See')
+  assert.equal(packet.graph.nodes.filter((n) => n.kind === 'SystemGap').length, 0)
+})
+
+test('a system that only runs when you run it is not evidence of automation', () => {
+  const text = fx('sophisticated-operator.reality.md').replace(
+    '- Nightly reconciliation loop — runs unattended at 02:00, reconciles invoices, writes a receipt.',
+    '- Reconciliation script — I run it by hand when invoices pile up.'
+  )
+  const { packet, conformance } = readRealityMd(text)
+  assert.ok(conformance.counts.unmetMoves.includes('Automate'))
+  const gap = packet.graph.nodes.find((n) => n.kind === 'SystemGap')
+  assert.equal(gap.detail.move, 'Automate')
+  assert.match(gap.label, /No evidence of move 4/)
+  assert.match(gap.evaluation.rule, /Closed when this file states/)
+})

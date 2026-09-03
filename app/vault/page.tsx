@@ -1,9 +1,30 @@
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { site } from '@/lib/site'
 import { WaitlistForm } from '@/components/WaitlistForm'
+import { readRealityMd, emitAll, TARGETS } from '@reality/index.mjs'
 
 const v = site.vault
+
+/**
+ * The one deliverable that already exists, described from the artifact itself rather than
+ * from a promise: the worked contract the standard's own conformance suite runs against.
+ * Every number below is derived at build time, so the page cannot drift from the file.
+ */
+const sample = readFileSync(join(process.cwd(), 'standard/fixtures/valid.reality.md'), 'utf8')
+const worked = readRealityMd(sample, { source: 'standard/fixtures/valid.reality.md' })
+const workedFacts = {
+  level: worked.conformance.level,
+  levelName: worked.conformance.levelName,
+  nodes: worked.packet.graph.nodes.length,
+  edges: worked.packet.graph.edges.length,
+  aims: worked.conformance.counts.goals,
+  lines: sample.trimEnd().split('\n').length,
+  targets: TARGETS.length,
+  digest: emitAll(worked.packet)[0].digest,
+}
 
 export const metadata: Metadata = {
   title: 'The Vault',
@@ -34,6 +55,48 @@ export default function Vault() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="border-t border-border py-14">
+        <h2 className="text-2xl font-bold text-ink">One of them already exists, and it is free</h2>
+        <p className="mt-3 max-w-2xl text-muted">
+          The first filled contract is not a promise — it ships in the repo as{' '}
+          <code className="rounded bg-surface px-1.5 py-0.5 text-xs">standard/fixtures/valid.reality.md</code>, and the
+          standard&apos;s test suite runs against it on every change. It is Dana&apos;s: an operations lead who
+          automated her vendor review. {workedFacts.lines} lines, {workedFacts.aims} aims with dates on them, reaching
+          conformance level {workedFacts.level} ({workedFacts.levelName.toLowerCase()}) — the level that says a tool you
+          did not write can act on it.
+        </p>
+        <dl className="mt-8 grid gap-4 sm:grid-cols-3">
+          <div className="rounded-xl border border-border glass p-5">
+            <dt className="font-semibold text-ink">The contract</dt>
+            <dd className="mt-1.5 text-sm text-muted">
+              Nine sections filled the way a person actually works: what she surfaces, what she mutes, the two systems
+              that exist, the defaults she changed, and the guardrails no agent may cross.
+            </dd>
+          </div>
+          <div className="rounded-xl border border-border glass p-5">
+            <dt className="font-semibold text-ink">What the tooling derives from it</dt>
+            <dd className="mt-1.5 text-sm text-muted">
+              {workedFacts.nodes} typed nodes and {workedFacts.edges} edges — every one with an owner, a provenance and
+              an evaluation rule. Run <code className="rounded bg-surface px-1 py-0.5 text-xs">reality-md graph</code>{' '}
+              against it yourself.
+            </dd>
+          </div>
+          <div className="rounded-xl border border-border glass p-5">
+            <dt className="font-semibold text-ink">The same file in {workedFacts.targets} harnesses</dt>
+            <dd className="mt-1.5 text-sm text-muted">
+              One projection per harness, all carrying digest{' '}
+              <code className="rounded bg-surface px-1 py-0.5 text-xs">{workedFacts.digest}</code>.{' '}
+              <code className="rounded bg-surface px-1 py-0.5 text-xs">reality-md verify</code> re-parses each one and
+              tells you when a copy has drifted from the source.
+            </dd>
+          </div>
+        </dl>
+        <p className="mt-6 max-w-2xl text-muted">
+          That is the shape of every entry the Vault would add — a filled file, its graph, its projections, and the
+          reasoning for each section. One is in the repo. The list decides whether there are a dozen.
+        </p>
       </section>
 
       <section className="border-t border-border py-14">

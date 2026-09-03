@@ -144,7 +144,7 @@ export default function Standard() {
         <h2 className="text-xl font-bold text-ink">Adopt it in two minutes</h2>
         <ol className="mt-4 space-y-3 text-sm text-muted">
           <li><span className="font-semibold text-ink">1.</span> Copy the template from the repo into <code className="rounded bg-surface px-1.5 py-0.5 text-xs">~/reality.md</code> and fill what you know. Leave the rest empty — empty is a map.</li>
-          <li><span className="font-semibold text-ink">2.</span> Add one line to your harness&apos;s instruction file (CLAUDE.md, .cursorrules, GEMINI.md):
+          <li><span className="font-semibold text-ink">2.</span> Add one line to your harness&apos;s instruction file (CLAUDE.md, AGENTS.md, GEMINI.md, .cursor/rules/):
             <div className="mt-2 rounded-lg bg-surface px-3 py-2 font-mono text-xs text-ink">Read ~/reality.md before acting on my goals; follow its agent protocol.</div>
           </li>
           <li><span className="font-semibold text-ink">3.</span> Ask your agent: <em>&quot;Read my reality.md. What&apos;s the smallest next action?&quot;</em> — and watch it answer like it knows you. Because now it does.</li>

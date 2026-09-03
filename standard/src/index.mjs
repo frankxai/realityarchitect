@@ -7,9 +7,22 @@
  */
 
 export { SECTIONS, HEADING_ALIASES, parseRealityMd, parseFrontmatter, parseAim, parseTrigger } from './parse.mjs'
-export { VERSION, MOVES, buildPacket, primaryGap, makeNode, makeEdge, slug } from './graph.mjs'
+export { VERSION, MOVES, buildPacket, primaryGap, unmetMoves, makeNode, makeEdge, slug } from './graph.mjs'
 export { LEVELS, SUPPORTED_VERSIONS, validatePacket } from './validate.mjs'
-export { TARGETS, emit, emitAll, toMarkdown, digest, nextArtifactBrief, briefToMarkdown } from './emit.mjs'
+export {
+  TARGETS,
+  LEGACY_TARGETS,
+  MARKER_START,
+  MARKER_END,
+  emit,
+  emitAll,
+  mergeIntoFile,
+  verifyEmission,
+  toMarkdown,
+  digest,
+  nextArtifactBrief,
+  briefToMarkdown,
+} from './emit.mjs'
 export { MIGRATIONS, detectVersion, migrate } from './migrate.mjs'
 
 import { parseRealityMd } from './parse.mjs'

@@ -5,18 +5,72 @@
  * is an opinion, and this standard does not ship opinions.
  */
 
-import { SECTIONS, parseAim, parseTrigger, isNested, isBullet } from './parse.mjs'
+import { SECTIONS, parseAim, parseAimContinuation, parseTrigger, isNested, isBullet } from './parse.mjs'
 
 export const VERSION = '0.1'
 
-/** The Architect's Loop, and the sections each move is evidenced by. */
+/**
+ * Words that make a system a *loop* rather than a thing you run by hand. Matched against
+ * Agent labels so that "the scheduled vendor digest" counts as automation evidence even when
+ * `## Environment` is empty — an empty section is not the same fact as a missing system.
+ */
+const AUTOMATION_RE =
+  /\b(schedul\w*|cron|nightly|overnight|daily|weekly|hourly|unattended|automat\w*|loop|loops|watcher|webhook|on a timer|runs itself|every (?:day|week|morning|night|hour))\b/i
+
+const has = (nodes, kind, pred) => nodes.some((n) => n.kind === kind && (!pred || pred(n)))
+
+/**
+ * The Architect's Loop. A move is *evidenced* by graph nodes, not by a non-empty section:
+ * the sections listed are where a human would normally write it, but the `evidenced`
+ * predicate is what decides, so evidence written in a neighbouring section still counts.
+ */
 export const MOVES = [
-  { move: 'See', sections: ['attention', 'state'], builds: 'an intelligence layer your agents read before acting' },
-  { move: 'Design', sections: ['aims'], builds: 'a written spec for one repeating job' },
-  { move: 'Build', sections: ['systems'], builds: 'one small named agent that does one job you used to do by hand' },
-  { move: 'Automate', sections: ['environment'], builds: 'a loop that runs unattended' },
-  { move: 'Compound', sections: ['feedback'], builds: 'a learning signal pointed at one outcome' },
+  {
+    move: 'See',
+    sections: ['attention', 'state'],
+    builds: 'an intelligence layer your agents read before acting',
+    evidence: 'a signal to surface or mute, or a condition you act from',
+    evidenced: (n) => has(n, 'Context') || has(n, 'Constraint', (c) => c.detail?.origin === 'state'),
+  },
+  {
+    move: 'Design',
+    sections: ['aims'],
+    builds: 'a written spec for one repeating job',
+    evidence: 'an aim with a done-when',
+    evidenced: (n) => has(n, 'Goal', (g) => Boolean(g.detail?.doneWhen)),
+  },
+  {
+    move: 'Build',
+    sections: ['systems'],
+    builds: 'one small named agent that does one job you used to do by hand',
+    evidence: 'a named system that exists',
+    evidenced: (n) => has(n, 'Agent'),
+  },
+  {
+    move: 'Automate',
+    sections: ['environment', 'systems'],
+    builds: 'a loop that runs unattended',
+    evidence: 'a default you changed, or a system that runs on its own schedule',
+    evidenced: (n) =>
+      has(n, 'Constraint', (c) => c.detail?.origin === 'environment') || has(n, 'Agent', (a) => AUTOMATION_RE.test(a.label)),
+  },
+  {
+    move: 'Compound',
+    sections: ['feedback'],
+    builds: 'a learning signal pointed at one outcome',
+    evidence: 'a review cadence or a metric you act on',
+    evidenced: (n) => has(n, 'Feedback'),
+  },
 ]
+
+/**
+ * Loop moves with no evidence anywhere in the packet, in Loop order.
+ * The one caller-visible rule: this reads the graph, never section emptiness.
+ */
+export function unmetMoves(packet) {
+  const nodes = packet.graph.nodes
+  return MOVES.filter((m) => !m.evidenced(nodes))
+}
 
 export const slug = (s) =>
   String(s)
@@ -52,6 +106,21 @@ export function makeNode({ id, kind, label, owner, source, method, locator, visi
   }
 }
 
+const goalRule = (doneWhen, deadline) =>
+  doneWhen
+    ? `Done when ${doneWhen}${deadline ? `, by ${deadline}` : ''}.`
+    : 'UNSET — this aim has no done-when, so no agent can tell you whether it moved.'
+
+/** Merge facets found on a nested sub-bullet into the aim they belong to. First writer wins. */
+function applyAimFacets(node, facets) {
+  const detail = node.detail
+  if (facets.doneWhen && !detail.doneWhen) detail.doneWhen = facets.doneWhen
+  if (facets.deadline && !detail.deadline) detail.deadline = facets.deadline
+  if (facets.aimFile && !detail.aimFile) detail.aimFile = facets.aimFile
+  node.evaluation.rule = goalRule(detail.doneWhen, detail.deadline)
+  node.evaluation.status = detail.doneWhen ? 'open' : 'unset'
+}
+
 export function makeEdge({ rel, from, to, owner, source, method, locator, visibility, rule, status = 'unset' }) {
   return {
     id: `${from}|${rel}|${to}`,
@@ -81,7 +150,6 @@ export function buildPacket(parsed, opts = {}) {
   const add = (n) => (nodes.push(n), n)
   const link = (e) => (edges.push(e), e)
   const lines = (key) => parsed.sections[key] ?? []
-  const filled = (key) => lines(key).some(isBullet)
 
   add(
     makeNode({
@@ -133,11 +201,20 @@ export function buildPacket(parsed, opts = {}) {
 
   // Aims → Goal (+ Workflow from if-then triggers)
   let currentGoal = null
+  /** @type {import('./index.d.mts').RealityNode | null} */
+  let currentGoalNode = null
   for (const [i, line] of lines('aims').entries()) {
     if (!isBullet(line)) continue
     if (isNested(line)) {
       const trig = parseTrigger(line)
-      if (!trig || !currentGoal) continue
+      if (!trig) {
+        // Accepted alternate form: `done when …` / `by <date>` written on a nested
+        // sub-bullet instead of the aim's own line. Absorbed into the aim above.
+        const cont = currentGoalNode ? parseAimContinuation(line) : null
+        if (cont) applyAimFacets(currentGoalNode, cont)
+        continue
+      }
+      if (!currentGoal) continue
       const id = uniq(`workflow:${slug(trig.then)}`, taken)
       add(
         makeNode({
@@ -171,7 +248,7 @@ export function buildPacket(parsed, opts = {}) {
     const aim = parseAim(line)
     const id = uniq(`goal:${slug(aim.label)}`, taken)
     currentGoal = id
-    add(
+    currentGoalNode = add(
       makeNode({
         id,
         kind: 'Goal',
@@ -181,9 +258,7 @@ export function buildPacket(parsed, opts = {}) {
         method: 'written',
         locator: `sections.aims[${i}]`,
         visibility,
-        rule: aim.doneWhen
-          ? `Done when ${aim.doneWhen}${aim.deadline ? `, by ${aim.deadline}` : ''}.`
-          : 'UNSET — this aim has no done-when, so no agent can tell you whether it moved.',
+        rule: goalRule(aim.doneWhen, aim.deadline),
         status: aim.doneWhen ? 'open' : 'unset',
         detail: {
           doneWhen: aim.doneWhen,
@@ -378,27 +453,32 @@ export function buildPacket(parsed, opts = {}) {
     )
   }
 
-  // SystemGap → the first Loop move with no evidence. Ordered: your gap is the earliest unmet move.
-  const gaps = []
-  for (const m of MOVES) {
-    if (m.sections.every((s) => !filled(s))) gaps.push(m)
-  }
-  const firstGap = gaps[0] ?? null
+  // SystemGap → the earliest Loop move for which the graph holds no evidence.
+  // Evidence is read across the whole packet, not from one section being non-empty: an
+  // operator whose ## Environment is blank but whose ## Systems lists a scheduled loop has
+  // automated something, and telling them otherwise would be the flagship output lying.
+  const firstGap = MOVES.find((m) => !m.evidenced(nodes)) ?? null
   if (firstGap) {
     const id = uniq(`systemgap:${slug(firstGap.move)}`, taken)
+    const where = firstGap.sections.map((s) => `## ${SECTIONS.find((x) => x.key === s).heading}`).join(' or ')
     add(
       makeNode({
         id,
         kind: 'SystemGap',
-        label: `Move ${MOVES.indexOf(firstGap) + 1} — ${firstGap.move}: ${firstGap.builds}`,
+        label: `No evidence of move ${MOVES.indexOf(firstGap) + 1} — ${firstGap.move} — in this file: ${firstGap.builds}`,
         owner,
         source: 'derived',
         method: 'inferred',
         locator: firstGap.sections.map((s) => `sections.${s}`).join(', '),
         visibility,
-        rule: `Closed when ${firstGap.sections.map((s) => `## ${SECTIONS.find((x) => x.key === s).heading}`).join(' or ')} names a system that exists.`,
+        rule: `Closed when this file states ${firstGap.evidence} — normally under ${where}.`,
         status: 'open',
-        detail: { move: firstGap.move, order: MOVES.indexOf(firstGap) + 1, sections: firstGap.sections },
+        detail: {
+          move: firstGap.move,
+          order: MOVES.indexOf(firstGap) + 1,
+          sections: firstGap.sections,
+          evidence: firstGap.evidence,
+        },
       })
     )
     for (const goal of nodes.filter((n) => n.kind === 'Goal')) {

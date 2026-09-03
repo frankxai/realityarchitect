@@ -30,6 +30,12 @@ Level 4 is the bar for handing the packet to a tool you did not write.
 `counts.unmetMoves` and as a `SystemGap` node in the graph. A tool that punished you for an honest blank would
 teach you to fill it with nothing.
 
+**A gap is read from the graph, never from an empty section.** Each move of the Loop has an evidence predicate
+over derived nodes — Automate, for instance, is evidenced by a changed default *or* by a system whose own
+description says it runs on a schedule. So an operator with a blank `## Environment` and a nightly unattended
+loop under `## Systems` has automated something, and the tool says so. Gaps are phrased as *no evidence of X in
+this file*, because that is the only thing a file can tell you.
+
 ---
 
 ## Findings
@@ -86,31 +92,75 @@ Every finding carries a stable code. Codes do not change meaning within a major 
 
 ---
 
+## The shape of an aim
+
+An aim is the one line in the file an agent has to be able to evaluate, so its shape is normative.
+Three facets: a **label**, a **done-when**, and a **deadline** (`by YYYY-MM-DD`, required at level 4).
+
+**Canonical form — everything on the aim's own line.** Emit this if you are writing a generator:
+
+```markdown
+- **Vendor review automated** — done when the monthly review runs unattended, by 2026-11-01. → `.reality/aims/vendor-review.md`
+```
+
+**Accepted alternate — the facets on an immediately nested sub-bullet.** A generator projecting from a
+typed graph naturally produces this, so the parser absorbs the sub-bullet into the aim above it:
+
+```markdown
+- Vendor review automated
+  - done when the monthly review runs unattended, by 2026-11-01
+```
+
+Rules a downstream emitter must follow:
+
+- Both forms build the **identical `Goal` node** — same `detail.doneWhen`, `detail.deadline`, `evaluation.rule`
+  and therefore the same digest. `test/conformance.test.mjs` asserts that equivalence.
+- **First writer wins.** A facet already found on the aim line is never overwritten by a sub-bullet.
+- Only **immediately nested** bullets are absorbed, and only those carrying at least one facet
+  (`done when …`, `by YYYY-MM-DD`, or a `` `.reality/aims/…` `` path). A nested bullet with none of them is left
+  alone — it is a note, not a continuation. A nested `if …, then …` is always a trigger, never a continuation.
+- The bold label is optional; a plain `- <label>` is fine. Everything before the first ` — ` is the label.
+
+---
+
 ## Portability
 
 A conformant packet projects into every harness from one source. The CLI emits all of them:
 
 ```bash
-node standard/bin/reality-md.mjs emit ~/reality.md --target claude
+node standard/bin/reality-md.mjs emit ~/reality.md --target claude --write ~/CLAUDE.md
+node standard/bin/reality-md.mjs verify ~/CLAUDE.md
 ```
 
-| Target | File | Form |
-|--------|------|------|
-| `reality.md` | `reality.md` | canonical markdown (round-trip form) |
-| `claude` | `CLAUDE.md` | markdown block |
-| `codex` | `AGENTS.md` | markdown block |
-| `cursor` | `.cursorrules` | markdown block |
-| `gemini` | `GEMINI.md` | markdown block |
-| `hermes` | `hermes.context.json` | JSON context |
+Targets differ by **harness convention**, not by filename. A harness that resolves file imports gets a
+pointer, because a pointer cannot go stale; one that does not gets a verbatim snapshot that `verify` re-parses.
+
+| Target | File | Mode | Why |
+|--------|------|------|-----|
+| `reality.md` | `reality.md` | canonical | the round-trip form |
+| `claude` | `CLAUDE.md` | import | Claude Code resolves `@path` imports in CLAUDE.md |
+| `gemini` | `GEMINI.md` | import | the Gemini CLI resolves `@path` imports in GEMINI.md |
+| `codex` | `AGENTS.md` | snapshot | AGENTS.md has no import mechanism |
+| `cursor` | `.cursor/rules/reality.mdc` | snapshot | current Cursor rules format, with MDC frontmatter |
+| `cursor-legacy` | `.cursorrules` | snapshot | deprecated by Cursor; kept only to regenerate an existing file |
+| `hermes` | `hermes.context.json` | json | JSON context, with the canonical markdown embedded |
+
+`--write` owns exactly the block between `<!-- reality.md:start -->` and `<!-- reality.md:end -->`. An existing
+file keeps everything outside those markers; a file with no markers gets the block appended. Re-writing the same
+block twice changes nothing.
 
 Every emission carries the same **digest** — an FNV-1a hash over the semantic payload (kind, label, evaluation
-rule of every node). Portability is therefore falsifiable, not asserted:
+rule of every node). Portability is falsifiable, and the witness never compares a value with itself:
 
-- `digest(parse(emit(packet, 'reality.md'))) === digest(packet)` — the canonical form round-trips.
-- All six emissions declare the same digest, so a stale generated file is detectable by comparing one line.
+```bash
+reality-md verify AGENTS.md              # re-parses the embedded contract
+reality-md verify CLAUDE.md              # re-parses the file the import points at
+reality-md verify CLAUDE.md --source ./reality.md
+```
 
-Generated files carry `generated, do not hand-edit` and the command that regenerates them. The source of truth is
-always `~/reality.md`; the projections are disposable.
+`verify` re-derives a packet from what the projection actually contains and compares that with the digest the
+projection declares. Exit `0` on match, `1` on drift. Generated files carry `generated, do not hand-edit` and the
+command that regenerates them. The source of truth is always `~/reality.md`; the projections are disposable.
 
 ## What conformance does *not* claim
 

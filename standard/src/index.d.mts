@@ -128,8 +128,13 @@ export interface Conformance {
 
 export interface Move {
   move: 'See' | 'Design' | 'Build' | 'Automate' | 'Compound'
+  /** Where a human normally writes this move. Never what decides whether it is met. */
   sections: SectionKey[]
   builds: string
+  /** What the file must state for this move to count as evidenced. */
+  evidence: string
+  /** The decision: read over derived nodes, never over section emptiness. */
+  evidenced: (nodes: RealityNode[]) => boolean
 }
 
 export interface NextArtifactBrief {
@@ -144,12 +149,32 @@ export interface NextArtifactBrief {
 }
 
 export type EmitTarget = 'reality.md' | 'claude' | 'codex' | 'cursor' | 'gemini' | 'hermes'
+/** Deprecated filenames a harness still reads. Never emitted by `emitAll`. */
+export type LegacyEmitTarget = 'cursor-legacy'
 
 export interface Emission {
-  target: EmitTarget
+  target: EmitTarget | LegacyEmitTarget
   filename: string
+  /** The whole file, including any header the harness requires above the block. */
   content: string
+  /** Just the marker-delimited block `mergeIntoFile` owns. */
+  block: string
   digest: string
+}
+
+export type VerifyMode = 'canonical' | 'import' | 'snapshot' | 'json' | 'unknown'
+
+export interface VerifyResult {
+  target: string | null
+  mode: VerifyMode
+  /** The digest the projection declares, or null when it declares none. */
+  declared: string | null
+  /** The digest re-derived from what the projection actually contains. */
+  derived: string | null
+  ok: boolean
+  reason: string
+  importPath?: string
+  unresolved?: boolean
 }
 
 export interface ReadResult {
@@ -163,6 +188,9 @@ export declare const SECTIONS: ReadonlyArray<{ key: SectionKey; heading: string 
 export declare const HEADING_ALIASES: ReadonlyMap<string, SectionKey>
 export declare const MOVES: ReadonlyArray<Move>
 export declare const TARGETS: ReadonlyArray<EmitTarget>
+export declare const LEGACY_TARGETS: ReadonlyArray<LegacyEmitTarget>
+export declare const MARKER_START: string
+export declare const MARKER_END: string
 export declare const SUPPORTED_VERSIONS: ReadonlyArray<string>
 export declare const LEVELS: ReadonlyArray<{ level: 1 | 2 | 3 | 4; name: string; claim: string }>
 export declare const MIGRATIONS: ReadonlyArray<{ from: string; to: string; describe: string }>
@@ -179,12 +207,24 @@ export declare function parseAim(line: string): {
   aimFile: string | null
   raw: string
 }
+/**
+ * A nested sub-bullet under an aim carrying `done when …` / `by <date>` / an aims-file path.
+ * Null when the line carries none of them, so an unrelated note is not folded into the aim.
+ */
+export declare function parseAimContinuation(line: string): {
+  doneWhen: string | null
+  deadline: string | null
+  aimFile: string | null
+  raw: string
+} | null
 export declare function parseTrigger(line: string): { when: string; then: string; raw: string } | null
 export declare function buildPacket(
   parsed: ParsedRealityMd,
   opts?: { visibility?: Visibility }
 ): RealityPacket
 export declare function primaryGap(packet: RealityPacket): RealityNode | null
+/** Loop moves with no evidence anywhere in the packet's graph, in Loop order. */
+export declare function unmetMoves(packet: RealityPacket): Move[]
 export declare function slug(s: string): string
 export declare function makeNode(spec: Record<string, unknown>): RealityNode
 export declare function makeEdge(spec: Record<string, unknown>): RealityEdge
@@ -193,8 +233,21 @@ export declare function validatePacket(input: {
   packet: RealityPacket
   raw?: string
 }): Conformance
-export declare function emit(packet: RealityPacket, target: EmitTarget): Emission
+export declare function emit(packet: RealityPacket, target: EmitTarget | LegacyEmitTarget): Emission
 export declare function emitAll(packet: RealityPacket): Emission[]
+/**
+ * Replace what sits between the reality.md markers, append the block when the file has none,
+ * and never touch anything else. Idempotent.
+ */
+export declare function mergeIntoFile(existing: string, emission: Emission | string): string
+/**
+ * Re-derive a packet from what a projection actually contains and compare it with the digest
+ * the projection declares. `import` targets need `resolve(path) => string` to read their source.
+ */
+export declare function verifyEmission(
+  content: string,
+  opts?: { target?: string | null; expect?: string; resolve?: (path: string) => string }
+): VerifyResult
 export declare function toMarkdown(packet: RealityPacket): string
 export declare function digest(packet: RealityPacket): string
 export declare function nextArtifactBrief(packet: RealityPacket): NextArtifactBrief

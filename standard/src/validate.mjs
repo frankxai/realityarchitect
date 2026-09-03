@@ -5,7 +5,7 @@
  */
 
 import { SECTIONS } from './parse.mjs'
-import { MOVES } from './graph.mjs'
+import { unmetMoves } from './graph.mjs'
 
 export const LEVELS = [
   { level: 1, name: 'Parseable', claim: 'A machine can read the file and know it is a reality.md.' },
@@ -127,7 +127,8 @@ export function validatePacket({ parsed, packet, raw = '' }) {
     level = l
   }
 
-  const unmet = MOVES.filter((m) => m.sections.every((s) => !(parsed.sections[s] ?? []).some((l) => /^\s*[-*]\s+/.test(l))))
+  // Read from the graph, never from section emptiness — see MOVES in graph.mjs.
+  const unmet = unmetMoves(packet)
 
   return {
     ok: level >= 2,

@@ -111,14 +111,20 @@ This is what makes the file a *standard* rather than a note. Any agent that find
 | **LOG** | Append outcomes to `.reality/` — wins to `evidence.md`, reviews to `log/`, never silently. |
 | **GUARD** | Refuse anything that violates **Guardrails**. Every claim must cash out in a buildable artifact. |
 
-To wire it up, add one line to whatever instruction file your harness already reads (`CLAUDE.md`, `.cursorrules`,
-`GEMINI.md`, …):
+To wire it up, add one line to whatever instruction file your harness already reads (`CLAUDE.md`, `AGENTS.md`,
+`GEMINI.md`, `.cursor/rules/*.mdc`, …):
 
 ```
 Read ~/reality.md before acting on my goals; follow its agent protocol.
 ```
 
-That's the entire integration.
+That's the entire integration. Or let the CLI write it, in the form each harness actually prefers — an `@~/reality.md`
+import where the harness resolves imports, an embedded contract where it does not:
+
+```bash
+reality-md emit ~/reality.md --target claude --write ~/CLAUDE.md   # merges; never overwrites your file
+reality-md verify ~/CLAUDE.md                                      # re-parses and compares digests
+```
 
 ---
 

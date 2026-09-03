@@ -1,4 +1,5 @@
 import registry from '@/data/products.json'
+import { publicState, createRateLimiter, callerKey } from '@/lib/waitlist.mjs'
 
 /**
  * Per-product waitlist. Wire-compatible with `starlight/packages/demand-capture`:
@@ -44,19 +45,18 @@ async function kv(command: unknown[]): Promise<unknown> {
   return (await res.json()).result
 }
 
-/** A count below the threshold is withheld, never rounded up, never seeded. */
-function publicState(product: Product, count: number, position?: number) {
-  const { publicCountThreshold, foundingCohort } = product.waitlist
-  return {
-    productId: product.id,
-    count,
-    position,
-    publicCount: count >= publicCountThreshold ? count : null,
-    foundingCohort,
-    foundingSeatsLeft: count < foundingCohort ? foundingCohort - count : 0,
-    stage: product.stage,
-  }
-}
+/**
+ * One bucket per caller address, module-scoped so it survives between requests in a warm
+ * runtime. See `lib/waitlist.mjs` for what this does and does not defend against.
+ */
+const writeLimit = createRateLimiter({ capacity: 5, windowMs: 60_000 })
+const readLimit = createRateLimiter({ capacity: 60, windowMs: 60_000 })
+
+const tooMany = (retryAfter: number) =>
+  Response.json(
+    { error: 'Too many requests from this address. Try again shortly.' },
+    { status: 429, headers: { 'Retry-After': String(retryAfter) } }
+  )
 
 const unconfigured = () =>
   Response.json(
@@ -65,6 +65,9 @@ const unconfigured = () =>
   )
 
 export async function POST(req: Request) {
+  const gate = writeLimit.take(callerKey(req.headers))
+  if (!gate.ok) return tooMany(gate.retryAfter)
+
   let body: Record<string, unknown>
   try {
     body = await req.json()
@@ -82,6 +85,9 @@ export async function POST(req: Request) {
 
   const url = new URL(req.url)
   try {
+    // Idempotent on email: a repeat signup re-reads its position and never increments the
+    // count. Re-posting is how someone answers the skippable questions later, and it must not
+    // cost a seat — nor hand anyone a one-line way to inflate the number the page publishes.
     const existing = await kv(['hget', key(product.id, 'positions'), email])
     let position: number
     if (existing) position = Number(existing)
@@ -131,6 +137,9 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
+  const gate = readLimit.take(callerKey(req.headers))
+  if (!gate.ok) return tooMany(gate.retryAfter)
+
   const product = find(new URL(req.url).searchParams.get('productId'))
   if (!product) return Response.json({ error: 'Unknown product' }, { status: 404 })
   if (!KV_URL || !KV_TOKEN) return unconfigured()
