@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "Timeline Architect Doppelgänger Library",
+  "version": "1.0.0",
+  "updated": "2026-09-09",
+  "doppelgangers": [
+    {
+      "id": "midas-prime",
+      "name": "Midas-Prime",
+      "archetype": "The Sovereign Capitalist & Value Architect",
+      "timeline_coordinates": "88-Alpha",
+      "theme": "Sovereign Wealth, Capital Velocity & Autonomous Assets",
+      "frequency_hz": 432,
+      "binaural_hz": 5.5,
+      "somatic_anchor": "Thumb pressed firmly into center of right palm with 4-7-8 breath",
+      "core_belief": "Capital is organized attention and trust; eliminate friction and sovereign flow follows.",
+      "beings_visited": ["The Merchant of Tyre", "The Sovereign Alchemist"]
+    },
+    {
+      "id": "aethel-soma",
+      "name": "Aethel-Soma",
+      "archetype": "The Radiant Athlete & Somatic Healer",
+      "timeline_coordinates": "77-Elysium",
+      "theme": "Cellular Regeneration, Peak HRV & Circadian Vitality",
+      "frequency_hz": 528,
+      "binaural_hz": 4.5,
+      "somatic_anchor": "Left palm over heart center with right fingers feeling pulse on wrist",
+      "core_belief": "My vessel is an intelligent self-regenerating garden; natural rhythm is default health.",
+      "beings_visited": ["The Ancient Herbalist of Cos", "The Master of Breath"]
+    },
+    {
+      "id": "davinci-prime",
+      "name": "DaVinci-Prime",
+      "archetype": "The Universal Polymath & Master Crafter",
+      "timeline_coordinates": "99-DaVinci",
+      "theme": "Flow State, Prolific Output & Cross-Domain Mastery",
+      "frequency_hz": 741,
+      "binaural_hz": 7.0,
+      "somatic_anchor": "Touching tips of index finger and thumb together on both hands simultaneously",
+      "core_belief": "Taste is clarity; shipping is editing. Lower the bar for the draft, raise it for the cut.",
+      "beings_visited": ["Leonardo da Vinci", "The Muse of Polyphony"]
+    },
+    {
+      "id": "sophia-zen",
+      "name": "Sophia-Zen",
+      "archetype": "The Mountain & The Unmoved Witness",
+      "timeline_coordinates": "108-Omicron",
+      "theme": "Equanimity, Emotional Non-Reactivity & Deep Peace",
+      "frequency_hz": 963,
+      "binaural_hz": 3.8,
+      "somatic_anchor": "Cosmic Mudra: right hand resting in left hand in lap, thumb tips touching lightly",
+      "core_belief": "You are not the weather of transient events; you are the vast sky in which they dissolve.",
+      "beings_visited": ["The Zen Hermit of Cold Mountain", "Prajnaparamita"]
+    },
+    {
+      "id": "amara-vera",
+      "name": "Amara-Vera",
+      "archetype": "The Loving Sovereign & Heart Anchor",
+      "timeline_coordinates": "44-Anahata",
+      "theme": "Relational Magnetism, Unconditional Self-Love & Emotional Safety",
+      "frequency_hz": 639,
+      "binaural_hz": 6.0,
+      "somatic_anchor": "Right palm flat over sternum, fingers splayed, feeling radiant warmth",
+      "core_belief": "True magnetism is the radical absence of defense; safety begins in your own chest.",
+      "beings_visited": ["Kuan Yin", "Rumi"]
+    },
+    {
+      "id": "cipher-zero",
+      "name": "Cipher-Zero",
+      "archetype": "The Autonomous AI Systems Architect",
+      "timeline_coordinates": "01-Cyberpunk",
+      "theme": "Autonomous Agent Fleets, Sovereign Local AI & Zero-Debt Code",
+      "frequency_hz": 528,
+      "binaural_hz": 8.0,
+      "somatic_anchor": "Light double-tap on the right collarbone while relaxing shoulder blades",
+      "core_belief": "The best system is the one that deletes its own complexity and runs silently.",
+      "beings_visited": ["The Ghost in the Machine", "Ada Lovelace"]
+    },
+    {
+      "id": "orpheus-rex",
+      "name": "Orpheus-Rex",
+      "archetype": "The Master Sonic Alchemist",
+      "timeline_coordinates": "33-Harmonia",
+      "theme": "Acoustic Frequency Medicine, Cinematic Audio & Resonant Voice",
+      "frequency_hz": 432,
+      "binaural_hz": 6.5,
+      "somatic_anchor": "Gentle swallow followed by soft humming at 128Hz in throat",
+      "core_belief": "Sound alters matter directly; when your voice aligns with truth, reality obeys.",
+      "beings_visited": ["Apollo", "Pythagoras"]
+    },
+    {
+      "id": "athena-strategos",
+      "name": "Athena-Strategos",
+      "archetype": "The Sovereign Venture Commander",
+      "timeline_coordinates": "55-Sovereign",
+      "theme": "Strategic Clarity, Rapid Market Positioning & High Leverage",
+      "frequency_hz": 852,
+      "binaural_hz": 7.5,
+      "somatic_anchor": "Standing tall with weight balanced equally on balls of both feet",
+      "core_belief": "Victory is engineered in the architecture before the first resource is committed.",
+      "beings_visited": ["Sun Tzu", "Athena"]
+    },
+    {
+      "id": "seraphina-lumina",
+      "name": "Seraphina-Lumina",
+      "archetype": "The Visionary Cosmic Storyteller",
+      "timeline_coordinates": "144-Lumina",
+      "theme": "Living Mythos, Epic Narrative Worlds & Brand Lore",
+      "frequency_hz": 741,
+      "binaural_hz": 6.8,
+      "somatic_anchor": "Resting tips of middle fingers lightly on temples during inhale",
+      "core_belief": "Civilizations are built on stories; the story with the highest truth wins.",
+      "beings_visited": ["Homer", "The Luminors of Arcanea"]
+    },
+    {
+      "id": "marcus-stoic",
+      "name": "Marcus-Stoic",
+      "archetype": "The Iron Will & Sovereign Disciplinarian",
+      "timeline_coordinates": "12-Virtus",
+      "theme": "Physical Toughness, Habit Inviolability & Duty",
+      "frequency_hz": 432,
+      "binaural_hz": 4.0,
+      "somatic_anchor": "Firm grip of right hand around left wrist behind the back",
+      "core_belief": "Discipline is not punishment; it is the ultimate expression of self-respect.",
+      "beings_visited": ["Marcus Aurelius", "Epictetus"]
+    },
+    {
+      "id": "gaia-floralis",
+      "name": "Gaia-Floralis",
+      "archetype": "The Biophilic Steward & Earth Mystic",
+      "timeline_coordinates": "21-Terra",
+      "theme": "Ecosystem Regeneration, Clean Fuel & Living Architecture",
+      "frequency_hz": 528,
+      "binaural_hz": 4.2,
+      "somatic_anchor": "Bare feet touching soil or hardwood with toes splayed wide",
+      "core_belief": "We do not live on the earth; we are the living earth expressing as awareness.",
+      "beings_visited": ["The Forest Elder", "Hildegard von Bingen"]
+    },
+    {
+      "id": "chronos-navigator",
+      "name": "Chronos-Navigator",
+      "archetype": "The Multiverse Reality Architect",
+      "timeline_coordinates": "777-Aeterna",
+      "theme": "Meta-Timeline Navigation, Quantum Probability & Reality Architecture",
+      "frequency_hz": 963,
+      "binaural_hz": 5.0,
+      "somatic_anchor": "Gentle upward gaze toward third eye with lips lightly parted",
+      "core_belief": "All timelines exist simultaneously; your attention is the steering wheel.",
+      "beings_visited": ["Hermes Trismegistus", "The Nexus Sovereign"]
+    }
+  ]
+}
