@@ -40,7 +40,7 @@ export default function Standard() {
     <div className="py-14">
       <p className="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-accent">An open standard · v0.1</p>
       <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-        reality.md — a memory file for your <span className="text-accent">life</span>, not just your repo
+        reality.md — a memory file for your <span className="editorial font-normal text-accent sm:text-[1.1em]">life</span>, not just your repo
       </h1>
       <p className="mt-5 max-w-2xl text-lg text-muted">
         Every AI harness already reads an instruction file before touching a codebase — CLAUDE.md, AGENTS.md,
@@ -71,7 +71,7 @@ export default function Standard() {
       </p>
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {SECTIONS.map((x) => (
-          <div key={x.s} className="rounded-xl border border-border glass p-5">
+          <div key={x.s} className="rounded-xl border border-border glass p-5 transition-colors hover:border-accent/40">
             <div className="font-mono text-sm font-bold text-accent">## {x.s}</div>
             <p className="mt-1.5 text-sm text-muted">{x.d}</p>
           </div>
@@ -84,7 +84,7 @@ export default function Standard() {
       </p>
       <ol className="mt-8 space-y-3">
         {VERBS.map((x, i) => (
-          <li key={x.v} className="flex items-center gap-4 rounded-xl border border-border glass px-5 py-4">
+          <li key={x.v} className="flex items-center gap-4 rounded-xl border border-border glass px-5 py-4 transition-colors hover:border-accent/40">
             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-accent/15 font-mono text-xs font-bold text-accent">{i + 1}</span>
             <div><span className="font-mono font-bold text-ink">{x.v}</span> <span className="text-sm text-muted">— {x.d}</span></div>
           </li>

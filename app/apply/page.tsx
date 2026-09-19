@@ -19,7 +19,7 @@ export default function Apply() {
     <div className="py-14">
       <p className="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-accent">The reality.md Audit</p>
       <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-        The application is the audit.
+        The application is <span className="editorial font-normal text-accent sm:text-[1.1em]">the audit.</span>
       </h1>
       <p className="mt-5 max-w-2xl text-lg text-muted">
         Ten questions, under four minutes. They double as drafting your <code className="rounded bg-surface px-1.5 py-0.5 text-sm">reality.md</code> v0.1

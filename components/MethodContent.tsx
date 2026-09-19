@@ -56,7 +56,8 @@ export function MethodContent() {
       <section className="blueprint -mx-5 overflow-hidden px-5 py-14 sm:rounded-2xl sm:py-20">
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">The Architect&apos;s Loop</p>
         <h1 className="mt-4 max-w-4xl text-4xl font-extrabold leading-[1.02] tracking-[-0.04em] text-ink sm:text-6xl">
-          Five moves. One dependency order.
+          Five moves.{' '}
+          <span className="editorial font-normal text-accent sm:text-[1.05em]">One dependency order.</span>
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
           Find the first layer your workflow has not locked in. Build one inspectable artifact there before adding another agent, automation, or metric.

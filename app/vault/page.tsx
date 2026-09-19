@@ -45,7 +45,7 @@ export default function Vault() {
   return (
     <div className="py-14 sm:py-20">
       <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">Open method · private implementation layer</p>
-      <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-6xl">Know what is free, what is planned, and what requires human time.</h1>
+      <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-6xl">Know what is free, what is planned, and <span className="editorial font-normal text-accent sm:text-[1.05em]">what requires human time.</span></h1>
       <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">{site.vault.publicBoundary}</p>
 
       <section className="mt-12 divide-y divide-border border-y border-border" aria-label="Implementation options">

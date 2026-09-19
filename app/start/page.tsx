@@ -41,15 +41,17 @@ const STEPS = [
 export default function Start() {
   return (
     <div className="py-14">
-      <h1 className="text-4xl font-extrabold tracking-tight text-ink">Start here</h1>
-      <p className="mt-4 max-w-2xl text-lg text-muted">
-        You don&apos;t need to be technical, and you don&apos;t need to build everything. You need to build the <em>right</em> thing
-        in the <em>right</em>{' '}order — one system, the one in front of you. Here&apos;s the path.
+      <p className="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-accent">The path</p>
+      <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Start here</h1>
+      <p className="mt-5 max-w-2xl text-lg text-muted">
+        You don&apos;t need to be technical, and you don&apos;t need to build everything. You need to build the{' '}
+        <em className="editorial text-accent">right</em> thing in the <em className="editorial text-accent">right</em>{' '}order —
+        one system, the one in front of you. Here&apos;s the path.
       </p>
 
       <ol className="mt-10 space-y-5">
         {STEPS.map((s, i) => (
-          <li key={s.t} className="flex gap-4 rounded-xl border border-border glass p-6">
+          <li key={s.t} className="flex gap-4 rounded-xl border border-border glass p-6 transition-colors hover:border-accent/40">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/15 font-bold text-accent">{i + 1}</span>
             <div>
               <div className="text-lg font-semibold text-ink">{s.t}</div>
