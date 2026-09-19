@@ -40,9 +40,9 @@ const STEPS = [
 
 export default function Start() {
   return (
-    <div className="py-14">
-      <h1 className="text-4xl font-extrabold tracking-tight text-ink">Start here</h1>
-      <p className="mt-4 max-w-2xl text-lg text-muted">
+    <div className="py-14 sm:py-20">
+      <h1 className="text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">Start here</h1>
+      <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
         You don&apos;t need to be technical, and you don&apos;t need to build everything. You need to build the <em>right</em> thing
         in the <em>right</em>{' '}order — one system, the one in front of you. Here&apos;s the path.
       </p>
@@ -55,9 +55,9 @@ export default function Start() {
               <div className="text-lg font-semibold text-ink">{s.t}</div>
               <p className="mt-1.5 text-sm text-muted">{s.d}</p>
               {s.href.startsWith('http') ? (
-                <a href={s.href} className="mt-3 inline-block text-sm font-medium text-accent hover:underline">{s.cta} →</a>
+                <a href={s.href} className="mt-3 inline-flex text-sm font-medium text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">{s.cta} →</a>
               ) : (
-                <Link href={s.href} className="mt-3 inline-block text-sm font-medium text-accent hover:underline">{s.cta} →</Link>
+                <Link href={s.href} className="mt-3 inline-flex text-sm font-medium text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">{s.cta} →</Link>
               )}
             </div>
           </li>
