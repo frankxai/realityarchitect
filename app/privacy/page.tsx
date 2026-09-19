@@ -99,10 +99,10 @@ export default function Privacy() {
           without creating an account.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">
-          <Link href="/assess" className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90">
+          <Link href="/assess" className="rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
             Run the local assessment →
           </Link>
-          <Link href="/standard" className="rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-ink hover:border-accent/50">
+          <Link href="/standard" className="rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-ink hover:border-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
             Read the open standard
           </Link>
         </div>
