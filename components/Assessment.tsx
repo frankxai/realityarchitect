@@ -103,34 +103,35 @@ The assessment ran locally in the browser. Share this artifact only after removi
     } catch {
       setCopyState('failed')
     }
+    setTimeout(() => setCopyState('idle'), 2000)
   }
 
   return (
     <div>
-      <div className="border-y border-border py-6">
-        <p className="text-sm font-semibold text-ink">Optional context for your export</p>
-        <p className="mt-1 text-sm text-muted">This stays in this browser. Nothing is submitted or saved by the site.</p>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <label className="text-sm text-muted">
+      <div className="mb-10 rounded-xl border border-border bg-surface p-6 sm:p-8">
+        <h2 className="font-mono text-xs font-semibold uppercase tracking-wider text-accent">Build your brief</h2>
+        <p className="mt-2 text-sm text-muted">This stays in this browser. No account required. No data is transmitted or saved.</p>
+        <div className="mt-6 grid gap-6 sm:grid-cols-2">
+          <label className="flex flex-col text-sm font-medium text-ink">
             System name
-            <input value={systemName} onChange={(event) => setSystemName(event.target.value)} autoComplete="off" placeholder="Creator research loop" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink outline-none focus:border-accent" />
+            <input value={systemName} onChange={(event) => setSystemName(event.target.value)} autoComplete="off" placeholder="e.g., Creator research loop" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink placeholder:text-muted/50 outline-none focus-visible:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
           </label>
-          <label className="text-sm text-muted">
+          <label className="flex flex-col text-sm font-medium text-ink">
             Repeating job
-            <input value={repeatingJob} onChange={(event) => setRepeatingJob(event.target.value)} autoComplete="off" placeholder="Turn source notes into a reviewed brief" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink outline-none focus:border-accent" />
+            <input value={repeatingJob} onChange={(event) => setRepeatingJob(event.target.value)} autoComplete="off" placeholder="e.g., Turn source notes into a reviewed brief" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink placeholder:text-muted/50 outline-none focus-visible:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
           </label>
         </div>
       </div>
 
-      <div className="mt-8 divide-y divide-border border-y border-border">
+      <div className="divide-y divide-border border-t border-border">
         {MOVES.map((move, index) => (
-          <fieldset key={move.move} className="grid gap-4 py-6 sm:grid-cols-[8rem_1fr]">
+          <fieldset key={move.move} className="group grid gap-4 py-8 sm:grid-cols-[10rem_1fr]">
             <legend className="contents">
-              <span className="font-mono text-xs font-bold text-accent">0{index + 1} · {move.move}</span>
+              <span className="font-mono text-sm font-bold text-accent sm:pt-1">0{index + 1} · {move.move}</span>
             </legend>
-            <div>
-              <p className="text-ink">{move.q}</p>
-              <div className="mt-4 flex flex-wrap gap-2">
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+              <p className="text-base text-ink max-w-lg">{move.q}</p>
+              <div className="flex flex-wrap gap-2 sm:shrink-0">
                 {OPTIONS.map((option) => (
                   <button
                     type="button"
@@ -140,7 +141,7 @@ The assessment ran locally in the browser. Share this artifact only after removi
                       setAnswers((previous) => previous.map((answer, answerIndex) => answerIndex === index ? option.value : answer))
                       setSubmitted(false)
                     }}
-                    className={`rounded-lg border px-4 py-2 text-sm font-medium ${answers[index] === option.value ? 'border-accent bg-accent/15 text-accent' : 'border-border text-muted hover:border-accent/60 hover:text-ink'}`}
+                    className={`rounded-lg border px-4 py-2.5 text-sm font-medium transition-[color,background-color,border-color] motion-reduce:transition-none ${answers[index] === option.value ? 'border-accent bg-accent/10 text-accent' : 'border-border bg-surface text-muted hover:border-accent/50 hover:text-ink'}`}
                   >
                     {option.label}
                   </button>
@@ -151,24 +152,34 @@ The assessment ran locally in the browser. Share this artifact only after removi
         ))}
       </div>
 
-      <button type="button" disabled={!allAnswered} onClick={() => { setCopyState('idle'); setSubmitted(true) }} className="mt-8 rounded-lg bg-accent px-6 py-3 font-semibold text-bg hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40">
-        {allAnswered ? 'Generate architecture brief' : 'Answer all five to continue'}
-      </button>
+      <div className="mt-6 flex flex-col items-start gap-4 border-t border-border pt-10">
+        <button type="button" disabled={!allAnswered} onClick={() => { setCopyState('idle'); setSubmitted(true) }} className="w-full sm:w-auto rounded-lg bg-accent px-8 py-4 text-base font-semibold text-bg transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
+          {allAnswered ? 'Export architecture brief' : 'Answer all five to build brief'}
+        </button>
+        {!allAnswered && <p className="text-sm text-muted">Complete the assessment to generate your local Markdown export.</p>}
+      </div>
 
       {submitted && (
-        <section ref={resultRef} tabIndex={-1} aria-labelledby="assessment-result-title" aria-describedby="assessment-result-summary" className="blueprint-resolve mt-10 border border-accent/40 bg-surface p-6 sm:p-8">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">{gapIndex === -1 ? 'Your review target' : 'Your first gap'}</p>
-          <h2 id="assessment-result-title" className="mt-2 text-3xl font-bold text-ink">{status}</h2>
-          <p id="assessment-result-summary" className="mt-3 max-w-2xl text-muted">Build <strong className="text-ink">{recommendation.artifact.toLowerCase()}</strong> next. The export includes an acceptance test, guardrail, and seven-day build order.</p>
+        <section ref={resultRef} tabIndex={-1} aria-labelledby="assessment-result-title" aria-describedby="assessment-result-summary" className="blueprint-resolve mt-12 rounded-xl border border-accent/30 bg-surface/50 p-6 sm:p-10 backdrop-blur-sm">
+          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">{gapIndex === -1 ? 'Full system review' : 'Your first architecture gap'}</p>
+          <h2 id="assessment-result-title" className="mt-3 text-3xl font-bold text-ink sm:text-4xl">{status}</h2>
+          <p id="assessment-result-summary" className="mt-4 max-w-2xl text-lg text-muted">Build <strong className="text-ink font-medium">{recommendation.artifact.toLowerCase()}</strong> next. Your local export includes the acceptance test, guardrail, and step-by-step build order.</p>
 
-          <div className="mt-6 max-h-[28rem] overflow-auto border border-border bg-bg p-4">
-            <pre className="whitespace-pre-wrap font-mono text-xs leading-relaxed text-muted">{brief}</pre>
+          <div className="mt-8 rounded-lg border border-border bg-bg">
+            <div className="border-b border-border bg-surface px-4 py-3 flex justify-between items-center rounded-t-lg">
+              <span className="font-mono text-xs font-medium text-muted">architecture-brief.md</span>
+              <button type="button" onClick={copyBrief} className="text-xs font-medium text-accent hover:text-accent/80 transition-colors">
+                {copyState === 'copied' ? 'Copied!' : 'Copy raw'}
+              </button>
+            </div>
+            <div className="max-h-[32rem] overflow-auto p-4 sm:p-6">
+              <pre className="whitespace-pre-wrap font-mono text-sm leading-relaxed text-muted">{brief}</pre>
+            </div>
           </div>
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <button type="button" onClick={downloadBrief} className="rounded-lg bg-accent px-5 py-2.5 font-semibold text-bg">Download Markdown</button>
-            <button type="button" onClick={copyBrief} className="rounded-lg border border-border px-5 py-2.5 font-semibold text-ink hover:border-accent">Copy brief</button>
-            <Link href="/start" className="rounded-lg border border-border px-5 py-2.5 text-center font-semibold text-ink hover:border-accent">Open build path</Link>
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+            <button type="button" onClick={downloadBrief} className="w-full sm:w-auto rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg transition-opacity hover:opacity-90">Download Markdown</button>
+            <Link href="/start" className="w-full sm:w-auto rounded-lg border border-border bg-surface px-6 py-3 text-center font-semibold text-ink transition-colors hover:border-accent hover:bg-surface/80">Open build path</Link>
           </div>
           <p role="status" aria-live="polite" aria-atomic="true" className="mt-3 text-sm text-muted">{copyState === 'copied' ? 'Brief copied.' : copyState === 'failed' ? 'Copy was blocked by the browser; use the download instead.' : 'Your input has not left this browser.'}</p>
         </section>
