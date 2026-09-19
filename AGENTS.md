@@ -49,6 +49,7 @@ you own `.reality/` appends. Never commit a reality.md to a public repo or send 
 | The self-diagnostic logic | `app/assess/page.tsx`, `components/Assessment.tsx` |
 | Forkable agent templates | `starter/` (one file per move) |
 | Brand / site config | `lib/site.ts` (the only brand file) |
+| v0 MCP / visual compiler rules | `docs/v0.md` |
 
 ## Tone
 
