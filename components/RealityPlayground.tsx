@@ -1,54 +1,17 @@
 'use client'
 
 import { useState } from 'react'
+import { SCENARIOS, DEFAULT_SCENARIO } from '@/lib/reality-samples'
 
 /**
  * The live protocol playground. It calls the same stateless engine the MCP
  * server exposes (/api/reality), so a visitor can feel the five verbs act on a
  * file before wiring up a client — and see that the file never leaves the box.
+ *
+ * The sample files come from lib/reality-samples, the same source the
+ * conformance test locks — so what a visitor runs and what CI asserts stay in
+ * lockstep. Switching persona swaps the whole input set at once.
  */
-
-const SAMPLE = `---
-standard: reality.md
-version: "0.1"
-updated: 2026-07-10
----
-# reality.md — Dana Okafor
-
-## Identity
-- I am someone who ships one durable system a week, not ten drafts.
-- I am a builder first and a poster second.
-
-## Aims
-- Ship the client-intake agent by Friday. Trigger: if a lead form arrives, draft a scoped reply.
-- Grow the newsletter to a working cadence: one concrete teardown per week.
-
-## Attention
-- Surface: client intake, agent design, workflow specs, retrieval, evaluation.
-- Mute: crypto, follower-count threads, tool-of-the-day hype, generic "AI news".
-
-## State
-- Deep work 07:00–11:00, no meetings before noon.
-- Sleep by 23:00. Protect it.
-
-## Systems
-- Weekly teardown pipeline: draft agent → editor pass → schedule.
-
-## Environment
-
-## Feedback
-- Friday review: what shipped, what stalled, one correction.
-
-## Guardrails
-- Never send client email without my explicit yes.
-- Never publish a claim I cannot show evidence for.`
-
-const SURFACE_SAMPLE = [
-  'New retrieval eval framework for intake agents',
-  '10 AI tools you NEED this week (thread)',
-  'Client replied asking to scope a workflow spec',
-  'Which coin is pumping today',
-].join('\n')
 
 type Verb = 'read' | 'surface' | 'propose' | 'guard'
 
@@ -65,14 +28,26 @@ type ProposeResult = { gapMove: string; gapSections: string[]; artifact: string;
 type GuardResult = { decision: 'allow' | 'refuse' | 'ask'; reason: string; triggeredGuardrails: string[] }
 
 export function RealityPlayground() {
-  const [doc, setDoc] = useState(SAMPLE)
+  const [scenarioId, setScenarioId] = useState(DEFAULT_SCENARIO.id)
+  const [doc, setDoc] = useState(DEFAULT_SCENARIO.doc)
   const [verb, setVerb] = useState<Verb>('read')
-  const [inputs, setInputs] = useState(SURFACE_SAMPLE)
-  const [situation, setSituation] = useState('')
-  const [action, setAction] = useState('Email the client the scoped reply now')
+  const [inputs, setInputs] = useState(DEFAULT_SCENARIO.surfaceInputs.join('\n'))
+  const [situation, setSituation] = useState(DEFAULT_SCENARIO.proposeSituation)
+  const [action, setAction] = useState(DEFAULT_SCENARIO.guardAction)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<unknown>(null)
+
+  function loadScenario(id: string) {
+    const s = SCENARIOS.find((x) => x.id === id) ?? DEFAULT_SCENARIO
+    setScenarioId(s.id)
+    setDoc(s.doc)
+    setInputs(s.surfaceInputs.join('\n'))
+    setSituation(s.proposeSituation)
+    setAction(s.guardAction)
+    setResult(null)
+    setError(null)
+  }
 
   async function run() {
     setLoading(true)
@@ -116,6 +91,27 @@ export function RealityPlayground() {
         </span>
       </div>
 
+      {/* Persona presets — switch the whole input set so the verbs behave differently. */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-border px-5 py-3">
+        <span className="font-mono text-[0.68rem] uppercase tracking-[0.14em] text-muted">persona</span>
+        {SCENARIOS.map((s) => (
+          <button
+            key={s.id}
+            type="button"
+            onClick={() => loadScenario(s.id)}
+            aria-pressed={scenarioId === s.id}
+            title={s.blurb}
+            className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+              scenarioId === s.id
+                ? 'border-accent bg-accent/15 text-accent'
+                : 'border-border text-muted hover:border-accent/50 hover:text-ink'
+            }`}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+
       <div className="grid gap-0 lg:grid-cols-2">
         {/* Left: the file + inputs */}
         <div className="border-b border-border p-5 lg:border-b-0 lg:border-r">
@@ -125,10 +121,10 @@ export function RealityPlayground() {
             </label>
             <button
               type="button"
-              onClick={() => setDoc(SAMPLE)}
+              onClick={() => loadScenario(scenarioId)}
               className="font-mono text-[0.7rem] text-accent hover:underline"
             >
-              reset sample
+              reset persona
             </button>
           </div>
           <textarea
