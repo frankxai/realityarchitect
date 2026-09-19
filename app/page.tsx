@@ -30,12 +30,12 @@ const PROOF = [
 export default function Home() {
   return (
     <>
-      <section className="blueprint relative -mx-5 overflow-hidden px-5 py-14 sm:mx-0 sm:rounded-[2.5rem] sm:px-10 sm:py-24 lg:px-14">
+      <section className="blueprint relative -mx-5 overflow-hidden px-5 py-14 sm:py-24">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_75%_14%,rgba(91,140,255,0.18),transparent_34%),radial-gradient(circle_at_18%_18%,rgba(167,139,250,0.09),transparent_30%)]" aria-hidden="true" />
         <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div>
             <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">Open method · working assessment</p>
-            <h1 className="mt-5 max-w-[18ch] text-4xl font-extrabold leading-[0.98] tracking-[-0.05em] text-ink sm:text-5xl lg:text-6xl xl:text-7xl">{site.tagline}</h1>
+            <h1 className="mt-5 max-w-[12ch] text-5xl font-extrabold leading-[0.98] tracking-[-0.05em] text-ink sm:text-7xl">{site.tagline}</h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{site.description}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link href="/assess" className="rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Run the assessment</Link>
@@ -83,7 +83,7 @@ export default function Home() {
           <div className="divide-y divide-border border-y border-border">
             {[
               ['Free now', 'Assessment, architecture brief, method, standard, and starter templates.'],
-              ['Digital product', 'Planned assessment pack. No checkout until the files, license, support, and refund terms are complete.'],
+              ['Digital product', 'Planned assessment pack; no checkout until the files, license, support, price, and refund terms are complete.'],
               ['Guided service', 'A scoped architecture review with availability and deliverables confirmed before payment.'],
             ].map(([label, description], index) => (
               <div key={label} className="grid gap-3 py-6 sm:grid-cols-[3rem_10rem_1fr]">
