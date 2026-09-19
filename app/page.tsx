@@ -38,8 +38,8 @@ export default function Home() {
             <h1 className="mt-5 max-w-[12ch] text-5xl font-extrabold leading-[0.98] tracking-[-0.05em] text-ink sm:text-7xl">{site.tagline}</h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{site.description}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link href="/assess" className="rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.22)]">Run the assessment</Link>
-              <Link href="/method" className="rounded-lg border border-border bg-bg/40 px-6 py-3 text-center font-semibold text-ink hover:border-accent">Inspect the method</Link>
+              <Link href="/assess" className="rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Run the assessment</Link>
+              <Link href="/method" className="rounded-lg border border-border bg-bg/40 px-6 py-3 text-center font-semibold text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Inspect the method</Link>
             </div>
             <dl className="mt-9 divide-y divide-border border-y border-border">
               {PROOF.map(([label, value]) => (
@@ -59,7 +59,7 @@ export default function Home() {
               </div>
               <span className="rounded-full border border-accent/35 px-3 py-1 text-xs font-semibold text-accent">Markdown</span>
             </div>
-            <pre className="blueprint-resolve mt-5 overflow-auto border border-border bg-bg p-5 font-mono text-xs leading-relaxed text-muted">{ARTIFACT}</pre>
+            <pre tabIndex={0} className="blueprint-resolve mt-5 overflow-auto border border-border bg-bg p-5 font-mono text-xs leading-relaxed text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">{ARTIFACT}</pre>
             <p className="mt-4 text-sm leading-relaxed text-muted">The complete export adds five scores, a seven-day build order, privacy note, and a decision to keep, revise, or stop the system.</p>
           </div>
         </div>
@@ -95,8 +95,8 @@ export default function Home() {
           </div>
         </div>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Link href="/vault" className="rounded-lg border border-border px-5 py-2.5 text-center font-semibold text-ink hover:border-accent">See implementation options</Link>
-          <a href={site.github} className="rounded-lg border border-border px-5 py-2.5 text-center font-semibold text-ink hover:border-accent">Fork the open repo</a>
+          <Link href="/vault" className="rounded-lg border border-border px-5 py-2.5 text-center font-semibold text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">See implementation options</Link>
+          <a href={site.github} className="rounded-lg border border-border px-5 py-2.5 text-center font-semibold text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Fork the open repo</a>
         </div>
       </section>
 
