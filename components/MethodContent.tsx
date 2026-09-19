@@ -62,10 +62,10 @@ export function MethodContent() {
           Find the first layer your workflow has not locked in. Build one inspectable artifact there before adding another agent, automation, or metric.
         </p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Link href="/assess" className="rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg hover:opacity-90">
+          <Link href="/assess" className="rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
             Run the local assessment
           </Link>
-          <a href="#moves" className="rounded-lg border border-border px-6 py-3 text-center font-semibold text-ink hover:border-accent">
+          <a href="#moves" className="rounded-lg border border-border px-6 py-3 text-center font-semibold text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
             Inspect the five moves
           </a>
         </div>
