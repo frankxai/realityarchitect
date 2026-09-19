@@ -105,6 +105,19 @@ export default function Standard() {
         </a>
       </div>
 
+      <div className="mt-6 flex flex-col items-start gap-4 rounded-2xl border border-border glass p-7 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-ink">Prefer to call it, not copy it?</h2>
+          <p className="mt-2 max-w-xl text-sm text-muted">
+            A live, stateless <Link href="/mcp" className="text-accent hover:underline">MCP server</Link> exposes the
+            five verbs as tools for any agent client — operating on the file you pass in, storing nothing.
+          </p>
+        </div>
+        <Link href="/mcp" className="shrink-0 rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-ink hover:border-accent">
+          Connect the MCP server →
+        </Link>
+      </div>
+
       <p className="mt-10 max-w-2xl text-sm text-muted">
         The spec is MIT — extend it, fork it, build tools on it. The name stays generic on purpose: standards survive
         their authors. The method that fills the file is the <Link href="/method" className="text-accent hover:underline">Architect&apos;s Loop</Link>,

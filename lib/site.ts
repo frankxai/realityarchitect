@@ -22,6 +22,7 @@ export const site = {
   nav: [
     { label: 'The Method', href: '/method' },
     { label: 'reality.md', href: '/standard' },
+    { label: 'MCP', href: '/mcp' },
     { label: 'Assess', href: '/assess' },
     { label: 'Apply', href: '/apply' },
     { label: 'Start', href: '/start' },
