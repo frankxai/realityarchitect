@@ -121,7 +121,7 @@ export default function Standard() {
       <p className="mt-10 max-w-2xl text-sm text-muted">
         The spec is MIT — extend it, fork it, build tools on it. The name stays generic on purpose: standards survive
         their authors. The method that fills the file is the <Link href="/method" className="text-accent hover:underline">Architect&apos;s Loop</Link>,
-        and it&apos;s free too.
+        and the forkable <Link href="/skills" className="text-accent hover:underline">Skill Packs</Link> read it before they act — all free.
       </p>
 
       <EmailCapture headline="Get the reality.md field guide" sub="The full walkthrough for filling all eight sections — with the agent prompts that maintain it for you." />

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { packs } from '@/lib/packs'
 
 const MOVES = [
   {
@@ -96,6 +97,18 @@ export function MethodContent() {
               <div>
                 <h3 className="text-xl font-bold text-ink">{move.name}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{move.question}</p>
+                {(() => {
+                  const pack = packs.find((p) => p.move === move.name)
+                  if (!pack) return null
+                  return (
+                    <Link
+                      href={`/skills#${pack.id}`}
+                      className="mt-3 inline-block font-mono text-[0.7rem] font-semibold text-accent hover:underline"
+                    >
+                      {pack.status === 'shipped' ? `Fork the ${pack.name} pack →` : `${pack.name} pack · ships next →`}
+                    </Link>
+                  )
+                })()}
               </div>
               <dl className="grid gap-4 sm:grid-cols-3">
                 <div>

@@ -82,7 +82,7 @@ test('public routes own canonical metadata and sitemap coverage', () => {
   assert.doesNotMatch(layout, /alternates:\s*\{\s*canonical:/)
   assert.match(site, /url: ['"]https:\/\/www\.realityarchitect\.ai['"]/)
   assert.doesNotMatch(site, /url: ['"]https:\/\/realityarchitect\.ai['"]/)
-  for (const route of ['', 'method', 'standard', 'assess', 'apply', 'start', 'vault', 'privacy']) {
+  for (const route of ['', 'method', 'standard', 'skills', 'assess', 'apply', 'start', 'vault', 'privacy']) {
     const page = read(route ? `app/${route}/page.tsx` : 'app/page.tsx')
     const path = route ? `/${route}` : '/'
     assert.match(page, new RegExp(`canonical: ['\"]${path.replace('/', '\\/')}['\"]`))
@@ -91,11 +91,14 @@ test('public routes own canonical metadata and sitemap coverage', () => {
   const sitemap = read('app/sitemap.ts')
   const robots = read('app/robots.ts')
   assert.match(sitemap, /'\/standard'/)
+  assert.match(sitemap, /'\/skills'/)
   assert.match(sitemap, /'\/privacy'/)
   assert.match(sitemap, /url: `\$\{site\.url\}\$\{path\}`/)
   assert.match(robots, /sitemap: `\$\{site\.url\}\/sitemap\.xml`/)
-  assert.match(read('lib/site.ts'), /label: 'Privacy', href: '\/privacy'/)
-  assert.match(read('components/Footer.tsx'), /href="\/privacy"/)
+  // Privacy moved to the grouped footer sitemap; the Footer renders it from site.footerNav.
+  assert.match(read('lib/site.ts'), /href: '\/privacy'/)
+  assert.match(read('lib/site.ts'), /footerNav:/)
+  assert.match(read('components/Footer.tsx'), /site\.footerNav/)
 
   const publicUrlSources = [
     'lib/site.ts',
@@ -103,6 +106,8 @@ test('public routes own canonical metadata and sitemap coverage', () => {
     'app/page.tsx',
     'app/method/page.tsx',
     'app/standard/page.tsx',
+    'app/skills/page.tsx',
+    'lib/packs.ts',
     'app/assess/page.tsx',
     'app/apply/page.tsx',
     'app/start/page.tsx',

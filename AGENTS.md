@@ -43,9 +43,11 @@ you own `.reality/` appends. Never commit a reality.md to a public repo or send 
 
 | You want | Look in |
 |----------|---------|
-| The manifesto / thesis | `README.md`, `app/page.tsx` |
+| The platform overview / thesis | `README.md`, `app/page.tsx` |
 | The five moves in depth | `app/method/page.tsx` |
 | The reality.md spec + template | `standard/` |
+| The Skill Packs (build layer) | `app/skills/page.tsx`, `lib/packs.ts`, `starter/` |
+| The live MCP server + playground | `app/mcp/`, `app/api/mcp/`, `app/api/reality/`, `lib/reality.ts` |
 | The self-diagnostic logic | `app/assess/page.tsx`, `components/Assessment.tsx` |
 | Forkable agent templates | `starter/` (one file per move) |
 | Brand / site config | `lib/site.ts` (the only brand file) |

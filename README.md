@@ -53,6 +53,24 @@ building, plus a `~/.reality/` state directory agents maintain. Eight sections, 
 
 ---
 
+## Skill Packs — the build layer
+
+One forkable agent template per move, surfaced at [realityarchitect.ai/skills](https://www.realityarchitect.ai/skills)
+and sourced from [`starter/`](./starter). Each pack is harness-agnostic and reads your `reality.md`. Don't install all
+five — run the assessment, find your first gap, and fork **that** one.
+
+---
+
+## The MCP server — reality.md, made live
+
+Instead of copying the protocol into every harness, call it. A stateless [MCP server](./app/api/mcp) exposes the five
+verbs (READ · SURFACE · PROPOSE · GUARD) as tools for any agent client, operating on the `reality.md` you pass in and
+storing nothing. Same engine as the browser playground — only the transport differs, locked by a conformance test.
+
+→ Connect it: [realityarchitect.ai/mcp](https://www.realityarchitect.ai/mcp)
+
+---
+
 ## Two ways to use this repo
 
 **As a human** — read [`/start`](https://www.realityarchitect.ai/start), run the assessment, then fork the templates in
@@ -69,14 +87,19 @@ template does, and how to orient your human toward their next move without guess
 
 ```
 app/            the website (Next.js 16, App Router) — realityarchitect.ai
-  page.tsx        the manifesto + the Loop
-  method/         the five moves in depth
+  page.tsx        the platform overview — spine, four pillars, the Loop
+  method/         the five moves in depth (each links to its pack)
   standard/       the reality.md standard, rendered
+  skills/         the Skill Packs, sourced from starter/
+  mcp/            the live MCP server + browser playground
   assess/         the Architect Assessment (find your gap)
   start/          the getting-started path
+  api/mcp/        the stateless MCP server route
+  api/reality/    the same engine over plain JSON
 standard/       the reality.md spec v0.1 + template + filled example
 starter/        forkable, harness-agnostic agent templates — one per move
 lib/site.ts     the single brand-config file
+lib/packs.ts    Skill Pack content (single source for /skills)
 AGENTS.md       navigation map for AI agents exploring this repo
 ```
 
