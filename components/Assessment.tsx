@@ -114,11 +114,11 @@ The assessment ran locally in the browser. Share this artifact only after removi
         <div className="mt-6 grid gap-6 sm:grid-cols-2">
           <label className="flex flex-col text-sm font-medium text-ink">
             System name
-            <input value={systemName} onChange={(event) => setSystemName(event.target.value)} autoComplete="off" placeholder="e.g., Creator research loop" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink placeholder:text-muted/50 outline-none focus:border-accent focus:ring-1 focus:ring-accent" />
+            <input value={systemName} onChange={(event) => setSystemName(event.target.value)} autoComplete="off" placeholder="e.g., Creator research loop" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink placeholder:text-muted/50 outline-none focus-visible:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
           </label>
           <label className="flex flex-col text-sm font-medium text-ink">
             Repeating job
-            <input value={repeatingJob} onChange={(event) => setRepeatingJob(event.target.value)} autoComplete="off" placeholder="e.g., Turn source notes into a reviewed brief" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink placeholder:text-muted/50 outline-none focus:border-accent focus:ring-1 focus:ring-accent" />
+            <input value={repeatingJob} onChange={(event) => setRepeatingJob(event.target.value)} autoComplete="off" placeholder="e.g., Turn source notes into a reviewed brief" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink placeholder:text-muted/50 outline-none focus-visible:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
           </label>
         </div>
       </div>
