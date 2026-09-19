@@ -164,7 +164,11 @@ export function surface(parsed: ParsedReality, inputs: string[]): SurfaceResult[
     const surfaceHits = surfaceTerms.filter((t) => tokens.has(t))
     const aimHits = aimTerms.filter((t) => tokens.has(t))
 
-    if (muteHits.length > surfaceHits.length + aimHits.length) {
+    // Mute wins ties: with at least one mute hit and no more surface/aim signal
+    // than mute signal, protect attention and mute. A strict "greater than"
+    // would let a single surface keyword override an equal mute — the opposite
+    // of what an attention filter is for.
+    if (muteHits.length > 0 && muteHits.length >= surfaceHits.length + aimHits.length) {
       return { input, verdict: 'mute', matched: muteHits, reason: `Matches Mute rules (${muteHits.join(', ')}).` }
     }
     if (surfaceHits.length || aimHits.length) {

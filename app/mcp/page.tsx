@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { site } from '@/lib/site'
 import { CopyBlock } from '@/components/CopyBlock'
+import { RealityPlayground } from '@/components/RealityPlayground'
 import { EmailCapture } from '@/components/EmailCapture'
 
 const ENDPOINT = `${site.url}/api/mcp`
@@ -55,7 +56,8 @@ export default function McpPage() {
     <div className="py-14">
       <p className="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-accent">Model Context Protocol · live server</p>
       <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-        Run the reality.md protocol from <span className="text-accent">any agent</span>
+        Run the reality.md protocol from{' '}
+        <span className="editorial font-normal text-accent sm:text-[1.1em]">any agent</span>
       </h1>
       <p className="mt-5 max-w-2xl text-lg text-muted">
         The <Link href="/standard" className="text-accent hover:underline">reality.md standard</Link> works today for any
@@ -68,10 +70,23 @@ export default function McpPage() {
         <CopyBlock label="server endpoint (Streamable HTTP)" code={ENDPOINT} />
       </div>
 
+      <div className="mt-12">
+        <h2 className="text-2xl font-bold text-ink">Try it before you connect it</h2>
+        <p className="mt-3 max-w-2xl text-muted">
+          Edit the file, pick a verb, and run. The same engine answers here and over MCP — this page just calls it
+          over HTTP instead. Your document is analyzed in memory and kept nowhere.
+        </p>
+        <div className="mt-6">
+          <RealityPlayground />
+        </div>
+      </div>
+
       <h2 className="mt-16 text-2xl font-bold text-ink">The sovereign guarantee</h2>
+      <p className="editorial-quote mt-4 max-w-2xl text-2xl text-ink sm:text-[1.75rem]">
+        A memory file for your life should never live in someone else&apos;s database.
+      </p>
       <p className="mt-3 max-w-2xl text-muted">
-        A memory file for your life should never live in someone else&apos;s database. This server is built so it
-        cannot — the design, not a promise, is what protects you.
+        This server is built so it cannot — the design, not a promise, is what protects you.
       </p>
       <div className="mt-6 grid gap-3 sm:grid-cols-3">
         {GUARANTEES.map((g) => (

@@ -35,7 +35,10 @@ export default function Home() {
         <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
           <div>
             <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">Open method · working assessment</p>
-            <h1 className="mt-5 max-w-[12ch] text-5xl font-extrabold leading-[0.98] tracking-[-0.05em] text-ink sm:text-7xl">{site.tagline}</h1>
+            <h1 className="mt-5 max-w-[15ch] text-5xl font-extrabold leading-[0.98] tracking-[-0.05em] text-ink sm:text-7xl">
+              Find the system gap.{' '}
+              <span className="editorial font-normal text-accent sm:text-[1.06em]">Build the next artifact.</span>
+            </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{site.description}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link href="/assess" className="rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.22)]">Run the assessment</Link>
@@ -68,17 +71,30 @@ export default function Home() {
       <section className="border-t border-border py-16 sm:py-24" aria-labelledby="loop-title">
         <div className="mb-8 max-w-2xl">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Dependency map</p>
-          <h2 id="loop-title" className="mt-3 text-3xl font-bold text-ink sm:text-5xl">Build the first missing layer.</h2>
+          <h2 id="loop-title" className="mt-3 text-3xl font-bold text-ink sm:text-5xl">Build the first <span className="editorial font-normal text-accent-2 sm:text-[1.08em]">missing layer</span>.</h2>
           <p className="mt-3 text-muted">See, Design, Build, Automate, and Compound are ordered. The assessment stops at the first gap so the recommendation remains buildable.</p>
         </div>
         <ArchitectLoopMap />
+      </section>
+
+      <section className="border-t border-border py-16 sm:py-24" aria-labelledby="thesis-quote">
+        <figure className="mx-auto max-w-3xl text-balance text-center">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">The shift</p>
+          <blockquote id="thesis-quote" className="editorial-quote mt-5 text-3xl text-ink sm:text-[2.6rem]">
+            A tool-user asks the model for answers. A system-builder gives the model{' '}
+            <span className="text-accent">a place to stand</span>.
+          </blockquote>
+          <figcaption className="mt-5 text-sm text-muted">
+            The method is the ordered path from the first to the second — one buildable layer at a time.
+          </figcaption>
+        </figure>
       </section>
 
       <section className="border-t border-border py-16 sm:py-24" aria-labelledby="path-title">
         <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
           <div>
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Product path</p>
-            <h2 id="path-title" className="mt-3 text-3xl font-bold text-ink sm:text-5xl">Open method first. Paid help only where delivery is real.</h2>
+            <h2 id="path-title" className="mt-3 text-3xl font-bold text-ink sm:text-5xl">Open method first. Paid help only where <span className="editorial font-normal text-accent-2 sm:text-[1.08em]">delivery is real</span>.</h2>
           </div>
           <div className="divide-y divide-border border-y border-border">
             {[
