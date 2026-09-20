@@ -28,25 +28,32 @@ export default function Waitlist() {
   if (!product) return null
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-20 lg:px-8">
       <div className="max-w-3xl">
         <p className="font-mono text-sm font-semibold uppercase tracking-[0.15em] text-accent">reality.md Vault · waitlist</p>
-        <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
+        <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-ink sm:mt-4 sm:text-5xl">
           A contract for how you run your life, and an agent that holds you to it.
         </h1>
-        <p className="mt-6 text-lg leading-relaxed text-muted sm:text-xl">
+        <p className="mt-4 text-base leading-relaxed text-muted sm:mt-6 sm:text-xl">
           Obsidian and Notion organise what you know. The Vault holds a contract about what you do, and the
-          protocol an agent follows to keep you to it: read, surface, propose, log, guard. It is not for
-          sale yet. This list decides whether it gets built.
+          protocol an agent follows to keep you to it: read, surface, propose, log, guard.
+        </p>
+        <p className="mt-3 text-base leading-relaxed text-ink sm:text-lg">
+          What lands: {product.gift.deliverable.toLowerCase()} — markdown files in your own repo, read by
+          your own agent. The standard itself is{' '}
+          <Link href="/standard" className="font-medium text-accent underline-offset-4 hover:underline">
+            already public
+          </Link>
+          ; the Vault is not for sale yet, and this list decides whether it gets built.
         </p>
       </div>
 
-      <section className="mt-10 max-w-3xl rounded-xl border border-border bg-surface p-6 sm:mt-14 sm:p-8" aria-labelledby="waitlist-heading">
+      <section className="mt-2 max-w-3xl sm:mt-6" aria-labelledby="waitlist-heading">
         <h2 id="waitlist-heading" className="sr-only">Join the Vault waitlist</h2>
         <WaitlistForm
           productId={product.id}
           headline="Put your name on it"
-          sub="Email first. Then three questions you can skip: what you would pay, who you are, what you are trying to do. They decide whether the Vault is built next, and what it costs."
+          sub="Email first. Then three questions you can skip: what you would pay, who you are, what you use today and what it is not doing. They decide whether the Vault is built next, and what it costs."
         />
       </section>
 
@@ -77,17 +84,9 @@ export default function Waitlist() {
               </li>
             ))}
           </ul>
-          <p className="mt-4 text-sm text-muted/80">
-            The founding cohort closes when the Vault opens and does not reopen. Status and permanence, never a
-            discount — there is no price to discount from until you have named one.
-          </p>
+          <p className="mt-4 text-sm text-muted/80">The founding cohort closes when the Vault opens and does not reopen.</p>
         </section>
       </div>
-
-      <p className="mt-14 max-w-3xl text-sm text-muted/80">
-        Your email and answers are stored for this one purpose and are never sold. The form tells you plainly
-        if storage is not configured on this deployment; it will not say you are in when nothing was saved.
-      </p>
     </div>
   )
 }

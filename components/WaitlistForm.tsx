@@ -13,12 +13,6 @@ import registry from '@/data/products.json'
  * "You're in. Check your inbox." while posting nowhere.
  */
 
-const URGENCY = [
-  { value: 'now', label: 'I need this now' },
-  { value: 'this-quarter', label: 'Within a few months' },
-  { value: 'exploring', label: 'Just curious' },
-]
-
 const PRICE_BANDS = [
   { value: 'free-only', label: 'Only if free' },
   { value: 'under-25', label: 'Under 25' },
@@ -47,7 +41,8 @@ export function WaitlistForm({
   const [state, setState] = useState<State | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
-  const [answers, setAnswers] = useState<{ priceBand?: string; role?: string; urgency?: string; pain?: string }>({})
+  const [answers, setAnswers] = useState<{ priceBand?: string; role?: string; pain?: string }>({})
+  const [painDraft, setPainDraft] = useState('')
   const [thanks, setThanks] = useState(false)
 
   if (!product) return null
@@ -81,7 +76,7 @@ export function WaitlistForm({
     setAnswers(next)
     try {
       await post(next)
-      if (next.priceBand && next.role && next.urgency) setThanks(true)
+      if (next.priceBand && next.role && next.pain) setThanks(true)
     } catch {
       // The signal that matters is already stored; a failed refinement is not worth an alarm.
     }
@@ -91,7 +86,7 @@ export function WaitlistForm({
     field,
     options,
   }: {
-    field: 'priceBand' | 'role' | 'urgency'
+    field: 'priceBand' | 'role'
     options: { value: string; label: string }[]
   }) => (
     <div className="mt-2.5 flex flex-wrap gap-2">
@@ -137,17 +132,14 @@ export function WaitlistForm({
               {busy ? 'Joining…' : 'Join the list'}
             </button>
           </div>
-          <label className="mt-3 flex items-start gap-2.5 text-xs text-muted">
+          <label className="mt-3 flex min-h-11 items-center gap-3 text-sm text-muted">
             <input
               type="checkbox"
               checked={consent}
               onChange={(e) => setConsent(e.target.checked)}
-              className="mt-0.5 accent-[var(--color-accent)]"
+              className="h-5 w-5 shrink-0 accent-[var(--color-accent)]"
             />
-            <span>
-              Email me when this exists, and nothing else. One address, stored for this one product, unsubscribe in a
-              click.
-            </span>
+            <span>Email me when this exists, and nothing else. One address, one product, unsubscribe in a click.</span>
           </label>
           {error && <p className="mt-3 text-sm text-accent">{error}</p>}
         </form>
@@ -177,14 +169,32 @@ export function WaitlistForm({
                 <Choice field="role" options={ROLES.map((r) => ({ value: r, label: r }))} />
               </div>
               <div>
-                <span className="text-sm font-medium text-ink">How soon?</span>
-                <Choice field="urgency" options={URGENCY} />
+                <label htmlFor={`pain-${productId}`} className="text-sm font-medium text-ink">
+                  What do you use today, and what is it not doing?
+                </label>
+                <div className="mt-2.5 flex flex-col gap-2 sm:flex-row">
+                  <textarea
+                    id={`pain-${productId}`}
+                    value={painDraft}
+                    onChange={(e) => setPainDraft(e.target.value)}
+                    rows={2}
+                    maxLength={400}
+                    placeholder="Obsidian, free. It holds my notes; it never asks what I said I would do."
+                    className="min-h-11 flex-1 rounded-lg border border-border bg-bg px-4 py-2.5 text-base text-ink focus-visible:border-accent"
+                  />
+                  <button
+                    type="button"
+                    disabled={!painDraft.trim()}
+                    onClick={() => answer({ pain: painDraft.trim() })}
+                    className="min-h-11 rounded-lg border border-border px-4 py-2.5 text-sm font-semibold text-ink hover:border-accent disabled:cursor-not-allowed disabled:opacity-40"
+                  >
+                    Send
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
-            <p className="mt-4 text-sm text-muted">
-              That&apos;s everything. Nothing else will land in your inbox until there is something real to open.
-            </p>
+            <p className="mt-4 text-sm text-muted">That&apos;s everything. Nothing else lands until there is something real to open.</p>
           )}
         </div>
       )}
