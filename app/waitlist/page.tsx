@@ -32,19 +32,15 @@ export default function Waitlist() {
       <div className="max-w-3xl">
         <p className="font-mono text-sm font-semibold uppercase tracking-[0.15em] text-accent">reality.md Vault · waitlist</p>
         <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-ink sm:mt-4 sm:text-5xl">
-          A contract for how you run your life, and an agent that holds you to it.
+          A contract for how you run your life, and a protocol your own agent follows to hold you to it.
         </h1>
-        <p className="mt-4 text-base leading-relaxed text-muted sm:mt-6 sm:text-xl">
-          Obsidian and Notion organise what you know. The Vault holds a contract about what you do, and the
-          protocol an agent follows to keep you to it: read, surface, propose, log, guard.
-        </p>
-        <p className="mt-3 text-base leading-relaxed text-ink sm:text-lg">
-          What lands: {product.gift.deliverable.toLowerCase()} — markdown files in your own repo, read by
-          your own agent. The standard itself is{' '}
+        <p className="mt-4 text-base leading-relaxed text-muted sm:mt-6 sm:text-lg">
+          Obsidian and Notion organise what you know; reality.md is a contract about what you do. The{' '}
           <Link href="/standard" className="font-medium text-accent underline-offset-4 hover:underline">
-            already public
+            standard
           </Link>
-          ; the Vault is not for sale yet, and this list decides whether it gets built.
+          , one worked example and the agent protocol are public markdown, yours now. The private layer does
+          not exist yet. This list decides whether it is built, and what goes in it.
         </p>
       </div>
 

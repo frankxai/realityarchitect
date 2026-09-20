@@ -108,7 +108,7 @@ export function WaitlistForm({
   )
 
   return (
-    <section className="my-10 rounded-2xl border border-border glass p-7">
+    <section className="mt-6 rounded-2xl border border-border glass p-5 sm:my-10 sm:p-7">
       <h3 className="text-xl font-bold text-ink">{headline}</h3>
       <p className="mt-2 max-w-2xl text-sm text-muted">{sub}</p>
 
@@ -179,7 +179,7 @@ export function WaitlistForm({
                     onChange={(e) => setPainDraft(e.target.value)}
                     rows={2}
                     maxLength={400}
-                    placeholder="Obsidian, free. It holds my notes; it never asks what I said I would do."
+                    placeholder="The tool, and the gap"
                     className="min-h-11 flex-1 rounded-lg border border-border bg-bg px-4 py-2.5 text-base text-ink focus-visible:border-accent"
                   />
                   <button
