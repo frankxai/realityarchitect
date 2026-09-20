@@ -32,13 +32,12 @@ export default function Waitlist() {
       <div className="max-w-3xl">
         <p className="font-mono text-sm font-semibold uppercase tracking-[0.15em] text-accent">reality.md Vault · waitlist</p>
         <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
-          A written contract for how you run your life, and an agent that holds you to it.
+          A contract for how you run your life, and an agent that holds you to it.
         </h1>
         <p className="mt-6 text-lg leading-relaxed text-muted sm:text-xl">
-          Obsidian vaults and Notion systems organise what you know. The Vault holds a contract about what
-          you do — and the protocol an agent follows to read it, surface the gap, propose the next move, log
-          what happened, and guard the line you drew. The private layer is not for sale yet. This list is
-          how it gets built, and in what order.
+          Obsidian and Notion organise what you know. The Vault holds a contract about what you do, and the
+          protocol an agent follows to keep you to it: read, surface, propose, log, guard. It is not for
+          sale yet. This list decides whether it gets built.
         </p>
       </div>
 
@@ -47,7 +46,7 @@ export default function Waitlist() {
         <WaitlistForm
           productId={product.id}
           headline="Put your name on it"
-          sub="Email first. Then three questions you can skip — what you would pay, who you are, what you are trying to do. Your answers decide whether the Vault is built before the next thing, and what it costs when it is."
+          sub="Email first. Then three questions you can skip: what you would pay, who you are, what you are trying to do. They decide whether the Vault is built next, and what it costs."
         />
       </section>
 
@@ -56,7 +55,7 @@ export default function Waitlist() {
           <h2 id="already-public-heading" className="text-xl font-bold text-ink">What is already yours</h2>
           <p className="mt-3 text-base leading-relaxed text-muted">
             The reality.md standard, the five-move method, the local assessment and the starter templates are
-            public and complete. Read the standard now — nothing on this list is gated behind a signup.
+            public and complete. Nothing here is gated behind a signup.
           </p>
           <p className="mt-4">
             <Link
