@@ -154,7 +154,7 @@ export function RealityAudit() {
   async function submitWaitlist(email: string) {
     setCaptureStatus('sending')
     try {
-      const res = await fetch('/api/waitlist', {
+      const res = await fetch('/api/apply', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
