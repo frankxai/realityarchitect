@@ -137,8 +137,8 @@ export function MethodContent() {
           The assessment produces the scope, acceptance test, guardrail, and seven-day order. Implementation options remain separate from the free method and are not a checkout promise.
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <Link href="/assess" className="rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg hover:opacity-90">Generate the brief</Link>
-          <Link href="/vault" className="rounded-lg border border-border px-6 py-3 text-center font-semibold text-ink hover:border-accent">Read the implementation boundary</Link>
+          <Link href="/assess" className="rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Generate the brief</Link>
+          <Link href="/vault" className="rounded-lg border border-border px-6 py-3 text-center font-semibold text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Read the implementation boundary</Link>
         </div>
       </section>
     </div>
