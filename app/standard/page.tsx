@@ -37,7 +37,7 @@ const VERBS = [
 
 export default function Standard() {
   return (
-    <div className="py-14">
+    <div className="py-14 overflow-x-hidden break-words">
       <p className="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-accent">An open standard · v0.1</p>
       <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
         reality.md — a memory file for your <span className="text-accent">life</span>, not just your repo
