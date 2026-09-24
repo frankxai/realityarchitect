@@ -17,6 +17,11 @@ export const metadata: Metadata = {
 
 const STEPS = [
   {
+    t: 'Make a Reality Card',
+    d: 'Begin with one ordinary future day. Name the present obstacle and export one action you can verify. Everything stays in this browser session.',
+    href: '/threshold', cta: 'Enter Threshold',
+  },
+  {
     t: 'Run the assessment',
     d: 'Find the first move you haven\'t locked in. Export the result as a Markdown architecture brief with an acceptance test and guardrail.',
     href: '/assess', cta: 'Take the assessment',
