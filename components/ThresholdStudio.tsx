@@ -159,8 +159,8 @@ export function ThresholdStudio() {
               <textarea id="fact" rows={3} value={card.fact} onChange={(event) => update('fact', event.target.value)}
                 placeholder="A specific fact I can check is…" className={input} />
             </label>
-            <label className={label} htmlFor="obstacle">Which inner obstacle will show up first?
-              <input id="obstacle" value={card.obstacle} onChange={(event) => update('obstacle', event.target.value)}
+            <label className={label} htmlFor="inner-obstacle">Which inner obstacle will show up first?
+              <textarea id="inner-obstacle" rows={2} value={card.obstacle} onChange={(event) => update('obstacle', event.target.value)}
                 placeholder="When I reach for my phone instead of starting…" className={input} />
             </label>
             <label className={label} htmlFor="response">When it appears, what will you do?
