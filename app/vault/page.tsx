@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { site } from '@/lib/site'
+import { WaitlistForm } from '@/components/WaitlistForm'
 
 export const metadata: Metadata = {
   title: 'Implementation Options',
@@ -72,6 +73,18 @@ export default function Vault() {
               </article>
             ))}
           </div>
+        </section>
+
+        <section className="mt-16 rounded-xl border border-border bg-surface p-6 sm:p-10" aria-labelledby="vault-waitlist-heading">
+          <h2 id="vault-waitlist-heading" className="sr-only">Vault waitlist</h2>
+          <WaitlistForm
+            productId="realityarchitect-vault"
+            headline="Tell me it should exist"
+            sub="Email first, then three questions you can skip. What you answer decides whether the private layer is built before the next thing, and what it costs if it is."
+          />
+          <p className="mt-4 text-sm text-muted/80">
+            The full page, with what founding members get and what is already public: <Link href="/waitlist" className="font-medium text-accent hover:underline">/waitlist</Link>.
+          </p>
         </section>
 
         <section className="mt-16 rounded-xl border border-border bg-surface p-8 sm:p-10" aria-labelledby="private-boundary-heading">
