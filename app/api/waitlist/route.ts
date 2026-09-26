@@ -1,5 +1,5 @@
 import registry from '@/data/products.json'
-import { publicState, createRateLimiter, callerKey } from '@/lib/waitlist.mjs'
+import { publicState, createRateLimiter, callerKey, kvCredentials } from '@/lib/waitlist.mjs'
 
 /**
  * Per-product waitlist. Wire-compatible with `starlight/packages/demand-capture`:
@@ -20,8 +20,7 @@ export const dynamic = 'force-dynamic'
 
 type Product = (typeof registry.products)[number]
 
-const KV_URL = process.env.KV_REST_API_URL
-const KV_TOKEN = process.env.KV_REST_API_TOKEN
+const KV = kvCredentials(process.env)
 const RESEND_KEY = process.env.RESEND_API_KEY
 const RESEND_AUDIENCE = process.env.RESEND_AUDIENCE_ID
 
@@ -35,9 +34,10 @@ const oneOf = (v: unknown, allowed: string[]) => (typeof v === 'string' && allow
 const find = (id: unknown): Product | undefined => registry.products.find((p) => p.id === id)
 
 async function kv(command: unknown[]): Promise<unknown> {
-  const res = await fetch(KV_URL as string, {
+  if (!KV) throw new Error('KV not configured')
+  const res = await fetch(KV.url, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${KV_TOKEN}`, 'Content-Type': 'application/json' },
+    headers: { Authorization: `Bearer ${KV.token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify(command),
     cache: 'no-store',
   })
@@ -81,7 +81,7 @@ export async function POST(req: Request) {
   const email = clip(body.email, 320)?.toLowerCase()
   if (!email || !EMAIL_RE.test(email)) return Response.json({ error: 'Valid email required' }, { status: 400 })
   if (body.consent !== true) return Response.json({ error: 'Consent required' }, { status: 400 })
-  if (!KV_URL || !KV_TOKEN) return unconfigured()
+  if (!KV) return unconfigured()
 
   const url = new URL(req.url)
   try {
@@ -142,7 +142,7 @@ export async function GET(req: Request) {
 
   const product = find(new URL(req.url).searchParams.get('productId'))
   if (!product) return Response.json({ error: 'Unknown product' }, { status: 404 })
-  if (!KV_URL || !KV_TOKEN) return unconfigured()
+  if (!KV) return unconfigured()
   try {
     const count = await kv(['get', key(product.id, 'count')])
     return Response.json(publicState(product, count ? Number(count) : 0))
