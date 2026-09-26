@@ -84,3 +84,15 @@ test('the route never builds a response body of its own', () => {
   assert.ok(src.includes('writeLimit.take('), 'POST is rate limited')
   assert.ok(src.includes('readLimit.take('), 'GET is rate limited')
 })
+
+test('KV credentials resolve from either the Vercel KV or the Upstash pair, never a mix', async () => {
+  const { kvCredentials } = await import('../lib/waitlist.mjs')
+  assert.equal(kvCredentials({}), null)
+  assert.deepEqual(kvCredentials({ KV_REST_API_URL: 'k', KV_REST_API_TOKEN: 'kt' }), { url: 'k', token: 'kt' })
+  assert.deepEqual(kvCredentials({ UPSTASH_REDIS_REST_URL: 'u', UPSTASH_REDIS_REST_TOKEN: 'ut' }), { url: 'u', token: 'ut' })
+  assert.equal(kvCredentials({ KV_REST_API_URL: 'k', UPSTASH_REDIS_REST_TOKEN: 'ut' }), null)
+  assert.deepEqual(
+    kvCredentials({ KV_REST_API_URL: 'k', UPSTASH_REDIS_REST_URL: 'u', UPSTASH_REDIS_REST_TOKEN: 'ut' }),
+    { url: 'u', token: 'ut' }
+  )
+})
