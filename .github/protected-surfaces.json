@@ -1,0 +1,19 @@
+{
+  "$comment": "Surfaces of realityarchitect.ai that already work and must be evolved, not replaced. Enforced by scripts/governance/surface-guard.mjs. A change needs a Surface change brief that says how every job survives; `rearchitect` changes and `locked` surfaces also need Frank's surface-approved label. Add a surface when a page proves its value; remove one only with Frank's word. Jobs are matched as words in the brief's Keeps line, so keep them distinct. Estate view: starlight graph/protected-surfaces.graph.json.",
+  "surfaces": [
+    {
+      "id": "homepage",
+      "policy": "evolve",
+      "paths": ["app/page.tsx", "components/EmailCapture*"],
+      "jobs": ["positioning", "method", "capture works", "trust"],
+      "why": "The door to the Reality Architect method: what it is, how it works, and the capture that turns a reader into a waitlist signup. A narrower rewrite that passes its own tests can still erase it (the frankx.ai homepage was replaced exactly that way on 2026-08-27). components/EmailCapture* is the homepage's capture form (also used on /standard and /start)."
+    },
+    {
+      "id": "brand-system",
+      "policy": "evolve",
+      "paths": ["app/globals.css"],
+      "jobs": ["visual identity", "typography", "accessibility"],
+      "why": "The site's tokens and type (Tailwind v4 theme in app/globals.css). A change here repaints every page at once."
+    }
+  ]
+}

@@ -7,6 +7,7 @@
   "homepage": "https://www.realityarchitect.ai",
   "packageManager": "pnpm@11.5.0",
   "scripts": {
+    "test:governance": "node --test scripts/tests/governance-gates.test.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
