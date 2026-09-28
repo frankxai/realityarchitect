@@ -1,5 +1,5 @@
 {
-  "$comment": "Surfaces of realityarchitect.ai that already work and must be evolved, not replaced. Enforced by scripts/governance/surface-guard.mjs. A change needs a Surface change brief that says how every job survives; `rearchitect` changes and `locked` surfaces also need Frank's surface-approved label. Add a surface when a page proves its value; remove one only with Frank's word. Jobs are matched as words in the brief's Keeps line, so keep them distinct. Estate view: starlight graph/protected-surfaces.graph.json.",
+  "$comment": "Surfaces of realityarchitect.ai that already work and must be evolved, not replaced. Enforced by scripts/governance/surface-guard.mjs, which reads this file from the base branch. A change needs a Surface change brief that says how every job survives (\"job: explanation\"); `rearchitect` changes and `locked` surfaces also need Frank's surface-approved label, re-applied after new commits. The gates themselves are a built-in locked surface. Add a surface when a page proves its value; remove one only with Frank's word. Estate view: starlight graph/protected-surfaces.graph.json.",
   "surfaces": [
     {
       "id": "homepage",
