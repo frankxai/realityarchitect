@@ -4,7 +4,7 @@
     {
       "id": "homepage",
       "policy": "evolve",
-      "paths": ["app/page.tsx", "components/EmailCapture*"],
+      "paths": ["app/page.tsx", "components/EmailCapture*", "components/ArchitectLoopMap*", "lib/site.ts"],
       "jobs": ["positioning", "method", "capture works", "trust"],
       "why": "The door to the Reality Architect method: what it is, how it works, and the capture that turns a reader into a waitlist signup. A narrower rewrite that passes its own tests can still erase it (the frankx.ai homepage was replaced exactly that way on 2026-08-27). components/EmailCapture* is the homepage's capture form (also used on /standard and /start)."
     },
