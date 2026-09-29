@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
-import { site } from '@/lib/site'
+import { ogImage, site } from '@/lib/site'
 import { EmailCapture } from '@/components/EmailCapture'
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
     description: 'A user-owned Markdown contract for the context, aims, and guardrails an agent should read.',
     url: '/standard',
     type: 'website',
+    images: [ogImage],
   },
 }
 
@@ -59,13 +61,12 @@ export default function Standard() {
       </div>
 
       <div className="mt-6 aspect-video max-h-[320px] w-full overflow-hidden rounded-2xl border border-border glass relative flex items-center justify-center">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/reality-spec.png" alt="reality.md Standard Specification Blueprint" className="object-cover w-full h-full opacity-90" loading="lazy" />
+        <Image src="/images/reality-spec.png" alt="reality.md Standard Specification Blueprint" fill sizes="(min-width: 1024px) 1024px, 100vw" className="object-cover opacity-90" />
       </div>
 
       <h2 className="mt-16 text-2xl font-bold text-ink">Eight sections, eight levers</h2>
       <p className="mt-3 max-w-2xl text-muted">
-        Each section is an intervention point on the one chain outcomes actually flow through:
+        Each section is an intervention point in a working model of how outcomes happen:
         attention → belief → action → environment → feedback → outcome. An empty section isn&apos;t a failure — it&apos;s your gap,
         found. (The <Link href="/assess" className="text-accent hover:underline">assessment</Link> tells you which one.)
       </p>

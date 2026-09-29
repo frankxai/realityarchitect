@@ -33,7 +33,7 @@ harness that exists and every harness that will exist.
 
 ## Anatomy of `reality.md`
 
-Eight sections. Each one is a *lever that actually moves outcomes* — and each maps to a move of the
+Eight sections. Each one is a *lever in the model below* — and each maps to a move of the
 [Architect's Loop](https://www.realityarchitect.ai/method). Keep the whole file under ~150 lines: it's a contract, not a
 journal. (The journal lives in `.reality/`.)
 
@@ -104,7 +104,7 @@ That's the entire integration.
 
 Every section of the file is an intervention point on that chain. An agent reading your `reality.md` is pulling the
 levers *with* you: directing attention, lowering the cost of action, holding the environment, closing the feedback
-loop. That's the whole trick — and it's mechanism, not magic, which is why it works again and again.
+loop. That's the whole trick — and it's mechanism, not magic.
 
 ---
 
