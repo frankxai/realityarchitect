@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { site } from '@/lib/site'
+import { ogImage, site } from '@/lib/site'
 import { EmailCapture } from '@/components/EmailCapture'
 
 export const metadata: Metadata = {
@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     description: 'Assess the gap, export the brief, and build one missing layer.',
     url: '/start',
     type: 'website',
+    images: [ogImage],
   },
 }
 
@@ -28,7 +29,7 @@ const STEPS = [
   },
   {
     t: 'Fork the open starter',
-    d: 'The repo ships real, runnable agent templates — one per move — built on the Starlight Intelligence Protocol. Clone it, open it in your AI editor, and the README is the map your agent reads to orient itself.',
+    d: 'The repo ships agent templates for the See, Build, and Automate moves (Design and Compound ship next), built on the Starlight Intelligence Protocol. Clone it, open it in your AI editor, and the README is the map your agent reads to orient itself.',
     href: site.github, cta: 'Open the repo',
   },
   {
