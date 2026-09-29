@@ -20,7 +20,7 @@ const brief = (over = {}) => {
   }
   return ['### Surface change brief', ...Object.entries(b).map(([k, v]) => `${k}: ${v}`)].join('\n')
 }
-const run = (over) => evaluateSurfaces({ registry, baseRegistry: registry, changed: ['app/page.tsx'], body: brief(), labels: [], eventAction: 'opened', ...over })
+const run = (over) => evaluateSurfaces({ registry, baseRegistry: registry, changed: ['app/page.tsx'], body: brief(), labels: [], eventAction: 'opened', approvedBy: 'frankxai', ...over })
 
 test('glob matching covers exact paths, * and **', () => {
   assert.ok(matches('app/page.tsx', 'app/page.tsx'))
@@ -60,6 +60,23 @@ test("rearchitect and locked surfaces need Frank's surface-approved label", () =
   assert.match(locked.errors.join('\n'), /locked/)
 })
 
+test("only an approver's label counts: a bot or collaborator applying surface-approved is not Frank", () => {
+  const withActor = (approvedBy) => run({ body: brief({ Kind: 'rearchitect' }), labels: ['surface-approved'], eventAction: 'labeled', approvedBy })
+  assert.deepEqual(withActor('frankxai').errors, [])
+  assert.match(withActor('some-bot[bot]').errors.join('\n'), /frankxai/)
+  assert.match(withActor(undefined).errors.join('\n'), /frankxai/, 'unknown actor fails closed')
+})
+
+test('an approval older than the head commit is stale on any event, not only synchronize', () => {
+  const base = { body: brief({ Kind: 'rearchitect' }), labels: ['surface-approved'], eventAction: 'edited' }
+  assert.match(run({ ...base, approvedAt: '2026-09-28T10:00:00Z', headCommittedAt: '2026-09-28T11:00:00Z' }).errors.join('\n'), /earlier head/)
+  assert.deepEqual(run({ ...base, approvedAt: '2026-09-28T12:00:00Z', headCommittedAt: '2026-09-28T11:00:00Z' }).errors, [])
+})
+
+test('the gate test file is part of the locked governance surface', () => {
+  assert.match(run({ changed: ['scripts/tests/governance-gates.test.mjs'], body: '' }).errors.join('\n'), /governance/)
+})
+
 test('an approval does not survive new commits: synchronize marks it stale', () => {
   const result = run({ body: brief({ Kind: 'rearchitect' }), labels: ['surface-approved'], eventAction: 'synchronize' })
   assert.equal(result.staleApproval, true)
@@ -80,6 +97,7 @@ test('changing the gates themselves is a locked governance surface once they exi
 
 test('a brief left inside the template comment does not count', () => {
   assert.match(run({ body: `<!--\n${brief()}\n-->` }).errors.join('\n'), /Add a Surface change brief/)
+  assert.match(run({ body: `Notes <!-- never closed\n${brief()}` }).errors.join('\n'), /Add a Surface change brief/, 'GitHub hides everything after an unclosed comment')
 })
 
 test('parseBriefs reads several surfaces from one body', () => {
@@ -87,7 +105,7 @@ test('parseBriefs reads several surfaces from one body', () => {
 })
 
 const bot = 'chatgpt-codex-connector'
-const finding = (body, extra = {}) => ({ author: bot, association: 'NONE', body, createdAt: '2026-09-28T10:00:00Z', ...extra })
+const finding = (body, extra = {}) => ({ author: bot, isBot: true, association: 'NONE', body, createdAt: '2026-09-28T10:00:00Z', ...extra })
 const reply = (body, extra = {}) => ({ author: 'frankxai', association: 'OWNER', body, createdAt: '2026-09-28T11:00:00Z', ...extra })
 const commits = [{ oid: 'a1b2c3d4e5f6a7b8c9d0a1b2c3d4e5f6a7b8c9d0', committedDate: '2026-09-28T10:30:00Z' }]
 const gate = (threads, topLevel = []) => evaluateFindings({ threads, topLevel, commits, author: 'frankxai' })
@@ -121,20 +139,121 @@ test('review gate: only the PR author or repo members can answer', () => {
   assert.match(gate([{ isResolved: false, comments: [finding('![P1 Badge] x'), outsider] }]).join('\n'), /P1/)
 })
 
-test('review gate: severity-marked findings in review bodies or PR comments need a later answer too', () => {
-  const top = [finding('![P1 Badge] Rate limit missing on /api/demand')]
+test('review gate: severity-marked findings in review bodies or PR comments need their own later answer', () => {
+  const top = [finding('![P1 Badge] Rate limit missing on /api/demand', { url: 'https://github.com/o/r/pull/1#issuecomment-11' })]
   assert.match(gate([], top).join('\n'), /P1/)
-  assert.deepEqual(gate([], [...top, reply('Fixed in a1b2c3d: /api/demand now uses the shared limiter.')]), [])
+  assert.deepEqual(gate([], [...top, reply('Re "Rate limit missing on /api/demand": fixed in a1b2c3d with the shared limiter.')]), [], 'quoting the title answers it')
+  assert.deepEqual(gate([], [...top, reply('Fixed in a1b2c3d (https://github.com/o/r/pull/1#issuecomment-11).')]), [], 'linking the finding answers it')
   assert.deepEqual(gate([], [finding('Here are some automated review suggestions for this pull request.')]), [], 'boilerplate without a finding is ignored')
 })
 
-test('review gate: only the named AI reviewers are gated, not every bot', () => {
-  for (const login of ['dependabot[bot]', 'vercel[bot]', 'github-actions[bot]']) {
-    assert.deepEqual(gate([{ isResolved: false, comments: [finding('![P1 Badge] x', { author: login })] }]), [], login)
-  }
-  for (const login of ['chatgpt-codex-connector[bot]', 'copilot-pull-request-reviewer', 'coderabbitai[bot]', 'claude']) {
-    assert.match(gate([{ isResolved: false, comments: [finding('![P2 Badge] x', { author: login })] }]).join('\n'), /unanswered/, login)
-  }
+test('review gate: one generic reply does not answer several top-level findings', () => {
+  const top = [
+    finding('![P2 Badge] Cache the sitemap', { url: 'u#issuecomment-1' }),
+    finding('![P2 Badge] Escape the RSS titles', { url: 'u#issuecomment-2', createdAt: '2026-09-28T10:05:00Z' }),
+  ]
+  const errors = gate([], [...top, reply('All addressed, thanks!')])
+  assert.equal(errors.length, 2)
+  assert.deepEqual(gate([], [...top, reply('Cache the sitemap: done in a1b2c3d.'), reply('Escape the RSS titles: declined, titles are already escaped by the feed library.')]), [])
+})
+
+test('review gate: each badged section of one review body is its own finding', () => {
+  const body = '![P2 Badge] Cache the sitemap\nsome detail\n\n![P1 Badge] Escape user input in search\nmore detail'
+  const top = [finding(body, { url: 'u#pullrequestreview-9' })]
+  const errors = gate([], [...top, reply('Cache the sitemap: done in a1b2c3d.')])
+  assert.equal(errors.length, 1)
+  assert.match(errors[0], /P1.*Escape user input/)
+  assert.deepEqual(gate([], [...top, reply('Cache the sitemap: done in a1b2c3d.'), reply('Escape user input in search: fixed in a1b2c3d.')]), [])
+})
+
+test('review gate: only named AI reviewers are gated, not every bot', () => {
+  const dependabot = { author: 'dependabot', isBot: true, association: 'NONE', body: '![P1 Badge] Bumps x from 1 to 2', createdAt: '2026-09-28T10:00:00Z' }
+  assert.deepEqual(gate([{ isResolved: false, comments: [dependabot] }], [dependabot]), [])
+})
+
+test('review gate: an edited finding needs an answer newer than the edit', () => {
+  const edited = finding('![P1 Badge] New problem after edit', { editedAt: '2026-09-28T12:00:00Z' })
+  assert.match(gate([{ isResolved: false, comments: [edited, reply('Fixed in a1b2c3d.')] }]).join('\n'), /P1/, 'commit and reply predate the edit')
+  const later = reply('Fixed in b2c3d4e.', { createdAt: '2026-09-28T13:00:00Z' })
+  const commits2 = [...commits, { oid: 'b2c3d4e5f6a7b8c9d0a1b2c3d4e5f6a7b8c9d0a1', committedDate: '2026-09-28T12:30:00Z' }]
+  assert.deepEqual(evaluateFindings({ threads: [{ isResolved: false, comments: [edited, later] }], topLevel: [], commits: commits2, author: 'frankxai' }), [])
+})
+
+test('review gate: a short finding title can be answered by quoting it exactly', () => {
+  const body = '![P2 Badge] Fix XSS\nd\n\n![P2 Badge] Cache the sitemap\nd'
+  const top = [finding(body)]
+  assert.deepEqual(gate([], [...top, reply('Fix XSS: done in a1b2c3d.'), reply('Cache the sitemap: done in a1b2c3d.')]), [])
+})
+
+test('review gate: findings of a dismissed AI review no longer block', () => {
+  const dismissed = { isResolved: false, comments: [finding('![P1 Badge] Obsolete finding', { dismissed: true })] }
+  assert.deepEqual(gate([dismissed], [finding('![P1 Badge] Obsolete body finding', { dismissed: true })]), [])
+})
+
+test('review gate: a thread too long to read completely fails closed', () => {
+  const long = { isResolved: false, truncated: true, comments: [finding('![P2 Badge] x'), reply('Fixed in a1b2c3d.')] }
+  assert.match(gate([long]).join('\n'), /too long/)
+})
+
+test('review gate: a human account named like a reviewer is not a reviewer', () => {
+  const impostor = { author: 'claude-fan', isBot: false, association: 'NONE', body: '![P1 Badge] Fake finding', createdAt: '2026-09-28T10:00:00Z' }
+  assert.deepEqual(gate([{ isResolved: false, comments: [impostor] }], [impostor]), [])
+})
+
+test('review gate: an AI finding posted as a reply inside a thread is evaluated', () => {
+  const thread = { isResolved: false, comments: [
+    { author: 'someone', isBot: false, association: 'NONE', body: 'question about this line', createdAt: '2026-09-28T09:00:00Z' },
+    finding('![P1 Badge] Unbounded loop here', { createdAt: '2026-09-28T10:00:00Z' }),
+  ] }
+  assert.match(gate([thread]).join('\n'), /P1.*Unbounded loop/)
+  thread.comments.push(reply('Fixed in a1b2c3d.'))
+  assert.deepEqual(gate([thread]), [])
+})
+
+test('review gate: dismissal applies per finding, not per thread', () => {
+  const thread = { isResolved: false, comments: [
+    finding('![P2 Badge] From a dismissed review', { dismissed: true }),
+    finding('![P1 Badge] From an active review', { createdAt: '2026-09-28T10:30:00Z' }),
+  ] }
+  const errors = gate([thread])
+  assert.equal(errors.length, 1)
+  assert.match(errors[0], /active review/)
+})
+
+test('review gate: with several findings in one thread, each answer must name its finding', () => {
+  const thread = { isResolved: false, comments: [
+    finding('![P1 Badge] Unbounded loop in parser'),
+    finding('![P1 Badge] Missing auth check on export', { createdAt: '2026-09-28T10:10:00Z' }),
+    reply('Fixed in a1b2c3d.'),
+  ] }
+  assert.equal(gate([thread]).length, 2, 'a generic reply names neither')
+  thread.comments.push(reply('Unbounded loop in parser: fixed in a1b2c3d.'), reply('Missing auth check on export: fixed in a1b2c3d.'))
+  assert.deepEqual(gate([thread]), [])
+})
+
+test('review gate: a quoted title must tell the finding apart from siblings that share its opening words', () => {
+  const shared = 'Validate the pull request fix references before accepting'
+  const thread = { isResolved: false, comments: [
+    finding(`![P1 Badge] ${shared} them for P0 findings`),
+    finding(`![P1 Badge] ${shared} them for P1 findings`, { createdAt: '2026-09-28T10:10:00Z' }),
+    reply(`${shared}: fixed in a1b2c3d.`),
+  ] }
+  assert.equal(gate([thread]).length, 2, 'the shared prefix names neither finding')
+  thread.comments.push(reply(`${shared} them for P0 findings: fixed in a1b2c3d.`))
+  assert.equal(gate([thread]).length, 1, 'a full quote answers only its own finding')
+  const twins = { isResolved: false, comments: [
+    finding('![P1 Badge] Same title twice', { url: 'https://x/pull/1#discussion_r11' }),
+    finding('![P1 Badge] Same title twice', { url: 'https://x/pull/1#discussion_r12', createdAt: '2026-09-28T10:10:00Z' }),
+    reply('Same title twice: fixed in a1b2c3d.'),
+  ] }
+  assert.equal(gate([twins]).length, 2, 'identical titles can only be answered by link')
+  twins.comments.push(reply('discussion_r11 and discussion_r12: fixed in a1b2c3d.'))
+  assert.deepEqual(gate([twins]), [])
+})
+
+test('review gate: resolving does not cover a finding edited afterwards', () => {
+  const edited = { isResolved: true, comments: [finding('![P2 Badge] Changed after resolution', { editedAt: '2026-09-28T12:00:00Z' })] }
+  assert.match(gate([edited]).join('\n'), /unanswered/)
 })
 
 test('review gate: human threads are left to humans', () => {
