@@ -11,7 +11,7 @@
     {
       "id": "brand-system",
       "policy": "evolve",
-      "paths": ["app/globals.css"],
+      "paths": ["app/globals.css", "app/layout.tsx", "components/Nav.tsx", "components/Footer.tsx"],
       "jobs": ["visual identity", "typography", "accessibility"],
       "why": "The site's tokens and type (Tailwind v4 theme in app/globals.css). A change here repaints every page at once."
     }
