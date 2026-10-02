@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { RealityAudit } from '@/components/RealityAudit'
+import { ogImage } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Apply — the reality.md Audit',
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
     description: 'Ten questions. A drafted reality.md. One computed divergence between your stated priority and your logged hours.',
     url: '/apply',
     type: 'website',
+    images: [ogImage],
   },
 }
 
