@@ -36,6 +36,20 @@ this month, and a brick the next move stacks on.
 → Full walkthrough: [realityarchitect.ai/method](https://www.realityarchitect.ai/method)
 → Find your gap: [realityarchitect.ai/assess](https://www.realityarchitect.ai/assess)
 
+## Observatory and guardians
+
+`/observatory` adds a local-session evidence ledger for observations, hypotheses, simulations,
+decisions, outcomes, and fiction. Record sources, methods, uncertainty, and the next test; export
+JSON explicitly to retain a copy. All entries remain unreviewed. No source verification, AI calls,
+automatic persistence, or live monitoring is implemented.
+
+`/guardians` describes the proposed design charter for bounded protection, learning, creativity,
+and companionship. It is not an operating guardian service. Scientists, designers, engineers,
+builders, residents, and stewards retain visible responsibilities for real-world work.
+
+Architecture, scientific boundaries, urban pilot, portfolio placement, and staged execution:
+[`docs/REALITY-OBSERVATORY-AND-GUARDIANS-2026-10-02.md`](docs/REALITY-OBSERVATORY-AND-GUARDIANS-2026-10-02.md).
+
 ---
 
 ## The reality.md standard
