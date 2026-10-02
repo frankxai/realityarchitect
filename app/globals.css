@@ -55,6 +55,16 @@ a, button {
 }
 button { cursor: pointer; }
 
+/* Mobile-native baseline (AGENTS.md §11.3 predicate 5). Each line removes one tell that this is
+   a website in a browser: the grey tap flash, text inflating on rotate, the tap delay, and iOS
+   zooming the page into any input under 16px. Zoom itself is never disabled. */
+html { -webkit-text-size-adjust: 100%; }
+a, button, [role="button"], input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+input, select, textarea { font-size: max(16px, 1em); }
+
 /* Keyboard visibility — the focus ring is part of the brand, not an afterthought. */
 :focus-visible {
   outline: 2px solid var(--color-accent);

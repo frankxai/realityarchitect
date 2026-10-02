@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Nav } from '@/components/Nav'
@@ -17,6 +17,18 @@ export const metadata: Metadata = {
   openGraph: { title: site.name, description: site.description, siteName: site.name, type: 'website' },
   twitter: { card: 'summary_large_image', title: site.name, description: site.description },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },
+}
+
+// The surface declares a single colour scheme (globals.css `:root { color-scheme: dark }`), so one
+// themeColor is correct. viewportFit: 'cover' is what makes env(safe-area-inset-*) resolve on a
+// phone; without it the site reads as a website inside a browser (AGENTS.md §11.3).
+export const viewport: Viewport = {
+  themeColor: '#06070c',
+  colorScheme: 'dark',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

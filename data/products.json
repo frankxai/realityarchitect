@@ -1,0 +1,30 @@
+{
+  "note": "Mirrored from starlight/graph/products.graph.json — the estate registry is the source of truth. Only rows whose surface is realityarchitect.ai belong here. Never edit a price, stage or gate value in this copy; edit the registry.",
+  "syncedFrom": "starlight/graph/products.graph.json",
+  "syncedAt": "2026-09-02",
+  "products": [
+    {
+      "id": "realityarchitect-vault",
+      "name": "RealityArchitect Vault",
+      "brand": "RealityArchitect",
+      "surface": "realityarchitect.ai",
+      "stage": "concept",
+      "gate": "UNGATED",
+      "priceHypothesis": { "band": "49-149", "currency": "EUR", "evidence": "none yet" },
+      "buyer": "People running their life on a written personal contract",
+      "waitlist": { "enabled": true, "publicCountThreshold": 50, "foundingCohort": 100 },
+      "gift": {
+        "name": "The reality.md starter contract",
+        "deliverable": "The spec, one filled worked example, and the agent protocol (READ/SURFACE/PROPOSE/LOG/GUARD)"
+      },
+      "founding": [
+        "Lifetime access to every future vault revision",
+        "Named in founders.json shipped with the vault",
+        "Input on the v1 spec"
+      ],
+      "milestones": [
+        { "atCount": 100, "commitment": "reality.md v1.0 is ratified and published as an open spec.", "honouredAt": null }
+      ]
+    }
+  ]
+}
