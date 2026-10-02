@@ -38,7 +38,8 @@ export default function Home() {
             <h1 className="mt-5 max-w-[12ch] text-5xl font-extrabold leading-[0.98] tracking-[-0.05em] text-ink sm:text-7xl">{site.tagline}</h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{site.description}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link href="/assess" className="rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Run the assessment</Link>
+              <Link href="/apply" className="rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Take the reality.md Audit</Link>
+              <Link href="/assess" className="rounded-lg border border-border bg-bg/40 px-6 py-3 text-center font-semibold text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Run the assessment</Link>
               <Link href="/method" className="rounded-lg border border-border bg-bg/40 px-6 py-3 text-center font-semibold text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Inspect the method</Link>
             </div>
             <dl className="mt-9 divide-y divide-border border-y border-border">
