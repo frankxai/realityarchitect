@@ -57,6 +57,9 @@ export default function Privacy() {
       </div>
 
       <div className="prose-ai mt-14">
+        <h2>The Imaginal Act uses the same local boundary</h2>
+        <p>Your scene, chosen giving, present fact, obstacle, response, next act, timing, proof criterion, and agency boundary stay in the Threshold page's in-memory state. They are not submitted to AI, saved automatically, or included in page requests. Refreshing or leaving clears them. Markdown, JSON, and clipboard exports happen only when you choose them; these exports may contain personal context.</p>
+
         <h2>Copy and download happen at your direction</h2>
         <p>
           Choosing <strong>Copy brief</strong> writes the generated Markdown to your device clipboard. Choosing

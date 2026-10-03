@@ -83,3 +83,4 @@ The initial implementation may serialize locally to Markdown. Do not put identif
 
 ## Decision gate
 Before coding a hosted program, record: first-session completion, export rate, seven-day return, evidence events created, user-reported clarity, and one qualitative example of a changed action. A beautiful session without a voluntarily chosen next act is an incomplete experience.
+

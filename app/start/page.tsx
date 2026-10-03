@@ -17,11 +17,6 @@ export const metadata: Metadata = {
 
 const STEPS = [
   {
-    t: 'Make a Reality Card',
-    d: 'Begin with one ordinary future day. Name the present obstacle and export one action you can verify. Everything stays in this browser session.',
-    href: '/threshold', cta: 'Enter Threshold',
-  },
-  {
     t: 'Run the assessment',
     d: 'Find the first move you haven\'t locked in. Export the result as a Markdown architecture brief with an acceptance test and guardrail.',
     href: '/assess', cta: 'Take the assessment',
@@ -51,6 +46,12 @@ export default function Start() {
         You don&apos;t need to be technical, and you don&apos;t need to build everything. You need to build the <em>right</em> thing
         in the <em>right</em>{' '}order — one system, the one in front of you. Here&apos;s the path.
       </p>
+
+      <section className="mt-8 rounded-xl border border-border p-6" aria-labelledby="imaginal-entry">
+        <h2 id="imaginal-entry" className="text-xl font-semibold">Start with a possible moment</h2>
+        <p className="mt-3 text-sm leading-7 text-muted">The Imaginal Act is a quiet scene, an original poem, and a local Reality Card. Give a possible day your own words, then choose one act you can verify.</p>
+        <Link href="/threshold" className="mt-4 inline-flex text-sm text-accent underline underline-offset-4">Enter the Imaginal Act →</Link>
+      </section>
 
       <ol className="mt-10 space-y-5">
         {STEPS.map((s, i) => (
