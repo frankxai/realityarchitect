@@ -24,7 +24,7 @@ Keep customer data, brand identity, and authority distinct. A future Starlight i
 
 Spiritual language describes a contemplative lens, not an empirical result. The interface makes no promise of manifestation, clinical effectiveness, wealth, or another person's behavior. Its intended mechanism is authorship plus rehearsal and a specific action plan; whether this implementation helps users act remains untested.
 
-The randomized study by Duckworth et al., *From Fantasy to Action* (2013, published online 2014), supports the distinction between positive imagery alone and mental contrasting with implementation intentions in its school population. It does not establish efficacy for this website or prove a metaphysical law. Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC4106484/ . Quantum physics is not used as evidence that personal desire controls external events.
+The randomized study by Duckworth et al., *From Fantasy to Action* (2013; manuscript available in PMC in 2014), supports the distinction between positive imagery alone and mental contrasting with implementation intentions in its school population. It does not establish efficacy for this website or prove a metaphysical law. Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC4106484/ . Quantum physics is not used as evidence that personal desire controls external events.
 
 ## Asset provenance and scene brief
 
