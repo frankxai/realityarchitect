@@ -17,6 +17,9 @@ const OPTIONS = [
   { label: 'Locked in', value: 2 },
 ]
 
+const focusRing =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg'
+
 const FULL_LOOP_REVIEW = {
   artifact: 'A full-loop review record',
   acceptance: 'Each move has current evidence, an owner, and one named correction or an explicit keep decision.',
@@ -141,7 +144,7 @@ The assessment ran locally in the browser. Share this artifact only after removi
                       setAnswers((previous) => previous.map((answer, answerIndex) => answerIndex === index ? option.value : answer))
                       setSubmitted(false)
                     }}
-                    className={`rounded-lg border px-4 py-2.5 text-sm font-medium transition-[color,background-color,border-color] motion-reduce:transition-none ${answers[index] === option.value ? 'border-accent bg-accent/10 text-accent' : 'border-border bg-surface text-muted hover:border-accent/50 hover:text-ink'}`}
+                    className={`rounded-lg border px-4 py-2.5 text-sm font-medium transition-[color,background-color,border-color] motion-reduce:transition-none ${focusRing} ${answers[index] === option.value ? 'border-accent bg-accent/10 text-accent' : 'border-border bg-surface text-muted hover:border-accent/50 hover:text-ink'}`}
                   >
                     {option.label}
                   </button>
@@ -153,7 +156,7 @@ The assessment ran locally in the browser. Share this artifact only after removi
       </div>
 
       <div className="mt-6 flex flex-col items-start gap-4 border-t border-border pt-10">
-        <button type="button" disabled={!allAnswered} onClick={() => { setCopyState('idle'); setSubmitted(true) }} className="w-full sm:w-auto rounded-lg bg-accent px-8 py-4 text-base font-semibold text-bg transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50">
+        <button type="button" disabled={!allAnswered} onClick={() => { setCopyState('idle'); setSubmitted(true) }} className={`w-full sm:w-auto rounded-lg bg-accent px-8 py-4 text-base font-semibold text-bg transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 ${focusRing}`}>
           {allAnswered ? 'Export architecture brief' : 'Answer all five to build brief'}
         </button>
         {!allAnswered && <p className="text-sm text-muted">Complete the assessment to generate your local Markdown export.</p>}
@@ -168,7 +171,7 @@ The assessment ran locally in the browser. Share this artifact only after removi
           <div className="mt-8 rounded-lg border border-border bg-bg">
             <div className="border-b border-border bg-surface px-4 py-3 flex justify-between items-center rounded-t-lg">
               <span className="font-mono text-xs font-medium text-muted">architecture-brief.md</span>
-              <button type="button" onClick={copyBrief} className="text-xs font-medium text-accent hover:text-accent/80 transition-colors">
+              <button type="button" onClick={copyBrief} className={`rounded-md text-xs font-medium text-accent hover:text-accent/80 transition-colors ${focusRing}`}>
                 {copyState === 'copied' ? 'Copied!' : 'Copy raw'}
               </button>
             </div>
@@ -178,8 +181,8 @@ The assessment ran locally in the browser. Share this artifact only after removi
           </div>
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <button type="button" onClick={downloadBrief} className="w-full sm:w-auto rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg transition-opacity hover:opacity-90">Download Markdown</button>
-            <Link href="/start" className="w-full sm:w-auto rounded-lg border border-border bg-surface px-6 py-3 text-center font-semibold text-ink transition-colors hover:border-accent hover:bg-surface/80">Open build path</Link>
+            <button type="button" onClick={downloadBrief} className={`w-full sm:w-auto rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg transition-opacity hover:opacity-90 ${focusRing}`}>Download Markdown</button>
+            <Link href="/start" className={`w-full sm:w-auto rounded-lg border border-border bg-surface px-6 py-3 text-center font-semibold text-ink transition-colors hover:border-accent hover:bg-surface/80 ${focusRing}`}>Open build path</Link>
           </div>
           <p role="status" aria-live="polite" aria-atomic="true" className="mt-3 text-sm text-muted">{copyState === 'copied' ? 'Brief copied.' : copyState === 'failed' ? 'Copy was blocked by the browser; use the download instead.' : 'Your input has not left this browser.'}</p>
         </section>
