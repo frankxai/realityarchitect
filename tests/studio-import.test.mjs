@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import { realityCardPacket } from '../lib/reality-card.ts'
 import { parseImport } from '../lib/studio/importer.ts'
 import { sampleState } from '../lib/studio/sample.ts'
 
@@ -36,6 +37,20 @@ test('a Threshold Reality Card becomes an active bridge with its labels intact',
   assert.equal(bridge.moves.length, 1)
   assert.equal(bridge.moves[0].due, '', 'a relative deadline is not a date')
   assert.match(bridge.moves[0].title, /Record one verse — Sunday at noon \(written 2026-10-04\)/)
+})
+
+test('the card /threshold actually downloads imports as a bridge', () => {
+  const card = {
+    domain: 'Craft & Contribution', scene: 'I hear the last note of my finished song in a quiet room.', giving: 'A song I am proud to share.',
+    fact: 'The first verse is drafted.', obstacle: 'I open another tool', response: 'return to the verse', act: 'Record one verse',
+    due: 'Sunday at noon', proof: 'A playable audio file', boundary: 'Listeners choose how to respond.',
+  }
+  const result = parseImport(JSON.stringify(realityCardPacket(card, { date: '2026-10-04', timeZone: 'Europe/Berlin' })), TODAY)
+  assert.equal(result.kind, 'card')
+  assert.equal(result.bridge.scene, card.scene)
+  assert.equal(result.bridge.fact, card.fact)
+  assert.equal(result.bridge.doneWhen, card.proof)
+  assert.match(result.bridge.moves[0].title, /Record one verse/)
 })
 
 test('a card with an exact date keeps it as the move date', () => {
