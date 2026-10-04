@@ -52,8 +52,9 @@ Prompt: “What would an ordinary Tuesday look like when this part of your life 
 An optional hosted state later uses account-scoped authorization, encryption at rest, explicit retention, access logs, and deletion/export controls. Keep a personal/private data boundary even when the public method is open. Human-only authority covers vows, relationships, health decisions, purchases, messaging and sharing.
 
 ## One machine-readable object
-This is the published v1 contract: the shape `/threshold` downloads as JSON and the Studio imports (implemented in
-`lib/reality-card.ts`; a test checks that every emitted field is named here). Each group carries its epistemic label
+This is the published v1 contract: the shape `/threshold` downloads as JSON (implemented in `lib/reality-card.ts`;
+a test checks that every emitted field is named here). Downloading is the only path today; a reader that imports these
+packets must be built against this shape. Each group carries its epistemic label
 in its name, `desired`, `reportedPresent` and `plan`, instead of a separate tag list. Every text field holds the
 person's own words, unedited.
 
