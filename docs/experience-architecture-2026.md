@@ -53,8 +53,9 @@ An optional hosted state later uses account-scoped authorization, encryption at 
 
 ## One machine-readable object
 This is the published v1 contract: the shape `/threshold` downloads as JSON (implemented in `lib/reality-card.ts`;
-a test checks that every emitted field is named here). Downloading is the only path today; a reader that imports these
-packets must be built against this shape. Each group carries its epistemic label
+a test checks that every emitted field is named here). Reality Studio imports it as a new bridge
+(`lib/studio/importer.ts`; a test feeds the real download through the importer). Any other reader must be built
+against this shape. Each group carries its epistemic label
 in its name, `desired`, `reportedPresent` and `plan`, instead of a separate tag list. Every text field holds the
 person's own words, unedited.
 

@@ -12,7 +12,7 @@ export const site = {
   description:
     'An open five-move method, local system-gap assessment, and exportable architecture brief for building dependable AI workflows.',
   author: 'Frank',
-  updatedAt: '2026-07-10',
+  updatedAt: '2026-10-04',
   github: 'https://github.com/frankxai/realityarchitect',
   // The proof layer — this method, already applied. Humans see it works before they build.
   network: [
@@ -21,6 +21,8 @@ export const site = {
   ],
   nav: [
     { label: 'The Method', href: '/method' },
+    { label: 'Studio', href: '/studio' },
+    { label: 'Library', href: '/library' },
     { label: 'reality.md', href: '/standard' },
     { label: 'Assess', href: '/assess' },
     { label: 'Apply', href: '/apply' },

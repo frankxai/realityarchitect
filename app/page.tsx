@@ -21,6 +21,12 @@ owner, boundary, and stop condition.
 Guardrail:
 Do not automate an ambiguous job.`
 
+const DOORS = [
+  { verb: 'Imagine', title: 'The Imaginal Act', body: 'Author one ordinary scene of a life you would love, face one fact, and choose one act you can verify.', href: '/threshold', cta: 'Enter the scene' },
+  { verb: 'Build · Witness', title: 'Reality Studio', body: 'Atlas, bridges, reps, bold moves, signs and snapshots, kept on your device and exported as reality.md and soul.md.', href: '/studio', cta: 'Open the Studio' },
+  { verb: 'Learn', title: 'The Library', body: 'The manifestation canon, taught honestly: what to keep, the mechanism it rides on, and the limits.', href: '/library', cta: 'Read the Library' },
+]
+
 const PROOF = [
   ['Local assessment', 'Five dependency checks run in your browser.'],
   ['Markdown export', 'Download or copy a build brief with no account.'],
@@ -72,6 +78,34 @@ export default function Home() {
           <p className="mt-3 text-muted">See, Design, Build, Automate, and Compound are ordered. The assessment stops at the first gap so the recommendation remains buildable.</p>
         </div>
         <ArchitectLoopMap />
+      </section>
+
+      <section className="border-t border-border py-16 sm:py-24" aria-labelledby="inner-title">
+        <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-dawn">The inner architecture</p>
+            <h2 id="inner-title" className="mt-3 text-3xl font-bold text-ink sm:text-5xl">
+              Imagine it. Build it. <span className="font-serif font-normal italic text-dawn">Witness it.</span>
+            </h2>
+          </div>
+          <p className="text-muted">
+            The systems serve a life. The practice holds both: the scene you are building toward, in your own words, and the
+            bridge of skills, systems, reps and bold moves that reaches it, with an honest record of what happens. Meaning and
+            mechanism, always labeled.
+          </p>
+        </div>
+        <ul className="mt-10 grid gap-4 md:grid-cols-3">
+          {DOORS.map((door) => (
+            <li key={door.href}>
+              <Link href={door.href} className="group flex h-full flex-col rounded-2xl border border-border bg-surface/80 p-6 hover:border-dawn/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dawn focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
+                <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-dawn">{door.verb}</span>
+                <span className="mt-2 text-xl font-semibold text-ink">{door.title}</span>
+                <span className="mt-2 flex-1 text-sm leading-relaxed text-muted">{door.body}</span>
+                <span className="mt-4 text-sm font-medium text-accent group-hover:underline">{door.cta} →</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section className="border-t border-border py-16 sm:py-24" aria-labelledby="path-title">

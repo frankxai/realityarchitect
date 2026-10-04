@@ -1,0 +1,23 @@
+{
+  "name": "realityarchitect",
+  "description": "Reality Architect: the open practice for architecting a life. Imagine it, build it, witness it.",
+  "owner": {
+    "name": "Frank Riemer",
+    "email": "frank@frankx.ai"
+  },
+  "plugins": [
+    {
+      "name": "reality-architect",
+      "description": "The Reality Architect agent profile and skills: onboard soul.md and reality.md, daily practice, witness ledger, bridges with an honest pace check, approved snapshots, decisions, vision boards, and an honest Library tutor.",
+      "version": "0.1.0",
+      "source": "./plugins/reality-architect",
+      "author": {
+        "name": "Frank Riemer",
+        "email": "frank@frankx.ai"
+      },
+      "homepage": "https://www.realityarchitect.ai",
+      "license": "MIT",
+      "category": "productivity"
+    }
+  ]
+}

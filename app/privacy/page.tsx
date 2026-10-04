@@ -62,6 +62,25 @@ export default function Privacy() {
         <h2>The Imaginal Act uses the same local boundary</h2>
         <p>Your scene, chosen giving, present fact, obstacle, response, next act, timing, proof criterion, and agency boundary stay in the Threshold page's in-memory state. They are not submitted to AI, saved automatically, or included in page requests. Refreshing or leaving clears them. Markdown, JSON, and clipboard exports happen only when you choose them; these exports may contain personal context.</p>
 
+        <h2 id="studio">Reality Studio keeps your practice on this device</h2>
+        <p>
+          Unlike the assessment, the Studio remembers your practice between visits, so it stores what you write in this
+          browser on this device: text in the browser&apos;s local storage, and images you add to your map in the
+          browser&apos;s IndexedDB. Nothing you write in the Studio is sent to a server, synced, shared, included in page
+          requests, or read by any analytics. There is no account.
+        </p>
+        <p>
+          Anyone who can use this browser profile can open the Studio and see it, so use a profile that is yours. A private
+          window or blocked site data keeps nothing, and the Studio says so. Clearing this site&apos;s data in your browser
+          deletes the Studio. From <strong>Your data</strong> in the Studio you can export everything as a folder or a
+          backup, import a backup, and delete everything at any time. The address bar only ever shows which view is open,
+          never your words.
+        </p>
+        <p>
+          The Studio can copy a prompt for your own AI assistant. Pasting it anywhere is your choice and goes to that
+          service under its own terms.
+        </p>
+
         <h2>Copy and download happen at your direction</h2>
         <p>
           Choosing <strong>Copy brief</strong> writes the generated Markdown to your device clipboard. Choosing

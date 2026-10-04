@@ -3,7 +3,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-const roots = ['app', 'components', 'lib', 'public']
+// plugins/ and standard/ ship to people and agents too, so the same rules apply there.
+const roots = ['app', 'components', 'lib', 'public', 'plugins', 'standard']
 const files = ['README.md']
 const extensions = new Set(['.ts', '.tsx', '.md', '.txt'])
 const blocked = [
@@ -18,9 +19,23 @@ const blocked = [
   /cannot be debunked/i,
   /placebo neurobiology/i,
   /vagal tone/i,
-  /joe dispenza/i,
   /ancient wisdom and modern science converge/i,
   /reducing execution friction by 10×/i,
+  /guaranteed (?:results|manifestation|outcomes?)/i,
+]
+
+// Teacher names and the manifestation claims the Library corrects may appear in exactly one place: the Library's
+// data, where every entry carries Keep / Mechanism / Limits and every quoted myth carries its correction
+// (tests/library.test.mjs). Everywhere else they stay blocked, so no page can assert or anchor on them.
+const LIBRARY = 'lib/library.ts'
+const libraryOnly = [
+  /joe dispenza/i,
+  /raise your vibration/i,
+  /attract(?:s|ing)? (?:money|wealth|abundance)/i,
+  /quantum (?:proof|proves|physics proves)/i,
+  /law of attraction (?:is|as) (?:a )?(?:real|proven|scientific)/i,
+  /heal(?:s|ing)? (?:cancer|disease|illness)/i,
+  /thoughts? (?:are|is) (?:a )?frequenc/i,
 ]
 
 function walk(dir) {
@@ -38,6 +53,8 @@ const failures = []
 for (const file of files) {
   const body = fs.readFileSync(file, 'utf8')
   for (const phrase of blocked) if (phrase.test(body)) failures.push(`${file} matches ${phrase}`)
+  if (file.split(path.sep).join('/') === LIBRARY) continue
+  for (const phrase of libraryOnly) if (phrase.test(body)) failures.push(`${file} matches ${phrase} (allowed only in ${LIBRARY})`)
 }
 
 if (failures.length) {

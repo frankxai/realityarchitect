@@ -1,0 +1,144 @@
+import assert from 'node:assert/strict'
+import fs from 'node:fs'
+import path from 'node:path'
+import test from 'node:test'
+import { fileURLToPath } from 'node:url'
+import { clearState, loadState, saveState } from '../lib/studio/persist.ts'
+import { STORAGE_KEY } from '../lib/studio/state.ts'
+import { sampleState } from '../lib/studio/sample.ts'
+
+const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
+
+function filesIn(dir) {
+  const full = path.join(root, dir)
+  if (!fs.existsSync(full)) return []
+  return fs.readdirSync(full, { recursive: true })
+    .filter((name) => /\.(ts|tsx)$/.test(name))
+    .map((name) => path.join(dir, name).replaceAll('\\', '/'))
+}
+
+const studioFiles = [...filesIn('lib/studio'), ...filesIn('components/studio'), ...filesIn('app/studio')]
+const read = (file) => fs.readFileSync(path.join(root, file), 'utf8')
+
+class MemoryStorage {
+  constructor() { this.map = new Map() }
+  getItem(key) { return this.map.has(key) ? this.map.get(key) : null }
+  setItem(key, value) { this.map.set(key, String(value)) }
+  removeItem(key) { this.map.delete(key) }
+}
+
+test('no studio file can send personal content anywhere', () => {
+  assert.ok(studioFiles.length >= 10, 'the scan sees the studio')
+  for (const file of studioFiles) {
+    assert.doesNotMatch(read(file), /\b(?:fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|analytics|telemetry)\b/, file)
+  }
+})
+
+test('browser storage is touched in exactly two audited files', () => {
+  for (const file of studioFiles) {
+    if (file !== 'lib/studio/persist.ts') assert.doesNotMatch(read(file), /localStorage/, file)
+    if (file !== 'lib/studio/images.ts') assert.doesNotMatch(read(file), /indexedDB/, file)
+  }
+})
+
+test('the studio speaks through one polite live region and uses native dialogs', () => {
+  const shell = read('components/studio/Studio.tsx')
+  assert.equal(shell.match(/aria-live="polite"/g)?.length, 1)
+  assert.match(shell, /role="status"/)
+  assert.match(shell, /aria-pressed=\{view === entry\.id\}/)
+  assert.match(read('components/studio/DataDialog.tsx'), /<dialog\b/)
+  assert.match(read('components/studio/DataDialog.tsx'), /showModal\(\)/)
+})
+
+test('no studio form posts anywhere and the address only ever holds a view name', () => {
+  for (const file of studioFiles) assert.doesNotMatch(read(file), /\baction=|method="post"/i, file)
+  const shell = read('components/studio/Studio.tsx')
+  assert.match(shell, /replaceState\(null, '', `#\$\{next\}`\)/)
+  for (const file of studioFiles) assert.doesNotMatch(read(file), /URLSearchParams|searchParams|location\.search/, file)
+})
+
+test('the map has a keyboard route and a list equivalent', () => {
+  const map = read('components/studio/MapView.tsx')
+  assert.match(map, /role="region"/)
+  assert.match(map, /tabIndex=\{0\}/)
+  assert.match(map, /ArrowLeft/)
+  assert.match(map, /function MapList/)
+  assert.match(map, /passive: false/)
+  assert.match(map, /if \(!event\.ctrlKey && !event\.metaKey\) return/, 'a plain wheel keeps scrolling the page')
+})
+
+test('the studio saves what is pending when hidden or left, and notices other tabs', () => {
+  const hook = read('components/studio/useStudio.ts')
+  assert.match(hook, /visibilityState === 'hidden'/)
+  assert.match(hook, /addEventListener\('storage'/)
+  assert.match(hook, /return \(\) => \{[^}]*flush\(\)/s, 'unmounting flushes')
+  assert.match(read('components/studio/Studio.tsx'), /another tab/)
+})
+
+test('rest mode has no timer and says what it is', () => {
+  const today = read('components/studio/TodayView.tsx')
+  assert.match(today, /no timer/)
+  assert.match(today, /not a cause of outcomes by itself/)
+  assert.doesNotMatch(today, /setInterval|countdown/i)
+})
+
+test('a full storage keeps the session usable and reports why', () => {
+  const quota = { getItem: () => null, setItem: () => { const error = new Error('full'); error.name = 'QuotaExceededError'; throw error }, removeItem() {} }
+  assert.deepEqual(saveState(sampleState('2026-10-04'), quota), { ok: false, reason: 'quota' })
+  assert.deepEqual(saveState(sampleState('2026-10-04'), null), { ok: false, reason: 'unavailable' })
+  const broken = { getItem: () => null, setItem: () => { throw new Error('nope') }, removeItem() {} }
+  assert.deepEqual(saveState(sampleState('2026-10-04'), broken), { ok: false, reason: 'error' })
+})
+
+test('a full storage still loads what is saved instead of pretending storage is missing', () => {
+  const memory = new MemoryStorage()
+  saveState(sampleState('2026-10-04'), memory)
+  const full = { getItem: (key) => memory.getItem(key), setItem: () => { const error = new Error('full'); error.name = 'QuotaExceededError'; throw error }, removeItem() {} }
+  const loaded = loadState(full)
+  assert.equal(loaded.status, 'loaded')
+  assert.equal(loaded.state.sample, true)
+})
+
+test('when the unreadable copy cannot be kept aside, the load says so', () => {
+  const broken = { getItem: () => '{not json', setItem: () => { throw new Error('full') }, removeItem() {} }
+  const loaded = loadState(broken)
+  assert.equal(loaded.status, 'recovered')
+  assert.equal(loaded.keptAside, false)
+  const roomy = new MemoryStorage()
+  roomy.setItem(STORAGE_KEY, '{not json')
+  assert.equal(loadState(roomy).keptAside, true)
+})
+
+test('a tab never saves over what another tab saved after it loaded', () => {
+  const storage = new MemoryStorage()
+  const first = loadState(storage)
+  const second = loadState(storage)
+  const a = saveState(sampleState('2026-10-04'), storage, first.text)
+  assert.equal(a.ok, true)
+  assert.deepEqual(saveState(sampleState('2026-10-05'), storage, second.text), { ok: false, reason: 'conflict' })
+  assert.equal(storage.getItem(STORAGE_KEY), a.text, 'the first tab’s save is intact')
+  const reloaded = loadState(storage)
+  assert.equal(saveState(sampleState('2026-10-05'), storage, reloaded.text).ok, true, 'after loading the newer copy the second tab can save')
+})
+
+test('saved state loads back; corrupt state is recovered and kept aside, never lost silently', () => {
+  const storage = new MemoryStorage()
+  assert.equal(loadState(storage).status, 'empty')
+  const sample = sampleState('2026-10-04')
+  const saved = saveState(sample, storage)
+  assert.equal(saved.ok, true)
+  const loaded = loadState(storage)
+  assert.equal(loaded.status, 'loaded')
+  assert.equal(loaded.text, saved.text)
+  assert.deepEqual(loaded.state, sample)
+
+  storage.setItem(STORAGE_KEY, '{not json')
+  const recovered = loadState(storage)
+  assert.equal(recovered.status, 'recovered')
+  assert.equal(recovered.state.schema, 'reality-studio')
+  assert.equal(storage.getItem(`${STORAGE_KEY}.unreadable`), '{not json')
+
+  assert.equal(loadState(null).status, 'unavailable')
+  assert.equal(clearState(storage), true)
+  assert.equal(storage.getItem(STORAGE_KEY), null)
+})

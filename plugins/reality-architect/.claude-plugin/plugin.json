@@ -1,0 +1,14 @@
+{
+  "name": "reality-architect",
+  "version": "0.1.0",
+  "description": "Reality Architect for your agents: an agent profile and skills that operate on the open reality.md + soul.md + reality/ format. Imagine it, build it, witness it, with meaning and mechanism kept separate.",
+  "author": {
+    "name": "Frank Riemer",
+    "email": "frank@frankx.ai",
+    "url": "https://www.realityarchitect.ai"
+  },
+  "homepage": "https://www.realityarchitect.ai",
+  "repository": "https://github.com/frankxai/realityarchitect",
+  "license": "MIT",
+  "keywords": ["reality.md", "soul.md", "life-design", "habits", "journaling", "obsidian", "agent-skills", "sip"]
+}
