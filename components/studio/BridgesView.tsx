@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { DOMAINS, GAP_CLASSES, domainLabel, isDomainId } from '@/lib/studio/domains'
 import { agentBrief, aimMd, bridgeSlugs, ifThenSentence, imagePrompt } from '@/lib/studio/export'
+import { setMoveDone } from '@/lib/studio/moves'
 import { PACE_LABEL, assessPace } from '@/lib/studio/pace'
 import { emptyBridge } from '@/lib/studio/state'
 import { localTime, newId } from '@/lib/studio/util'
@@ -167,7 +168,15 @@ function BridgeEditor({ studio, bridge, onDeleted }: { studio: StudioApi; bridge
         </div>
 
         <RepsEditor bridge={bridge} patch={patch} onLog={logRep} />
-        <MovesEditor bridge={bridge} patch={patch} today={today} />
+        <MovesEditor
+          bridge={bridge}
+          patch={patch}
+          today={today}
+          onDone={(move, done) => {
+            update((draft) => setMoveDone(draft, bridge.id, move.id, done, today))
+            announce(done ? `Bold move done and witnessed: ${move.title}.` : `Bold move reopened: ${move.title}. Its ledger entry was removed.`)
+          }}
+        />
         <ReachEditor bridge={bridge} patch={patch} />
       </section>
 
@@ -262,7 +271,7 @@ function RepsEditor({ bridge, patch, onLog }: { bridge: Bridge; patch: Patch; on
   )
 }
 
-function MovesEditor({ bridge, patch, today }: { bridge: Bridge; patch: Patch; today: string }) {
+function MovesEditor({ bridge, patch, today, onDone }: { bridge: Bridge; patch: Patch; today: string; onDone: (move: Move, done: boolean) => void }) {
   const [title, setTitle] = useState('')
   const [due, setDue] = useState('')
   const add = () => {
@@ -281,7 +290,7 @@ function MovesEditor({ bridge, patch, today }: { bridge: Bridge; patch: Patch; t
         {bridge.moves.map((move) => (
           <li key={move.id} className="flex flex-wrap items-center gap-2">
             <label className="flex items-center gap-2 text-xs text-muted">
-              <input type="checkbox" checked={move.done} onChange={(event) => change(move.id, (target) => { target.done = event.target.checked; if (event.target.checked) target.doneAt = today; else delete target.doneAt })} className="h-4 w-4 accent-[#e8d5ad]" />
+              <input type="checkbox" checked={move.done} onChange={(event) => onDone(move, event.target.checked)} className="h-4 w-4 accent-[#e8d5ad]" />
               <span className="sr-only">Done: {move.title}</span>
             </label>
             <input aria-label="Bold move" value={move.title} onChange={(event) => change(move.id, (target) => { target.title = event.target.value })} className={`${small} min-w-0 flex-1 ${move.done ? 'text-muted line-through' : ''}`} />

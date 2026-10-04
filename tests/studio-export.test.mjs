@@ -114,6 +114,11 @@ test('the bundle has unique, safe paths for every part of the format', () => {
     assert.ok(path.startsWith('Reality Architect/'), path)
     assert.doesNotMatch(path, /\.\.|\\|:/)
   }
+  const systems = files.find((file) => file.path === `${ROOT}reality/systems.md`)
+  assert.ok(systems, 'the export carries the systems registry agents expect')
+  assert.match(systems.text, /^# Systems$/m)
+  assert.match(systems.text, /not running yet/i)
+  assert.match(systems.text, /\(planned, Finish the album\)/)
   for (const expected of ['reality.md', 'soul.md', 'START HERE.md', 'reality/atlas.md', 'reality/witness.md', 'reality/evidence.md', 'reality/studio-backup.json']) {
     assert.ok(paths.includes(`${ROOT}${expected}`), expected)
   }

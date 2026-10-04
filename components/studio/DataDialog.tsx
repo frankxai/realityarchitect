@@ -29,6 +29,7 @@ export function DataDialog({ studio, open, onClose, go }: { studio: StudioApi; o
   const [busy, setBusy] = useState(false)
   const [pending, setPending] = useState<StudioState | null>(null)
   const [error, setError] = useState('')
+  const [deleteError, setDeleteError] = useState('')
 
   useEffect(() => {
     const element = dialog.current
@@ -84,10 +85,19 @@ export function DataDialog({ studio, open, onClose, go }: { studio: StudioApi; o
   }
 
   const deleteEverything = async () => {
-    forget()
-    await clearImages()
-    announce('Everything in this Studio was deleted from this device.')
-    onClose()
+    setDeleteError('')
+    const text = forget()
+    const images = await clearImages()
+    if (text && images) {
+      announce('Everything in this Studio was deleted from this device.')
+      onClose()
+      return
+    }
+    // Never claim a deletion the browser did not confirm; keep the dialog open with the honest state.
+    const left = !text && !images ? 'your saved text and images' : !text ? 'your saved text' : 'your images'
+    const message = `The Studio is empty on screen, but this browser did not confirm deleting ${left}. To be sure, clear this site’s data in your browser settings.`
+    setDeleteError(message)
+    announce(message)
   }
 
   return (
@@ -159,6 +169,7 @@ export function DataDialog({ studio, open, onClose, go }: { studio: StudioApi; o
           <h3 id="data-delete" className="text-sm font-semibold text-ink">Delete everything</h3>
           <p className="mt-1 text-xs leading-relaxed text-muted">Removes every entry and image from this browser on this device. Export first if you want to keep anything.</p>
           <div className="mt-3"><ConfirmButton label="Delete everything" confirmLabel="Confirm: delete everything" onConfirm={() => void deleteEverything()} /></div>
+          {deleteError && <p className="mt-2 text-sm text-[#ffb4b4]">{deleteError}</p>}
         </section>
       </div>
     </dialog>

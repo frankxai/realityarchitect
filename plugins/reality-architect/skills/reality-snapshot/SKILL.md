@@ -16,7 +16,7 @@ description: "Draft a weekly or monthly Reality Snapshot from the person's logs,
 
 ## 1. Cadence and period
 
-Ask: weekly or monthly? Then use the period rule from standard/STATE.md:
+Ask: weekly or monthly? Then use the period rule from `STATE.md` at the root of this plugin:
 
 - **Weekly:** from the day after the latest file in `STATE/snapshots/` of any cadence, else the last 7 days.
 - **Monthly:** from the day after the latest snapshot whose frontmatter says `cadence: monthly`, else the last 30 days.
@@ -40,7 +40,7 @@ One correction for the next period?
 
 Show the complete draft and ask: "Is this true for you? Shall I seal it?" Only an explicit yes seals it. Write
 `STATE/snapshots/<YYYY-MM-DD>.md` (add `-2`, `-3` if that name exists) with frontmatter `cadence:`, `period:` and
-`approved: true`, following standard/STATE.md. Never edit a sealed snapshot afterwards; a correction becomes a note in
+`approved: true`, following `STATE.md` at the root of this plugin. Never edit a sealed snapshot afterwards; a correction becomes a note in
 the next one.
 
 ## 4. Compare (when asked)

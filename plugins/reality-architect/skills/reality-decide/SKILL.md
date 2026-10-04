@@ -18,7 +18,7 @@ description: "Record a life or business decision as a dated decision record with
 Ask for: the decision in one line; the context (what forces it now); the options considered (at least two, including
 doing nothing); the choice; why (the two or three reasons that carried it); and a **review date** when the outcome will
 be visible. Show the record and, after a yes, write `STATE/decisions/<YYYY-MM-DD>-<slug>.md` (format:
-standard/STATE.md) with `status: decided`, or `status: open` if they have not chosen yet.
+`STATE.md` at the root of this plugin) with `status: decided`, or `status: open` if they have not chosen yet.
 
 If they are still deciding, help them think in options and consequences. Do not decide for them.
 

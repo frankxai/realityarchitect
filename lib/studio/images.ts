@@ -97,8 +97,23 @@ export async function pruneImages(keep: Set<string>, now = Date.now(), graceMs =
   return stale.length
 }
 
-export async function clearImages(): Promise<void> {
-  await run('readwrite', (store) => store.clear(), undefined)
+/** Deletes every stored image. True once the browser confirms it (or when this browser could never store any). */
+export async function clearImages(): Promise<boolean> {
+  if (!imagesAvailable()) return true
+  const db = await open()
+  if (!db) return false
+  return new Promise<boolean>((resolve) => {
+    try {
+      const transaction = db.transaction(STORE, 'readwrite')
+      transaction.objectStore(STORE).clear()
+      transaction.oncomplete = () => { db.close(); resolve(true) }
+      transaction.onerror = () => { db.close(); resolve(false) }
+      transaction.onabort = () => { db.close(); resolve(false) }
+    } catch {
+      db.close()
+      resolve(false)
+    }
+  })
 }
 
 /** File extension for an image MIME type, for exported file names. */

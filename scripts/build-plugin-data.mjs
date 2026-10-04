@@ -2,9 +2,11 @@
 /**
  * Writes the reality-architect plugin's shared data from the repo's single sources:
  * - plugins/reality-architect/CHARTER.md, an exact copy of standard/AGENT-CHARTER.md (skills read it first);
+ * - plugins/reality-architect/STATE.md, an exact copy of standard/STATE.md (the file formats skills write), because an
+ *   installed plugin is its own folder and cannot reach standard/;
  * - plugins/reality-architect/skills/reality-library/library.json, generated from lib/library.ts, so the Library tutor
  *   never keeps its own list of teachers or claims.
- * tests/plugin.test.mjs fails if either drifts. Run: pnpm plugin:data
+ * tests/plugin.test.mjs fails if any of them drifts. Run: pnpm plugin:data
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -31,6 +33,7 @@ export function libraryData() {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const plugin = path.join(root, 'plugins/reality-architect')
   fs.copyFileSync(path.join(root, 'standard/AGENT-CHARTER.md'), path.join(plugin, 'CHARTER.md'))
+  fs.copyFileSync(path.join(root, 'standard/STATE.md'), path.join(plugin, 'STATE.md'))
   fs.writeFileSync(path.join(plugin, 'skills/reality-library/library.json'), `${JSON.stringify(libraryData(), null, 2)}\n`)
-  console.log('plugin data written: CHARTER.md, skills/reality-library/library.json')
+  console.log('plugin data written: CHARTER.md, STATE.md, skills/reality-library/library.json')
 }

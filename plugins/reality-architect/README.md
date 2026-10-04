@@ -35,7 +35,7 @@ export REALITY_HOME="$HOME/Notes/Reality Architect"   # or leave unset to use ~/
 ## The rules every skill follows
 
 Every skill begins by reading `CHARTER.md` in this plugin, an exact copy of the
-[Agent Charter](../../standard/AGENT-CHARTER.md): read before acting, propose rather than impose, keep labels
+[Agent Charter](CHARTER.md): read before acting, propose rather than impose, keep labels
 (desired, reported, planned, done, meaning), never certify causation, never blame, protect everyone's agency, ask
 before memory, sync, sharing, or spending, count misses with hits, seal only what you approved, and send health,
 money, and crisis questions to humans.

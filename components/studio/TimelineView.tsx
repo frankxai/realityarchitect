@@ -4,8 +4,8 @@ import { useId, useMemo, useState } from 'react'
 import { DOMAINS, WITNESS_KINDS } from '@/lib/studio/domains'
 import { decisionMd, snapshotMd } from '@/lib/studio/export'
 import { decisionsDue, diffSnapshots, domainTrend, draftSnapshot, snapshotPeriodStart } from '@/lib/studio/snapshot'
-import { newId } from '@/lib/studio/util'
-import type { Cadence, Decision, Reflection } from '@/lib/studio/types'
+import { localTime, newId } from '@/lib/studio/util'
+import type { Cadence, Decision, Reflection, Snapshot } from '@/lib/studio/types'
 import { Area, ConfirmButton, Empty, Field, Tag, button, downloadText, inputClass, panelClass, useDraft } from './ui'
 import type { StudioApi } from './useStudio'
 
@@ -120,13 +120,13 @@ export function TimelineView({ studio }: { studio: StudioApi }) {
               <div>
                 <label htmlFor={`${compareId}-a`} className="block text-sm font-semibold text-ink">From</label>
                 <select id={`${compareId}-a`} value={older?.id ?? ''} onChange={(event) => setOlderId(event.target.value)} className={inputClass}>
-                  {ordered.map((snapshot) => <option key={snapshot.id} value={snapshot.id}>{snapshot.day}</option>)}
+                  {ordered.map((snapshot) => <option key={snapshot.id} value={snapshot.id}>{snapshotLabel(snapshot)}</option>)}
                 </select>
               </div>
               <div>
                 <label htmlFor={`${compareId}-b`} className="block text-sm font-semibold text-ink">To</label>
                 <select id={`${compareId}-b`} value={newer?.id ?? ''} onChange={(event) => setNewerId(event.target.value)} className={inputClass}>
-                  {ordered.map((snapshot) => <option key={snapshot.id} value={snapshot.id}>{snapshot.day}</option>)}
+                  {ordered.map((snapshot) => <option key={snapshot.id} value={snapshot.id}>{snapshotLabel(snapshot)}</option>)}
                 </select>
               </div>
             </div>
@@ -172,12 +172,19 @@ export function TimelineView({ studio }: { studio: StudioApi }) {
   )
 }
 
+/** Day, cadence and sealing time, so two snapshots sealed on the same day can be told apart. */
+function snapshotLabel(snapshot: Snapshot): string {
+  const sealed = new Date(snapshot.sealedAt)
+  return `${snapshot.day} · ${snapshot.cadence}${Number.isNaN(sealed.getTime()) ? '' : ` · sealed ${localTime(sealed)}`}`
+}
+
 const EMPTY_DECISION = { title: '', context: '', options: '', choice: '', why: '', reviewOn: '' }
 
 function DecisionsPanel({ studio }: { studio: StudioApi }) {
   const { state, today, update, announce } = studio
   const [form, setForm] = useDraft('decision:form', EMPTY_DECISION)
   const [outcomes, setOutcomes] = useState<Record<string, string>>({})
+  const [choices, setChoices] = useState<Record<string, string>>({})
   const due = new Set(decisionsDue(state.decisions, today).map((decision) => decision.id))
   const ordered = [...state.decisions].sort((a, b) => Number(due.has(b.id)) - Number(due.has(a.id)) || b.day.localeCompare(a.day))
 
@@ -209,7 +216,7 @@ function DecisionsPanel({ studio }: { studio: StudioApi }) {
             <li key={decision.id} className={`rounded-xl border p-4 ${due.has(decision.id) ? 'border-dawn/40' : 'border-border'}`}>
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
-                  <p className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-accent">{decision.day} · {decision.status}{decision.reviewOn ? ` · review ${decision.reviewOn}` : ''}{due.has(decision.id) ? ' · due for review' : ''}</p>
+                  <p className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-accent">{decision.day} · {decision.status}{decision.reviewOn ? ` · review ${decision.reviewOn}` : ''}{due.has(decision.id) ? (decision.status === 'open' ? ' · time to choose' : ' · due for review') : ''}</p>
                   <p className="mt-1 text-sm font-semibold text-ink">{decision.title}</p>
                   {decision.choice && <p className="mt-1 text-sm text-muted">Chose: {decision.choice}</p>}
                   {decision.outcome && <p className="mt-1 text-sm text-ink">Outcome: {decision.outcome}</p>}
@@ -219,7 +226,14 @@ function DecisionsPanel({ studio }: { studio: StudioApi }) {
                   <ConfirmButton label="Delete" confirmLabel="Confirm delete" className={button.ghost} onConfirm={() => { update((draft) => { draft.decisions = draft.decisions.filter((item) => item.id !== decision.id) }); announce('Decision deleted.') }} />
                 </div>
               </div>
-              {decision.status !== 'reviewed' && decision.reviewOn !== '' && decision.reviewOn <= today && (
+              {decision.status === 'open' && (
+                <div className="mt-3 grid gap-2">
+                  <Field label="The choice, once you make it" register="planned" value={choices[decision.id] ?? ''} onChange={(value) => setChoices({ ...choices, [decision.id]: value })} />
+                  <button type="button" className={`${button.secondary} justify-self-start`} disabled={!(choices[decision.id] ?? '').trim()} onClick={() => { update((draft) => { const target = draft.decisions.find((item) => item.id === decision.id); if (target) { target.choice = (choices[decision.id] ?? '').trim(); target.status = 'decided' } }); announce('Choice recorded. Its outcome can be reviewed on the review date.') }}>Record the choice</button>
+                </div>
+              )}
+              {/* Only a decided record has an outcome to review; an open one gets its choice first. */}
+              {decision.status === 'decided' && decision.reviewOn !== '' && decision.reviewOn <= today && (
                 <div className="mt-3 grid gap-2">
                   <Area label="What actually happened?" register="reported" rows={2} value={outcomes[decision.id] ?? ''} onChange={(value) => setOutcomes({ ...outcomes, [decision.id]: value })} />
                   <button type="button" className={`${button.secondary} justify-self-start`} disabled={!(outcomes[decision.id] ?? '').trim()} onClick={() => { update((draft) => { const target = draft.decisions.find((item) => item.id === decision.id); if (target) { target.outcome = (outcomes[decision.id] ?? '').trim(); target.status = 'reviewed' } }); announce('Decision reviewed.') }}>Mark reviewed</button>

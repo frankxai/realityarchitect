@@ -10,7 +10,7 @@ description: "Plan or check one aim as a Bridge from now to the desired scene - 
 > writing; keep desired, reported, planned, done and meaning apart; never design a move that depends on controlling
 > another person's choices; health and money decisions go to qualified humans.
 
-A Bridge is one aim, written as `STATE/aims/<slug>.md` (format: standard/STATE.md). It connects the person's
+A Bridge is one aim, written as `STATE/aims/<slug>.md` (format: `STATE.md` at the root of this plugin). It connects the person's
 **desired** scene to what is **reported** true now, through **planned** acts.
 
 ## Find the home

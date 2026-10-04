@@ -118,11 +118,26 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
     if (view.x === 0 && view.y === 0) home()
   }, [home, mode, state.canvas.view])
 
+  // The view this map last saved or adopted. A stored view that differs from it came from outside (an import, the
+  // sample, another tab), so the map takes it instead of saving its old camera over it.
+  const persisted = useRef<Camera>(state.canvas.view)
+  useEffect(() => {
+    const view = state.canvas.view
+    const known = persisted.current
+    if (view.x === known.x && view.y === known.y && view.zoom === known.zoom) return
+    persisted.current = view
+    setCamera(view)
+    // An unset view (0, 0) opens at the readable home position, as on a first visit.
+    if (view.x === 0 && view.y === 0) home()
+  }, [home, state.canvas.view])
+
   // Keep the camera between visits, without rewriting the whole state on every frame.
   useEffect(() => {
     const timer = window.setTimeout(() => {
       const saved = state.canvas.view
-      if (saved.x !== camera.x || saved.y !== camera.y || saved.zoom !== camera.zoom) update((draft) => { draft.canvas.view = camera })
+      if (saved.x === camera.x && saved.y === camera.y && saved.zoom === camera.zoom) return
+      persisted.current = camera
+      update((draft) => { draft.canvas.view = camera })
     }, 700)
     return () => window.clearTimeout(timer)
   }, [camera, state.canvas.view, update])

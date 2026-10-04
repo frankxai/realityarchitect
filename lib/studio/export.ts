@@ -261,9 +261,34 @@ ${entries.length ? entries.map((entry) => witnessEntryMd(entry, slugs)).join('\n
 `
 }
 
+/**
+ * The registry of agents and automations already running for the person. The Studio records only systems an aim plans
+ * to build, so the registry starts empty and those plans are listed apart, labeled planned.
+ */
+export function systemsMd(state: StudioState): string {
+  const planned = state.bridges
+    .filter((bridge) => bridge.status === 'active')
+    .flatMap((bridge) => bridge.systems.map((system) => `${system} (planned, ${bridge.title || 'untitled aim'})`))
+  return `# Systems
+
+What already runs for you, each with what it does, what it may touch, and how you review it. Add a system here once
+it is actually running; agents read this list before acting.
+
+## Running
+
+- …
+
+## Planned in your aims (not running yet)
+
+${bullet(planned, 'None named yet.')}
+`
+}
+
 export function evidenceMd(state: StudioState): string {
   const wins = newestFirst(state.witness.filter((entry) => entry.kind === 'win' || entry.kind === 'move')).map((entry) => `- ${entry.day} · ${entry.fact}`)
-  const moves = state.bridges.flatMap((bridge) => bridge.moves.filter((move) => move.done).map((move) => `- ${move.doneAt || '(date not recorded)'} · Bold move done: ${move.title} (${bridge.title || 'aim'})`))
+  // A completed move that is already witnessed is listed once, through its entry.
+  const witnessed = new Set(state.witness.flatMap((entry) => (entry.moveId ? [entry.moveId] : [])))
+  const moves = state.bridges.flatMap((bridge) => bridge.moves.filter((move) => move.done && !witnessed.has(move.id)).map((move) => `- ${move.doneAt || '(date not recorded)'} · Bold move done: ${move.title} (${bridge.title || 'aim'})`))
   return `# Evidence
 
 Identity votes: every win and completed bold move, as I recorded it (self-reported).
@@ -427,6 +452,7 @@ export function bundleFiles(state: StudioState, today: string): { path: string; 
     { path: `${ROOT}reality/atlas.md`, text: atlasMd(state) },
     { path: `${ROOT}reality/witness.md`, text: witnessMd(state) },
     { path: `${ROOT}reality/evidence.md`, text: evidenceMd(state) },
+    { path: `${ROOT}reality/systems.md`, text: systemsMd(state) },
   ]
   for (const bridge of state.bridges) files.push({ path: `${ROOT}reality/aims/${slugs.get(bridge.id)}.md`, text: aimMd(bridge, state, today, slugs) })
   const days = [...new Set([...Object.keys(state.days), ...state.witness.map((entry) => entry.day)])].sort()

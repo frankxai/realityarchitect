@@ -54,4 +54,4 @@ write in the current working directory. `STATE/` below means that directory.
 - Never count only the hits. Never turn the ledger into a score of their worth.
 - Never log anything about another person beyond what the person chose to write.
 
-Format reference: https://github.com/frankxai/realityarchitect/blob/main/standard/STATE.md
+Format reference: `STATE.md` at the root of this plugin.

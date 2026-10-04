@@ -2,6 +2,7 @@
 
 import { useId, useMemo, useState } from 'react'
 import { WITNESS_KINDS, isDomainId, witnessLabel } from '@/lib/studio/domains'
+import { setMoveDone } from '@/lib/studio/moves'
 import { intentionTally, kindCounts, signTally } from '@/lib/studio/stats'
 import { localTime, newId } from '@/lib/studio/util'
 import type { WitnessEntry, WitnessKind } from '@/lib/studio/types'
@@ -26,11 +27,14 @@ export function WitnessForm({ studio, compact, initialKind = 'sign', onDone }: W
   const [action, setAction] = useDraft(`${draft}:action`, '')
   const [next, setNext] = useDraft(`${draft}:next`, '')
   const [bridgeId, setBridgeId] = useDraft(`${draft}:bridge`, '')
+  const [moveId, setMoveId] = useDraft(`${draft}:move`, '')
   const lookFor = state.days[today]?.lookFor.trim() ?? ''
   // Until the person chooses, a sign counts as primed exactly when something was set to look for today.
   const [primedChoice, setPrimed] = useState<boolean | null>(null)
   const primed = primedChoice ?? lookFor !== ''
   const active = state.bridges.filter((bridge) => bridge.status === 'active')
+  const openMoves = kind === 'move' ? active.find((bridge) => bridge.id === bridgeId)?.moves.filter((move) => !move.done) ?? [] : []
+  const completes = openMoves.find((move) => move.id === moveId)
 
   const save = () => {
     if (!fact.trim()) return
@@ -39,12 +43,16 @@ export function WitnessForm({ studio, compact, initialKind = 'sign', onDone }: W
       id: newId(), at: new Date().toISOString(), day: today, time: localTime(), kind, fact: fact.trim(), meaning: meaning.trim(), action: action.trim(), next: next.trim(),
       primed: kind === 'sign' && primed,
       ...(bridge ? { bridgeId: bridge.id } : {}),
+      ...(bridge && completes ? { moveId: completes.id } : {}),
       ...(bridge && isDomainId(bridge.domain) ? { domain: bridge.domain } : {}),
     }
     update((draft) => {
       draft.witness.unshift(entry)
+      // A bold move logged here completes the planned move it names, so the plan and the ledger agree.
+      if (bridge && completes) setMoveDone(draft, bridge.id, completes.id, true, today)
       if (entry.kind === 'sign' && entry.primed && draft.days[today]?.lookFor) draft.days[today].lookForResult = 'came'
     })
+    setMoveId('')
     setFact('')
     setMeaning('')
     setAction('')
@@ -114,6 +122,16 @@ export function WitnessForm({ studio, compact, initialKind = 'sign', onDone }: W
           <select id={`${groupId}-bridge`} value={bridgeId} onChange={(event) => setBridgeId(event.target.value)} className={inputClass}>
             <option value="">No bridge</option>
             {active.map((bridge) => <option key={bridge.id} value={bridge.id}>{bridge.title || 'Untitled aim'}</option>)}
+          </select>
+        </div>
+      )}
+
+      {openMoves.length > 0 && (
+        <div>
+          <label className="block text-sm font-semibold text-ink" htmlFor={`${groupId}-move`}>Completes a planned bold move (optional)</label>
+          <select id={`${groupId}-move`} value={completes?.id ?? ''} onChange={(event) => setMoveId(event.target.value)} className={inputClass}>
+            <option value="">None of the planned moves</option>
+            {openMoves.map((move) => <option key={move.id} value={move.id}>{move.title || 'Untitled move'}{move.due ? ` (due ${move.due})` : ''}</option>)}
           </select>
         </div>
       )}

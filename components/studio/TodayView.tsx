@@ -103,7 +103,13 @@ export function TodayView({ studio, go }: { studio: StudioApi; go: Go }) {
               label="Today I look for"
               register="planned"
               value={note.lookFor}
-              onChange={(value) => setNote({ lookFor: value })}
+              onChange={(value) => {
+                // A changed intention is a new experiment: the old came/missed answer does not carry over to it.
+                if (note.lookForResult) {
+                  setNote({ lookFor: value, lookForResult: '' })
+                  announce('The look-for changed, so today’s answer was cleared. Mark it again tonight.')
+                } else setNote({ lookFor: value })
+              }}
               placeholder="A sign the album is wanted · a chance to be generous · one open door"
               hint="Naming it primes your attention. In the evening you mark whether it came. Misses count too."
             />

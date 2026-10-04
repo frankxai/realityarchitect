@@ -16,6 +16,14 @@ test('the plugin ships the exact Agent Charter that every skill reads first', ()
   for (const skill of skills) assert.match(read(`plugins/reality-architect/skills/${skill}/SKILL.md`), /read `CHARTER\.md` at the root of this plugin/, skill)
 })
 
+test('the plugin ships the state formats its skills follow, and never points outside itself', () => {
+  assert.equal(read('plugins/reality-architect/STATE.md'), read('standard/STATE.md'), 'run pnpm plugin:data')
+  for (const skill of skills) {
+    const body = read(`plugins/reality-architect/skills/${skill}/SKILL.md`)
+    assert.doesNotMatch(body, /(?<![\w/.])standard\//, `${skill} points at standard/, which an installed plugin cannot reach`)
+  }
+})
+
 test('the Library tutor teaches from generated Library data, never its own list', () => {
   const mirror = JSON.parse(read('plugins/reality-architect/skills/reality-library/library.json'))
   assert.deepEqual(mirror, JSON.parse(JSON.stringify(libraryData())), 'run pnpm plugin:data')

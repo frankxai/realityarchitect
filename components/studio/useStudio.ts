@@ -135,14 +135,19 @@ export function useStudio() {
     if (save()) announce('Saved this tab’s version.')
   }, [announce, save])
 
-  /** Deletes the saved Studio from this browser and starts empty. Images are cleared by the caller. */
-  const forget = useCallback(() => {
-    clearState()
-    baseline.current = null
+  /**
+   * Deletes the saved Studio from this browser and starts empty. Returns whether the browser confirmed the deletion;
+   * images are cleared by the caller.
+   */
+  const forget = useCallback((): boolean => {
+    // Cleared when the browser confirms it, or when nothing of the Studio can be found stored at all.
+    const cleared = clearState() || storedText() === null
+    baseline.current = cleared ? null : storedText()
     dirty.current = false
     setState(emptyState())
     setLoadStatus('empty')
     setSaveStatus('idle')
+    return cleared
   }, [])
 
   return { state, ready, loadStatus, keptAside, saveStatus, message, announce, update, replace, takeOther, keepMine, forget, today }
