@@ -124,7 +124,7 @@ test('the Studio, Library and Threshold own canonical metadata, sitemap entries 
     const page = read(`app/${route}/page.tsx`)
     assert.match(page, new RegExp(`canonical: '/${route}'`))
     assert.match(page, new RegExp(`url: '/${route}'`))
-    assert.match(page, /images: \[\{ url: '\/opengraph-image'/)
+    assert.match(page, /images: \[ogImage\]/)
   }
   const sitemap = read('app/sitemap.ts')
   for (const route of ['/studio', '/library', '/threshold']) assert.match(sitemap, new RegExp(`'${route}'`))

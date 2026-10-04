@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Studio } from '@/components/studio/Studio'
+import { ogImage } from '@/lib/site'
 
 const description =
   'Your daily practice for architecting a life: Today, Atlas, Bridges, Witness, Map, Timeline and Soul. Stored on your device; exports to reality.md, soul.md and an Obsidian-ready folder.'
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     description,
     url: '/studio',
     type: 'website',
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Reality Architect — Find the system gap. Build the next artifact.' }],
+    images: [ogImage],
   },
 }
 

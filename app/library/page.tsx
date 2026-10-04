@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ENTRIES, LAYERS, MYTHS, ONE_LAW, PATHS, PRINCIPLES, SHELVES, TAG_LABEL, type Entry, type Shelf } from '@/lib/library'
+import { ogImage } from '@/lib/site'
 
 const description =
   'Reality Theory and the manifestation canon, taught honestly: every teacher with what to keep, the mechanism it rides on, and the limits we do not repeat.'
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     description,
     url: '/library',
     type: 'website',
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Reality Architect — Find the system gap. Build the next artifact.' }],
+    images: [ogImage],
   },
 }
 
