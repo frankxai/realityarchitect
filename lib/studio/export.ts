@@ -20,13 +20,14 @@ const midSentence = (value: string) => (/^(I\b|[A-Z]{2})/.test(value) ? value : 
 /** "When I reach for my phone." + "I open the draft" -> "If I reach for my phone, then I open the draft." */
 export function ifThenSentence(obstacle: string, response: string): string {
   const condition = midSentence(obstacle.trim().replace(/^(if|when|whenever)[\s,:;–—-]+/i, '').replace(/[.!;,\s]+$/, ''))
-  // The sentence supplies its own "then I": drop a leading "then" (with any punctuation after it) and a first-person
-  // subject, contracted or not.
-  const act = midSentence(response.trim()
+  // The sentence supplies its own "then I": drop a leading "then" (with any punctuation after it) and a future-form
+  // subject (I'll, I will, I'm going to). Any other subject the person wrote (I'm, I'd, I've) is kept, not doubled.
+  const act = response.trim()
     .replace(/^(then[\s,:;–—-]+)?(i['’]ll\s+|i\s+will\s+|i['’]m\s+going\s+to\s+|i\s+am\s+going\s+to\s+|i\s+)?/i, '')
-    .replace(/[.!;,\s]+$/, ''))
+    .replace(/[.!;,\s]+$/, '')
   if (!condition || !act) return ''
-  return `If ${condition}, then I ${act}.`
+  if (/^i['’]\p{L}/iu.test(act)) return `If ${condition}, then I${act.slice(1)}.`
+  return `If ${condition}, then I ${midSentence(act)}.`
 }
 
 /** Stable, unique file slugs for every bridge, shared by aim files and witness references. */
