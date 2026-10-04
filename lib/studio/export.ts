@@ -317,7 +317,7 @@ ${entries.length ? `\n${entries.map((entry) => witnessEntryMd(entry, slugs)).joi
 
 export function snapshotMd(snapshot: Snapshot): string {
   const rows = DOMAINS.map((domain) => `| ${domain.label} | ${score(snapshot.atlas[domain.id].now)} | ${score(snapshot.atlas[domain.id].want)} |`)
-  const bridges = snapshot.bridges.map((bridge) => `- ${bridge.title} — ${bridge.state} — reps ${bridge.repsLogged}/${bridge.repsPlanned} — moves ${bridge.movesDone}/${bridge.movesTotal}`)
+  const bridges = snapshot.bridges.map((bridge) => `${bridge.title} — ${bridge.state} — reps ${bridge.repsLogged}/${bridge.repsPlanned} — moves ${bridge.movesDone}/${bridge.movesTotal}`)
   const counts = Object.entries(snapshot.counts).map(([kind, count]) => `${kind} ${count}`).join(' · ')
   return `---
 snapshot: ${snapshot.day}

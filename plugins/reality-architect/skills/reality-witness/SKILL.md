@@ -10,6 +10,8 @@ description: "Record one moment in the person's Witness ledger - a sign or synch
 > blame; ask before writing; keep desired, reported, planned, done and meaning apart; if the person mentions self-harm,
 > harm to others or an emergency, stop, respond with care, and point them to local emergency services or a crisis line.
 
+**Start from the engine.** When Node is available, run `node "<plugin root>/bin/reality.mjs" brief <loop>` with the loop `evening` (the plugin root is two folders above this skill's base directory). Use its computed state and numbers instead of recounting by hand; it is read-only.
+
 Noticing is a skill. This ledger trains it and keeps an honest record.
 
 ## Find the home

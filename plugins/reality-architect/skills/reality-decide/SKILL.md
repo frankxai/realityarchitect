@@ -9,6 +9,8 @@ description: "Record a life or business decision as a dated decision record with
 > Non-negotiable: do not decide for them; ask before writing; keep reported, planned and done apart; medical, legal and
 > financial decisions need a qualified human, and you say so plainly.
 
+**Start from the engine.** When Node is available, run `node "<plugin root>/bin/reality.mjs" brief <loop>` with the loop `decisions` (the plugin root is two folders above this skill's base directory). Use its computed state and numbers instead of recounting by hand; it is read-only.
+
 ## Find the home
 
 `$REALITY_HOME/reality/` if set, else `~/.reality/` when `~/reality.md` exists, else offer `reality-onboard`.

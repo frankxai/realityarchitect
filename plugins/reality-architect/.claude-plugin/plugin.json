@@ -1,7 +1,7 @@
 {
   "name": "reality-architect",
-  "version": "0.1.0",
-  "description": "Reality Architect for your agents: an agent profile and skills that operate on the open reality.md + soul.md + reality/ format. Imagine it, build it, witness it, with meaning and mechanism kept separate.",
+  "version": "0.2.0",
+  "description": "Reality Architect for your agents: skills and a read-only engine (graph, loops, briefs, validation) that operate on the open reality.md + soul.md + reality/ format. Imagine it, build it, witness it, with meaning and mechanism kept separate.",
   "author": {
     "name": "Frank Riemer",
     "email": "frank@frankx.ai",

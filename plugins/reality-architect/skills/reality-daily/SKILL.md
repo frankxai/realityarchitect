@@ -10,6 +10,8 @@ description: "Run the Reality Architect daily practice. In the morning - the I a
 > blame; ask before writing; keep desired, reported, planned, done and meaning apart; if the person mentions self-harm,
 > harm to others or an emergency, stop, respond with care, and point them to local emergency services or a crisis line.
 
+**Start from the engine.** When Node is available, run `node "<plugin root>/bin/reality.mjs" brief <loop>` with the loop `morning` or `evening` (the plugin root is two folders above this skill's base directory). Use its computed state and numbers instead of recounting by hand; it is read-only.
+
 Two to ten minutes. No streaks, no scores. A tired day gets the one-line path.
 
 ## Find the home

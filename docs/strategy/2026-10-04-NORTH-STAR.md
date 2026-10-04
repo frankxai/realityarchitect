@@ -289,29 +289,40 @@ Frank's own reflection notes warn against two failure modes: building tools inst
 starting new repos or brands that become the next thing to consolidate. This plan answers both on purpose:
 
 - **No new repo, no new brand.** Everything lands in `realityarchitect`. The Lightbook / Agentic Lifebook / Soulbook
-  chain ends here: its life-domain diagnostic becomes the Studio's Atlas, a feature, not a new spine.
+  diagnostic becomes the Studio's Atlas, a feature, not a new spine. *Update, 2026-10-04:* Frank asked that the names
+  be woven, each keeping its own meaning, rather than retired; see FRONTIER-ARCHITECTURE §10.
 - **Connection, not construction.** Obsidian stays the editor and the phone app, Starlight stays the engine, and
   second-brain-os stays the chat pipeline. We wrote a file format and a practice layer, not another notes app.
 - **The commercial job of this work is to serve the current paid wedge.** The Studio's Atlas plus `soul.md` is the
   onboarding diagnostic for Frank's existing client offer. No new paid Reality Architect tier (Vault, Diff pack,
   Studio Cloud, Academy) opens until that wedge is closed; until then, the 30-day metrics in §14 are the only goal.
+- *Update, 2026-10-04:* Frank chose to build for a bigger moat and value capture, with our own design and interfaces
+  ("Frontier architecture, moat, and the engine", `2026-10-04-FRONTIER-ARCHITECTURE.md`). The order still holds:
+  free layers first (own interfaces, the engine, the marketplace bar), paid layers only after usage evidence and his
+  explicit go.
 - **Next 30 days are evidence, not features:** Frank uses the Studio and the plugin himself every day, one client
   onboarding uses the Atlas, and the first five strangers' Threshold cards (with consent) are read for what to fix.
 
 ## 15. Decisions for Frank (the button list)
 
-1. **Doctrine:** approve the two-register tone contract (section 9). This PR proposes it; merging it adopts it.
+Status as of 2026-10-04, after Frank's answers. The current list is §11 of `2026-10-04-FRONTIER-ARCHITECTURE.md`.
+
+1. **Doctrine:** approve the two-register tone contract (section 9). *Adopted: merged in #50.*
 2. **Homepage positioning:** the hero stays "Find the system gap." This plan only *adds* the inner-architecture section.
    A new hero ("Imagine it. Build it. Witness it.") is a `rearchitect` change and needs your `surface-approved` label.
+   *Approved 2026-10-04: PR #51.*
 3. **Waitlist (#39):** connect the Upstash store to the `realityarchitect` Vercel project.
 4. **Server image generation:** provider, monthly budget, moderation, and privacy copy.
 5. **Studio Cloud and the Vault price:** whether, when, and how much.
-6. **Your own soul.md and reality.md:** the scaffold is created empty in your Second Brain vault; only you fill it
-   (the onboarding skill interviews you).
-7. **SIS Reality Architecture kernel:** merge GENESIS/ADR-000 into SIS main so the Studio export has a canonical
-   schema home.
+6. **Your own soul.md and reality.md:** the setup steps are in your Second Brain vault
+   (`ideas/reality-architect-home-is-connection-not-construction.md`); only you fill them (the onboarding skill
+   interviews you).
+7. **SIS Reality Architecture kernel:** *Corrected 2026-10-04:* it is already on SIS `main` (`3f9f53e`, 2026-09-06).
+   The decision is now the three small SIS PRs and the external-vertical model in FRONTIER-ARCHITECTURE §4.
 8. **frankx.ai manifestation hub:** approve cross-links from `/manifestation` to the Library and Studio (prod repo,
-   separate PR).
+   separate PR). *Approved 2026-10-04: frankx.ai PR #880.*
 9. **`magic-intelligence-system`:** its GitHub description says "manifestation, reality-design", but its README is
    Arcanea's parent ontology. Fix the description, so search does not send Reality Architect seekers there.
-10. **Naming chain:** confirm that Lightbook, Agentic Lifebook and Soulbook are retired into Reality Architect.
+   *Done 2026-10-04.*
+10. **Naming chain:** *Frank, 2026-10-04: weave them; each keeps its own meaning.* The proposed weave and the
+    trademark caution are in FRONTIER-ARCHITECTURE §10.
