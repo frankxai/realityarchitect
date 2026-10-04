@@ -30,6 +30,19 @@ function clause(value: string, leading: RegExp): string {
   return value.trim().replace(leading, '').replace(/[.!;,\s]+$/, '')
 }
 
+/**
+ * "then I'll open the draft" -> "then I open the draft"; "I'd open it" -> "then I'd open it". Future forms collapse to
+ * the plain verb; any other subject the person already wrote (I'm, I'd, I've) is kept rather than doubled.
+ */
+function thenClause(value: string): string {
+  let rest = clause(value, /^then[\s,:;–—-]+/i)
+  rest = rest.replace(/^(i['’]ll|i\s+will|i['’]m\s+going\s+to|i\s+am\s+going\s+to|i)\s+/i, '')
+  if (!rest) return 'then I Not specified'
+  if (/^i['’]\p{L}/iu.test(rest)) return `then I${rest.slice(1)}`
+  // Mid-sentence now: lowercase the first letter, unless it starts an acronym such as "AI".
+  return `then I ${/^[A-Z]{2}/.test(rest) ? rest : rest.charAt(0).toLowerCase() + rest.slice(1)}`
+}
+
 export function readyForStep(card: RealityCard, step: number): boolean {
   if (step === 0) return Boolean(card.domain && card.scene.trim().length >= 30)
   if (step === 1) return Boolean(card.fact.trim() && card.obstacle.trim() && card.response.trim())
@@ -40,9 +53,7 @@ export function readyForStep(card: RealityCard, step: number): boolean {
 export function realityCardMarkdown(card: RealityCard, written: Written = writtenNow()): string {
   const line = (value: string) => value.trim() || 'Not specified'
   const condition = clause(card.obstacle, /^(if|when|whenever)[\s,:;–—-]+/i) || 'Not specified'
-  // The sentence supplies its own "then I": drop a leading "then" (with any punctuation after it) and a first-person
-  // subject, contracted or not.
-  const response = clause(card.response, /^(then[\s,:;–—-]+)?(i['’]ll\s+|i\s+will\s+|i['’]m\s+going\s+to\s+|i\s+am\s+going\s+to\s+|i\s+)?/i) || 'Not specified'
+  const response = thenClause(card.response)
   return [
     '# My Reality Card', '', 'Built on SIP · User-authored · Version 1', `Written: ${written.date} (${written.timeZone})`, '',
     `Domain: ${line(card.domain)}`, '',
@@ -50,7 +61,7 @@ export function realityCardMarkdown(card: RealityCard, written: Written = writte
     '## What I choose to give', line(card.giving), '',
     '## What I report as true now', line(card.fact), '',
     '## The obstacle I expect', line(card.obstacle), '',
-    `If ${condition}, then I ${response}.`, '',
+    `If ${condition}, ${response}.`, '',
     '## My next act (planned, not completed)', line(card.act), '',
     `When: ${line(card.due)} (as written on ${written.date})`, `Evidence I will look for: ${line(card.proof)}`, '',
     '## Other people retain their own agency', line(card.boundary), '',

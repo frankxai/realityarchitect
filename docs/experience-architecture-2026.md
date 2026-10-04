@@ -52,21 +52,29 @@ Prompt: “What would an ordinary Tuesday look like when this part of your life 
 An optional hosted state later uses account-scoped authorization, encryption at rest, explicit retention, access logs, and deletion/export controls. Keep a personal/private data boundary even when the public method is open. Human-only authority covers vows, relationships, health decisions, purchases, messaging and sharing.
 
 ## One machine-readable object
+This is the published v1 contract: the shape `/threshold` downloads as JSON and the Studio imports (implemented in
+`lib/reality-card.ts`; a test checks that every emitted field is named here). Each group carries its epistemic label
+in its name, `desired`, `reportedPresent` and `plan`, instead of a separate tag list. Every text field holds the
+person's own words, unedited.
+
 ```ts
-type RealityCard = {
-  id: string
+type RealityCardPacket = {
+  schema: 'sip.reality-card'
   version: 1
+  authorship: 'user'
+  written: { date: string; timeZone: string } // local YYYY-MM-DD and IANA zone, so "Friday" stays resolvable
   domain: string
-  authoredScene: string
-  presentFact: string
-  innerObstacle: string
-  ifThen: { trigger: string; response: string }
-  nextAct: { description: string; dueAt?: string; proof: string }
-  agencyBoundary?: string
-  claimTags: ('observed' | 'inferred' | 'desired' | 'spiritual')[] 
-  consent: { aiUse: boolean; cloudSync: boolean; share: boolean }
+  desired: { scene: string; giving: string }
+  reportedPresent: { fact: string; verifiedBySystem: false }
+  plan: { obstacle: string; response: string; act: string; due: string; proofCriterion: string; status: 'planned' }
+  agencyBoundary: string
+  consent: { aiUse: boolean; cloudSync: boolean; share: boolean } // all false on export
+  authority: string // how an agent must read it: user-authored intent; propose, never infer completion or consent
 }
 ```
+
+An earlier sketch of this object (`authoredScene`, `ifThen`, `nextAct`, `claimTags`) was never emitted. A future
+version that adds ids or claim tags will raise `version`; readers must reject versions they do not know.
 The initial implementation may serialize locally to Markdown. Do not put identifiable private cards in telemetry, server logs, GitHub issues, or prompt evaluation datasets. An AI suggestion must be distinguishable from user-authored text.
 
 ## Release sequence

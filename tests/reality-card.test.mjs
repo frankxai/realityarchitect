@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import fs from 'node:fs'
 import test from 'node:test'
 import { readyForStep, realityCardMarkdown, realityCardPacket } from '../lib/reality-card.ts'
 
@@ -45,6 +46,24 @@ test('the if-then sentence reads cleanly when the obstacle already starts with w
   for (const response of ["I'll open the draft", 'Then I’ll open the draft', 'I will open the draft', "I'm going to open the draft", 'Then, I’ll open the draft', 'then: I will open the draft']) {
     assert.match(realityCardMarkdown({ ...card, response }), /then I open the draft\./, response)
   }
+  for (const [response, expected] of [["I'm opening the draft", "then I'm opening the draft."], ['I’d open the draft', 'then I’d open the draft.'], ["i've got the draft open", "then I've got the draft open."], ['Idle for a minute, then start', 'then I idle for a minute, then start.']]) {
+    const output = realityCardMarkdown({ ...card, response })
+    assert.ok(output.includes(expected), `${response} -> ${output.split('\n').find((line) => line.startsWith('If '))}`)
+    assert.doesNotMatch(output, /then I I\b/)
+  }
+})
+
+test('the packet matches the v1 contract the design doc publishes', () => {
+  const doc = fs.readFileSync(new URL('../docs/experience-architecture-2026.md', import.meta.url), 'utf8')
+  const contract = doc.split('## One machine-readable object')[1].split('```')[1]
+  const packet = JSON.parse(JSON.stringify(realityCardPacket(card, { date: '2026-10-04', timeZone: 'Europe/Berlin' })))
+  const walk = (value, prefix) => Object.entries(value).flatMap(([key, child]) => [`${prefix}${key}`, ...(child && typeof child === 'object' && !Array.isArray(child) ? walk(child, `${prefix}${key}.`) : [])])
+  for (const path of walk(packet, '')) {
+    const key = path.split('.').pop()
+    assert.match(contract, new RegExp(`\\b${key}\\??:`), `the documented contract names ${path}`)
+  }
+  assert.match(contract, /schema: 'sip\.reality-card'/)
+  assert.match(contract, /version: 1/)
 })
 
 test('exports carry the date and time zone they were written in, so relative deadlines stay resolvable', () => {
