@@ -75,6 +75,9 @@ test('the if-then sentence reads cleanly whatever the person typed', () => {
   assert.equal(ifThenSentence('Rain makes me skip the run.', 'Run the indoor track'), 'If rain makes me skip the run, then I run the indoor track.')
   assert.equal(ifThenSentence('AI tools distract me', 'close them'), 'If AI tools distract me, then I close them.')
   assert.equal(ifThenSentence('Ideas pull me away', 'I note them'), 'If ideas pull me away, then I note them.')
+  for (const response of ["I'll open the draft", 'Then, I’ll open the draft', 'then: I will open the draft', "I'm going to open the draft"]) {
+    assert.equal(ifThenSentence('When, the room is loud', response), 'If the room is loud, then I open the draft.', response)
+  }
 })
 
 test('an empty studio exports without throwing and marks the gaps', () => {
