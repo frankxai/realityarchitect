@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { MethodContent } from '@/components/MethodContent'
+import { ogImage } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'The Architect’s Loop',
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     description: 'Five ordered moves for turning a repeating AI workflow gap into one inspectable artifact.',
     url: '/method',
     type: 'website',
+    images: [ogImage],
   },
 }
 

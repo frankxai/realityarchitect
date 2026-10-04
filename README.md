@@ -75,7 +75,7 @@ app/            the website (Next.js 16, App Router) — realityarchitect.ai
   assess/         the Architect Assessment (find your gap)
   start/          the getting-started path
 standard/       the reality.md spec v0.1 + template + filled example
-starter/        forkable, harness-agnostic agent templates — one per move
+starter/        forkable, harness-agnostic agent templates — See, Build, Automate so far
 lib/site.ts     the single brand-config file
 AGENTS.md       navigation map for AI agents exploring this repo
 ```
