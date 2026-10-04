@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import test from 'node:test'
-import { readyForStep, realityCardMarkdown, realityCardPacket } from '../lib/reality-card.ts'
+import { readyForStep, realityCardMarkdown, realityCardPacket, writtenNow } from '../lib/reality-card.ts'
 
 const card = {
   domain: 'Craft & Contribution', scene: 'I hear the last note of my finished song in a quiet room.',
@@ -77,5 +77,15 @@ test('exports carry the date and time zone they were written in, so relative dea
   const packet = realityCardPacket(card, written)
   assert.equal(packet.written.date, '2026-10-04')
   assert.equal(packet.written.timeZone, 'Europe/Berlin')
-  assert.match(realityCardMarkdown(card), /Written: \d{4}-\d{2}-\d{2} \(/)
+  assert.match(realityCardMarkdown(card), /Written: \d{4}-\d{2}-\d{2} \d{2}:\d{2} \(/)
+})
+
+test('a card records the local time it was written, so "in two hours" stays resolvable', () => {
+  const written = writtenNow(new Date(2026, 9, 4, 14, 5))
+  assert.equal(written.date, '2026-10-04')
+  assert.equal(written.time, '14:05')
+  const output = realityCardMarkdown({ ...card, due: 'in two hours' }, { ...written, timeZone: 'Europe/Berlin' })
+  assert.match(output, /Written: 2026-10-04 14:05 \(Europe\/Berlin\)/)
+  assert.match(output, /When: in two hours \(as written on 2026-10-04 at 14:05\)/)
+  assert.equal(realityCardPacket(card, written).written.time, '14:05')
 })
