@@ -132,8 +132,9 @@ export function sampleState(today: string): StudioState {
     ],
     witness: witness.reverse(),
     days: {
-      [d(-1)]: { lookFor: 'Someone who wants to hear the album', focusBridgeId: 'sample-album', rehearsed: true, correction: 'Start the session before opening messages.' },
-      [d(0)]: { lookFor: 'A sign the album is wanted', focusBridgeId: 'sample-album', rehearsed: true, correction: '' },
+      [d(-2)]: { lookFor: 'A reason to play the songs for someone', lookForResult: 'missed', focusBridgeId: 'sample-album', rehearsed: false, correction: '' },
+      [d(-1)]: { lookFor: 'Someone who wants to hear the album', lookForResult: 'came', focusBridgeId: 'sample-album', rehearsed: true, correction: 'Start the session before opening messages.' },
+      [d(0)]: { lookFor: 'A sign the album is wanted', lookForResult: '', focusBridgeId: 'sample-album', rehearsed: true, correction: '' },
     },
     snapshots: [second, first],
     decisions: [

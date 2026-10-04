@@ -266,6 +266,7 @@ export function dayLogMd(day: string, state: StudioState): string {
   const lines = note
     ? [
         `- Looking for: ${orGap(note.lookFor)}`,
+        `- Did it come: ${note.lookForResult === 'came' ? 'yes' : note.lookForResult === 'missed' ? 'no (a miss, counted)' : 'not marked'}`,
         `- Rehearsed the scene: ${note.rehearsed ? 'yes' : 'no'}`,
         `- Focus: ${note.focusBridgeId && slugs.get(note.focusBridgeId) ? slugs.get(note.focusBridgeId) : GAP}`,
         `- One correction: ${orGap(note.correction)}`,

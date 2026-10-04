@@ -118,6 +118,8 @@ export interface WitnessEntry {
 
 export interface DayNote {
   lookFor: string
+  /** Whether what they looked for came. Misses are recorded too; that is what keeps the tally honest. */
+  lookForResult: '' | 'came' | 'missed'
   focusBridgeId: string
   rehearsed: boolean
   correction: string

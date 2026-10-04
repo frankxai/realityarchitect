@@ -179,7 +179,8 @@ function normalizeDays(input: unknown): Record<string, DayNote> {
   const days: Record<string, DayNote> = {}
   for (const [key, value] of Object.entries(input).slice(-CAP.records * 4)) {
     if (!isDay(key) || !isObject(value)) continue
-    days[key] = { lookFor: text(value.lookFor, CAP.line), focusBridgeId: text(value.focusBridgeId, 80), rehearsed: value.rehearsed === true, correction: text(value.correction, CAP.line) }
+    const result = value.lookForResult === 'came' || value.lookForResult === 'missed' ? value.lookForResult : ''
+    days[key] = { lookFor: text(value.lookFor, CAP.line), lookForResult: result, focusBridgeId: text(value.focusBridgeId, 80), rehearsed: value.rehearsed === true, correction: text(value.correction, CAP.line) }
   }
   return days
 }
