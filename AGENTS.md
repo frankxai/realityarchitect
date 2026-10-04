@@ -87,8 +87,11 @@ Still forbidden in every register:
 - Hype words used as a mechanism ("manifest it," "unlock your potential," "abundance flows"). If you are tempted,
   stop and name the system, the practice, or the evidence instead.
 
-Teachers of the manifestation tradition may be named only in the Library data (`lib/library.ts`), where every entry
-carries **Keep / Mechanism / Limits** — `scripts/check-public-claims.mjs` enforces this.
+Teachers of the manifestation tradition may be named only in the Library data (`lib/library.ts`, and the plugin's
+`library.json` generated from it), where every entry carries **Keep / Mechanism / Limits**.
+`scripts/check-public-claims.mjs` enforces this across `app/`, `components/`, `lib/`, `public/`, `plugins/` and
+`standard/`; `tests/plugin.test.mjs` keeps the generated mirror in sync. Strategy records in `docs/` may discuss
+teachers by name; they are design history, not product surfaces.
 
 Built on the Starlight Intelligence Protocol (SIP). When you extend this repo, attribute with a "Built on SIP" note.
 

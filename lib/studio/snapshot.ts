@@ -1,21 +1,25 @@
 import { DOMAINS, DOMAIN_IDS } from './domains.ts'
 import { assessPace } from './pace.ts'
 import { addDays, newId } from './util.ts'
-import type { Decision, DomainId, Reflection, Snapshot, StudioState, WitnessKind } from './types.ts'
+import type { Cadence, Decision, DomainId, Reflection, Snapshot, StudioState, WitnessKind } from './types.ts'
 
 const KINDS: WitnessKind[] = ['sign', 'win', 'rep', 'move', 'opening', 'lesson', 'gratitude']
 
-/** The day after the latest sealed snapshot, or the last seven days. Never later than today. */
-export function snapshotPeriodStart(state: StudioState, today: string): string {
-  const latest = state.snapshots.reduce<string>((max, snapshot) => (snapshot.day > max ? snapshot.day : max), '')
-  if (!latest) return addDays(today, -6)
+/**
+ * Where a review period begins. Weekly: the day after the latest snapshot of any cadence, else the last 7 days.
+ * Monthly: the day after the latest monthly snapshot, else the last 30 days. Never later than today.
+ */
+export function snapshotPeriodStart(state: StudioState, today: string, cadence: Cadence = 'weekly'): string {
+  const pool = cadence === 'monthly' ? state.snapshots.filter((snapshot) => snapshot.cadence === 'monthly') : state.snapshots
+  const latest = pool.reduce<string>((max, snapshot) => (snapshot.day > max ? snapshot.day : max), '')
+  if (!latest) return addDays(today, cadence === 'monthly' ? -29 : -6)
   const next = addDays(latest, 1)
   return next > today ? today : next
 }
 
 /** A draft for the person to read, reflect on, and approve. Sealing it is the caller's explicit act. */
-export function draftSnapshot(state: StudioState, today: string, reflection: Reflection, now: Date = new Date()): Snapshot {
-  const periodStart = snapshotPeriodStart(state, today)
+export function draftSnapshot(state: StudioState, today: string, reflection: Reflection, now: Date = new Date(), cadence: Cadence = 'weekly'): Snapshot {
+  const periodStart = snapshotPeriodStart(state, today, cadence)
   const inPeriod = state.witness.filter((entry) => entry.day >= periodStart && entry.day <= today)
   const counts = Object.fromEntries(KINDS.map((kind) => [kind, inPeriod.filter((entry) => entry.kind === kind).length])) as Snapshot['counts']
   const signs = inPeriod.filter((entry) => entry.kind === 'sign')
@@ -28,8 +32,16 @@ export function draftSnapshot(state: StudioState, today: string, reflection: Ref
         repsPlanned: pace.repsPlanned, movesDone: pace.movesDone, movesTotal: pace.movesTotal,
       }
     })
+  const intentions = { set: 0, came: 0, missed: 0 }
+  for (const [day, note] of Object.entries(state.days)) {
+    if (day < periodStart || day > today || !note.lookFor.trim()) continue
+    intentions.set += 1
+    if (note.lookForResult === 'came') intentions.came += 1
+    if (note.lookForResult === 'missed') intentions.missed += 1
+  }
   return {
     id: newId(),
+    cadence,
     sealedAt: now.toISOString(),
     day: today,
     periodStart,
@@ -38,6 +50,7 @@ export function draftSnapshot(state: StudioState, today: string, reflection: Ref
     counts,
     primedSigns: signs.filter((entry) => entry.primed).length,
     unprimedSigns: signs.filter((entry) => !entry.primed).length,
+    intentions,
     reflection: { ...reflection },
   }
 }

@@ -24,6 +24,7 @@ export function WitnessForm({ studio, compact, initialKind = 'sign', initialPrim
   const [fact, setFact] = useState('')
   const [meaning, setMeaning] = useState('')
   const [action, setAction] = useState('')
+  const [next, setNext] = useState('')
   const [bridgeId, setBridgeId] = useState('')
   const [primed, setPrimed] = useState(initialPrimed)
   const lookFor = state.days[today]?.lookFor.trim() ?? ''
@@ -33,7 +34,7 @@ export function WitnessForm({ studio, compact, initialKind = 'sign', initialPrim
     if (!fact.trim()) return
     const bridge = active.find((entry) => entry.id === bridgeId)
     const entry: WitnessEntry = {
-      id: newId(), at: new Date().toISOString(), day: today, kind, fact: fact.trim(), meaning: meaning.trim(), action: action.trim(),
+      id: newId(), at: new Date().toISOString(), day: today, kind, fact: fact.trim(), meaning: meaning.trim(), action: action.trim(), next: next.trim(),
       primed: kind === 'sign' && primed,
       ...(bridge ? { bridgeId: bridge.id } : {}),
       ...(bridge && isDomainId(bridge.domain) ? { domain: bridge.domain } : {}),
@@ -45,6 +46,7 @@ export function WitnessForm({ studio, compact, initialKind = 'sign', initialPrim
     setFact('')
     setMeaning('')
     setAction('')
+    setNext('')
     announce(`Witnessed: ${witnessLabel(kind).toLowerCase()}, ${today}.`)
     onDone?.()
   }
@@ -91,13 +93,15 @@ export function WitnessForm({ studio, compact, initialKind = 'sign', initialPrim
           <summary className="cursor-pointer text-sm text-muted hover:text-ink">Add what it meant and what you did</summary>
           <div className="mt-3 space-y-4">
             <Area label="What it meant to you" register="meaning" value={meaning} onChange={setMeaning} rows={2} dawn placeholder="Yours to say. Optional." />
-            <Area label="What you did" register="done" value={action} onChange={setAction} rows={2} placeholder="A sign becomes useful when it changes an act." />
+            <Area label="What you did" register="done" value={action} onChange={setAction} rows={2} placeholder="Already done. A sign becomes useful when it changes an act." />
+            <Area label="What you will do next" register="planned" value={next} onChange={setNext} rows={2} placeholder="Planned, not done yet." />
           </div>
         </details>
       ) : (
         <>
           <Area label="What it meant to you" register="meaning" value={meaning} onChange={setMeaning} rows={2} dawn placeholder="Yours to say. Optional." />
-          <Area label="What you did" register="done" value={action} onChange={setAction} rows={2} placeholder="A sign becomes useful when it changes an act." />
+          <Area label="What you did" register="done" value={action} onChange={setAction} rows={2} placeholder="Already done. A sign becomes useful when it changes an act." />
+            <Area label="What you will do next" register="planned" value={next} onChange={setNext} rows={2} placeholder="Planned, not done yet." />
         </>
       )}
 
@@ -177,6 +181,7 @@ export function WitnessView({ studio }: { studio: StudioApi }) {
                         <p className="mt-2 text-sm text-ink"><span className="text-muted">Happened · </span>{entry.fact}</p>
                         {entry.meaning && <p className="mt-1.5 font-serif text-base text-dawn"><span className="font-sans text-xs text-muted">Meant to you · </span>{entry.meaning}</p>}
                         {entry.action && <p className="mt-1.5 text-sm text-ink"><span className="text-muted">Did · </span>{entry.action}</p>}
+                        {entry.next && <p className="mt-1.5 text-sm text-ink"><span className="text-muted">Next, planned · </span>{entry.next}</p>}
                       </li>
                     ))}
                   </ul>

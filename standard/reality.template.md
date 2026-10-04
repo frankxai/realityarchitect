@@ -32,7 +32,7 @@ Spec: https://github.com/frankxai/realityarchitect/tree/main/standard
 - Non-negotiable: …
 
 ## Systems
-<!-- What already runs without you. Registry detail in .reality/systems.md. -->
+<!-- What already runs for you, each with a review path. Registry detail in .reality/systems.md. -->
 - …
 
 ## Environment

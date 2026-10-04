@@ -46,6 +46,19 @@ test('partial and malformed fields are repaired field by field', () => {
   assert.equal(state.canvas.cards[0].y, 0)
 })
 
+test('saves from before cadence, intentions and next acts load with safe defaults', () => {
+  const state = normalizeState({
+    witness: [{ kind: 'win', day: '2026-10-01', fact: 'Shipped the page.', action: 'Sent it.' }],
+    snapshots: [{ day: '2026-09-27', counts: { rep: 2 } }],
+  }, NOW)
+  assert.equal(state.witness[0].next, '')
+  assert.equal(state.snapshots[0].cadence, 'weekly')
+  assert.deepEqual(state.snapshots[0].intentions, { set: 0, came: 0, missed: 0 })
+  const monthly = normalizeState({ snapshots: [{ day: '2026-09-30', cadence: 'monthly', intentions: { set: 9, came: 4, missed: 3 } }] }, NOW)
+  assert.equal(monthly.snapshots[0].cadence, 'monthly')
+  assert.deepEqual(monthly.snapshots[0].intentions, { set: 9, came: 4, missed: 3 })
+})
+
 test('very long text is capped so storage and exports stay bounded', () => {
   const state = normalizeState({ soul: { scene: 'a'.repeat(20000) } }, NOW)
   assert.ok(state.soul.scene.length <= 4000)

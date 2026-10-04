@@ -25,7 +25,7 @@ export function sampleState(today: string): StudioState {
 
   const witness: WitnessEntry[] = []
   const add = (offset: number, hour: number, kind: WitnessKind, fact: string, extra: Partial<WitnessEntry> = {}) => {
-    witness.push({ id: `sample-w-${witness.length + 1}`, at: at(offset, hour), day: d(offset), kind, fact, meaning: '', action: '', primed: false, ...extra })
+    witness.push({ id: `sample-w-${witness.length + 1}`, at: at(offset, hour), day: d(offset), kind, fact, meaning: '', action: '', next: '', primed: false, ...extra })
   }
   add(-13, 7, 'rep', 'Ninety-minute finishing session on "Cedar".', { bridgeId: 'sample-album', repId: 'sample-rep-finish', domain: 'craft' })
   add(-12, 6, 'rep', 'Easy 5K along the river.', { bridgeId: 'sample-run', repId: 'sample-rep-run', domain: 'body' })
@@ -41,7 +41,7 @@ export function sampleState(today: string): StudioState {
     action: 'Said yes and proposed a date in November.', bridgeId: 'sample-album', domain: 'circle',
   })
   add(-3, 6, 'rep', 'Long run, 8K, slow and easy.', { bridgeId: 'sample-run', repId: 'sample-rep-run', domain: 'body' })
-  add(-2, 21, 'lesson', 'Mixing after 9 pm makes everything sound too bright the next morning.', { action: 'No mixing after 8 pm.' })
+  add(-2, 21, 'lesson', 'Mixing after 9 pm makes everything sound too bright the next morning.', { action: 'Moved tonight’s mix to the morning.', next: 'Mix only before 8 pm this week.' })
   add(-1, 7, 'win', 'Finished the arrangement of "Low Water" before noon.', { bridgeId: 'sample-album', domain: 'craft' })
   add(0, 8, 'rep', 'Finishing session: first full pass on "Harbor".', { bridgeId: 'sample-album', repId: 'sample-rep-finish', domain: 'craft' })
 
@@ -52,24 +52,24 @@ export function sampleState(today: string): StudioState {
   ) as Snapshot['atlas']
 
   const first: Snapshot = {
-    id: 'sample-snapshot-1', sealedAt: at(-14, 20), day: d(-14), periodStart: d(-21), atlas: snapshotAtlas(1),
+    id: 'sample-snapshot-1', cadence: 'weekly', sealedAt: at(-14, 20), day: d(-14), periodStart: d(-21), atlas: snapshotAtlas(1),
     bridges: [
       { id: 'sample-album', title: 'Finish the album', state: 'early', repsLogged: 0, repsPlanned: 0, movesDone: 0, movesTotal: 2 },
       { id: 'sample-run', title: 'Run the river 10K', state: 'early', repsLogged: 0, repsPlanned: 0, movesDone: 0, movesTotal: 1 },
     ],
-    counts: { ...zero(), gratitude: 2, lesson: 1 }, primedSigns: 0, unprimedSigns: 0,
+    counts: { ...zero(), gratitude: 2, lesson: 1 }, primedSigns: 0, unprimedSigns: 0, intentions: { set: 0, came: 0, missed: 0 },
     reflection: {
       trueNow: 'I keep starting new songs instead of finishing old ones.', changed: 'I said the album out loud to my partner.',
       grateful: 'The quiet studio corner.', correction: 'Finish before I start.',
     },
   }
   const second: Snapshot = {
-    id: 'sample-snapshot-2', sealedAt: at(-7, 20), day: d(-7), periodStart: d(-13), atlas: snapshotAtlas(0),
+    id: 'sample-snapshot-2', cadence: 'weekly', sealedAt: at(-7, 20), day: d(-7), periodStart: d(-13), atlas: snapshotAtlas(0),
     bridges: [
       { id: 'sample-album', title: 'Finish the album', state: 'on-pace', repsLogged: 3, repsPlanned: 3, movesDone: 0, movesTotal: 2 },
       { id: 'sample-run', title: 'Run the river 10K', state: 'behind', repsLogged: 2, repsPlanned: 3, movesDone: 0, movesTotal: 1 },
     ],
-    counts: { ...zero(), rep: 5, gratitude: 1 }, primedSigns: 0, unprimedSigns: 0,
+    counts: { ...zero(), rep: 5, gratitude: 1 }, primedSigns: 0, unprimedSigns: 0, intentions: { set: 2, came: 1, missed: 0 },
     reflection: {
       trueNow: 'Three finishing sessions in one week. That has not happened in a year.', changed: 'The mornings belong to the album now.',
       grateful: 'My partner listening twice.', correction: 'Run before the weather turns, not after.',

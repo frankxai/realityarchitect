@@ -56,7 +56,7 @@ journal. (The journal lives in `.reality/`.)
 ```markdown
 ---
 standard: reality.md
-version: "0.1"
+version: "0.2"
 updated: YYYY-MM-DD
 ---
 # reality.md — <your name>
@@ -65,7 +65,7 @@ updated: YYYY-MM-DD
 ## Aims            — what's being built. Specific, written, with if-then triggers. (Design)
 ## Attention       — what signal agents should surface to you, and what to filter out. (See)
 ## State           — the conditions you act from: sleep, deep-work windows, non-negotiables. (See)
-## Systems         — what already runs without you: agents, automations, loops. (Build/Automate)
+## Systems         — what already runs for you, with a review path: agents, supervised automations, loops. (Build/Automate)
 ## Environment     — the defaults you've engineered; what's been removed. (Automate)
 ## Feedback        — your review cadence, the metrics that count, where reviews are logged. (Compound)
 ## Guardrails      — what agents must never do on your behalf.

@@ -30,11 +30,12 @@ export REALITY_HOME="$HOME/Notes/Reality Architect"   # or leave unset to use ~/
 | `reality-snapshot` | draft a weekly or monthly snapshot, and seal it only when you approve |
 | `reality-decide` | record decisions with a review date, then review them |
 | `reality-vision-board` | turn your scenes into image prompts, generate only with consent, place them on the map |
-| `reality-library` | learn a teacher or idea with Keep, Mechanism, and Limits |
+| `reality-library` | learn a teacher or idea with Keep, Mechanism, and Limits, from `library.json` (generated from the site's Library) |
 
 ## The rules every skill follows
 
-The [Agent Charter](../../standard/AGENT-CHARTER.md): read before acting, propose rather than impose, keep labels
+Every skill begins by reading `CHARTER.md` in this plugin, an exact copy of the
+[Agent Charter](../../standard/AGENT-CHARTER.md): read before acting, propose rather than impose, keep labels
 (desired, reported, planned, done, meaning), never certify causation, never blame, protect everyone's agency, ask
 before memory, sync, sharing, or spending, count misses with hits, seal only what you approved, and send health,
 money, and crisis questions to humans.

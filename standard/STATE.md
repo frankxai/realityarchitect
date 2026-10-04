@@ -102,8 +102,12 @@ On pace: 6 of 6 planned reps logged in 14 days; no overdue moves.
 - **Happened (fact):** A stranger at the café asked about the album artwork.
 - **Meant (my meaning):** The work is ready to be seen.
 - **Did (action):** Sent her the listening link.
+- **Next (planned):** Play her the final mix when it is done.
 - Bridge: finish-the-album · Domain: craft
 ```
+
+**Did** holds only what is already done. Anything the person intends to do goes under **Next (planned)**, so a plan is
+never counted as evidence.
 
 Kinds: `sign` (a meaningful coincidence), `win` (an identity vote), `rep` (a practice done), `move` (a bold move
 done), `opening` (an opportunity, a person, a door), `lesson`, `gratitude`. **primed** means the person had set out
@@ -115,6 +119,7 @@ included, is what turns sign-tracking into an honest experiment.
 ```markdown
 # 2026-10-04
 - Looking for: a sign the album is wanted
+- Did it come: yes | no | not marked
 - Rehearsed the scene: yes
 - Focus: finish-the-album
 - One correction: start the session before opening messages
@@ -126,6 +131,7 @@ included, is what turns sign-tracking into an honest experiment.
 ```markdown
 ---
 snapshot: 2026-10-04
+cadence: weekly
 period: 2026-09-27 → 2026-10-04
 approved: true
 ---
@@ -136,12 +142,21 @@ approved: true
 - Finish the album — on pace — reps 6/6 — moves 0/2
 ## Witnessed this period
 sign 3 · win 2 · rep 6 · move 0 · opening 1 · lesson 1 · gratitude 4
+Signs: 2 primed · 1 unprimed
+Intentions: set 5 · came 2 · missed 2
 ## Reflection
 - True now: …
 - What changed: …
 - Grateful for: …
 - One correction: …
 ```
+
+The **Did it come** line in each day's log is the countable record of a look-for: `yes`, `no` (a miss, counted), or
+`not marked`. Snapshots aggregate those lines as **Intentions**, so misses enter the tally instead of disappearing.
+
+**Cadence and period.** A weekly snapshot covers the days since the latest snapshot of any cadence, or the last 7 days.
+A monthly snapshot covers the days since the latest *monthly* snapshot, or the last 30 days, so weekly reviews in
+between do not shorten it.
 
 A snapshot is written only after the human approves it. Tools never edit a sealed snapshot; a correction is a new
 note or a new snapshot.

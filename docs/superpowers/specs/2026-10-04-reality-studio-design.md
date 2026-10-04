@@ -207,9 +207,13 @@ Keep, Mechanism and Limits (each at least 40 characters) and at least one source
 
 ## 4. Agent plugin (`plugins/reality-architect/`, marketplace at `.claude-plugin/marketplace.json`)
 
-- A standalone agent-profile file (`agents/reality-architect.md`) is **deferred**: writing it was held by the
-  session's permission classifier on 2026-10-04, so it waits for Frank. Every skill carries the home resolution and
-  the Charter rules itself, so the plugin works without it.
+- The Charter ships inside the plugin as `CHARTER.md`, an exact copy of `standard/AGENT-CHARTER.md` (a test keeps them
+  identical). Every skill opens by reading it, and repeats the non-negotiables inline (causation, blame, consent,
+  registers, crisis routing, health and money to humans), so a skill invoked before onboarding still carries the full
+  Charter. A standalone agent-profile file (`agents/reality-architect.md`) was held by the session's permission
+  classifier on 2026-10-04 and waits for Frank; the plugin does not depend on it.
+- The Library tutor reads `skills/reality-library/library.json`, generated from `lib/library.ts` by
+  `pnpm plugin:data` (a test fails on drift), so no skill keeps its own list of teachers or claims.
 - Skills: `reality-onboard` (interview → soul.md, reality.md, reality/; or import a Studio export), `reality-daily`
   (morning and evening), `reality-witness`, `reality-bridge` (build, update, pace check), `reality-snapshot` (draft
   from logs and, if present, second-brain-os `brain/` notes → human approves → seal), `reality-decide`,

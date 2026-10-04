@@ -165,6 +165,7 @@ function normalizeWitness(input: unknown): WitnessEntry | null {
     fact,
     meaning: text(input.meaning),
     action: text(input.action),
+    next: text(input.next),
     primed: input.primed === true,
   }
   for (const key of ['bridgeId', 'repId', 'moveId'] as const) {
@@ -193,8 +194,11 @@ function normalizeSnapshot(input: unknown): Snapshot | null {
   const counts = isObject(input.counts) ? input.counts : {}
   const reflection = isObject(input.reflection) ? input.reflection : {}
   const bridges = Array.isArray(input.bridges) ? input.bridges : []
+  const intentions = isObject(input.intentions) ? input.intentions : {}
+  const count = (value: unknown) => Math.max(0, Math.round(finite(value)))
   return {
     id: id(input.id),
+    cadence: input.cadence === 'monthly' ? 'monthly' : 'weekly',
     sealedAt: typeof input.sealedAt === 'string' && !Number.isNaN(Date.parse(input.sealedAt)) ? input.sealedAt : `${input.day}T12:00:00.000Z`,
     day: input.day,
     periodStart: day(input.periodStart) || input.day,
@@ -213,6 +217,7 @@ function normalizeSnapshot(input: unknown): Snapshot | null {
     counts: Object.fromEntries(KINDS.map((kind) => [kind, Math.max(0, Math.round(finite(counts[kind])))])) as Snapshot['counts'],
     primedSigns: Math.max(0, Math.round(finite(input.primedSigns))),
     unprimedSigns: Math.max(0, Math.round(finite(input.unprimedSigns))),
+    intentions: { set: count(intentions.set), came: count(intentions.came), missed: count(intentions.missed) },
     reflection: { trueNow: text(reflection.trueNow), changed: text(reflection.changed), grateful: text(reflection.grateful), correction: text(reflection.correction) },
   }
 }

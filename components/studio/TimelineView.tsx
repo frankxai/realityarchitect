@@ -5,7 +5,7 @@ import { DOMAINS, WITNESS_KINDS } from '@/lib/studio/domains'
 import { decisionMd, snapshotMd } from '@/lib/studio/export'
 import { decisionsDue, diffSnapshots, domainTrend, draftSnapshot, snapshotPeriodStart } from '@/lib/studio/snapshot'
 import { newId } from '@/lib/studio/util'
-import type { Decision, Reflection } from '@/lib/studio/types'
+import type { Cadence, Decision, Reflection } from '@/lib/studio/types'
 import { Area, ConfirmButton, Empty, Field, Tag, button, downloadText, inputClass, panelClass } from './ui'
 import type { StudioApi } from './useStudio'
 
@@ -28,7 +28,8 @@ export function TimelineView({ studio }: { studio: StudioApi }) {
   const { state, today, update, announce } = studio
   const [reflection, setReflection] = useState<Reflection>(EMPTY_REFLECTION)
   const [approved, setApproved] = useState(false)
-  const draft = useMemo(() => draftSnapshot(state, today, reflection), [state, today, reflection])
+  const [cadence, setCadence] = useState<Cadence>('weekly')
+  const draft = useMemo(() => draftSnapshot(state, today, reflection, new Date(), cadence), [state, today, reflection, cadence])
   const sealedToday = state.snapshots.some((snapshot) => snapshot.day === today)
   const ordered = [...state.snapshots].sort((a, b) => (a.day === b.day ? b.sealedAt.localeCompare(a.sealedAt) : b.day.localeCompare(a.day)))
   const [olderId, setOlderId] = useState('')
@@ -41,18 +42,25 @@ export function TimelineView({ studio }: { studio: StudioApi }) {
 
   const seal = () => {
     if (!approved) return
-    const snapshot = draftSnapshot(state, today, reflection, new Date())
+    const snapshot = draftSnapshot(state, today, reflection, new Date(), cadence)
     update((next) => { next.snapshots.unshift(snapshot) })
     setReflection(EMPTY_REFLECTION)
     setApproved(false)
-    announce(`Snapshot sealed for ${today}. It is now permanent.`)
+    announce(`${cadence === 'monthly' ? 'Monthly' : 'Weekly'} snapshot sealed for ${today}. It is now permanent.`)
   }
 
   return (
     <div className="space-y-8">
       <section className={panelClass} aria-labelledby="seal-title">
         <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">Seal a snapshot</p>
-        <h3 id="seal-title" className="mt-1 text-xl font-semibold text-ink">What is true from {snapshotPeriodStart(state, today)} to {today}</h3>
+        <h3 id="seal-title" className="mt-1 text-xl font-semibold text-ink">What is true from {snapshotPeriodStart(state, today, cadence)} to {today}</h3>
+        <div className="mt-3 flex gap-1 rounded-lg border border-border p-1 sm:inline-flex" role="group" aria-label="Review cadence">
+          {(['weekly', 'monthly'] as const).map((option) => (
+            <button key={option} type="button" aria-pressed={cadence === option} onClick={() => setCadence(option)} className={`rounded-md px-3 py-1.5 text-sm ${cadence === option ? 'bg-accent/15 text-ink' : 'text-muted hover:text-ink'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent`}>
+              {option === 'weekly' ? 'Weekly review' : 'Monthly review'}
+            </button>
+          ))}
+        </div>
         <p className="mt-2 text-sm text-muted">A snapshot becomes permanent only when you say it is true for you. Corrections go into the next one.{sealedToday ? ' You already sealed one today; another gets its own file.' : ''}</p>
         <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_18rem]">
           <div className="grid gap-4">
@@ -65,6 +73,7 @@ export function TimelineView({ studio }: { studio: StudioApi }) {
             <p className="font-semibold text-ink">The draft <Tag register="computed" /></p>
             <p className="mt-2 text-muted">{WITNESS_KINDS.map((kind) => `${kind.label.toLowerCase()} ${draft.counts[kind.id]}`).join(' · ')}</p>
             <p className="mt-2 text-muted">Signs: {draft.primedSigns} primed · {draft.unprimedSigns} unprimed</p>
+            <p className="mt-2 text-muted">Looked for: {draft.intentions.set} · came {draft.intentions.came} · missed {draft.intentions.missed}</p>
             {draft.bridges.length > 0 && (
               <ul className="mt-3 space-y-1 text-muted">
                 {draft.bridges.map((bridge) => <li key={bridge.id}>{bridge.title}: {bridge.state}, reps {bridge.repsLogged}/{bridge.repsPlanned}</li>)}
@@ -90,7 +99,7 @@ export function TimelineView({ studio }: { studio: StudioApi }) {
           <ul className="mt-3 grid gap-3 sm:grid-cols-2">
             {ordered.map((snapshot) => (
               <li key={snapshot.id} className="rounded-xl border border-border bg-surface/60 p-4">
-                <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent">{snapshot.day} · approved</p>
+                <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent">{snapshot.day} · {snapshot.cadence} · approved</p>
                 <p className="mt-1 text-xs text-muted">{snapshot.periodStart} → {snapshot.day}</p>
                 {snapshot.reflection.trueNow && <p className="mt-2 text-sm text-ink">{snapshot.reflection.trueNow}</p>}
                 {snapshot.reflection.grateful && <p className="mt-1.5 font-serif text-sm text-dawn">{snapshot.reflection.grateful}</p>}

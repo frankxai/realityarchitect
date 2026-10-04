@@ -36,7 +36,7 @@ export function TodayView({ studio, go }: { studio: StudioApi; go: Go }) {
   const logRep = (bridgeId: string, repId: string, name: string) => {
     const bridge = active.find((entry) => entry.id === bridgeId)
     const entry: WitnessEntry = {
-      id: newId(), at: new Date().toISOString(), day: today, kind: 'rep', fact: name, meaning: '', action: '', primed: false, bridgeId, repId,
+      id: newId(), at: new Date().toISOString(), day: today, kind: 'rep', fact: name, meaning: '', action: '', next: '', primed: false, bridgeId, repId,
       ...(bridge && isDomainId(bridge.domain) ? { domain: bridge.domain } : {}),
     }
     update((draft) => { draft.witness.unshift(entry) })

@@ -229,6 +229,7 @@ export function witnessEntryMd(entry: WitnessEntry, slugs: Map<string, string>):
     `- **Happened (fact):** ${entry.fact}`,
     entry.meaning.trim() ? `- **Meant (my meaning):** ${entry.meaning.trim()}` : '',
     entry.action.trim() ? `- **Did (action):** ${entry.action.trim()}` : '',
+    entry.next.trim() ? `- **Next (planned):** ${entry.next.trim()}` : '',
     where ? `- ${where}` : '',
   ].filter(Boolean).join('\n')
 }
@@ -283,6 +284,7 @@ export function snapshotMd(snapshot: Snapshot): string {
   const counts = Object.entries(snapshot.counts).map(([kind, count]) => `${kind} ${count}`).join(' · ')
   return `---
 snapshot: ${snapshot.day}
+cadence: ${snapshot.cadence}
 period: ${snapshot.periodStart} → ${snapshot.day}
 approved: true
 sealed_at: ${snapshot.sealedAt}
@@ -300,6 +302,7 @@ ${bullet(bridges)}
 ## Witnessed this period
 ${counts}
 Signs: ${snapshot.primedSigns} primed · ${snapshot.unprimedSigns} unprimed
+Intentions: set ${snapshot.intentions.set} · came ${snapshot.intentions.came} · missed ${snapshot.intentions.missed}
 
 ## Reflection
 - True now: ${orGap(snapshot.reflection.trueNow)}

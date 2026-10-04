@@ -85,7 +85,7 @@ function BridgeEditor({ studio, bridge, onDeleted }: { studio: StudioApi; bridge
 
   const logRep = (rep: Rep) => {
     const entry: WitnessEntry = {
-      id: newId(), at: new Date().toISOString(), day: today, kind: 'rep', fact: rep.name, meaning: '', action: '', primed: false, bridgeId: bridge.id, repId: rep.id,
+      id: newId(), at: new Date().toISOString(), day: today, kind: 'rep', fact: rep.name, meaning: '', action: '', next: '', primed: false, bridgeId: bridge.id, repId: rep.id,
       ...(isDomainId(bridge.domain) ? { domain: bridge.domain } : {}),
     }
     update((draft) => { draft.witness.unshift(entry) })

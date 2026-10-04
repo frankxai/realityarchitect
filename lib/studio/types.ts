@@ -106,8 +106,10 @@ export interface WitnessEntry {
   fact: string
   /** What it meant (the person's meaning). Optional. */
   meaning: string
-  /** What they did (action). Optional. */
+  /** What they already did (done). Optional. Plans never go here. */
   action: string
+  /** What they will do next (planned). Optional; kept apart from what was done. */
+  next: string
   bridgeId?: string
   repId?: string
   moveId?: string
@@ -143,7 +145,11 @@ export interface Reflection {
 }
 
 /** Approved and immutable once sealed. */
+export type Cadence = 'weekly' | 'monthly'
+
 export interface Snapshot {
+  /** Weekly reviews start after the last snapshot; monthly reviews after the last monthly one (or the month's start). */
+  cadence: Cadence
   id: string
   /** ISO timestamp of sealing. */
   sealedAt: string
@@ -155,6 +161,8 @@ export interface Snapshot {
   counts: Record<WitnessKind, number>
   primedSigns: number
   unprimedSigns: number
+  /** Days with a look-for in the period, and whether it came or was missed. Misses are counted, not dropped. */
+  intentions: { set: number; came: number; missed: number }
   reflection: Reflection
 }
 

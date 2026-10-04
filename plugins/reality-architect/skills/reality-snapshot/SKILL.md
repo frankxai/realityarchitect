@@ -1,39 +1,50 @@
 ---
 name: reality-snapshot
-description: Draft a weekly or monthly Reality Snapshot from the person's logs, witness ledger, aims and atlas (and, if they use second-brain-os, its distilled brain notes), then seal it only after they approve. Sealed snapshots are immutable and show reality changing across time. Use for "weekly review", "snapshot", "how did this month go", "compare to last month".
+description: "Draft a weekly or monthly Reality Snapshot from the person's logs, witness ledger, aims and atlas (and, if they use second-brain-os, its distilled brain notes), then seal it only after they approve. Sealed snapshots are immutable and show reality changing across time. Use for weekly review, monthly review, snapshot, how did this month go, or compare to last month."
 ---
 
 # Seal a snapshot
 
-## 1. Draft
+> **First:** read `CHARTER.md` at the root of this plugin if you have not read it in this session, and follow it.
+> Non-negotiable: seal only what they approve; never infer their worth from numbers; never claim that thought or
+> feeling caused an outcome; keep desired, reported, planned, done and meaning apart.
 
-- Period: from the day after the last file in `snapshots/` (or the last 7 days) through today.
-- Gather: `atlas.md` scores; each active aim and its pace (see `reality-bridge`); counts of witness entries by kind in
-  the period, with primed and unprimed signs shown separately; decisions whose review date has arrived.
-- If the person uses **second-brain-os**, you may read notes from its `brain/` vault dated in the period to remind them
-  what happened. **Never read its `private/` vault.** Cite any note you use by path.
-- Do not write the reflection for them. Ask four questions, one at a time:
-  1. What is true now?
-  2. What changed?
-  3. What are you grateful for?
-  4. One correction for the next period.
+## Find the home
 
-## 2. Approve
+`$REALITY_HOME/reality/` if set, else `~/.reality/` when `~/reality.md` exists, else offer `reality-onboard`.
+`STATE/` below means that directory.
 
-Show the complete draft. Ask: **"Is this true for you? Shall I seal it?"** Only an explicit yes seals it.
+## 1. Cadence and period
 
-## 3. Seal
+Ask: weekly or monthly? Then use the period rule from standard/STATE.md:
 
-Write `snapshots/<YYYY-MM-DD>.md` with `approved: true` (format: standard/STATE.md). Never edit a sealed snapshot
-afterwards; a correction becomes a note in the next one.
+- **Weekly:** from the day after the latest file in `STATE/snapshots/` of any cadence, else the last 7 days.
+- **Monthly:** from the day after the latest snapshot whose frontmatter says `cadence: monthly`, else the last 30 days.
+  Weekly snapshots in between do not shorten a monthly review.
+
+## 2. Draft
+
+- `atlas.md` scores; each active aim and its pace (see `reality-bridge`).
+- Witness entries in the period by kind, with primed and unprimed signs shown separately.
+- **Intentions:** read the `Did it come:` line of every daily log in the period and count set (days with a look-for),
+  came (`yes`), missed (`no`) and not marked. Misses stay in the tally.
+- Decisions whose review date has arrived.
+- If they use **second-brain-os**, you may read notes from its `brain/` vault dated in the period to remind them what
+  happened. **Never read its `private/` vault.** Cite any note you use by path, and treat chat summaries as reminders,
+  not as facts about their life.
+
+Do not write the reflection for them. Ask, one at a time: What is true now? What changed? What are you grateful for?
+One correction for the next period?
+
+## 3. Approve, then seal
+
+Show the complete draft and ask: "Is this true for you? Shall I seal it?" Only an explicit yes seals it. Write
+`STATE/snapshots/<YYYY-MM-DD>.md` (add `-2`, `-3` if that name exists) with frontmatter `cadence:`, `period:` and
+`approved: true`, following standard/STATE.md. Never edit a sealed snapshot afterwards; a correction becomes a note in
+the next one.
 
 ## 4. Compare (when asked)
 
-Diff two snapshots: per domain the change in *now* and *wanted*, aims' pace then and now, and evidence counts. Say what
-moved and what did not, plainly. Point to the bridge or environment change that most likely moved it (mechanism),
-and leave meaning to them.
-
-## Never
-
-- Never seal without approval. Never infer a person's worth from the numbers.
-- Never treat a summary of their chats as fact about their life without their confirmation.
+Diff two snapshots: per domain the change in now and wanted, each aim's pace then and now, evidence counts, and the
+intention tally. Say plainly what moved and what did not. Point to the bridge or environment change that most likely
+moved it (mechanism), and leave meaning to them.

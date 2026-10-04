@@ -13,6 +13,22 @@ test('a new snapshot covers the days since the last one', () => {
   assert.equal(snapshotPeriodStart(emptyState(), TODAY), '2026-09-28', 'without snapshots: the last seven days')
 })
 
+test('a monthly review starts after the last monthly snapshot, not after the last weekly one', () => {
+  const sample = sampleState(TODAY)
+  assert.equal(snapshotPeriodStart(sample, TODAY, 'weekly'), '2026-09-28')
+  assert.equal(snapshotPeriodStart(sample, TODAY, 'monthly'), '2026-09-05', 'no monthly snapshot yet: the last 30 days')
+  const withMonthly = sampleState(TODAY)
+  withMonthly.snapshots.push({ ...withMonthly.snapshots[1], id: 'm1', cadence: 'monthly', day: '2026-09-15', sealedAt: '2026-09-15T20:00:00.000Z' })
+  assert.equal(snapshotPeriodStart(withMonthly, TODAY, 'monthly'), '2026-09-16')
+  assert.equal(snapshotPeriodStart(withMonthly, TODAY, 'weekly'), '2026-09-28', 'weekly still follows the latest snapshot of any cadence')
+})
+
+test('the draft counts look-for intentions, misses included', () => {
+  const draft = draftSnapshot(sampleState(TODAY), TODAY, reflection, new Date(2026, 9, 4, 20, 0), 'weekly')
+  assert.equal(draft.cadence, 'weekly')
+  assert.deepEqual(draft.intentions, { set: 3, came: 1, missed: 1 })
+})
+
 test('the draft counts only witnessed entries inside its period and keeps signs honest', () => {
   const sample = sampleState(TODAY)
   const draft = draftSnapshot(sample, TODAY, reflection, new Date(2026, 9, 4, 20, 0))

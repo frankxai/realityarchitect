@@ -43,6 +43,21 @@ test('witness entries separate fact, meaning and action, and name the sign as pr
   assert.match(md, /Bridge: finish-the-album · Domain: craft/)
 })
 
+test('a planned next act is never written as something already done', () => {
+  const state = sampleState(TODAY)
+  state.witness[0] = { ...state.witness[0], action: '', next: 'Send the mix to two listeners on Friday.' }
+  const md = witnessMd(state)
+  assert.match(md, /- \*\*Next \(planned\):\*\* Send the mix to two listeners on Friday\./)
+  const entry = md.split('### ')[1]
+  assert.doesNotMatch(entry, /Did \(action\)/)
+})
+
+test('snapshot files record their cadence and the honest intention tally', () => {
+  const snapshot = snapshotMd(sampleState(TODAY).snapshots[0])
+  assert.match(snapshot, /^cadence: weekly$/m)
+  assert.match(snapshot, /Intentions: set \d+ · came \d+ · missed \d+/)
+})
+
 test('an aim file labels desired, reported, planned and computed content', () => {
   const album = sample.bridges[0]
   const md = aimMd(album, sample, TODAY, bridgeSlugs(sample))
