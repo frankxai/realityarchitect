@@ -30,6 +30,19 @@ export function ThresholdStudio() {
     heading.current?.focus()
   }, [step, finished, resting])
 
+  // Leaving the page clears the card, including when the browser keeps this document in its back-forward cache.
+  useEffect(() => {
+    const clear = () => {
+      setCard(EMPTY)
+      setStep(0)
+      setFinished(false)
+      setResting(false)
+      setStatus('')
+    }
+    window.addEventListener('pagehide', clear)
+    return () => window.removeEventListener('pagehide', clear)
+  }, [])
+
   const update = (field: keyof Card, value: string) => {
     interacted.current = true
     setCard((current) => ({ ...current, [field]: value }))

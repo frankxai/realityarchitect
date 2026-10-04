@@ -36,3 +36,19 @@ test('Markdown contains the authored scene, response, giving, deadline, and revi
   assert.match(output, /Evidence or counterevidence/)
   assert.ok(realityCardMarkdown({ ...card, giving: '', boundary: '' }).includes('Not specified'))
 })
+
+test('the if-then sentence reads cleanly when the obstacle already starts with when or if', () => {
+  const output = realityCardMarkdown({ ...card, obstacle: 'When I reach for my phone instead of starting.', response: 'I open the draft for ten minutes' })
+  assert.match(output, /If I reach for my phone instead of starting, then I open the draft for ten minutes\./)
+  assert.doesNotMatch(output, /If When|If if|then I I/i)
+  assert.match(realityCardMarkdown({ ...card, obstacle: 'if the room is loud', response: 'then put on headphones' }), /If the room is loud, then I put on headphones\./)
+})
+
+test('exports carry the date and time zone they were written in, so relative deadlines stay resolvable', () => {
+  const written = { date: '2026-10-04', timeZone: 'Europe/Berlin' }
+  assert.match(realityCardMarkdown(card, written), /Written: 2026-10-04 \(Europe\/Berlin\)/)
+  const packet = realityCardPacket(card, written)
+  assert.equal(packet.written.date, '2026-10-04')
+  assert.equal(packet.written.timeZone, 'Europe/Berlin')
+  assert.match(realityCardMarkdown(card), /Written: \d{4}-\d{2}-\d{2} \(/)
+})

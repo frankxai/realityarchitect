@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { ThresholdStudio } from '@/components/ThresholdStudio'
 import styles from './threshold.module.css'
+import './threshold-global.css'
 
 export const metadata: Metadata = {
   title: 'The Imaginal Act',
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
 
 export default function Threshold() {
   return (
-    <div className={styles.experience}>
+    <div className={`${styles.experience} threshold-experience`}>
       <section className={styles.hero} aria-labelledby="imaginal-title">
         <Image src="/images/imaginal-threshold.webp" alt="A person pauses at an unfinished limestone doorway above the sea. Dawn reveals the first steps toward a distant shore." fill sizes="100vw" priority className={styles.art} />
         <div className={styles.shade} />
@@ -59,9 +60,9 @@ export default function Threshold() {
         <p className={styles.eyebrow}>A clear foundation</p>
         <h2 id="evidence-title">Meaning, practice, evidence.</h2>
         <div className={styles.evidenceGrid}>
-          <article><h3>The spiritual lens</h3><p>“Living in the end” is offered here as a contemplative perspective: experiencing fulfillment inwardly. A person's material circumstances are not a verdict on their consciousness.</p></article>
-          <article><h3>The studied practice</h3><p>Research distinguishes imagining a future from planning for it. Studies of mental contrasting pair a desired future with present obstacles and a specific if–then response. Those findings inform this exercise; this interface has not been tested for effectiveness.</p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4106484/">Read the randomized study ↗</a></article>
-          <article><h3>The open question</h3><p>What consciousness ultimately is remains a philosophical and scientific question. Quantum physics does not establish the claim that a desired feeling causes an external event. Light and the sea in this artwork are expressive metaphors.</p></article>
+          <article><h3>Meaning · the spiritual lens</h3><p>“Living in the end” is offered here as a contemplative perspective: experiencing fulfillment inwardly. A person's material circumstances are not a verdict on their consciousness.</p></article>
+          <article><h3>Mechanism · the studied practice</h3><p>Research distinguishes imagining a future from planning for it. Studies of mental contrasting pair a desired future with present obstacles and a specific if–then response. Those findings inform this exercise; this interface has not been tested for effectiveness.</p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4106484/">Read the randomized study ↗</a></article>
+          <article><h3>Open question · consciousness</h3><p>What consciousness ultimately is remains a philosophical and scientific question. Quantum physics does not establish the claim that a desired feeling causes an external event. Light and the sea in this artwork are expressive metaphors.</p></article>
         </div>
       </section>
 
