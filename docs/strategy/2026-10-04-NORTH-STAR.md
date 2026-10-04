@@ -283,6 +283,21 @@ return, snapshots sealed per active user per month, bridges with "on pace" verdi
 (public repos with a reality.md *template*, never a person's file). Qualitative: one story per month of a changed
 action, told with permission.
 
+## 15a. Guarding the focus (the toolsmith trap)
+
+Frank's own reflection notes warn against two failure modes: building tools instead of closing paying work, and
+starting new repos or brands that become the next thing to consolidate. This plan answers both on purpose:
+
+- **No new repo, no new brand.** Everything lands in `realityarchitect`. The Lightbook / Agentic Lifebook / Soulbook
+  chain ends here: its life-domain diagnostic becomes the Studio's Atlas, a feature, not a new spine.
+- **Connection, not construction.** Obsidian stays the editor and the phone app, Starlight stays the engine, and
+  second-brain-os stays the chat pipeline. We wrote a file format and a practice layer, not another notes app.
+- **The commercial job of this work is to serve the current paid wedge.** The Studio's Atlas plus `soul.md` is the
+  onboarding diagnostic for Frank's existing client offer. No new paid Reality Architect tier (Vault, Diff pack,
+  Studio Cloud, Academy) opens until that wedge is closed; until then, the 30-day metrics in §14 are the only goal.
+- **Next 30 days are evidence, not features:** Frank uses the Studio and the plugin himself every day, one client
+  onboarding uses the Atlas, and the first five strangers' Threshold cards (with consent) are read for what to fix.
+
 ## 15. Decisions for Frank (the button list)
 
 1. **Doctrine:** approve the two-register tone contract (section 9). This PR proposes it; merging it adopts it.
