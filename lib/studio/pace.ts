@@ -71,6 +71,12 @@ export function assessPace(bridge: Bridge, witness: WitnessEntry[], today: strin
       suggestions: ['Mark it achieved if the "done when" is true.', 'Extend the date if the aim still matters.', 'Release it if it no longer does. That is information, not failure.'],
     }
   }
+  if (!bridge.reps.length && movesDone === bridge.moves.length) {
+    return {
+      ...base, state: 'review', headline: 'Every planned move is done: is the "done when" true?',
+      suggestions: ['Mark it achieved if it is.', 'If not, add the next bold move with a date.'],
+    }
+  }
   if (daysBetween(bridge.createdAt, today) < 3 && repsLogged === 0 && movesDone === 0) {
     return { ...base, state: 'early', headline: `Too early to judge: this bridge began ${plural(daysBetween(bridge.createdAt, today), 'day')} ago.`, suggestions: ['Log the first rep when you do it.'] }
   }

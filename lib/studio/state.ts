@@ -7,8 +7,11 @@ import type {
 
 export const STORAGE_KEY = 'ra.studio.v1'
 
-/** Caps keep a hand-edited or runaway state bounded in storage and exports. */
-const CAP = { title: 200, line: 300, text: 1000, scene: 4000, list: 30, items: 60, witness: 5000, records: 500, cards: 300 }
+/**
+ * Caps only stop pathological input (a hand-edited or runaway save). They sit far above anything the Studio lets a
+ * person write, so normalizing a real state never changes it.
+ */
+const CAP = { title: 500, line: 2000, text: 20000, scene: 20000, list: 200, items: 1000, bridges: 1000, witness: 100000, records: 10000, cards: 5000 }
 
 const VOICES: Voice[] = ['gentle', 'direct', 'challenging']
 
@@ -157,10 +160,16 @@ function normalizeWitness(input: unknown): WitnessEntry | null {
   if (!isObject(input) || !isWitnessKind(input.kind) || !isDay(input.day)) return null
   const fact = text(input.fact)
   if (!fact.trim()) return null
+  const at = typeof input.at === 'string' && !Number.isNaN(Date.parse(input.at)) ? input.at : `${input.day}T12:00:00.000Z`
+  const stamp = new Date(at)
   const entry: WitnessEntry = {
     id: id(input.id),
-    at: typeof input.at === 'string' && !Number.isNaN(Date.parse(input.at)) ? input.at : `${input.day}T12:00:00.000Z`,
+    at,
     day: input.day,
+    // Older saves had no time: derive it once from the timestamp on this device.
+    time: typeof input.time === 'string' && /^([01]\d|2[0-3]):[0-5]\d$/.test(input.time)
+      ? input.time
+      : `${String(stamp.getHours()).padStart(2, '0')}:${String(stamp.getMinutes()).padStart(2, '0')}`,
     kind: input.kind,
     fact,
     meaning: text(input.meaning),
@@ -171,6 +180,7 @@ function normalizeWitness(input: unknown): WitnessEntry | null {
   for (const key of ['bridgeId', 'repId', 'moveId'] as const) {
     if (typeof input[key] === 'string' && input[key]) entry[key] = (input[key] as string).slice(0, 80)
   }
+  if (typeof input.bridgeTitle === 'string' && input.bridgeTitle) entry.bridgeTitle = input.bridgeTitle.slice(0, CAP.title)
   if (isDomainId(input.domain)) entry.domain = input.domain
   return entry
 }
@@ -276,7 +286,7 @@ export function normalizeState(input: unknown, now: Date = new Date()): StudioSt
     sample: input.sample === true,
     soul: normalizeSoul(input.soul),
     atlas: normalizeAtlas(input.atlas),
-    bridges: Array.isArray(input.bridges) ? compact(input.bridges.slice(0, CAP.list).map((bridge) => normalizeBridge(bridge, today))) : [],
+    bridges: Array.isArray(input.bridges) ? compact(input.bridges.slice(0, CAP.bridges).map((bridge) => normalizeBridge(bridge, today))) : [],
     witness: Array.isArray(input.witness) ? compact(input.witness.slice(0, CAP.witness).map(normalizeWitness)) : [],
     days: normalizeDays(input.days),
     snapshots: Array.isArray(input.snapshots) ? compact(input.snapshots.slice(0, CAP.records).map(normalizeSnapshot)) : [],

@@ -82,6 +82,21 @@ export async function deleteImage(id: string): Promise<void> {
   await run('readwrite', (store) => store.delete(id), undefined)
 }
 
+/**
+ * Deletes stored images that no card references any more. Images added in the last ten minutes are kept, because
+ * another open tab may hold a card for one that it has not saved yet. Returns how many were deleted.
+ */
+export async function pruneImages(keep: Set<string>, now = Date.now(), graceMs = 10 * 60_000): Promise<number> {
+  const records = await run<ImageRecord[]>('readonly', (store) => store.getAll(), [])
+  const stale = records.filter((record) => !keep.has(record.id) && now - Date.parse(record.addedAt) > graceMs).map((record) => record.id)
+  if (!stale.length) return 0
+  await run('readwrite', (store) => {
+    for (const id of stale) store.delete(id)
+    return null
+  }, undefined)
+  return stale.length
+}
+
 export async function clearImages(): Promise<void> {
   await run('readwrite', (store) => store.clear(), undefined)
 }

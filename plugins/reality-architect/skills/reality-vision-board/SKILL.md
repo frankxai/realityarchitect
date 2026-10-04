@@ -44,8 +44,12 @@ Read the canvas (create `{"nodes": [], "edges": []}` if it does not exist), then
 - Place each further image 40 px below the previous one. Never reuse coordinates, never move the person's existing
   nodes, and keep every `id` unique.
 
+The `file` path is read from the **vault root**, not from the canvas: find the nearest folder above the canvas that
+contains `.obsidian/` and write the image's path from there (for a home at `<vault>/Reality Architect`, that is
+`Reality Architect/reality/images/<slug>.png`). With no vault above it, use the path from the canvas's own folder.
+
 ```json
-{ "id": "img-<slug>", "type": "file", "file": "reality/images/<slug>.png",
+{ "id": "img-<slug>", "type": "file", "file": "Reality Architect/reality/images/<slug>.png",
   "x": 1680, "y": 620, "width": 360, "height": 240 }
 ```
 

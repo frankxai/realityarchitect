@@ -7,11 +7,21 @@ export function localDay(date: Date = new Date()): string {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
 }
 
+/** The local wall-clock time as `HH:MM`, stored with each witness entry so exports never shift with time zones. */
+export function localTime(date: Date = new Date()): string {
+  return `${pad(date.getHours())}:${pad(date.getMinutes())}`
+}
+
 /** Parses `YYYY-MM-DD` as a UTC midnight, for day arithmetic that no DST change can shift. */
 function utc(day: string): number | null {
   const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(day)
   if (!match) return null
-  return Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]))
+  const [year, month, date] = [Number(match[1]), Number(match[2]), Number(match[3])]
+  const time = Date.UTC(year, month - 1, date)
+  // Date.UTC rolls 2026-02-31 over to March; a real day must come back unchanged.
+  const back = new Date(time)
+  if (back.getUTCFullYear() !== year || back.getUTCMonth() !== month - 1 || back.getUTCDate() !== date) return null
+  return time
 }
 
 export function isDay(value: unknown): value is string {

@@ -101,6 +101,8 @@ export interface WitnessEntry {
   at: string
   /** Local YYYY-MM-DD the entry belongs to. */
   day: string
+  /** Local HH:MM when it was written, kept so exports do not shift with the reading device's time zone. */
+  time: string
   kind: WitnessKind
   /** What happened (fact). */
   fact: string
@@ -111,6 +113,8 @@ export interface WitnessEntry {
   /** What they will do next (planned). Optional; kept apart from what was done. */
   next: string
   bridgeId?: string
+  /** The bridge's title, kept when that bridge is deleted so the entry stays attributed. */
+  bridgeTitle?: string
   repId?: string
   moveId?: string
   domain?: DomainId

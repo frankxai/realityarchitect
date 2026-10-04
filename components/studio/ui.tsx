@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from 'react'
 
 /**
  * Shared Studio primitives. Every personal field shows its register: the person's own desired scenes and meanings
@@ -126,19 +126,49 @@ interface ListEditorProps {
 }
 
 /** An editable list of short lines. Enter adds; each line can be edited, moved (when ordered) or removed. */
+const drafts = new Map<string, unknown>()
+
+/**
+ * Form state that survives switching Studio views. It lives in memory for this page visit only: it is never stored,
+ * and a reload starts the form empty.
+ */
+export function useDraft<T>(key: string, initial: T): [T, (value: T) => void] {
+  const [value, setValue] = useState<T>(() => (drafts.has(key) ? (drafts.get(key) as T) : initial))
+  const set = useCallback((next: T) => {
+    drafts.set(key, next)
+    setValue(next)
+  }, [key])
+  return [value, set]
+}
+
+let keySeq = 0
+const nextKey = () => `item-${(keySeq += 1)}`
+
 export function ListEditor({ label, items, onChange, register, hint, placeholder, addLabel = 'Add', dawn, ordered, max = 30 }: ListEditorProps) {
   const id = useId()
   const [draft, setDraft] = useState('')
+  // Stable keys, so typing into an item never remounts its input and moves keep focus with the item.
+  const keys = useRef<string[]>([])
+  if (keys.current.length !== items.length) keys.current = items.map((_, index) => keys.current[index] ?? nextKey())
   const add = () => {
     const value = draft.trim()
     if (!value || items.length >= max) return
+    keys.current = [...keys.current, nextKey()]
     onChange([...items, value])
     setDraft('')
+  }
+  const remove = (index: number) => {
+    keys.current = keys.current.filter((_, i) => i !== index)
+    onChange(items.filter((_, i) => i !== index))
   }
   const move = (index: number, by: number) => {
     const next = [...items]
     const [item] = next.splice(index, 1)
     next.splice(index + by, 0, item)
+    const order = [...keys.current]
+    const [key] = order.splice(index, 1)
+    order.splice(index + by, 0, key)
+    keys.current = order
     onChange(next)
   }
   return (
@@ -151,13 +181,13 @@ export function ListEditor({ label, items, onChange, register, hint, placeholder
       {items.length > 0 && (
         <ul className="mt-2 space-y-2">
           {items.map((item, index) => (
-            <li key={`${index}-${item.slice(0, 12)}`} className="flex items-start gap-2">
+            <li key={keys.current[index]} className="flex items-start gap-2">
               {ordered && <span className="mt-3 w-5 shrink-0 text-right font-mono text-xs text-muted">{index + 1}.</span>}
               <input
                 aria-label={`${label}, item ${index + 1}`}
                 value={item}
                 onChange={(event) => onChange(items.map((current, i) => (i === index ? event.target.value : current)))}
-                onBlur={() => { if (!items[index].trim()) onChange(items.filter((_, i) => i !== index)) }}
+                onBlur={() => { if (!items[index]?.trim()) remove(index) }}
                 className={`${dawn ? dawnInputClass : inputClass} mt-0`}
               />
               {ordered && (
@@ -166,7 +196,7 @@ export function ListEditor({ label, items, onChange, register, hint, placeholder
                   <button type="button" className={button.ghost} disabled={index === items.length - 1} onClick={() => move(index, 1)} aria-label={`Move "${item}" down`}>↓</button>
                 </>
               )}
-              <button type="button" className={button.ghost} onClick={() => onChange(items.filter((_, i) => i !== index))} aria-label={`Remove "${item}"`}>Remove</button>
+              <button type="button" className={button.ghost} onClick={() => remove(index)} aria-label={`Remove "${item}"`}>Remove</button>
             </li>
           ))}
         </ul>

@@ -5,7 +5,6 @@ import { layoutMap, toJsonCanvas } from '@/lib/studio/canvas'
 import { ROOT, bundleFiles, realityMd, soulMd, weeklyPrompt } from '@/lib/studio/export'
 import { clearImages, getImage, imageExtension } from '@/lib/studio/images'
 import { parseImport } from '@/lib/studio/importer'
-import { clearState } from '@/lib/studio/persist'
 import { sampleState } from '@/lib/studio/sample'
 import { emptyState, isEmptyState } from '@/lib/studio/state'
 import type { StudioState } from '@/lib/studio/types'
@@ -20,10 +19,11 @@ const SAVE_TEXT = {
   unavailable: 'This browser is not keeping Studio data (private window or blocked site data). Export before you leave.',
   quota: 'This browser’s storage for the Studio is full. Export a backup, then remove some images from the map.',
   error: 'The last change could not be saved on this device. Export a backup to keep it.',
+  conflict: 'Another tab saved a different copy of your Studio. Choose which to keep in the notice above the views.',
 } as const
 
 export function DataDialog({ studio, open, onClose, go }: { studio: StudioApi; open: boolean; onClose: () => void; go: Go }) {
-  const { state, today, replace, update, announce, saveStatus } = studio
+  const { state, today, replace, update, announce, saveStatus, forget } = studio
   const dialog = useRef<HTMLDialogElement>(null)
   const fileInput = useRef<HTMLInputElement>(null)
   const [busy, setBusy] = useState(false)
@@ -50,7 +50,8 @@ export function DataDialog({ studio, open, onClose, go }: { studio: StudioApi; o
         types[card.imageId] = image.blob.type
         files.push({ path: `${ROOT}reality/images/${card.imageId}.${imageExtension(image.blob.type)}`, data: new Uint8Array(await image.blob.arrayBuffer()) })
       }
-      const canvas = toJsonCanvas(layoutMap(state, today), (imageId) => `reality/images/${imageId}.${imageExtension(types[imageId] ?? '')}`)
+      // Paths from the vault root, with the export folder at its top level; images that were not exported are skipped.
+      const canvas = toJsonCanvas(layoutMap(state, today), (imageId) => (types[imageId] ? `${ROOT}reality/images/${imageId}.${imageExtension(types[imageId])}` : null))
       files.push({ path: `${ROOT}Reality Map.canvas`, data: encoder.encode(`${JSON.stringify(canvas, null, 2)}\n`) })
       const zip = createZip(files)
       downloadBlob(`reality-architect-${today}.zip`, new Blob([zip.buffer as ArrayBuffer], { type: 'application/zip' }))
@@ -83,9 +84,8 @@ export function DataDialog({ studio, open, onClose, go }: { studio: StudioApi; o
   }
 
   const deleteEverything = async () => {
-    clearState()
+    forget()
     await clearImages()
-    replace(emptyState())
     announce('Everything in this Studio was deleted from this device.')
     onClose()
   }
@@ -146,7 +146,7 @@ export function DataDialog({ studio, open, onClose, go }: { studio: StudioApi; o
           <p className="mt-1 text-xs leading-relaxed text-muted">Mara, a fictional composer, so you can see every view filled before you start your own.</p>
           <div className="mt-3">
             {state.sample ? (
-              <button type="button" className={button.secondary} onClick={() => { replace(emptyState()); announce('Sample cleared. The Studio is yours.'); onClose() }}>Clear the sample and start mine</button>
+              <ConfirmButton label="Clear the sample and start mine" confirmLabel="Confirm: clear the sample, including anything added to it" className={button.secondary} onConfirm={() => { replace(emptyState()); announce('Sample cleared. The Studio is yours.'); onClose() }} />
             ) : isEmptyState(state) ? (
               <button type="button" className={button.secondary} onClick={() => { replace(sampleState(today)); announce('Sample life loaded. It is fictional.'); onClose() }}>Explore the sample life</button>
             ) : (

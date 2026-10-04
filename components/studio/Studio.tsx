@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { pruneImages } from '@/lib/studio/images'
 import { isEmptyState } from '@/lib/studio/state'
 import { AtlasView } from './AtlasView'
 import { BridgesView } from './BridgesView'
@@ -40,6 +41,14 @@ export function Studio() {
     if (switched.current) heading.current?.focus()
   }, [view])
 
+  // Once per visit, after a clean load, drop stored images that no card uses any more (removed cards, replaced studios).
+  const pruned = useRef(false)
+  useEffect(() => {
+    if (!studio.ready || pruned.current || studio.loadStatus !== 'loaded') return
+    pruned.current = true
+    void pruneImages(new Set(studio.state.canvas.cards.flatMap((card) => (card.imageId ? [card.imageId] : []))))
+  }, [studio.ready, studio.loadStatus, studio.state.canvas.cards])
+
   if (!studio.ready) {
     return (
       <div className="rounded-2xl border border-border bg-surface/60 p-8" aria-busy="true">
@@ -56,7 +65,7 @@ export function Studio() {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-xs text-muted">
-          {saveStatus === 'unavailable' || saveStatus === 'quota' || saveStatus === 'error' ? (
+          {saveStatus === 'unavailable' || saveStatus === 'quota' || saveStatus === 'error' || saveStatus === 'conflict' ? (
             <span className="text-[#ffb4b4]">Not saving on this device. Open Your data to export.</span>
           ) : (
             <span>Saved on this device only · no account · nothing sent</span>
@@ -71,8 +80,21 @@ export function Studio() {
           <button type="button" className={button.dawn} onClick={() => setDataOpen(true)}>Start my own</button>
         </div>
       )}
+      {saveStatus === 'conflict' && (
+        <div role="alert" className="mt-4 rounded-xl border border-[#ff8f8f]/40 px-4 py-3">
+          <p className="text-sm text-ink">Your Studio was changed in another tab while this tab had unsaved changes. Nothing has been overwritten yet. Which copy should stay?</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button type="button" className={button.secondary} onClick={studio.takeOther}>Load the other tab’s copy</button>
+            <button type="button" className={button.ghost} onClick={studio.keepMine}>Keep this tab’s version</button>
+          </div>
+        </div>
+      )}
       {loadStatus === 'recovered' && (
-        <p className="mt-4 rounded-xl border border-[#ff8f8f]/40 px-4 py-3 text-sm text-ink">Your saved Studio could not be read, so it opened empty. The unreadable copy is kept aside in this browser and was not overwritten.</p>
+        <p className="mt-4 rounded-xl border border-[#ff8f8f]/40 px-4 py-3 text-sm text-ink">
+          {studio.keptAside
+            ? 'Your saved Studio could not be read, so it opened empty. The unreadable copy is kept aside in this browser and was not overwritten.'
+            : 'Your saved Studio could not be read, so it opened empty. This browser’s storage is full, so the unreadable copy could not be kept aside: your next change replaces it.'}
+        </p>
       )}
 
       <nav aria-label="Studio views" className="sticky top-[3.6rem] z-30 -mx-5 mt-5 border-y border-border bg-bg/90 px-5 py-2 backdrop-blur">

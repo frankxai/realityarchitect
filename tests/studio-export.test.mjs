@@ -43,6 +43,14 @@ test('witness entries separate fact, meaning and action, and name the sign as pr
   assert.match(md, /Bridge: finish-the-album · Domain: craft/)
 })
 
+test('witness exports use the time the entry was written, and keep a deleted bridge by name', () => {
+  const state = sampleState(TODAY)
+  state.witness = [{ id: 'w1', at: '2026-10-03T21:30:00.000Z', day: '2026-10-03', time: '23:30', kind: 'rep', fact: 'Late session.', meaning: '', action: '', next: '', primed: false, bridgeId: 'deleted-one', bridgeTitle: 'Old aim' }]
+  const md = witnessMd(state)
+  assert.match(md, /### 2026-10-03 23:30 · rep/)
+  assert.match(md, /Bridge: Old aim \(deleted\)/)
+})
+
 test('a planned next act is never written as something already done', () => {
   const state = sampleState(TODAY)
   state.witness[0] = { ...state.witness[0], action: '', next: 'Send the mix to two listeners on Friday.' }

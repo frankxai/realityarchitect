@@ -5,7 +5,7 @@ import { DOMAINS, GAP_CLASSES, domainLabel, isDomainId } from '@/lib/studio/doma
 import { agentBrief, aimMd, bridgeSlugs, ifThenSentence, imagePrompt } from '@/lib/studio/export'
 import { PACE_LABEL, assessPace } from '@/lib/studio/pace'
 import { emptyBridge } from '@/lib/studio/state'
-import { newId } from '@/lib/studio/util'
+import { localTime, newId } from '@/lib/studio/util'
 import type { Bridge, Move, Reach, Rep, WitnessEntry } from '@/lib/studio/types'
 import { Area, ConfirmButton, Empty, Field, ListEditor, Tag, button, copyText, downloadText, inputClass, panelClass } from './ui'
 import type { StudioApi } from './useStudio'
@@ -85,7 +85,7 @@ function BridgeEditor({ studio, bridge, onDeleted }: { studio: StudioApi; bridge
 
   const logRep = (rep: Rep) => {
     const entry: WitnessEntry = {
-      id: newId(), at: new Date().toISOString(), day: today, kind: 'rep', fact: rep.name, meaning: '', action: '', next: '', primed: false, bridgeId: bridge.id, repId: rep.id,
+      id: newId(), at: new Date().toISOString(), day: today, time: localTime(), kind: 'rep', fact: rep.name, meaning: '', action: '', next: '', primed: false, bridgeId: bridge.id, repId: rep.id,
       ...(isDomainId(bridge.domain) ? { domain: bridge.domain } : {}),
     }
     update((draft) => { draft.witness.unshift(entry) })
@@ -194,7 +194,15 @@ function BridgeEditor({ studio, bridge, onDeleted }: { studio: StudioApi; bridge
             </div>
           )}
           <div className="mt-5">
-            <ConfirmButton label="Delete this bridge" confirmLabel="Confirm: delete bridge" onConfirm={() => { update((draft) => { draft.bridges = draft.bridges.filter((item) => item.id !== bridge.id) }); announce('Bridge deleted. Its witnessed moments stay in your ledger.'); onDeleted() }} />
+            <ConfirmButton label="Delete this bridge" confirmLabel="Confirm: delete bridge" onConfirm={() => {
+              update((draft) => {
+                draft.bridges = draft.bridges.filter((item) => item.id !== bridge.id)
+                // Entries keep the bridge's name so the ledger and its export still say what they belonged to.
+                for (const entry of draft.witness) if (entry.bridgeId === bridge.id) entry.bridgeTitle = bridge.title || 'Untitled aim'
+              })
+              announce('Bridge deleted. Its witnessed moments stay in your ledger.')
+              onDeleted()
+            }} />
           </div>
         </div>
       </section>
@@ -222,7 +230,22 @@ function RepsEditor({ bridge, patch, onLog }: { bridge: Bridge; patch: Patch; on
           <li key={rep.id} className="flex flex-wrap items-center gap-2">
             <input aria-label="Rep name" value={rep.name} onChange={(event) => patch((draft) => { const target = draft.reps.find((item) => item.id === rep.id); if (target) target.name = event.target.value })} className={`${small} min-w-0 flex-1`} />
             <label className="flex items-center gap-2 text-xs text-muted">
-              <input aria-label="Times per week" type="number" min={1} max={14} value={rep.perWeek} onChange={(event) => patch((draft) => { const target = draft.reps.find((item) => item.id === rep.id); if (target) target.perWeek = Math.min(14, Math.max(1, Math.round(Number(event.target.value) || 1))) })} className={`${small} w-16`} />
+              <input
+                aria-label="Times per week"
+                type="number"
+                min={1}
+                max={14}
+                // Free typing while focused (the field may be empty mid-edit); the value is checked and kept on leaving it.
+                key={`${rep.id}-${rep.perWeek}`}
+                defaultValue={rep.perWeek}
+                onBlur={(event) => {
+                  const value = Math.min(14, Math.max(1, Math.round(Number(event.target.value) || rep.perWeek)))
+                  if (value !== rep.perWeek) patch((draft) => { const target = draft.reps.find((item) => item.id === rep.id); if (target) target.perWeek = value })
+                  else event.target.value = String(rep.perWeek)
+                }}
+                onKeyDown={(event) => { if (event.key === 'Enter') event.currentTarget.blur() }}
+                className={`${small} w-16`}
+              />
               per week
             </label>
             <button type="button" className={button.secondary} onClick={() => onLog(rep)}>Log rep</button>

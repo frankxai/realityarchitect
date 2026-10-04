@@ -59,9 +59,26 @@ test('saves from before cadence, intentions and next acts load with safe default
   assert.deepEqual(monthly.snapshots[0].intentions, { set: 9, came: 4, missed: 3 })
 })
 
-test('very long text is capped so storage and exports stay bounded', () => {
-  const state = normalizeState({ soul: { scene: 'a'.repeat(20000) } }, NOW)
-  assert.ok(state.soul.scene.length <= 4000)
+test('only pathological input is capped; anything a person can write survives a reload unchanged', () => {
+  const state = normalizeState({ soul: { scene: 'a'.repeat(50000) } }, NOW)
+  assert.ok(state.soul.scene.length <= 20000)
+
+  const big = sampleState('2026-10-04')
+  const long = 'x'.repeat(2500)
+  big.bridges = Array.from({ length: 40 }, (_, i) => ({ ...big.bridges[0], id: `b${i}`, title: `Aim ${i}`, moves: Array.from({ length: 70 }, (_, j) => ({ id: `m${i}-${j}`, title: `Move ${j}`, due: '', done: false })) }))
+  big.witness[0] = { ...big.witness[0], meaning: long, fact: long }
+  big.decisions[0] = { ...big.decisions[0], context: long }
+  big.canvas.cards[0] = { ...big.canvas.cards[0], text: long }
+  big.snapshots[0] = { ...big.snapshots[0], reflection: { ...big.snapshots[0].reflection, trueNow: long } }
+  assert.deepEqual(normalizeState(JSON.parse(JSON.stringify(big)), NOW), big)
+})
+
+test('witness entries keep the local time they were written and the title of a deleted bridge', () => {
+  const state = normalizeState({ witness: [{ kind: 'rep', day: '2026-10-01', fact: 'Run', time: '23:30', bridgeId: 'gone', bridgeTitle: 'Run the river 10K' }] }, NOW)
+  assert.equal(state.witness[0].time, '23:30')
+  assert.equal(state.witness[0].bridgeTitle, 'Run the river 10K')
+  const legacy = normalizeState({ witness: [{ kind: 'rep', day: '2026-10-01', fact: 'Run', time: '25:99' }] }, NOW)
+  assert.match(legacy.witness[0].time, /^\d{2}:\d{2}$/)
 })
 
 test('a valid state survives a JSON round trip unchanged', () => {

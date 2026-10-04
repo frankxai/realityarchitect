@@ -32,10 +32,14 @@ The Studio's ZIP has one top folder, `Reality Architect/`, holding `START HERE.m
 `reality/…`, and `Reality Map.canvas`.
 
 - **Vault mode:** copy the *contents* of that top folder into the home (strip the wrapper), so the home holds
-  `reality.md` directly. If the chosen home is itself a not-yet-existing folder named `Reality Architect`, extracting
-  the archive into its parent gives the same result.
-- **Home mode:** copy `reality.md` and `soul.md` to `~`, and the contents of the archive's `reality/` into
-  `~/.reality/`.
+  `reality.md` and `Reality Map.canvas` directly. If the chosen home is itself a not-yet-existing folder named
+  `Reality Architect` at the top of the vault, extracting the archive into the vault root gives the same result.
+- **Home mode:** copy `reality.md` and `soul.md` to `~`, `Reality Map.canvas` to `~/Reality Map.canvas`, and the
+  contents of the archive's `reality/` into `~/.reality/`.
+- **Map image paths:** the export's map points at images as `Reality Architect/reality/images/<file>`, a path from the
+  vault root. If the images end up anywhere else, rewrite each `"type": "file"` node's `file` to the new path from the
+  vault root (the nearest folder above the map that contains `.obsidian/`; in home mode, from `~`, for example
+  `.reality/images/<file>`). Change nothing else in the canvas.
 - Before copying, list every file that would be overwritten and get an explicit yes.
 
 ## 3. Interview (one question at a time, their words verbatim)
@@ -58,7 +62,8 @@ Then reality.md: Identity (reuse the "I am" lines), one to three Aims (each with
 - Show both drafts in full. Write them only after a yes. Frontmatter: `standard: soul.md` / `version: "0.1"` and
   `standard: reality.md` / `version: "0.2"`.
 - Create the state directory with `aims/`, `log/`, `snapshots/`, `decisions/`, `images/`, and empty `witness.md`,
-  `evidence.md`, `atlas.md`.
+  `evidence.md`, `atlas.md` and `systems.md` (the agents and automations that run for them, each with a review path;
+  start it with a `# Systems` heading and nothing invented).
 - Offer, never force, the line for the instruction file their harness already reads (`CLAUDE.md`, `AGENTS.md`,
   `GEMINI.md`), using the line for their mode from the table above.
 

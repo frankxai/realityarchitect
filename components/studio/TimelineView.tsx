@@ -6,7 +6,7 @@ import { decisionMd, snapshotMd } from '@/lib/studio/export'
 import { decisionsDue, diffSnapshots, domainTrend, draftSnapshot, snapshotPeriodStart } from '@/lib/studio/snapshot'
 import { newId } from '@/lib/studio/util'
 import type { Cadence, Decision, Reflection } from '@/lib/studio/types'
-import { Area, ConfirmButton, Empty, Field, Tag, button, downloadText, inputClass, panelClass } from './ui'
+import { Area, ConfirmButton, Empty, Field, Tag, button, downloadText, inputClass, panelClass, useDraft } from './ui'
 import type { StudioApi } from './useStudio'
 
 const EMPTY_REFLECTION: Reflection = { trueNow: '', changed: '', grateful: '', correction: '' }
@@ -26,9 +26,9 @@ function Sparkline({ points, label }: { points: { day: string; now: number }[]; 
 
 export function TimelineView({ studio }: { studio: StudioApi }) {
   const { state, today, update, announce } = studio
-  const [reflection, setReflection] = useState<Reflection>(EMPTY_REFLECTION)
+  const [reflection, setReflection] = useDraft<Reflection>('snapshot:reflection', EMPTY_REFLECTION)
   const [approved, setApproved] = useState(false)
-  const [cadence, setCadence] = useState<Cadence>('weekly')
+  const [cadence, setCadence] = useDraft<Cadence>('snapshot:cadence', 'weekly')
   const draft = useMemo(() => draftSnapshot(state, today, reflection, new Date(), cadence), [state, today, reflection, cadence])
   const sealedToday = state.snapshots.some((snapshot) => snapshot.day === today)
   const ordered = [...state.snapshots].sort((a, b) => (a.day === b.day ? b.sealedAt.localeCompare(a.sealedAt) : b.day.localeCompare(a.day)))
@@ -176,7 +176,7 @@ const EMPTY_DECISION = { title: '', context: '', options: '', choice: '', why: '
 
 function DecisionsPanel({ studio }: { studio: StudioApi }) {
   const { state, today, update, announce } = studio
-  const [form, setForm] = useState(EMPTY_DECISION)
+  const [form, setForm] = useDraft('decision:form', EMPTY_DECISION)
   const [outcomes, setOutcomes] = useState<Record<string, string>>({})
   const due = new Set(decisionsDue(state.decisions, today).map((decision) => decision.id))
   const ordered = [...state.decisions].sort((a, b) => Number(due.has(b.id)) - Number(due.has(a.id)) || b.day.localeCompare(a.day))

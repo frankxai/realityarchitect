@@ -144,8 +144,11 @@ export interface JsonCanvas {
 /** JSON Canvas preset colors: 2 orange, 3 yellow, 4 green, 5 cyan, 6 purple. */
 const COLOR: Partial<Record<MapTone, string>> = { vision: '3', bridge: '5', rep: '5', move: '2', reach: '4', witness: '6' }
 
-/** JSON Canvas 1.0 (jsoncanvas.org): opens in Obsidian on desktop and mobile. */
-export function toJsonCanvas(layout: MapLayout, imagePath: (imageId: string) => string): JsonCanvas {
+/**
+ * JSON Canvas 1.0 (jsoncanvas.org): opens in Obsidian on desktop and mobile. `imagePath` gives an image's path from the
+ * vault root, or null when the image is not part of the export; that card then becomes a text card saying so.
+ */
+export function toJsonCanvas(layout: MapLayout, imagePath: (imageId: string) => string | null): JsonCanvas {
   const round = (value: number) => Math.round(value)
   const groups: JsonCanvasNode[] = []
   const laneIds = [...new Set(layout.nodes.filter((node) => node.tone === 'bridge').map((node) => node.bridgeId as string))]
@@ -160,7 +163,12 @@ export function toJsonCanvas(layout: MapLayout, imagePath: (imageId: string) => 
   }
   const nodes: JsonCanvasNode[] = layout.nodes.map((node) => {
     const base = { id: node.id, x: round(node.x), y: round(node.y), width: round(node.w), height: round(node.h), ...(COLOR[node.tone] ? { color: COLOR[node.tone] } : {}) }
-    if (node.tone === 'image' && node.imageId) return { ...base, type: 'file', file: imagePath(node.imageId) }
+    const file = node.tone === 'image' && node.imageId ? imagePath(node.imageId) : null
+    if (file) return { ...base, type: 'file', file }
+    if (node.tone === 'image') {
+      const note = '(Image not included: it was not on the device that exported this map.)'
+      return { ...base, type: 'text', text: node.body ? `${node.body}\n\n${note}` : note }
+    }
     return { ...base, type: 'text', text: node.title ? `**${node.title}**\n\n${node.body}` : node.body }
   })
   return {

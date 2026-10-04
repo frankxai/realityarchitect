@@ -219,17 +219,21 @@ ${pace.suggestions.map((suggestion) => `- ${suggestion}`).join('\n')}
 ${closing}`
 }
 
-function time(at: string): string {
-  const date = new Date(at)
+/** The local time the entry was written; older entries without one fall back to this device's reading of `at`. */
+function time(entry: WitnessEntry): string {
+  if (/^([01]\d|2[0-3]):[0-5]\d$/.test(entry.time ?? '')) return entry.time
+  const date = new Date(entry.at)
   if (Number.isNaN(date.getTime())) return '00:00'
   return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
 }
 
 export function witnessEntryMd(entry: WitnessEntry, slugs: Map<string, string>): string {
   const tag = entry.kind === 'sign' ? ` · ${entry.primed ? 'primed' : 'unprimed'}` : ''
-  const where = [entry.bridgeId && slugs.get(entry.bridgeId) ? `Bridge: ${slugs.get(entry.bridgeId)}` : '', entry.domain ? `Domain: ${entry.domain}` : ''].filter(Boolean).join(' · ')
+  const slug = entry.bridgeId ? slugs.get(entry.bridgeId) : undefined
+  const bridge = slug ? `Bridge: ${slug}` : entry.bridgeTitle ? `Bridge: ${entry.bridgeTitle} (deleted)` : ''
+  const where = [bridge, entry.domain ? `Domain: ${entry.domain}` : ''].filter(Boolean).join(' · ')
   return [
-    `### ${entry.day} ${time(entry.at)} · ${entry.kind}${tag}`,
+    `### ${entry.day} ${time(entry)} · ${entry.kind}${tag}`,
     `- **Happened (fact):** ${entry.fact}`,
     entry.meaning.trim() ? `- **Meant (my meaning):** ${entry.meaning.trim()}` : '',
     entry.action.trim() ? `- **Did (action):** ${entry.action.trim()}` : '',
@@ -396,7 +400,9 @@ Exported from Reality Studio on ${today}. Everything here is plain Markdown that
 
 - \`soul.md\` — the inner contract (meaning). \`reality.md\` — the contract agents follow (mechanism).
 - \`reality/\` — your state: atlas, aims, daily logs, witness ledger, evidence, snapshots, decisions, images.
-- \`Reality Map.canvas\` — your map (JSON Canvas); it opens in Obsidian on desktop and mobile.
+- \`Reality Map.canvas\` — your map (JSON Canvas); it opens in Obsidian on desktop and mobile. Put this whole
+  \`Reality Architect\` folder at the top level of your vault: the map finds its images at
+  \`Reality Architect/reality/images/\`.
 - \`reality/studio-backup.json\` — import it in Reality Studio to continue on another device. Images travel as files
   in \`reality/images/\`, not inside the backup.
 

@@ -86,6 +86,13 @@ test('a bridge with only moves is judged by its moves', () => {
   assert.equal(assessPace(late, [], TODAY).state, 'behind')
 })
 
+test('a moves-only bridge with every move done asks whether it is achieved', () => {
+  const done = bridge({ reps: [], moves: [{ id: 'm1', title: 'Register', due: '2026-10-01', done: true, doneAt: '2026-10-01' }, { id: 'm2', title: 'Run it', due: '2026-10-12', done: true, doneAt: '2026-10-12' }] })
+  const pace = assessPace(done, [], TODAY)
+  assert.equal(pace.state, 'review')
+  assert.match(pace.headline, /Every planned move is done/)
+})
+
 test('achieved and released bridges are closed', () => {
   assert.equal(assessPace(bridge({ status: 'achieved', closedAt: '2026-10-10' }), [], TODAY).state, 'closed')
   assert.equal(assessPace(bridge({ status: 'released' }), [], TODAY).state, 'closed')

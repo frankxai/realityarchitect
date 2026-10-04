@@ -67,6 +67,14 @@ test('the map has a keyboard route and a list equivalent', () => {
   assert.match(map, /if \(!event\.ctrlKey && !event\.metaKey\) return/, 'a plain wheel keeps scrolling the page')
 })
 
+test('the studio saves what is pending when hidden or left, and notices other tabs', () => {
+  const hook = read('components/studio/useStudio.ts')
+  assert.match(hook, /visibilityState === 'hidden'/)
+  assert.match(hook, /addEventListener\('storage'/)
+  assert.match(hook, /return \(\) => \{[^}]*flush\(\)/s, 'unmounting flushes')
+  assert.match(read('components/studio/Studio.tsx'), /another tab/)
+})
+
 test('rest mode has no timer and says what it is', () => {
   const today = read('components/studio/TodayView.tsx')
   assert.match(today, /no timer/)
@@ -82,13 +90,46 @@ test('a full storage keeps the session usable and reports why', () => {
   assert.deepEqual(saveState(sampleState('2026-10-04'), broken), { ok: false, reason: 'error' })
 })
 
+test('a full storage still loads what is saved instead of pretending storage is missing', () => {
+  const memory = new MemoryStorage()
+  saveState(sampleState('2026-10-04'), memory)
+  const full = { getItem: (key) => memory.getItem(key), setItem: () => { const error = new Error('full'); error.name = 'QuotaExceededError'; throw error }, removeItem() {} }
+  const loaded = loadState(full)
+  assert.equal(loaded.status, 'loaded')
+  assert.equal(loaded.state.sample, true)
+})
+
+test('when the unreadable copy cannot be kept aside, the load says so', () => {
+  const broken = { getItem: () => '{not json', setItem: () => { throw new Error('full') }, removeItem() {} }
+  const loaded = loadState(broken)
+  assert.equal(loaded.status, 'recovered')
+  assert.equal(loaded.keptAside, false)
+  const roomy = new MemoryStorage()
+  roomy.setItem(STORAGE_KEY, '{not json')
+  assert.equal(loadState(roomy).keptAside, true)
+})
+
+test('a tab never saves over what another tab saved after it loaded', () => {
+  const storage = new MemoryStorage()
+  const first = loadState(storage)
+  const second = loadState(storage)
+  const a = saveState(sampleState('2026-10-04'), storage, first.text)
+  assert.equal(a.ok, true)
+  assert.deepEqual(saveState(sampleState('2026-10-05'), storage, second.text), { ok: false, reason: 'conflict' })
+  assert.equal(storage.getItem(STORAGE_KEY), a.text, 'the first tab’s save is intact')
+  const reloaded = loadState(storage)
+  assert.equal(saveState(sampleState('2026-10-05'), storage, reloaded.text).ok, true, 'after loading the newer copy the second tab can save')
+})
+
 test('saved state loads back; corrupt state is recovered and kept aside, never lost silently', () => {
   const storage = new MemoryStorage()
   assert.equal(loadState(storage).status, 'empty')
   const sample = sampleState('2026-10-04')
-  assert.deepEqual(saveState(sample, storage), { ok: true })
+  const saved = saveState(sample, storage)
+  assert.equal(saved.ok, true)
   const loaded = loadState(storage)
   assert.equal(loaded.status, 'loaded')
+  assert.equal(loaded.text, saved.text)
   assert.deepEqual(loaded.state, sample)
 
   storage.setItem(STORAGE_KEY, '{not json')

@@ -5,7 +5,7 @@ import { isDomainId } from '@/lib/studio/domains'
 import { PACE_LABEL, assessPace } from '@/lib/studio/pace'
 import { decisionsDue } from '@/lib/studio/snapshot'
 import { kindCounts } from '@/lib/studio/stats'
-import { newId } from '@/lib/studio/util'
+import { localTime, newId } from '@/lib/studio/util'
 import type { DayNote, WitnessEntry } from '@/lib/studio/types'
 import { Field, Tag, button, panelClass } from './ui'
 import type { StudioApi } from './useStudio'
@@ -36,7 +36,7 @@ export function TodayView({ studio, go }: { studio: StudioApi; go: Go }) {
   const logRep = (bridgeId: string, repId: string, name: string) => {
     const bridge = active.find((entry) => entry.id === bridgeId)
     const entry: WitnessEntry = {
-      id: newId(), at: new Date().toISOString(), day: today, kind: 'rep', fact: name, meaning: '', action: '', next: '', primed: false, bridgeId, repId,
+      id: newId(), at: new Date().toISOString(), day: today, time: localTime(), kind: 'rep', fact: name, meaning: '', action: '', next: '', primed: false, bridgeId, repId,
       ...(bridge && isDomainId(bridge.domain) ? { domain: bridge.domain } : {}),
     }
     update((draft) => { draft.witness.unshift(entry) })
@@ -142,7 +142,7 @@ export function TodayView({ studio, go }: { studio: StudioApi; go: Go }) {
               <p className="mt-2 text-xs text-muted">If it came, witness it below as a sign and tick “I had set out to notice”.</p>
             </div>
           )}
-          <div className="mt-5"><WitnessForm studio={studio} compact initialPrimed={Boolean(note.lookFor.trim())} /></div>
+          <div className="mt-5"><WitnessForm studio={studio} compact /></div>
           <div className="mt-6">
             <Field label="One correction for tomorrow" register="planned" value={note.correction} onChange={(value) => setNote({ correction: value })} placeholder="Start the session before opening messages." />
           </div>

@@ -25,7 +25,7 @@ export function sampleState(today: string): StudioState {
 
   const witness: WitnessEntry[] = []
   const add = (offset: number, hour: number, kind: WitnessKind, fact: string, extra: Partial<WitnessEntry> = {}) => {
-    witness.push({ id: `sample-w-${witness.length + 1}`, at: at(offset, hour), day: d(offset), kind, fact, meaning: '', action: '', next: '', primed: false, ...extra })
+    witness.push({ id: `sample-w-${witness.length + 1}`, at: at(offset, hour), day: d(offset), time: `${String(hour).padStart(2, '0')}:15`, kind, fact, meaning: '', action: '', next: '', primed: false, ...extra })
   }
   add(-13, 7, 'rep', 'Ninety-minute finishing session on "Cedar".', { bridgeId: 'sample-album', repId: 'sample-rep-finish', domain: 'craft' })
   add(-12, 6, 'rep', 'Easy 5K along the river.', { bridgeId: 'sample-run', repId: 'sample-rep-run', domain: 'body' })

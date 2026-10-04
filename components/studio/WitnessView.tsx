@@ -3,38 +3,40 @@
 import { useId, useMemo, useState } from 'react'
 import { WITNESS_KINDS, isDomainId, witnessLabel } from '@/lib/studio/domains'
 import { intentionTally, kindCounts, signTally } from '@/lib/studio/stats'
-import { newId } from '@/lib/studio/util'
+import { localTime, newId } from '@/lib/studio/util'
 import type { WitnessEntry, WitnessKind } from '@/lib/studio/types'
-import { Area, ConfirmButton, Empty, Tag, button, inputClass, panelClass } from './ui'
+import { Area, ConfirmButton, Empty, Tag, button, inputClass, panelClass, useDraft } from './ui'
 import type { StudioApi } from './useStudio'
 
 interface WitnessFormProps {
   studio: StudioApi
   compact?: boolean
   initialKind?: WitnessKind
-  initialPrimed?: boolean
   onDone?: () => void
 }
 
 /** Record one moment as fact, meaning and action. Shared by Today (compact) and Witness. */
-export function WitnessForm({ studio, compact, initialKind = 'sign', initialPrimed = false, onDone }: WitnessFormProps) {
+export function WitnessForm({ studio, compact, initialKind = 'sign', onDone }: WitnessFormProps) {
   const { state, today, update, announce } = studio
   const groupId = useId()
-  const [kind, setKind] = useState<WitnessKind>(initialKind)
-  const [fact, setFact] = useState('')
-  const [meaning, setMeaning] = useState('')
-  const [action, setAction] = useState('')
-  const [next, setNext] = useState('')
-  const [bridgeId, setBridgeId] = useState('')
-  const [primed, setPrimed] = useState(initialPrimed)
+  const draft = compact ? 'witness-today' : 'witness'
+  const [kind, setKind] = useDraft<WitnessKind>(`${draft}:kind`, initialKind)
+  const [fact, setFact] = useDraft(`${draft}:fact`, '')
+  const [meaning, setMeaning] = useDraft(`${draft}:meaning`, '')
+  const [action, setAction] = useDraft(`${draft}:action`, '')
+  const [next, setNext] = useDraft(`${draft}:next`, '')
+  const [bridgeId, setBridgeId] = useDraft(`${draft}:bridge`, '')
   const lookFor = state.days[today]?.lookFor.trim() ?? ''
+  // Until the person chooses, a sign counts as primed exactly when something was set to look for today.
+  const [primedChoice, setPrimed] = useState<boolean | null>(null)
+  const primed = primedChoice ?? lookFor !== ''
   const active = state.bridges.filter((bridge) => bridge.status === 'active')
 
   const save = () => {
     if (!fact.trim()) return
     const bridge = active.find((entry) => entry.id === bridgeId)
     const entry: WitnessEntry = {
-      id: newId(), at: new Date().toISOString(), day: today, kind, fact: fact.trim(), meaning: meaning.trim(), action: action.trim(), next: next.trim(),
+      id: newId(), at: new Date().toISOString(), day: today, time: localTime(), kind, fact: fact.trim(), meaning: meaning.trim(), action: action.trim(), next: next.trim(),
       primed: kind === 'sign' && primed,
       ...(bridge ? { bridgeId: bridge.id } : {}),
       ...(bridge && isDomainId(bridge.domain) ? { domain: bridge.domain } : {}),
@@ -47,6 +49,7 @@ export function WitnessForm({ studio, compact, initialKind = 'sign', initialPrim
     setMeaning('')
     setAction('')
     setNext('')
+    setPrimed(null)
     announce(`Witnessed: ${witnessLabel(kind).toLowerCase()}, ${today}.`)
     onDone?.()
   }
@@ -174,7 +177,7 @@ export function WitnessView({ studio }: { studio: StudioApi }) {
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <p className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-accent">
                             {witnessLabel(entry.kind)}{entry.kind === 'sign' ? (entry.primed ? ' · primed' : ' · unprimed') : ''}
-                            {entry.bridgeId && titles.has(entry.bridgeId) ? ` · ${titles.get(entry.bridgeId)}` : ''}
+                            {entry.bridgeId && titles.has(entry.bridgeId) ? ` · ${titles.get(entry.bridgeId)}` : entry.bridgeTitle ? ` · ${entry.bridgeTitle} (deleted)` : ''}
                           </p>
                           <ConfirmButton label="Delete" confirmLabel="Confirm delete" className={button.ghost} onConfirm={() => { update((draft) => { draft.witness = draft.witness.filter((item) => item.id !== entry.id) }); announce('Entry deleted.') }} />
                         </div>

@@ -77,3 +77,14 @@ test('JSON Canvas output follows the 1.0 shape and opens in Obsidian', () => {
   }
   assert.ok(canvas.nodes.some((node) => node.type === 'group'))
 })
+
+test('an image missing from the export becomes a text card instead of a broken file link', () => {
+  const state = sampleState(TODAY)
+  state.canvas.cards.push({ id: 'gone', kind: 'image', text: 'Harbor at dawn', imageId: 'missing', x: 10, y: 10, w: 300, h: 200 })
+  const canvas = toJsonCanvas(layoutMap(state, TODAY), () => null)
+  const card = canvas.nodes.find((node) => node.id === 'card:gone')
+  assert.equal(card.type, 'text')
+  assert.match(card.text, /Harbor at dawn/)
+  assert.match(card.text, /not included/)
+  assert.equal(card.file, undefined)
+})

@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 import { layoutMap, toJsonCanvas, type MapNode, type MapTone } from '@/lib/studio/canvas'
-import { deleteImage, getImage, imageExtension, putImage } from '@/lib/studio/images'
+import { ROOT } from '@/lib/studio/export'
+import { getImage, imageExtension, putImage } from '@/lib/studio/images'
 import { newId } from '@/lib/studio/util'
 import { Empty, button, downloadText } from './ui'
 import type { StudioApi } from './useStudio'
@@ -11,7 +12,7 @@ import type { Go } from './views'
 type Camera = { x: number; y: number; zoom: number }
 type Gesture =
   | { kind: 'pan'; startX: number; startY: number; camera: Camera }
-  | { kind: 'node'; id: string; startX: number; startY: number; origin: { x: number; y: number }; moved: boolean }
+  | { kind: 'node'; id: string; pointerId: number; startX: number; startY: number; origin: { x: number; y: number }; moved: boolean; x: number; y: number }
   | { kind: 'pinch'; distance: number; camera: Camera; midX: number; midY: number }
 
 const MIN_ZOOM = 0.2
@@ -44,27 +45,40 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
   const gesture = useRef<Gesture | null>(null)
   const fitted = useRef(false)
   const imageKey = state.canvas.cards.filter((card) => card.imageId).map((card) => card.imageId).join(',')
+  /** One object URL per image while the map is open: kept across changes so pictures never flash, revoked when unused. */
+  const urls = useRef(new Map<string, { url: string; type: string }>())
 
   useEffect(() => {
     let cancelled = false
-    const created: string[] = []
     const ids = imageKey ? imageKey.split(',') : []
     ;(async () => {
-      const next: Record<string, { url: string; type: string }> = {}
       for (const id of ids) {
+        if (urls.current.has(id)) continue
         const image = await getImage(id)
-        if (!image) continue
-        const url = URL.createObjectURL(image.blob)
-        created.push(url)
-        next[id] = { url, type: image.blob.type }
+        if (!image || cancelled || urls.current.has(id)) continue
+        urls.current.set(id, { url: URL.createObjectURL(image.blob), type: image.blob.type })
       }
-      if (!cancelled) setImages(next)
+      if (cancelled) return
+      const keep = new Set(ids)
+      for (const [id, entry] of urls.current) {
+        if (keep.has(id)) continue
+        URL.revokeObjectURL(entry.url)
+        urls.current.delete(id)
+      }
+      setImages(Object.fromEntries(urls.current))
     })()
     return () => {
       cancelled = true
-      created.forEach((url) => URL.revokeObjectURL(url))
     }
   }, [imageKey])
+
+  useEffect(() => {
+    const cache = urls.current
+    return () => {
+      for (const entry of cache.values()) URL.revokeObjectURL(entry.url)
+      cache.clear()
+    }
+  }, [])
 
   const fit = useCallback(() => {
     const rect = surface.current?.getBoundingClientRect()
@@ -156,7 +170,6 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
   const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement
     if (target.closest('button, textarea, input, a')) return
-    surface.current?.setPointerCapture(event.pointerId)
     pointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY })
     if (pointers.current.size === 2) {
       const [a, b] = [...pointers.current.values()]
@@ -168,8 +181,10 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
     const element = target.closest<HTMLElement>('[data-node]')
     const node = element ? layout.nodes.find((item) => item.id === element.dataset.node) : undefined
     if (node && editing !== node.id) {
-      gesture.current = { kind: 'node', id: node.id, startX: event.clientX, startY: event.clientY, origin: { x: node.x, y: node.y }, moved: false }
+      // A card is captured only once it is really dragged, so a click or double-click still reaches it.
+      gesture.current = { kind: 'node', id: node.id, pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, origin: { x: node.x, y: node.y }, moved: false, x: node.x, y: node.y }
     } else if (!node) {
+      surface.current?.setPointerCapture(event.pointerId)
       gesture.current = { kind: 'pan', startX: event.clientX, startY: event.clientY, camera }
     }
   }
@@ -190,17 +205,21 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
       const dx = (event.clientX - current.startX) / camera.zoom
       const dy = (event.clientY - current.startY) / camera.zoom
       if (!current.moved && Math.hypot(dx, dy) < 3) return
+      if (!current.moved) surface.current?.setPointerCapture(current.pointerId)
       current.moved = true
-      setDragged({ id: current.id, x: current.origin.x + dx, y: current.origin.y + dy })
+      current.x = current.origin.x + dx
+      current.y = current.origin.y + dy
+      setDragged({ id: current.id, x: current.x, y: current.y })
     }
   }
 
   const onPointerUp = (event: PointerEvent<HTMLDivElement>) => {
     pointers.current.delete(event.pointerId)
     const current = gesture.current
-    if (current?.kind === 'node' && current.moved && dragged) {
+    // Commit from the gesture itself: the last rendered drag position can lag one frame behind the pointer.
+    if (current?.kind === 'node' && current.moved) {
       const node = layout.nodes.find((item) => item.id === current.id)
-      if (node) commitMove(node, dragged.x, dragged.y)
+      if (node) commitMove(node, current.x, current.y)
     }
     if (pointers.current.size === 0) {
       gesture.current = null
@@ -227,10 +246,11 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
     }
   }
 
+  // The stored image itself is cleaned up on a later visit, once no saved card in any tab uses it.
   const removeCard = (node: MapNode) => {
     update((draft) => { draft.canvas.cards = draft.canvas.cards.filter((card) => `card:${card.id}` !== node.id) })
-    if (node.imageId) void deleteImage(node.imageId)
     announce(node.tone === 'image' ? 'Image removed from the map.' : 'Note removed from the map.')
+    surface.current?.focus()
   }
 
   const onNodeKey = (event: KeyboardEvent<HTMLDivElement>, node: MapNode) => {
@@ -277,7 +297,7 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
   }
 
   const exportCanvas = () => {
-    const canvas = toJsonCanvas(layout, (imageId) => `reality/images/${imageId}.${imageExtension(images[imageId]?.type ?? '')}`)
+    const canvas = toJsonCanvas(layout, (imageId) => (images[imageId] ? `${ROOT}reality/images/${imageId}.${imageExtension(images[imageId].type)}` : null))
     downloadText('Reality Map.canvas', `${JSON.stringify(canvas, null, 2)}\n`, 'application/json;charset=utf-8')
     announce('Map downloaded. The full export from the Export button also includes your images.')
   }
@@ -400,11 +420,11 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
                         aria-label="Note text"
                         defaultValue={node.body}
                         rows={4}
-                        onBlur={(event) => {
+                        onChange={(event) => {
                           const text = event.target.value
                           update((draft) => { const card = draft.canvas.cards.find((item) => `card:${item.id}` === node.id); if (card) card.text = text })
-                          setEditing(null)
                         }}
+                        onBlur={() => setEditing(null)}
                         onKeyDown={(event) => { if (event.key === 'Escape') (event.target as HTMLTextAreaElement).blur() }}
                         className="w-full resize-none rounded-md border border-dawn/30 bg-bg p-2 font-serif text-sm text-dawn-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dawn"
                       />
