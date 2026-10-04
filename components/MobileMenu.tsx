@@ -37,7 +37,7 @@ export function MobileMenu({ items, github }: { items: readonly Item[]; github: 
       >
         {open ? 'Close' : 'Menu'}
       </button>
-      <div id={panelId} hidden={!open} className="absolute inset-x-0 top-full border-b border-border bg-bg/95 backdrop-blur">
+      <div id={panelId} hidden={!open} className="absolute inset-x-0 top-full border-b border-border bg-bg shadow-[0_24px_60px_rgba(0,0,0,0.5)]">
         <ul className="mx-auto grid max-w-5xl gap-1 px-5 py-3 sm:grid-cols-2">
           {items.map((item) => (
             <li key={item.href}>

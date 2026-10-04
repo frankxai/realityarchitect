@@ -34,6 +34,15 @@ test('images are interleaved with scenes and keep their captions', () => {
   assert.equal(tiles.find((tile) => tile.kind === 'image' && tile.cardId === 'i1').caption, 'The studio at dusk')
 })
 
+test('a scene written twice (an aim and its Atlas domain) appears once, under its first source', () => {
+  const state = sampleState(TODAY)
+  state.atlas.body = { ...state.atlas.body, scene: 'I finish the river 10K smiling, with breath left to talk.' }
+  state.bridges[1] = { ...state.bridges[1], scene: '  I finish the river 10K smiling, with breath left to talk. ' }
+  const texts = visionBoard(state).filter((tile) => tile.kind === 'scene').map((tile) => tile.text)
+  assert.equal(texts.filter((text) => text === 'I finish the river 10K smiling, with breath left to talk.').length, 1)
+  assert.equal(new Set(texts).size, texts.length)
+})
+
 test('released bridges and blank scenes stay off the board', () => {
   const state = sampleState(TODAY)
   state.bridges[0] = { ...state.bridges[0], status: 'released' }

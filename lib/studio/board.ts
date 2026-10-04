@@ -23,13 +23,22 @@ export function visionBoard(state: StudioState): BoardTile[] {
     .sort((a, b) => Number(b.entry.priority) - Number(a.entry.priority))
   for (const { domain, entry } of atlas) scenes.push({ kind: 'scene', id: `atlas:${domain.id}`, title: domain.label, text: entry.scene.trim(), source: 'atlas' })
 
+  // The same scene is often written for an aim and for its domain; it shows once, under its first source.
+  const seen = new Set<string>()
+  const unique = scenes.filter((tile) => {
+    const key = tile.kind === 'scene' ? tile.text.toLowerCase().replace(/\s+/g, ' ') : tile.id
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+
   const images: BoardTile[] = state.canvas.cards.flatMap((card) => (card.kind === 'image' && card.imageId
     ? [{ kind: 'image' as const, id: `image:${card.id}`, cardId: card.id, imageId: card.imageId, caption: card.text.trim() }]
     : []))
 
   const tiles: BoardTile[] = []
-  for (let index = 0; index < Math.max(scenes.length, images.length); index += 1) {
-    if (scenes[index]) tiles.push(scenes[index])
+  for (let index = 0; index < Math.max(unique.length, images.length); index += 1) {
+    if (unique[index]) tiles.push(unique[index])
     if (images[index]) tiles.push(images[index])
   }
   return tiles
