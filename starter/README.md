@@ -1,6 +1,6 @@
 # starter/ — forkable agent templates
 
-One template per move of the Architect's Loop. They're **harness-agnostic** — the role/instructions work in Claude
+Templates for three of the five moves of the Architect's Loop (See, Build, Automate). They're **harness-agnostic** — the role/instructions work in Claude
 Code, Cursor, Codex, or any agent runner. Copy a file, drop it into your agent's instructions (or `.claude/agents/`,
 `.cursor/rules/`, etc.), and adapt the bracketed `[…]` slots to your context.
 
