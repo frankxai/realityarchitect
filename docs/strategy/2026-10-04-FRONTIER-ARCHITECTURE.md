@@ -270,19 +270,60 @@ inconsistently). Memory says never to use it publicly, so "Agentic Lifebook" sta
 agentic layer" in public. "Lightbook" needs a clearance search before any public use. Arcanea's Guardian and Hz
 mappings stay out of Reality Architect (register boundary).
 
-## 11. Decisions for Frank
+## 11. Decisions, taken 2026-10-04 under Frank's delegation
 
-This list supersedes North Star §15 items 7 and 10.
+Frank, 2026-10-04: "on the rest of decisions you recommend … ensure it's abundance thinking." These decisions are taken
+under that instruction. This list supersedes North Star §15 items 7 and 10.
 
-1. **SIS:** approve the three small SIS PRs (§4), and Reality Architect as an external public SIP vertical.
-2. **Image generation (M5):** the provider (recommended: Nano Banana 2 through AI Gateway with zero data retention), a
-   monthly budget cap, and the consent copy.
-3. **Studio Cloud (M4):** go or not, and whether the recovery key is mandatory (recommended: yes).
-4. **Pro:** prices, the monthly and yearly split, refund terms, the start date. Nothing is charged before you approve.
-5. **The marketplace:** open it to contributors (CI bar plus provenance), and when to allow paid packs.
-6. **The names (§10):** pick the weave, and run a trademark clearance on "Lightbook" before public use.
-7. **The Soulbook money-back promise:** remove "if you're not transformed" from the old Soulbook copy in the FrankX
-   repo (it breaks the no-outcome-promise rule).
+**Abundance**, as it is applied here:
+
+- give the core away completely and generously;
+- price on the value of a life well architected, not on cost;
+- make the paid tiers so good they feel like a gift;
+- let creators and guides keep most of what they earn;
+- reward early believers;
+- pay it forward with scholarships.
+
+All of this is held to sound unit economics. Paying customers fund the generosity, and nothing in it is an outcome
+promise.
+
+The steps that still need Frank's own click (money, keys, public prices going live, SIS main merges) are marked
+**button**. Everything else is decided, and agents act on it.
+
+1. **SIS: yes.** Reality Architect is an external public SIP vertical. Open the three small SIS PRs from §4 as reviewable
+   PRs. **button:** merging them to SIS main.
+2. **Image generation: Nano Banana 2 for members, through AI Gateway with zero data retention.**
+   - Lite for drafts and Pro for premium renders, with GPT Image 2.5 as the fallback.
+   - Launch cost cap: **$300 per month** with an alert at 50% and 80%, raised when revenue covers it.
+   - The site's own campaign media is produced through OpenArt on the existing Starter credits, at about
+     150–400 credits per story. Each piece is staged as a candidate, reviewed, and recorded.
+   - **button:** the Gateway API key and the cap.
+3. **Studio Cloud: go, with a mandatory recovery key.** Sync is the first paid capability, and losing data is the
+   failure that would cost the most trust.
+4. **Pricing (in USD; Polar adds tax):**
+
+   | Offer | Price | What it gives | Why it holds |
+   | --- | --- | --- | --- |
+   | Free forever | $0 | Everything local, unlimited; standard, Library, plugin, engine, complete export; **20 renders on us** after sign-up | The core is a gift. Renders cost about $1.34 per new member, paid for by conversion |
+   | **Architect (Pro)** | **$19/month or $190/year** | Encrypted sync on every device, insights over time, cloud loops (opt-in), **150 renders/month** | Typical cost about $5.61 per month (50 renders × $0.067 = $3.35, $1 tokens, Polar 4% + 40¢ + 0.5% = $1.26): about 70% margin. If all 150 renders are used, $12.31: still 35% |
+   | Founding Architect | **$120/year for the first 1,000, locked for life** | Everything in Architect | Rewards early believers. $10/month against a typical cost of $4.83: about 52% margin. At full use it runs slightly below cost, a gift the first 1,000 have earned |
+   | Render packs | **$9 per 120 renders** | Top-up, never expires | Cost about $8.04 + 76¢ fee: break-even by design, a service rather than a profit centre |
+   | **Guide** | **$79/month** | 15 client seats with consented views, a practice library, guide analytics | Priced on the guide's income from 15 clients |
+   | School cohort | **$490** for 6 weeks | Live cohort on the Library and the practice; **one scholarship seat per five paid** | Pay-it-forward built into the price |
+   | Marketplace | **creators keep 85%** | Paid packs and skills from creators who pass the bar | Creator-first share (the market norm is 70–80%) |
+
+   - Refunds: 30 days, no questions, written before any checkout exists. No outcome promises anywhere.
+   - **button:** creating the Polar products and turning on live checkout.
+5. **Marketplace: open now for free skills**, with `reality skill-check` in CI and provenance metadata. Paid packs open
+   the day Architect launches, at the 85% share.
+6. **Names: adopt the weave in §10.**
+   - Lightbook names the measuring view, but only publicly after a trademark clearance search.
+   - "Agentic Lifebook" stays internal.
+   - Soulbook is the inner Meaning layer.
+   - The spiritual-AI Soulbook gets a new name of its own.
+7. **Soulbook money-back promise: remove it.** Replace "if you're not transformed" with the standard 30-day refund
+   wording. Agents make the change on a branch; the merge is a production deploy (**button** if it touches
+   frankx.ai).
 
 ## Sources
 

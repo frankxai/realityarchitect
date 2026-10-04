@@ -22,9 +22,11 @@ Find the first gap in your AI system. Leave with a build brief.
 
 Tier C code-authored assessment and architecture brief are the primary proof assets. Existing owned blueprint imagery may support the method but cannot replace the working artifact.
 
+The homepage story (since 2026-10-04) uses five original photographic frames: one room at night and the same room at dawn, a bridge from graphite stone to dawn sandstone, a witness notebook, and a row of snapshots. They carry atmosphere, never claims. Each has no people and no baked-in text, is decorative to assistive technology, and has its provenance in `media/story/MANIFEST.md` and the brand media registry. Rule for new frames: the same room or the same light logic (graphite night to dawn), and the person's words still carry the meaning.
+
 ## Motion
 
-Named behavior: `blueprint-resolve`. The five assessment states resolve in sequence to clarify dependency order. It uses opacity and transform once, preserves reading, and becomes fully static under reduced motion. Threshold's single `arrive` entrance follows the same rule. The Studio has no decorative motion; the Map pans and zooms only under the person's hand.
+Named behavior: `blueprint-resolve`. The five assessment states resolve in sequence to clarify dependency order. It uses opacity and transform once, preserves reading, and becomes fully static under reduced motion. Threshold's single `arrive` entrance follows the same rule. The Studio has no decorative motion; the Map pans and zooms only under the person's hand. The homepage story adds `dawn-scrub` (its frames crossfade from night to dawn, bound to the reader's scroll) and `beat-rise` (each beat's card rises once into place). Both are CSS scroll-driven animations of opacity and transform, with no JavaScript and no autoplay. With reduced motion, or without scroll-timeline support, the story is a static sequence with every image and word present.
 
 ## Accessibility
 
