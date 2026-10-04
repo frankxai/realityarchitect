@@ -1,4 +1,5 @@
 import createMDX from '@next/mdx'
+import { withEve } from 'eve/next'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -21,4 +22,4 @@ const nextConfig = {
 
 const withMDX = createMDX({})
 
-export default withMDX(nextConfig)
+export default withEve(withMDX(nextConfig))

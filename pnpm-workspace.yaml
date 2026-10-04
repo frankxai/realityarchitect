@@ -1,7 +1,13 @@
 allowBuilds:
+  '@mongodb-js/zstd': false
+  node-liblzma: false
   sharp: true
 
 overrides:
+  undici@>=7.0.0 <7.29.1: 7.29.1
   postcss: 8.5.28
   nanoid@>=3.0.0 <3.3.18: ^3.3.18
   baseline-browser-mapping@<2.11.0: ^2.11.0
+ignoredOptionalDependencies:
+  - '@mongodb-js/zstd'
+  - node-liblzma

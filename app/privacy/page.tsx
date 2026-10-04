@@ -59,6 +59,8 @@ export default function Privacy() {
       </div>
 
       <div className="prose-ai mt-14">
+        <h2>Connected Observatory is an explicit opt-in</h2>
+        <p>The optional <Link href="/observatory/workspace">connected evidence workspace</Link> uses Supabase accounts and stores only records you save there. Its AI review and guardian conversation require separate consent before sending content to Vercel AI Gateway and model providers. It does not read your assessment or offline Studio. See its <Link href="/observatory/data">data and retention notice</Link>.</p>
         <h2>The Imaginal Act uses the same local boundary</h2>
         <p>Your scene, chosen giving, present fact, obstacle, response, next act, timing, proof criterion, and agency boundary stay in the Threshold page's in-memory state. They are not submitted to AI, saved automatically, or included in page requests. Refreshing or leaving clears them. Markdown, JSON, and clipboard exports happen only when you choose them; these exports may contain personal context.</p>
 
@@ -108,7 +110,7 @@ export default function Privacy() {
 
         <h2>Measurement boundary</h2>
         <p>
-          No analytics or telemetry provider is active. Any future measurement would require a separate consent and
+          No analytics provider is active on the assessment or offline Studio. The connected guardian records operational trace metadata with model inputs and outputs excluded from OpenTelemetry; its durable session history contains messages you submit. Any future local-workflow measurement would require a separate consent and
           data-governance decision and would be limited to bounded, non-content lifecycle events. Assessment answers,
           system names, repeating jobs, and brief text are outside that boundary.
         </p>

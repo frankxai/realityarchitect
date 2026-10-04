@@ -30,8 +30,12 @@
 - **`/apply` waitlist (opt-in):** joining sends the email, an optional name, and, only if the person ticks the box,
   their stated aim, priority, and computed headline to the FrankX subscriber endpoint. The rest of the draft
   reality.md stays in the browser.
-- No analytics or telemetry provider is active. Any future measurement needs a separate consent and data-governance
-  decision and never includes content.
+- **Connected Observatory (opt-in):** separate Supabase accounts and owner-scoped evidence at
+  `/observatory/workspace`. Only explicitly saved records and explicitly submitted AI requests leave the browser.
+  It never reads the offline Studio. AI review artifacts persist in Supabase; guardian sessions persist in Vercel
+  Workflow. Operator deletion must cover both stores. See `/observatory/data`.
+- No analytics provider is active on local workflows. Eve records operational trace metadata with model inputs and
+  outputs excluded from OpenTelemetry. Its durable session history still contains submitted conversations.
 
 ## Motion and performance
 

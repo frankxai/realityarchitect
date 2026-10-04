@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "license": "MIT",
-  "description": "Reality Architect — the open method for going from AI tool-user to system-builder. This repo is the website and the method.",
+  "description": "Reality Architect \u2014 the open method for going from AI tool-user to system-builder. This repo is the website and the method.",
   "homepage": "https://www.realityarchitect.ai",
   "packageManager": "pnpm@11.5.0",
   "scripts": {
@@ -16,12 +16,19 @@
     "claims:check": "node scripts/check-public-claims.mjs",
     "plugin:data": "node scripts/build-plugin-data.mjs",
     "test": "node --test",
-    "gate": "pnpm lint && pnpm claims:check && pnpm test && pnpm build"
+    "gate": "pnpm lint && pnpm claims:check && pnpm test && pnpm build",
+    "build:eve": "eve build"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.117.2",
+    "@vercel/functions": "3.9.9",
+    "ai": "7.0.127",
+    "eve": "0.69.0",
     "next": "^16.3.6",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "zod": "4.6.5",
+    "just-bash": "3.6.0"
   },
   "devDependencies": {
     "@mdx-js/loader": "^3.1.0",
@@ -34,5 +41,8 @@
     "@types/react-dom": "^19.0.0",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=24.0.0"
   }
 }
