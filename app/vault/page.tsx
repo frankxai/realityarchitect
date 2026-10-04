@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { site } from '@/lib/site'
+import { ogImage, site } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Implementation Options',
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     description: 'The public/private boundary, planned assessment pack, and scoped guided architecture review.',
     url: '/vault',
     type: 'website',
+    images: [ogImage],
   },
 }
 

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { ogImage } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'Privacy and data boundary',
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
     description: 'A plain-language boundary for local assessment inputs, exports, and ordinary server logs.',
     url: '/privacy',
     type: 'website',
+    images: [ogImage],
   },
 }
 

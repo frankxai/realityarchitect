@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Assessment } from '@/components/Assessment'
+import { ogImage } from '@/lib/site'
 
 export const metadata: Metadata = {
   title: 'The Architect Assessment',
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     description: 'Five local questions produce an exportable Markdown architecture brief.',
     url: '/assess',
     type: 'website',
+    images: [ogImage],
   },
 }
 

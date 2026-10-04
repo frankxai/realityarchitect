@@ -37,4 +37,12 @@ export const site = {
   },
 } as const
 
+// A page-level openGraph replaces the layout's, and with it the file-based card image, so each route names it.
+export const ogImage = {
+  url: '/opengraph-image',
+  width: 1200,
+  height: 630,
+  alt: `${site.name} — ${site.tagline}`,
+}
+
 export type Site = typeof site

@@ -59,7 +59,7 @@ consent.
 | The five moves in depth | `app/method/page.tsx` |
 | The reality.md spec + template | `standard/` |
 | The self-diagnostic logic | `app/assess/page.tsx`, `components/Assessment.tsx` |
-| Forkable agent templates | `starter/` (one file per move) |
+| Forkable agent templates | `starter/` (moves 01, 03, 04; 02 and 05 not yet written) |
 | Brand / site config | `lib/site.ts` (the only brand file) |
 | v0 MCP / visual compiler rules | `docs/v0.md` |
 | Strategy, roadmap, Frank's open decisions | `docs/strategy/2026-10-04-NORTH-STAR.md` |
