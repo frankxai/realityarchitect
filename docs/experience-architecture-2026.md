@@ -63,7 +63,7 @@ type RealityCardPacket = {
   schema: 'sip.reality-card'
   version: 1
   authorship: 'user'
-  written: { date: string; timeZone: string } // local YYYY-MM-DD and IANA zone, so "Friday" stays resolvable
+  written: { date: string; time?: string; timeZone: string } // local YYYY-MM-DD, HH:MM and IANA zone, so "Friday" or "in two hours" stays resolvable
   domain: string
   desired: { scene: string; giving: string }
   reportedPresent: { fact: string; verifiedBySystem: false }

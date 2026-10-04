@@ -11,9 +11,10 @@ export type RealityCard = {
   boundary: string
 }
 
-export type Written = { date: string; timeZone: string }
+/** `time` is the local HH:MM; cards written before it was recorded carry only the date. */
+export type Written = { date: string; time?: string; timeZone: string }
 
-/** The date and zone a card is written in, so "Friday before noon" can be resolved later. */
+/** The local date, time and zone a card is written in, so "Friday before noon" or "in two hours" can be resolved later. */
 export function writtenNow(now = new Date()): Written {
   const pad = (n: number) => String(n).padStart(2, '0')
   let timeZone = 'local time'
@@ -22,7 +23,7 @@ export function writtenNow(now = new Date()): Written {
   } catch {
     // Older engines without Intl time zones keep the generic label.
   }
-  return { date: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`, timeZone }
+  return { date: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`, time: `${pad(now.getHours())}:${pad(now.getMinutes())}`, timeZone }
 }
 
 /** "When I reach for my phone." -> "I reach for my phone"; "I open the draft" -> "open the draft". */
@@ -58,7 +59,7 @@ export function realityCardMarkdown(card: RealityCard, written: Written = writte
   const condition = midSentence(clause(card.obstacle, /^(if|when|whenever)[\s,:;–—-]+/i)) || 'Not specified'
   const response = thenClause(card.response)
   return [
-    '# My Reality Card', '', 'Built on SIP · User-authored · Version 1', `Written: ${written.date} (${written.timeZone})`, '',
+    '# My Reality Card', '', 'Built on SIP · User-authored · Version 1', `Written: ${written.date}${written.time ? ` ${written.time}` : ''} (${written.timeZone})`, '',
     `Domain: ${line(card.domain)}`, '',
     '## The scene I choose (desired, not observed)', line(card.scene), '',
     '## What I choose to give', line(card.giving), '',
@@ -66,7 +67,7 @@ export function realityCardMarkdown(card: RealityCard, written: Written = writte
     '## The obstacle I expect', line(card.obstacle), '',
     `If ${condition}, ${response}.`, '',
     '## My next act (planned, not completed)', line(card.act), '',
-    `When: ${line(card.due)} (as written on ${written.date})`, `Evidence I will look for: ${line(card.proof)}`, '',
+    `When: ${line(card.due)} (as written on ${written.date}${written.time ? ` at ${written.time}` : ''})`, `Evidence I will look for: ${line(card.proof)}`, '',
     '## Other people retain their own agency', line(card.boundary), '',
     '## Review after acting',
     'What happened: ', 'Evidence or counterevidence: ', 'What I will revise: ', '',
