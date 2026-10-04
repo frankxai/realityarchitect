@@ -48,7 +48,10 @@ export function slugify(text: string, max = 60): string {
     .normalize('NFKD')
     .replace(/[̀-ͯ]/g, '')
   const slug = folded.replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
-  const bounded = slug.slice(0, max).replace(/-+$/g, '')
+  let bounded = slug.slice(0, max)
+  // Cut back to the last whole word when the limit lands mid-word and a word boundary is reasonably close.
+  if (slug.length > max && slug[max] !== '-' && bounded.lastIndexOf('-') > max / 2) bounded = bounded.slice(0, bounded.lastIndexOf('-'))
+  bounded = bounded.replace(/-+$/g, '')
   return bounded || 'untitled'
 }
 

@@ -22,6 +22,8 @@ test('slugs are safe file names: ASCII, hyphenated, bounded, never empty', () =>
   assert.equal(slugify('✨'), 'untitled')
   assert.equal(slugify('   '), 'untitled')
   assert.ok(slugify('a'.repeat(300)).length <= 60)
+  assert.equal(slugify('Hire a mastering engineer instead of mastering myself', 48), 'hire-a-mastering-engineer-instead-of-mastering')
+  assert.equal(slugify('finish the album', 6), 'finish')
   assert.doesNotMatch(slugify('../../etc/passwd'), /[./\\]/)
 })
 
