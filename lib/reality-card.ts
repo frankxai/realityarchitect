@@ -40,7 +40,8 @@ export function readyForStep(card: RealityCard, step: number): boolean {
 export function realityCardMarkdown(card: RealityCard, written: Written = writtenNow()): string {
   const line = (value: string) => value.trim() || 'Not specified'
   const condition = clause(card.obstacle, /^(if|when|whenever)\s+/i) || 'Not specified'
-  const response = clause(card.response, /^(then\s+)?(i\s+)?/i) || 'Not specified'
+  // The sentence supplies its own "then I": drop a leading "then" and a first-person subject, contracted or not.
+  const response = clause(card.response, /^(then\s+)?(i['’]ll\s+|i\s+will\s+|i['’]m\s+going\s+to\s+|i\s+am\s+going\s+to\s+|i\s+)?/i) || 'Not specified'
   return [
     '# My Reality Card', '', 'Built on SIP · User-authored · Version 1', `Written: ${written.date} (${written.timeZone})`, '',
     `Domain: ${line(card.domain)}`, '',
