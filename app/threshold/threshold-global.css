@@ -1,0 +1,9 @@
+/*
+ * The Threshold hero is full-bleed (100vw). Where the browser reserves a vertical scrollbar, 100vw is wider than the
+ * layout viewport, so the page would scroll sideways by the scrollbar's width. Clip horizontal overflow at the root,
+ * only while this experience is on the page. `clip` (unlike `hidden`) creates no scroll container, so the sticky
+ * navigation keeps working.
+ */
+html:has(.threshold-experience) {
+  overflow-x: clip;
+}

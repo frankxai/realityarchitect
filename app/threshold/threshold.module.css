@@ -1,0 +1,46 @@
+.experience { --warm: #e8d5ad; }
+.hero { position: relative; isolation: isolate; width: 100vw; margin-left: calc(50% - 50vw); min-height: 660px; height: min(820px, 88svh); overflow: hidden; background: #0c1824; }
+.art { object-fit: cover; object-position: 65% center; z-index: -3; }
+.shade { position: absolute; inset: 0; z-index: -2; background: linear-gradient(90deg, rgba(6,7,12,.9), rgba(6,7,12,.5) 46%, rgba(6,7,12,.08)), linear-gradient(0deg, #06070c, transparent 24%); }
+.heroInner { width: min(100% - 40px, 984px); margin: auto; padding-top: clamp(64px, 10vh, 124px); }
+.eyebrow { color: var(--warm); font-family: var(--font-mono); font-size: 11px; letter-spacing: .17em; text-transform: uppercase; line-height: 1.7; }
+.hero h1 { margin-top: 28px; color: #f4f0e8; font: normal clamp(60px, 7.8vw, 112px)/.98 Georgia, 'Times New Roman', serif; letter-spacing: -.055em; text-wrap: balance; }
+.hero h1 em { font-weight: normal; color: var(--warm); }
+.intro { margin-top: 30px; font-size: clamp(16px, 1.7vw, 19px); line-height: 1.8; color: #dddde2; }
+.enter { margin-top: 34px; padding: 14px 21px; display: inline-flex; gap: 38px; align-items: center; background: var(--warm); color: #161923; font-size: 14px; font-weight: 600; border-radius: 4px; }
+.enter:hover { background: #f7e8c8; }
+.quietLink { margin-left: 22px; display: inline-block; font-size: 13px; color: #eee8dc; text-decoration: underline; text-underline-offset: 5px; }
+.heroNote { margin-top: 24px; font-size: 11px; letter-spacing: .025em; color: #c3c7ce; }
+.coordinate { position: absolute; right: 36px; bottom: 55px; color: #ccc9c2; font: 10px var(--font-mono); letter-spacing: .18em; text-transform: uppercase; }
+.poem { padding: 104px 0 84px; text-align: center; scroll-margin-top: 90px; }
+.poem > p:not(.eyebrow) { margin-top: 30px; color: #e6e3dd; font: normal clamp(22px, 3vw, 32px)/1.65 Georgia, 'Times New Roman', serif; letter-spacing: -.015em; }
+.poem em { color: var(--warm); }
+.premise { border-top: 1px solid #282a34; padding: 68px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+.premise h2, .evidence h2 { margin-top: 22px; font: normal clamp(30px, 3.4vw, 45px)/1.15 Georgia, 'Times New Roman', serif; letter-spacing: -.025em; color: #eee9e0; }
+.reading { color: #b8bdcc; font-size: 15px; line-height: 1.9; }
+.reading p + p { margin-top: 20px; }
+.studioAnchor { padding-top: 24px; scroll-margin-top: 90px; }
+.evidence { padding: 78px 0 50px; margin-top: 50px; border-top: 1px solid #282a34; }
+.evidenceGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 34px; }
+.evidence h3 { color: #e2e5ed; font-size: 14px; font-weight: 600; }
+.evidence article p { margin-top: 12px; color: #adb4c7; font-size: 13px; line-height: 1.85; }
+.evidence a { margin-top: 18px; display: inline-block; color: var(--warm); font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+.closure { border-top: 1px solid #282a34; padding: 30px 0 60px; display: grid; gap: 14px; font-size: 12px; color: #a9afc0; }
+.closure a { color: #d8c39e; }
+.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.experience :is(a,button,textarea,input,select):focus-visible { outline: 2px solid var(--warm); outline-offset: 5px; }
+@media (prefers-reduced-motion: no-preference) { .heroInner { animation: arrive 700ms cubic-bezier(.22,1,.36,1) both; } }
+@keyframes arrive { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .experience *, .experience *::before, .experience *::after { animation: none; transition: none; scroll-behavior: auto; } }
+@media (max-width: 640px) {
+  .hero { height: auto; min-height: 660px; }
+  .art { object-position: 72% center; }
+  .shade { background: linear-gradient(90deg, rgba(6,7,12,.85), rgba(6,7,12,.48)), linear-gradient(0deg, #06070c, transparent 28%); }
+  .heroInner { padding: 68px 0 100px; }
+  .hero h1 { font-size: clamp(58px, 16vw, 86px); }
+  .quietLink { margin: 22px 0 0; display: block; }
+  .coordinate { right: 20px; bottom: 30px; }
+  .poem { padding: 72px 0 64px; }
+  .premise { grid-template-columns: 1fr; gap: 28px; padding: 44px 0; }
+  .evidenceGrid { grid-template-columns: 1fr; gap: 28px; }
+}

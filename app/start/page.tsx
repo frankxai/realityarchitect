@@ -64,6 +64,13 @@ export default function Start() {
         ))}
       </ol>
 
+      <section className="mt-10 rounded-xl border border-[#e8d5ad]/25 bg-[#e8d5ad]/5 p-6" aria-labelledby="imaginal-entry">
+        <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#e8d5ad]">Designing the life, not only the system</p>
+        <h2 id="imaginal-entry" className="mt-2 text-xl font-semibold text-ink">Then give a possible day your own words</h2>
+        <p className="mt-3 text-sm leading-7 text-muted">The steps above find the first gap in your system. The Imaginal Act is the entry for the life the system serves: a quiet scene, an original poem, and a local Reality Card that ends in one act you can verify.</p>
+        <Link href="/threshold" className="mt-4 inline-flex text-sm text-[#e8d5ad] underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8d5ad] focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Enter the Imaginal Act →</Link>
+      </section>
+
       <div className="mt-12 rounded-2xl border border-accent/30 blueprint glass p-7">
         <h2 className="text-xl font-bold text-ink">For the agents reading this</h2>
         <p className="mt-2 max-w-2xl text-sm text-muted">
