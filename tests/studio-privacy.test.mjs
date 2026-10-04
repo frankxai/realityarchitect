@@ -41,6 +41,39 @@ test('browser storage is touched in exactly two audited files', () => {
   }
 })
 
+test('the studio speaks through one polite live region and uses native dialogs', () => {
+  const shell = read('components/studio/Studio.tsx')
+  assert.equal(shell.match(/aria-live="polite"/g)?.length, 1)
+  assert.match(shell, /role="status"/)
+  assert.match(shell, /aria-pressed=\{view === entry\.id\}/)
+  assert.match(read('components/studio/DataDialog.tsx'), /<dialog\b/)
+  assert.match(read('components/studio/DataDialog.tsx'), /showModal\(\)/)
+})
+
+test('no studio form posts anywhere and the address only ever holds a view name', () => {
+  for (const file of studioFiles) assert.doesNotMatch(read(file), /\baction=|method="post"/i, file)
+  const shell = read('components/studio/Studio.tsx')
+  assert.match(shell, /replaceState\(null, '', `#\$\{next\}`\)/)
+  for (const file of studioFiles) assert.doesNotMatch(read(file), /URLSearchParams|searchParams|location\.search/, file)
+})
+
+test('the map has a keyboard route and a list equivalent', () => {
+  const map = read('components/studio/MapView.tsx')
+  assert.match(map, /role="region"/)
+  assert.match(map, /tabIndex=\{0\}/)
+  assert.match(map, /ArrowLeft/)
+  assert.match(map, /function MapList/)
+  assert.match(map, /passive: false/)
+  assert.match(map, /if \(!event\.ctrlKey && !event\.metaKey\) return/, 'a plain wheel keeps scrolling the page')
+})
+
+test('rest mode has no timer and says what it is', () => {
+  const today = read('components/studio/TodayView.tsx')
+  assert.match(today, /no timer/)
+  assert.match(today, /not a cause of outcomes by itself/)
+  assert.doesNotMatch(today, /setInterval|countdown/i)
+})
+
 test('a full storage keeps the session usable and reports why', () => {
   const quota = { getItem: () => null, setItem: () => { const error = new Error('full'); error.name = 'QuotaExceededError'; throw error }, removeItem() {} }
   assert.deepEqual(saveState(sampleState('2026-10-04'), quota), { ok: false, reason: 'quota' })

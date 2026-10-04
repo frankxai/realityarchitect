@@ -8,6 +8,9 @@
   --color-muted: #969cb2;
   --color-accent: #5b8cff;
   --color-accent-2: #a78bfa;
+  /* Dawn register: the person's own words and contemplative passages. Never numbers, causal claims, or prices. */
+  --color-dawn: #e8d5ad;
+  --color-dawn-2: #f7e8c8;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-grotesk), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jb), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
