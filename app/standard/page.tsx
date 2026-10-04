@@ -38,7 +38,7 @@ const VERBS = [
 export default function Standard() {
   return (
     <div className="py-14 overflow-x-hidden break-words">
-      <p className="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-accent">An open standard · v0.1</p>
+      <p className="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-accent">An open standard · v0.2</p>
       <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
         reality.md — a memory file for your <span className="text-accent">life</span>, not just your repo
       </h1>
@@ -54,7 +54,8 @@ export default function Standard() {
 
       <div className="mt-10 rounded-2xl border border-border glass p-6 font-mono text-sm">
         <div className="text-ink">~/reality.md <span className="text-muted">— the contract. You write it, agents read it.</span></div>
-        <div className="mt-2 text-ink">~/.reality/ <span className="text-muted">— the state. Agents maintain it, you review it.</span></div>
+        <div className="mt-2 text-ink">~/soul.md <span className="text-muted">— the inner contract. Why, and who you are being.</span></div>
+        <div className="mt-2 text-ink">~/.reality/ <span className="text-muted">— the state. Agents maintain it, you review it. (Or reality/ inside your notes vault.)</span></div>
         <div className="mt-4 text-muted">No SaaS. No account. No lock-in. A markdown file, readable by every harness that exists.</div>
       </div>
 
@@ -90,6 +91,29 @@ export default function Standard() {
           </li>
         ))}
       </ol>
+
+      <h2 className="mt-16 text-2xl font-bold text-ink">New in v0.2</h2>
+      <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+        <li className="rounded-xl border border-dawn/30 bg-dawn/5 p-5">
+          <div className="font-mono text-sm font-bold text-dawn">soul.md</div>
+          <p className="mt-1.5 text-sm text-muted">The inner contract beside reality.md: purpose, values, the &ldquo;I am&rdquo; lines, the scene, gifts, vows, gratitude, and the voice your agents use with you. Meaning, kept separate from mechanism.</p>
+        </li>
+        <li className="rounded-xl border border-border glass p-5">
+          <div className="font-mono text-sm font-bold text-accent">Vault mode</div>
+          <p className="mt-1.5 text-sm text-muted">Keep everything in a visible reality/ folder inside Obsidian or any notes app, so it syncs to your phone. Agents find it through REALITY_HOME.</p>
+        </li>
+        <li className="rounded-xl border border-border glass p-5">
+          <div className="font-mono text-sm font-bold text-accent">Witness, snapshots, decisions</div>
+          <p className="mt-1.5 text-sm text-muted">A ledger kept as fact, meaning and action; snapshots sealed only with your approval; decisions with review dates. Every field labeled desired, reported, planned, done or meaning.</p>
+        </li>
+        <li className="rounded-xl border border-border glass p-5">
+          <div className="font-mono text-sm font-bold text-accent">The Agent Charter</div>
+          <p className="mt-1.5 text-sm text-muted">Twelve articles for any AI that supports a person&apos;s life: propose, never impose; never certify causation; never blame; consent before memory or sharing.</p>
+        </li>
+      </ul>
+      <p className="mt-4 text-sm text-muted">
+        <Link href="/studio" className="text-accent hover:underline">Reality Studio</Link> writes all of it for you, on your device, and exports an Obsidian-ready folder.
+      </p>
 
       <div className="mt-16 rounded-2xl border border-accent/30 blueprint glass p-7">
         <h2 className="text-xl font-bold text-ink">Adopt it in two minutes</h2>

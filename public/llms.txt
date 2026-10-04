@@ -1,6 +1,6 @@
 # Reality Architect
 
-> An open method, local system-gap assessment, and exportable architecture brief for building dependable AI workflows.
+> An open method, local system-gap assessment, and exportable architecture brief for building dependable AI workflows, and the practice of architecting a life around them: Imagine it. Build it. Witness it.
 
 ## The method: The Architect's Loop (five sequential moves)
 
@@ -12,26 +12,36 @@
 
 A person's gap is the FIRST move they haven't locked in; the moves depend on each other in order.
 
-## The reality.md standard (v0.1)
+## The reality.md standard (v0.2)
 
 An open standard authored here: a person-level memory file, the way CLAUDE.md is repo-level.
 `~/reality.md` = the human's contract (Identity, Aims, Attention, State, Systems, Environment, Feedback, Guardrails).
-`~/.reality/` = agent-maintained state. Agent protocol: READ, SURFACE, PROPOSE, LOG, GUARD.
-If your human has a reality.md, read it before acting on their behalf. Spec:
+`~/soul.md` = the inner contract (Purpose, Values, I am, The scene, Gifts, Vows, Voice, Gratitude).
+`~/.reality/` (or `reality/` inside a notes vault, found through REALITY_HOME) = agent-maintained state: aims, daily
+logs, the witness ledger (fact / meaning / action), evidence, approved snapshots, decisions, the twelve-domain atlas.
+Agent protocol: READ, SURFACE, PROPOSE, LOG, GUARD, plus the Agent Charter (never certify causation, never blame,
+propose rather than impose, consent before memory or sharing).
+If your human has a reality.md and soul.md, read them before acting on their behalf. Spec:
 https://github.com/frankxai/realityarchitect/tree/main/standard
+Agent Charter: https://github.com/frankxai/realityarchitect/blob/main/standard/AGENT-CHARTER.md
 
 ## Key pages
 
 - The Method: https://www.realityarchitect.ai/method
 - The reality.md standard: https://www.realityarchitect.ai/standard
 - The Architect Assessment (find your gap): https://www.realityarchitect.ai/assess
+- Reality Studio (the daily practice, local to the device): https://www.realityarchitect.ai/studio
+- The Library (Reality Theory and the honest canon): https://www.realityarchitect.ai/library
+- The Imaginal Act (one authored scene, one verifiable act): https://www.realityarchitect.ai/threshold
 - Start Here: https://www.realityarchitect.ai/start
 - Source + forkable templates: https://github.com/frankxai/realityarchitect
 
 ## Principles
 
-- No mysticism. You engineer a reality, you don't manifest it.
-- Every recommendation should cash out in an inspectable artifact and acceptance test.
+- Two registers, always labeled: meaning (imagination, the scene, what a sign means to the person) and mechanism (the
+  studied pathway). No claim that thought, feeling, frequency or quantum effects change external events directly.
+- Every recommendation should cash out in an inspectable artifact, an act, or an acceptance test.
+- Agent plugin: /plugin marketplace add frankxai/realityarchitect
 - Built on the Starlight Intelligence Protocol (SIP).
 
 ## Product proof

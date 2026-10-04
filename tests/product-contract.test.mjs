@@ -119,6 +119,38 @@ test('public routes own canonical metadata and sitemap coverage', () => {
   assert.doesNotMatch(publicUrlSources, /https:\/\/realityarchitect\.ai\b/)
 })
 
+test('the Studio, Library and Threshold own canonical metadata, sitemap entries and navigation', () => {
+  for (const route of ['studio', 'library']) {
+    const page = read(`app/${route}/page.tsx`)
+    assert.match(page, new RegExp(`canonical: '/${route}'`))
+    assert.match(page, new RegExp(`url: '/${route}'`))
+    assert.match(page, /images: \[\{ url: '\/opengraph-image'/)
+  }
+  const sitemap = read('app/sitemap.ts')
+  for (const route of ['/studio', '/library', '/threshold']) assert.match(sitemap, new RegExp(`'${route}'`))
+  assert.match(read('lib/site.ts'), /label: 'Studio', href: '\/studio'/)
+  assert.match(read('lib/site.ts'), /label: 'Library', href: '\/library'/)
+})
+
+test('privacy states the Studio storage boundary without claiming more than it does', () => {
+  const privacy = read('app/privacy/page.tsx')
+  assert.match(privacy, /Reality Studio keeps your practice on this device/)
+  assert.match(privacy, /local storage/)
+  assert.match(privacy, /IndexedDB/)
+  assert.match(privacy, /Nothing you write in the Studio is sent to a server/)
+  assert.match(privacy, /delete everything at any time/)
+  assert.match(privacy, /Anyone who can use this browser profile can open the Studio/)
+})
+
+test('the homepage keeps its jobs and adds the inner-architecture doors', () => {
+  const home = read('app/page.tsx')
+  assert.match(home, /\{site\.tagline\}/)
+  assert.match(home, /<ArchitectLoopMap \/>/)
+  assert.match(home, /<EmailCapture \/>/)
+  assert.match(home, /href="\/assess"/)
+  for (const href of ['/threshold', '/studio', '/library']) assert.match(home, new RegExp(`href: '${href}'`))
+})
+
 test('security headers prevent embedding and unsafe base or object content', () => {
   const config = read('next.config.mjs')
   assert.match(config, /Content-Security-Policy/)
