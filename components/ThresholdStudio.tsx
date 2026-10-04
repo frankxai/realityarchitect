@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { realityCardMarkdown as markdown, realityCardPacket, readyForStep, type RealityCard as Card } from '@/lib/reality-card'
+import { realityCardMarkdown as markdown, realityCardPacket, readyForStep, writtenNow, type RealityCard as Card, type Written } from '@/lib/reality-card'
 
 const DOMAINS = [
   'Body & Vitality', 'Mind & Mastery', 'Heart & State', 'Character & Code',
@@ -22,6 +22,8 @@ export function ThresholdStudio() {
   const [finished, setFinished] = useState(false)
   const [status, setStatus] = useState('')
   const [resting, setResting] = useState(false)
+  // Captured once when the card is completed, so every export and the preview resolve a relative deadline the same way.
+  const [written, setWritten] = useState<Written | null>(null)
   const heading = useRef<HTMLHeadingElement>(null)
   const interacted = useRef(false)
 
@@ -38,6 +40,7 @@ export function ThresholdStudio() {
       setFinished(false)
       setResting(false)
       setStatus('')
+      setWritten(null)
     }
     window.addEventListener('pagehide', clear)
     return () => window.removeEventListener('pagehide', clear)
@@ -53,12 +56,15 @@ export function ThresholdStudio() {
 
   const advance = () => {
     if (!ready) return
-    if (step === 2) setFinished(true)
+    if (step === 2) {
+      setWritten(writtenNow())
+      setFinished(true)
+    }
     else setStep((current) => current + 1)
   }
 
   const download = (format: 'markdown' | 'json') => {
-    const body = format === 'json' ? JSON.stringify(realityCardPacket(card), null, 2) : markdown(card)
+    const body = format === 'json' ? JSON.stringify(realityCardPacket(card, written ?? writtenNow()), null, 2) : markdown(card, written ?? writtenNow())
     const blob = new Blob([body], { type: format === 'json' ? 'application/json;charset=utf-8' : 'text/markdown;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     const anchor = document.createElement('a')
@@ -73,7 +79,7 @@ export function ThresholdStudio() {
 
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(markdown(card))
+      await navigator.clipboard.writeText(markdown(card, written ?? writtenNow()))
       setStatus('Your card has been copied.')
     } catch {
       setStatus('Copy was unavailable. Use Download instead.')
@@ -81,6 +87,7 @@ export function ThresholdStudio() {
   }
 
   const reset = () => {
+    setWritten(null)
     setCard(EMPTY)
     setStep(0)
     setFinished(false)
@@ -126,20 +133,20 @@ export function ThresholdStudio() {
         {step === 0 && !finished && !resting && (
           <div className="mt-8 space-y-6">
             <label className={label} htmlFor="domain">Choose one part of life to design today
-              <select id="domain" value={card.domain} onChange={(event) => update('domain', event.target.value)} className={input}>
+              <select id="domain" value={card.domain} autoComplete="off" onChange={(event) => update('domain', event.target.value)} className={input}>
                 <option value="">Choose a domain</option>
                 {DOMAINS.map((domain) => <option key={domain} value={domain}>{domain}</option>)}
               </select>
             </label>
             <label className={label} htmlFor="scene">An ordinary moment when it feels complete
               <span className="mt-1 block font-normal text-muted">Where are you? What can you touch or hear? Let it feel familiar, in your own words. Imagery is optional; plain words are enough.</span>
-              <textarea id="scene" rows={7} value={card.scene} onChange={(event) => update('scene', event.target.value)}
+              <textarea id="scene" rows={7} value={card.scene} autoComplete="off" onChange={(event) => update('scene', event.target.value)}
                 placeholder="I wake up and the room feels… The first thing I make is…"
                 className={input} />
             </label>
             <p className="text-xs text-muted">Write at least 30 characters. This is your scene, not a prediction.</p>
             <label className={label} htmlFor="giving">What do you choose to give from this place? <span className="font-normal text-muted">(optional)</span>
-              <input id="giving" value={card.giving} onChange={(event) => update('giving', event.target.value)} placeholder="My attention, a finished song, care without bargaining…" className={input} />
+              <input id="giving" value={card.giving} autoComplete="off" onChange={(event) => update('giving', event.target.value)} placeholder="My attention, a finished song, care without bargaining…" className={input} />
             </label>
           </div>
         )}
@@ -147,15 +154,15 @@ export function ThresholdStudio() {
         {step === 1 && !finished && !resting && (
           <div className="mt-8 space-y-6">
             <label className={label} htmlFor="fact">What is observably true today?
-              <textarea id="fact" rows={3} value={card.fact} onChange={(event) => update('fact', event.target.value)}
+              <textarea id="fact" rows={3} value={card.fact} autoComplete="off" onChange={(event) => update('fact', event.target.value)}
                 placeholder="A specific fact I can check is…" className={input} />
             </label>
             <label className={label} htmlFor="inner-obstacle">Which inner obstacle will show up first?
-              <textarea id="inner-obstacle" rows={2} value={card.obstacle} onChange={(event) => update('obstacle', event.target.value)}
+              <textarea id="inner-obstacle" rows={2} value={card.obstacle} autoComplete="off" onChange={(event) => update('obstacle', event.target.value)}
                 placeholder="When I reach for my phone instead of starting…" className={input} />
             </label>
             <label className={label} htmlFor="response">When it appears, what will you do?
-              <input id="response" value={card.response} onChange={(event) => update('response', event.target.value)}
+              <input id="response" value={card.response} autoComplete="off" onChange={(event) => update('response', event.target.value)}
                 placeholder="open the draft and work on it for ten minutes" className={input} />
             </label>
           </div>
@@ -164,19 +171,19 @@ export function ThresholdStudio() {
         {step === 2 && !finished && !resting && (
           <div className="mt-8 space-y-6">
             <label className={label} htmlFor="act">One move you own
-              <input id="act" value={card.act} onChange={(event) => update('act', event.target.value)}
+              <input id="act" value={card.act} autoComplete="off" onChange={(event) => update('act', event.target.value)}
                 placeholder="Create the first page and send it for feedback" className={input} />
             </label>
             <label className={label} htmlFor="due">When will you do it?
-              <input id="due" value={card.due} onChange={(event) => update('due', event.target.value)}
+              <input id="due" value={card.due} autoComplete="off" onChange={(event) => update('due', event.target.value)}
                 placeholder="Friday before noon" className={input} />
             </label>
             <label className={label} htmlFor="proof">What would count as evidence?
-              <input id="proof" value={card.proof} onChange={(event) => update('proof', event.target.value)}
+              <input id="proof" value={card.proof} autoComplete="off" onChange={(event) => update('proof', event.target.value)}
                 placeholder="A finished page that a person can read" className={input} />
             </label>
             <label className={label} htmlFor="boundary">Which part belongs to someone else? <span className="font-normal text-muted">(optional)</span>
-              <input id="boundary" value={card.boundary} onChange={(event) => update('boundary', event.target.value)}
+              <input id="boundary" value={card.boundary} autoComplete="off" onChange={(event) => update('boundary', event.target.value)}
                 placeholder="They decide whether and how to respond" className={input} />
             </label>
           </div>
@@ -184,7 +191,7 @@ export function ThresholdStudio() {
 
         {finished && (
           <div className="mt-7">
-            <div className="max-h-[30rem] overflow-auto whitespace-pre-wrap rounded-xl border border-border bg-bg p-5 font-mono text-xs leading-6 text-ink">{markdown(card)}</div>
+            <div className="max-h-[30rem] overflow-auto whitespace-pre-wrap rounded-xl border border-border bg-bg p-5 font-mono text-xs leading-6 text-ink">{markdown(card, written ?? writtenNow())}</div>
             <p role="status" aria-live="polite" aria-atomic="true" className="mt-4 min-h-5 text-sm text-[#e8d5ad]">{status}</p>
             <div className="mt-3 flex flex-wrap gap-3">
               <button type="button" onClick={() => download('markdown')} className={primary}>Download Markdown</button>
