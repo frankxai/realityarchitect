@@ -8,9 +8,11 @@ export const site = {
   name: 'Reality Architect',
   domain: 'realityarchitect.ai',
   url: 'https://www.realityarchitect.ai',
-  tagline: 'Find the system gap. Build the next artifact.',
+  tagline: 'Imagine it. Build it. Witness it.',
+  // The hero sets the last part in the dawn register: the person's own witnessing, not the system's claim.
+  taglineParts: ['Imagine it. Build it.', 'Witness it.'],
   description:
-    'An open five-move method, local system-gap assessment, and exportable architecture brief for building dependable AI workflows.',
+    'The open practice for architecting a life: author the scene you are building toward, bridge to it with skills, systems, reps and bold moves, and keep an honest record of what happens. Local-first, exported as Markdown you own.',
   author: 'Frank',
   updatedAt: '2026-10-04',
   github: 'https://github.com/frankxai/realityarchitect',

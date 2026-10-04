@@ -7,6 +7,7 @@ import { isEmptyState } from '@/lib/studio/state'
 import { AtlasView } from './AtlasView'
 import { BridgesView } from './BridgesView'
 import { DataDialog } from './DataDialog'
+import { InstallApp } from './InstallApp'
 import { MapView } from './MapView'
 import { SoulView } from './SoulView'
 import { TimelineView } from './TimelineView'
@@ -71,7 +72,10 @@ export function Studio() {
             <span>Saved on this device only · no account · nothing sent</span>
           )}
         </p>
-        <button type="button" className={button.secondary} onClick={() => setDataOpen(true)}>Your data · export</button>
+        <div className="flex flex-wrap gap-2">
+          <InstallApp announce={studio.announce} />
+          <button type="button" className={button.secondary} onClick={() => setDataOpen(true)}>Your data · export</button>
+        </div>
       </div>
 
       {state.sample && (

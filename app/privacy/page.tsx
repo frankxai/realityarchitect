@@ -80,6 +80,11 @@ export default function Privacy() {
           The Studio can copy a prompt for your own AI assistant. Pasting it anywhere is your choice and goes to that
           service under its own terms.
         </p>
+        <p>
+          So that the Studio opens without a connection, and can be installed as an app, your browser keeps a copy of
+          this site&apos;s pages and code in its cache. That copy holds only what every visitor receives; your words and
+          images stay in the storage described above and never pass through it.
+        </p>
 
         <h2>Copy and download happen at your direction</h2>
         <p>

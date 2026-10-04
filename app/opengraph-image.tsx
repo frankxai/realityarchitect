@@ -54,7 +54,7 @@ export default function OpengraphImage() {
           {site.tagline}
         </div>
         <div style={{ marginTop: '32px', fontSize: '26px', color: '#969cb2', maxWidth: '820px', lineHeight: 1.45 }}>
-          From AI tool-user to system-builder. The open method — agents, loops, and the reality.md standard.
+          The open practice for architecting a life. Local-first, exported as Markdown you own.
         </div>
         <div style={{ marginTop: '56px', display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div style={{ width: '40px', height: '3px', backgroundColor: '#5b8cff' }} />
