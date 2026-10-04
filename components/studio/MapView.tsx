@@ -87,7 +87,8 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
     if (!rect || rect.width === 0) return
     if (!layout.nodes.length) return fit()
     const zoom = rect.width < 640 ? 0.62 : 0.8
-    setCamera({ zoom, x: 24 - layout.bounds.minX * zoom, y: 32 - Math.min(layout.bounds.minY, -120) * zoom })
+    // Anchor on the column-label row (y = -100) so the opening view starts at the labels, not at a far-off note.
+    setCamera({ zoom, x: 24 - layout.bounds.minX * zoom, y: 32 + 130 * zoom })
   }, [fit, layout])
 
   /** Pans so a column (Now, Bridges or Vision) sits at the left edge, keeping zoom and height. */
@@ -359,7 +360,7 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
             )}
             <div className="absolute left-0 top-0 origin-top-left" style={{ transform: `translate(${camera.x}px, ${camera.y}px) scale(${camera.zoom})` }}>
               {layout.nodes.length > 0 && (
-                <div aria-hidden="true" className="font-mono text-[11px] uppercase tracking-[0.3em]">
+                <div aria-hidden="true" className="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.3em]">
                   <span className="absolute text-muted" style={{ left: 0, top: -100 }}>Now · reported</span>
                   <span className="absolute text-accent" style={{ left: 420, top: -100 }}>Bridges · planned and witnessed</span>
                   <span className="absolute text-dawn" style={{ left: layout.visionX, top: -100 }}>Vision · desired</span>
