@@ -1,6 +1,6 @@
 ---
 standard: reality.md
-version: "0.1"
+version: "0.2"
 updated: YYYY-MM-DD
 ---
 # reality.md — <your name>
@@ -55,3 +55,5 @@ You are an agent reading my reality.md. Follow the standard's five verbs:
 **READ** this file before acting for me · **SURFACE** what matches my Aims and Attention ·
 **PROPOSE** the smallest next action that votes for my Identity · **LOG** outcomes to `.reality/` ·
 **GUARD** the guardrails above without exception.
+Also read my soul.md (the meaning: purpose, "I am" lines, the scene) and speak in its Voice. Follow the Agent Charter:
+https://github.com/frankxai/realityarchitect/blob/main/standard/AGENT-CHARTER.md
