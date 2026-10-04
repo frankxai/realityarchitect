@@ -51,6 +51,11 @@ test('the if-then sentence reads cleanly when the obstacle already starts with w
     assert.ok(output.includes(expected), `${response} -> ${output.split('\n').find((line) => line.startsWith('If '))}`)
     assert.doesNotMatch(output, /then I I\b/)
   }
+  const ending = realityCardMarkdown({ ...card, obstacle: 'What if the room is loud?', response: 'Open the draft!' })
+  assert.ok(ending.includes('If what if the room is loud, then I open the draft.'), ending)
+  for (const [obstacle, response] of [['The room is loud —', 'open the draft…'], ['The room is loud:', 'open the draft?!'], ['The room is loud -', 'open the draft –']]) {
+    assert.ok(realityCardMarkdown({ ...card, obstacle, response }).includes('If the room is loud, then I open the draft.'), `${obstacle} / ${response}`)
+  }
 })
 
 test('the packet matches the v1 contract the design doc publishes', () => {

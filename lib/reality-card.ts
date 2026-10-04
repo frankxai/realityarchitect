@@ -27,8 +27,12 @@ export function writtenNow(now = new Date()): Written {
 
 /** "When I reach for my phone." -> "I reach for my phone"; "I open the draft" -> "open the draft". */
 function clause(value: string, leading: RegExp): string {
-  return value.trim().replace(leading, '').replace(/[.!;,\s]+$/, '')
+  // The generated sentence owns its punctuation, so any ending the person typed (. ! ? : ; , … and dashes) goes.
+  return value.trim().replace(leading, '').replace(/[.!?:;,…\s–—-]+$/, '')
 }
+
+/** Mid-sentence text starts lowercase, except "I" and acronyms such as "AI". */
+const midSentence = (value: string) => (/^(I\b|I['’]|[A-Z]{2})/.test(value) ? value : value.charAt(0).toLowerCase() + value.slice(1))
 
 /**
  * "then I'll open the draft" -> "then I open the draft"; "I'd open it" -> "then I'd open it". Future forms collapse to
@@ -39,8 +43,7 @@ function thenClause(value: string): string {
   rest = rest.replace(/^(i['’]ll|i\s+will|i['’]m\s+going\s+to|i\s+am\s+going\s+to|i)\s+/i, '')
   if (!rest) return 'then I Not specified'
   if (/^i['’]\p{L}/iu.test(rest)) return `then I${rest.slice(1)}`
-  // Mid-sentence now: lowercase the first letter, unless it starts an acronym such as "AI".
-  return `then I ${/^[A-Z]{2}/.test(rest) ? rest : rest.charAt(0).toLowerCase() + rest.slice(1)}`
+  return `then I ${midSentence(rest)}`
 }
 
 export function readyForStep(card: RealityCard, step: number): boolean {
@@ -52,7 +55,7 @@ export function readyForStep(card: RealityCard, step: number): boolean {
 
 export function realityCardMarkdown(card: RealityCard, written: Written = writtenNow()): string {
   const line = (value: string) => value.trim() || 'Not specified'
-  const condition = clause(card.obstacle, /^(if|when|whenever)[\s,:;–—-]+/i) || 'Not specified'
+  const condition = midSentence(clause(card.obstacle, /^(if|when|whenever)[\s,:;–—-]+/i)) || 'Not specified'
   const response = thenClause(card.response)
   return [
     '# My Reality Card', '', 'Built on SIP · User-authored · Version 1', `Written: ${written.date} (${written.timeZone})`, '',
