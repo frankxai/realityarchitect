@@ -42,7 +42,7 @@ test('the if-then sentence reads cleanly when the obstacle already starts with w
   assert.match(output, /If I reach for my phone instead of starting, then I open the draft for ten minutes\./)
   assert.doesNotMatch(output, /If When|If if|then I I/i)
   assert.match(realityCardMarkdown({ ...card, obstacle: 'if the room is loud', response: 'then put on headphones' }), /If the room is loud, then I put on headphones\./)
-  for (const response of ["I'll open the draft", 'Then I’ll open the draft', 'I will open the draft', "I'm going to open the draft"]) {
+  for (const response of ["I'll open the draft", 'Then I’ll open the draft', 'I will open the draft', "I'm going to open the draft", 'Then, I’ll open the draft', 'then: I will open the draft']) {
     assert.match(realityCardMarkdown({ ...card, response }), /then I open the draft\./, response)
   }
 })
