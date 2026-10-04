@@ -18,6 +18,8 @@ export type WitnessKind = 'sign' | 'win' | 'rep' | 'move' | 'opening' | 'lesson'
 export type Voice = 'gentle' | 'direct' | 'challenging'
 
 export interface Soul {
+  /** Optional, used only as the heading of exported files. */
+  name: string
   purpose: string
   values: string[]
   iAm: string[]

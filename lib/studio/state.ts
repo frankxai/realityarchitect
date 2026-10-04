@@ -33,7 +33,7 @@ const day = (value: unknown): string => (isDay(value) ? value : '')
 const id = (value: unknown): string => (typeof value === 'string' && value.trim() ? value.slice(0, 80) : newId())
 
 export function emptySoul(): Soul {
-  return { purpose: '', values: [], iAm: [], scene: '', gifts: '', vows: [], voice: 'direct', gratitude: [] }
+  return { name: '', purpose: '', values: [], iAm: [], scene: '', gifts: '', vows: [], voice: 'direct', gratitude: [] }
 }
 
 export function emptyDomain(): DomainState {
@@ -77,6 +77,7 @@ export function emptyBridge(today: string, domain: Bridge['domain'] = ''): Bridg
 function normalizeSoul(input: unknown): Soul {
   const soul = isObject(input) ? input : {}
   return {
+    name: text(soul.name, 80),
     purpose: text(soul.purpose),
     values: list(soul.values, 10),
     iAm: list(soul.iAm, 12),
@@ -281,7 +282,7 @@ export function normalizeState(input: unknown, now: Date = new Date()): StudioSt
 /** True until the person has authored anything at all. */
 export function isEmptyState(state: StudioState): boolean {
   const soul = state.soul
-  const soulEmpty = !soul.purpose && !soul.scene && !soul.gifts && !soul.values.length && !soul.iAm.length && !soul.vows.length && !soul.gratitude.length
+  const soulEmpty = !soul.name && !soul.purpose && !soul.scene && !soul.gifts && !soul.values.length && !soul.iAm.length && !soul.vows.length && !soul.gratitude.length
   const atlasEmpty = Object.values(state.atlas).every((domain) => domain.now === null && domain.want === null && !domain.fact && !domain.scene && !domain.priority)
   return soulEmpty && atlasEmpty && !state.bridges.length && !state.witness.length && !state.snapshots.length && !state.decisions.length && !state.canvas.cards.length && !Object.keys(state.days).length
 }

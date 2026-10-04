@@ -83,6 +83,7 @@ export function sampleState(today: string): StudioState {
     updatedAt: at(0, 9),
     sample: true,
     soul: {
+      name: 'Mara (sample)',
       purpose: 'To make music that keeps people company in hard seasons, and to live a life quiet enough to hear it.',
       values: ['Honesty in the work', 'Health that lasts decades', 'Generosity with time', 'Craft over speed', 'Play'],
       iAm: ['I am a composer who finishes albums.', 'I am someone who protects her mornings.', 'I am a teacher who is generous with what she knows.'],
