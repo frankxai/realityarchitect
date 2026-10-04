@@ -47,12 +47,17 @@ export function sampleState(today: string): StudioState {
 
   const kinds: WitnessKind[] = ['sign', 'win', 'rep', 'move', 'opening', 'lesson', 'gratitude']
   const zero = () => Object.fromEntries(kinds.map((kind) => [kind, 0])) as Snapshot['counts']
-  const snapshotAtlas = (shift: number) => Object.fromEntries(
-    Object.entries(atlas).map(([domain, value]) => [domain, { now: value.now === null ? null : Math.max(0, value.now - shift), want: value.want }]),
+  // Two weeks ago some domains sat lower; most did not move. Real weeks are uneven.
+  const earlier: Partial<Record<keyof typeof atlas, number>> = { craft: 1, circle: 1, heart: 1, body: -1 }
+  const snapshotAtlas = (back: boolean) => Object.fromEntries(
+    Object.entries(atlas).map(([domain, value]) => {
+      const shift = back ? earlier[domain as keyof typeof atlas] ?? 0 : 0
+      return [domain, { now: value.now === null ? null : Math.min(10, Math.max(0, value.now - shift)), want: value.want }]
+    }),
   ) as Snapshot['atlas']
 
   const first: Snapshot = {
-    id: 'sample-snapshot-1', cadence: 'weekly', sealedAt: at(-14, 20), day: d(-14), periodStart: d(-21), atlas: snapshotAtlas(1),
+    id: 'sample-snapshot-1', cadence: 'weekly', sealedAt: at(-14, 20), day: d(-14), periodStart: d(-21), atlas: snapshotAtlas(true),
     bridges: [
       { id: 'sample-album', title: 'Finish the album', state: 'early', repsLogged: 0, repsPlanned: 0, movesDone: 0, movesTotal: 2 },
       { id: 'sample-run', title: 'Run the river 10K', state: 'early', repsLogged: 0, repsPlanned: 0, movesDone: 0, movesTotal: 1 },
@@ -64,7 +69,7 @@ export function sampleState(today: string): StudioState {
     },
   }
   const second: Snapshot = {
-    id: 'sample-snapshot-2', cadence: 'weekly', sealedAt: at(-7, 20), day: d(-7), periodStart: d(-13), atlas: snapshotAtlas(0),
+    id: 'sample-snapshot-2', cadence: 'weekly', sealedAt: at(-7, 20), day: d(-7), periodStart: d(-13), atlas: snapshotAtlas(false),
     bridges: [
       { id: 'sample-album', title: 'Finish the album', state: 'on-pace', repsLogged: 3, repsPlanned: 3, movesDone: 0, movesTotal: 2 },
       { id: 'sample-run', title: 'Run the river 10K', state: 'behind', repsLogged: 2, repsPlanned: 3, movesDone: 0, movesTotal: 1 },

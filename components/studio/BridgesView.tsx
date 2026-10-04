@@ -113,6 +113,23 @@ function BridgeEditor({ studio, bridge, onDeleted }: { studio: StudioApi; bridge
         </div>
       </section>
 
+      <section className={panelClass} aria-labelledby={`${id}-pace`}>
+        <h4 id={`${id}-pace`} className="text-lg font-semibold text-ink">Is it enough? <Tag register="computed" /></h4>
+        <p className="mt-2 text-base text-ink">{pace.headline}</p>
+        <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+          <div><dt className="text-xs text-muted">Window</dt><dd className="font-mono text-ink">{pace.windowDays} days</dd></div>
+          <div><dt className="text-xs text-muted">Reps</dt><dd className="font-mono text-ink">{pace.repsLogged} of {pace.repsPlanned}</dd></div>
+          <div><dt className="text-xs text-muted">Bold moves done</dt><dd className="font-mono text-ink">{pace.movesDone} of {pace.movesTotal}</dd></div>
+          <div><dt className="text-xs text-muted">Days left</dt><dd className="font-mono text-ink">{pace.daysLeft === null ? 'no date' : pace.daysLeft}</dd></div>
+        </dl>
+        {pace.suggestions.length > 0 && (
+          <ul className="mt-4 space-y-1.5 text-sm text-muted">
+            {pace.suggestions.map((suggestion) => <li key={suggestion}>— {suggestion}</li>)}
+          </ul>
+        )}
+        <p className="mt-4 text-xs text-muted">Reps logged in the last 14 days against your weekly plan, plus overdue bold moves. A move due today is not overdue. It never judges you; it judges the plan.</p>
+      </section>
+
       <section className="grid gap-4 lg:grid-cols-2">
         <div className="rounded-2xl border border-dawn/25 bg-dawn/5 p-5 sm:p-6">
           <Area label="The scene" register="desired" dawn rows={5} value={bridge.scene} onChange={(value) => patch((draft) => { draft.scene = value })} placeholder="An ordinary moment when it is done, in the present tense." />
@@ -154,22 +171,6 @@ function BridgeEditor({ studio, bridge, onDeleted }: { studio: StudioApi; bridge
         <ReachEditor bridge={bridge} patch={patch} />
       </section>
 
-      <section className={panelClass} aria-labelledby={`${id}-pace`}>
-        <h4 id={`${id}-pace`} className="text-lg font-semibold text-ink">Is it enough? <Tag register="computed" /></h4>
-        <p className="mt-2 text-base text-ink">{pace.headline}</p>
-        <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
-          <div><dt className="text-xs text-muted">Window</dt><dd className="font-mono text-ink">{pace.windowDays} days</dd></div>
-          <div><dt className="text-xs text-muted">Reps</dt><dd className="font-mono text-ink">{pace.repsLogged} of {pace.repsPlanned}</dd></div>
-          <div><dt className="text-xs text-muted">Bold moves done</dt><dd className="font-mono text-ink">{pace.movesDone} of {pace.movesTotal}</dd></div>
-          <div><dt className="text-xs text-muted">Days left</dt><dd className="font-mono text-ink">{pace.daysLeft === null ? 'no date' : pace.daysLeft}</dd></div>
-        </dl>
-        {pace.suggestions.length > 0 && (
-          <ul className="mt-4 space-y-1.5 text-sm text-muted">
-            {pace.suggestions.map((suggestion) => <li key={suggestion}>— {suggestion}</li>)}
-          </ul>
-        )}
-        <p className="mt-4 text-xs text-muted">Reps logged in the last 14 days against your weekly plan, plus overdue bold moves. A move due today is not overdue. It never judges you; it judges the plan.</p>
-      </section>
 
       <section className={panelClass} aria-labelledby={`${id}-actions`}>
         <h4 id={`${id}-actions`} className="text-lg font-semibold text-ink">Take it with you</h4>

@@ -91,7 +91,7 @@ export function AtlasView({ studio, go }: { studio: StudioApi; go: Go }) {
                 aria-pressed={selected === item.id}
                 aria-label={`${item.label}: now ${value.now ?? 'not rated'}, wanted ${value.want ?? 'not rated'}${value.priority ? ', priority' : ''}. Edit.`}
                 onClick={() => setSelected(item.id)}
-                className={`w-full rounded-xl border p-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${selected === item.id ? 'border-accent bg-accent/5' : 'border-border bg-surface/70 hover:border-accent/60'}`}
+                className={`h-full w-full rounded-xl border p-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${selected === item.id ? 'border-accent bg-accent/5' : 'border-border bg-surface/70 hover:border-accent/60'}`}
               >
                 <span className="flex items-start justify-between gap-2">
                   <span className="text-sm font-semibold text-ink">{item.label}</span>

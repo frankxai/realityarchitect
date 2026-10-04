@@ -81,12 +81,27 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
     setCamera({ x: (rect.width - (layout.bounds.maxX - minX) * zoom) / 2 - minX * zoom, y: (rect.height - (layout.bounds.maxY - minY) * zoom) / 2 - minY * zoom, zoom })
   }, [layout])
 
+  /** Opens at a readable zoom on the left (Now) edge of the map, the way canvas tools open; Fit shows everything. */
+  const home = useCallback(() => {
+    const rect = surface.current?.getBoundingClientRect()
+    if (!rect || rect.width === 0) return
+    if (!layout.nodes.length) return fit()
+    const zoom = rect.width < 640 ? 0.62 : 0.8
+    setCamera({ zoom, x: 24 - layout.bounds.minX * zoom, y: 32 - Math.min(layout.bounds.minY, -120) * zoom })
+  }, [fit, layout])
+
+  /** Pans so a column (Now, Bridges or Vision) sits at the left edge, keeping zoom and height. */
+  const jumpTo = (x: number, label: string) => {
+    setCamera((current) => ({ ...current, x: 24 - x * current.zoom }))
+    announce(`Map moved to ${label}.`)
+  }
+
   useEffect(() => {
     if (fitted.current || mode !== 'canvas') return
     fitted.current = true
     const view = state.canvas.view
-    if (view.x === 0 && view.y === 0) fit()
-  }, [fit, mode, state.canvas.view])
+    if (view.x === 0 && view.y === 0) home()
+  }, [home, mode, state.canvas.view])
 
   // Keep the camera between visits, without rewriting the whole state on every frame.
   useEffect(() => {
@@ -294,6 +309,15 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
             <button type="button" className={button.secondary} onClick={() => zoomAt(1 / 1.2)} aria-label="Zoom out">−</button>
             <button type="button" className={button.secondary} onClick={() => zoomAt(1.2)} aria-label="Zoom in">+</button>
             <button type="button" className={button.secondary} onClick={fit}>Fit</button>
+            {layout.nodes.length > 0 && (
+              <div className="flex gap-1 rounded-lg border border-border p-1" role="group" aria-label="Jump to a column">
+                {([['Now', 0], ['Bridges', 420], ['Vision', layout.visionX]] as const).map(([label, x]) => (
+                  <button key={label} type="button" className={`rounded-md px-3 py-1.5 text-sm ${label === 'Vision' ? 'text-dawn' : 'text-muted'} hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent`} onClick={() => jumpTo(x, label)}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
           </>
         )}
         <button type="button" className={button.secondary} onClick={addNote}>Add note</button>
@@ -360,7 +384,7 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
                     className={`group absolute overflow-hidden rounded-xl border p-3 shadow-[0_12px_40px_rgba(0,0,0,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${tone.box}`}
                     style={{ left: position.x, top: position.y, width: node.w, minHeight: node.h }}
                   >
-                    {node.title && <p className={`font-mono text-[10px] uppercase tracking-[0.14em] ${tone.title}`}>{node.title}</p>}
+                    {node.title && <p className={`font-mono text-[11px] uppercase tracking-[0.14em] ${tone.title}`}>{node.title}</p>}
                     {node.tone === 'image' ? (
                       image ? (
                         // A blob URL from this device's own storage; next/image cannot optimize it.
@@ -384,7 +408,7 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
                         className="w-full resize-none rounded-md border border-dawn/30 bg-bg p-2 font-serif text-sm text-dawn-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dawn"
                       />
                     ) : (
-                      <p className={`mt-1.5 line-clamp-6 whitespace-pre-wrap text-sm leading-snug ${tone.body}`}>{node.body || (node.tone === 'note' ? 'Empty note. Press Enter or double-click to write.' : '')}</p>
+                      <p className={`mt-1.5 line-clamp-6 whitespace-pre-wrap text-[15px] leading-snug ${tone.body}`}>{node.body || (node.tone === 'note' ? 'Empty note. Press Enter or double-click to write.' : '')}</p>
                     )}
                     {node.free && editing !== node.id && (
                       <div className="mt-2 flex gap-1 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
