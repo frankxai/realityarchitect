@@ -2,7 +2,7 @@
 
 ## Product role
 
-Reality Architect is an open method and assessment product. The first useful outcome is not inspiration; it is a completed system-gap assessment and an exportable architecture brief.
+Reality Architect is an open practice for architecting a life: an open method, an assessment, the Imaginal Act (Threshold), Reality Studio, and the Library. The first useful outcome is never inspiration alone; it is an exported artifact — an architecture brief, a Reality Card, or a Studio export — and one chosen next act.
 
 ## First read
 
@@ -15,6 +15,8 @@ Find the first gap in your AI system. Leave with a build brief.
 - Type: Space Grotesk for architectural headings, Inter for reading, JetBrains Mono for artifacts and system states.
 - Composition: exact diagrams, ordered dependencies, quiet space, and dense artifacts over abstract inspiration.
 - Glass: navigation and one proof plane only; body content stays on solid surfaces.
+- Dawn register (since 2026-10-04): warm `#e8d5ad` (`--color-dawn`), `#f7e8c8` (`--color-dawn-2`) and Georgia serif carry meaning — the person's own scenes, "I am" lines, and contemplative passages. **Your words in dawn, the system in blueprint.** Dawn never carries a causal claim, a number, or a CTA price.
+- The Reality Map makes the two registers spatial: Now on the graphite left, the Vision in dawn on the right, Bridges crossing between them.
 
 ## Asset strategy
 
@@ -22,8 +24,8 @@ Tier C code-authored assessment and architecture brief are the primary proof ass
 
 ## Motion
 
-Named behavior: `blueprint-resolve`. The five assessment states resolve in sequence to clarify dependency order. It uses opacity and transform once, preserves reading, and becomes fully static under reduced motion.
+Named behavior: `blueprint-resolve`. The five assessment states resolve in sequence to clarify dependency order. It uses opacity and transform once, preserves reading, and becomes fully static under reduced motion. Threshold's single `arrive` entrance follows the same rule. The Studio has no decorative motion; the Map pans and zooms only under the person's hand.
 
 ## Accessibility
 
-Assessment choices expose pressed state, result changes are announced, export controls are keyboard operable, and the page has a skip link and stable focus treatment.
+Assessment choices expose pressed state, result changes are announced, export controls are keyboard operable, and the page has a skip link and stable focus treatment. Studio: every field labeled, one polite live region, native `<dialog>` for export and confirmations, and a list equivalent plus keyboard pan/zoom for the Map.
