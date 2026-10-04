@@ -89,6 +89,10 @@ test('the if-then sentence reads cleanly whatever the person typed', () => {
   assert.equal(ifThenSentence('The room is loud', "I'm opening the draft"), "If the room is loud, then I'm opening the draft.")
   assert.equal(ifThenSentence('The room is loud', 'i’d open the draft'), 'If the room is loud, then I’d open the draft.')
   assert.equal(ifThenSentence('The room is loud', 'Idle a minute, then start'), 'If the room is loud, then I idle a minute, then start.')
+  assert.equal(ifThenSentence('What if the room is loud?', 'Open the draft!'), 'If what if the room is loud, then I open the draft.')
+  for (const [obstacle, response] of [['The room is loud —', 'open the draft…'], ['The room is loud:', 'open the draft?!'], ['The room is loud -', 'open the draft –']]) {
+    assert.equal(ifThenSentence(obstacle, response), 'If the room is loud, then I open the draft.', `${obstacle} / ${response}`)
+  }
 })
 
 test('an empty studio exports without throwing and marks the gaps', () => {

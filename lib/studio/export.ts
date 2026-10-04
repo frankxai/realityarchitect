@@ -17,14 +17,17 @@ const yaml = (value: string) => JSON.stringify(value)
 /** Lowercases a sentence's first letter mid-sentence, unless it starts with "I" or an acronym ("AI", "UK"). */
 const midSentence = (value: string) => (/^(I\b|[A-Z]{2})/.test(value) ? value : value.charAt(0).toLowerCase() + value.slice(1))
 
+/** The sentence owns its punctuation: any ending the person typed (. ! ? : ; , … and dashes) goes. */
+const ENDING = /[.!?:;,…\s–—-]+$/
+
 /** "When I reach for my phone." + "I open the draft" -> "If I reach for my phone, then I open the draft." */
 export function ifThenSentence(obstacle: string, response: string): string {
-  const condition = midSentence(obstacle.trim().replace(/^(if|when|whenever)[\s,:;–—-]+/i, '').replace(/[.!;,\s]+$/, ''))
+  const condition = midSentence(obstacle.trim().replace(/^(if|when|whenever)[\s,:;–—-]+/i, '').replace(ENDING, ''))
   // The sentence supplies its own "then I": drop a leading "then" (with any punctuation after it) and a future-form
   // subject (I'll, I will, I'm going to). Any other subject the person wrote (I'm, I'd, I've) is kept, not doubled.
   const act = response.trim()
     .replace(/^(then[\s,:;–—-]+)?(i['’]ll\s+|i\s+will\s+|i['’]m\s+going\s+to\s+|i\s+am\s+going\s+to\s+|i\s+)?/i, '')
-    .replace(/[.!;,\s]+$/, '')
+    .replace(ENDING, '')
   if (!condition || !act) return ''
   if (/^i['’]\p{L}/iu.test(act)) return `If ${condition}, then I${act.slice(1)}.`
   return `If ${condition}, then I ${midSentence(act)}.`
