@@ -1,6 +1,7 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ClipboardEvent, type DragEvent, type KeyboardEvent, type PointerEvent } from 'react'
+import { visionBoard, type BoardTile } from '@/lib/studio/board'
 import { layoutMap, toJsonCanvas, type MapNode, type MapTone } from '@/lib/studio/canvas'
 import { ROOT } from '@/lib/studio/export'
 import { getImage, imageExtension, putImage } from '@/lib/studio/images'
@@ -19,6 +20,9 @@ const MIN_ZOOM = 0.2
 const MAX_ZOOM = 2.5
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
+type Mode = 'canvas' | 'board' | 'list'
+const MODES: [Mode, string][] = [['canvas', 'Canvas'], ['board', 'Vision board'], ['list', 'List']]
+
 const TONE: Record<MapTone, { box: string; title: string; body: string }> = {
   now: { box: 'border-border bg-surface', title: 'text-muted', body: 'text-ink' },
   bridge: { box: 'border-accent/60 bg-[#101a33]', title: 'text-accent', body: 'text-ink' },
@@ -36,7 +40,7 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
   const layout = useMemo(() => layoutMap(state, today), [state, today])
   const [camera, setCamera] = useState<Camera>(state.canvas.view)
   const [dragged, setDragged] = useState<{ id: string; x: number; y: number } | null>(null)
-  const [mode, setMode] = useState<'canvas' | 'list'>('canvas')
+  const [mode, setMode] = useState<Mode>('canvas')
   const [editing, setEditing] = useState<string | null>(null)
   const [images, setImages] = useState<Record<string, { url: string; type: string }>>({})
   const surface = useRef<HTMLDivElement>(null)
@@ -311,6 +315,36 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
     announce('Image added to your map. It stays on this device.')
   }
 
+  /** Several images at once: from the file picker, a drop, or a paste. Non-images are skipped. */
+  const addImages = async (files: File[]) => {
+    const pictures = files.filter((file) => file.type.startsWith('image/'))
+    for (const file of pictures) await addImage(file)
+  }
+
+  /** Drop or paste images straight onto the canvas or the board. */
+  const imageTarget = {
+    onDragOver: (event: DragEvent<HTMLElement>) => {
+      if (event.dataTransfer.types.includes('Files')) event.preventDefault()
+    },
+    onDrop: (event: DragEvent<HTMLElement>) => {
+      const files = [...event.dataTransfer.files]
+      if (!files.some((file) => file.type.startsWith('image/'))) return
+      event.preventDefault()
+      void addImages(files)
+    },
+    onPaste: (event: ClipboardEvent<HTMLElement>) => {
+      const files = [...event.clipboardData.files]
+      if (!files.some((file) => file.type.startsWith('image/'))) return
+      event.preventDefault()
+      void addImages(files)
+    },
+  }
+
+  const removeImageCard = (cardId: string) => {
+    update((draft) => { draft.canvas.cards = draft.canvas.cards.filter((card) => card.id !== cardId) })
+    announce('Image removed from your board.')
+  }
+
   const exportCanvas = () => {
     const canvas = toJsonCanvas(layout, (imageId) => (images[imageId] ? `${ROOT}reality/images/${imageId}.${imageExtension(images[imageId].type)}` : null))
     downloadText('Reality Map.canvas', `${JSON.stringify(canvas, null, 2)}\n`, 'application/json;charset=utf-8')
@@ -337,8 +371,9 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-2" role="toolbar" aria-label="Map tools">
         <div className="flex gap-1 rounded-lg border border-border p-1" role="group" aria-label="View as">
-          <button type="button" aria-pressed={mode === 'canvas'} className={`rounded-md px-3 py-1.5 text-sm ${mode === 'canvas' ? 'bg-accent/15 text-ink' : 'text-muted hover:text-ink'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent`} onClick={() => setMode('canvas')}>Canvas</button>
-          <button type="button" aria-pressed={mode === 'list'} className={`rounded-md px-3 py-1.5 text-sm ${mode === 'list' ? 'bg-accent/15 text-ink' : 'text-muted hover:text-ink'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent`} onClick={() => setMode('list')}>List</button>
+          {MODES.map(([value, label]) => (
+            <button key={value} type="button" aria-pressed={mode === value} className={`rounded-md px-3 py-1.5 text-sm ${mode === value ? 'bg-accent/15 text-ink' : 'text-muted hover:text-ink'} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent`} onClick={() => setMode(value)}>{label}</button>
+          ))}
         </div>
         {mode === 'canvas' && (
           <>
@@ -358,7 +393,7 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
         )}
         <button type="button" className={button.secondary} onClick={addNote}>Add note</button>
         <button type="button" className={button.secondary} onClick={() => fileInput.current?.click()}>Add image</button>
-        <input ref={fileInput} type="file" accept="image/*" className="sr-only" tabIndex={-1} aria-hidden="true" onChange={(event) => { void addImage(event.target.files?.[0]); event.target.value = '' }} />
+        <input ref={fileInput} type="file" accept="image/*" multiple className="sr-only" tabIndex={-1} aria-hidden="true" onChange={(event) => { void addImages([...(event.target.files ?? [])]); event.target.value = '' }} />
         <button type="button" className={button.secondary} onClick={exportCanvas}>Download .canvas</button>
       </div>
 
@@ -374,6 +409,7 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
             onPointerUp={onPointerUp}
             onPointerCancel={onPointerUp}
             onKeyDown={onSurfaceKey}
+            {...imageTarget}
             className="relative h-[70vh] min-h-[26rem] cursor-grab touch-none select-none overflow-hidden rounded-2xl border border-border bg-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent active:cursor-grabbing"
             style={{
               backgroundImage: 'linear-gradient(rgba(91,140,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(91,140,255,0.06) 1px, transparent 1px)',
@@ -457,12 +493,85 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
               })}
             </div>
           </div>
-          <p className="text-xs text-muted">Drag to pan · pinch or Ctrl + scroll to zoom · drag a card to place it · with the keyboard: arrows pan, + and − zoom, 0 fits, Tab reaches each card and arrows move it.</p>
+          <p className="text-xs text-muted">Drag to pan · pinch or Ctrl + scroll to zoom · drag a card to place it · drop or paste an image to add it · with the keyboard: arrows pan, + and − zoom, 0 fits, Tab reaches each card and arrows move it.</p>
         </>
+      ) : mode === 'board' ? (
+        <VisionBoard tiles={visionBoard(state)} images={images} target={imageTarget} onAdd={() => fileInput.current?.click()} onRemove={removeImageCard} go={go} />
       ) : (
         <MapList nodes={layout.nodes} />
       )}
     </div>
+  )
+}
+
+type ImageTarget = {
+  onDragOver: (event: DragEvent<HTMLElement>) => void
+  onDrop: (event: DragEvent<HTMLElement>) => void
+  onPaste: (event: ClipboardEvent<HTMLElement>) => void
+}
+
+/**
+ * The vision board: the person's own scenes in dawn and the images they chose, as one quiet mosaic. Everything on it
+ * is theirs; nothing is generated. Images can be added with the button, by dropping files, or by pasting.
+ */
+function VisionBoard({ tiles, images, target, onAdd, onRemove, go }: {
+  tiles: BoardTile[]
+  images: Record<string, { url: string; type: string }>
+  target: ImageTarget
+  onAdd: () => void
+  onRemove: (cardId: string) => void
+  go: Go
+}) {
+  return (
+    <section
+      aria-label="Vision board. Paste or drop images here to add them."
+      tabIndex={0}
+      {...target}
+      className="rounded-2xl border border-dawn/20 bg-[#0b0a0e] p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dawn sm:p-6"
+    >
+      <p className="mb-4 font-mono text-xs uppercase tracking-[0.18em] text-dawn">Vision · desired · in your words</p>
+      {tiles.length === 0 ? (
+        <Empty
+          title="Your board fills with your own scenes"
+          actions={<><button type="button" className={button.dawn} onClick={() => go('soul')}>Write your scene</button><button type="button" className={button.secondary} onClick={onAdd}>Add an image</button></>}
+        >
+          The scenes you write in Soul, Atlas and your bridges appear here, beside the images you choose.
+        </Empty>
+      ) : (
+        <ul className="columns-1 gap-4 sm:columns-2 lg:columns-3">
+          {tiles.map((tile) => (
+            <li key={tile.id} className="mb-4 break-inside-avoid">
+              {tile.kind === 'scene' ? (
+                <figure className="rounded-xl border border-dawn/30 bg-[#15131a] p-5">
+                  <figcaption className="font-mono text-[11px] uppercase tracking-[0.16em] text-dawn">{tile.title}</figcaption>
+                  <blockquote className="mt-2 whitespace-pre-wrap font-serif text-lg leading-snug text-dawn-2">{tile.text}</blockquote>
+                </figure>
+              ) : (
+                <figure className="overflow-hidden rounded-xl border border-border bg-bg">
+                  {images[tile.imageId] ? (
+                    // A blob URL from this device's own storage; next/image cannot optimize it.
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={images[tile.imageId].url} alt={tile.caption || 'An image on your vision board'} width={640} height={480} className="h-auto w-full" />
+                  ) : (
+                    <p className="p-4 text-sm text-muted">Image not on this device. Images stay where they were added; the full export carries copies.</p>
+                  )}
+                  <figcaption className="flex items-center justify-between gap-2 px-3 py-2 text-xs text-muted">
+                    <span className="min-w-0 truncate">{tile.caption || 'Untitled image'}</span>
+                    <button type="button" className="shrink-0 rounded px-2 py-1 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" onClick={() => onRemove(tile.cardId)}>Remove</button>
+                  </figcaption>
+                </figure>
+              )}
+            </li>
+          ))}
+          <li className="mb-4 break-inside-avoid">
+            <button type="button" onClick={onAdd} className="flex min-h-32 w-full flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-dawn/35 p-5 text-center text-sm text-dawn hover:border-dawn/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dawn">
+              Add an image
+              <span className="text-xs text-muted">or drop or paste one onto the board</span>
+            </button>
+          </li>
+        </ul>
+      )}
+    </section>
   )
 }
 
