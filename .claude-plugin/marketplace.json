@@ -9,7 +9,7 @@
     {
       "name": "reality-architect",
       "description": "The Reality Architect agent profile and skills: onboard soul.md and reality.md, daily practice, witness ledger, bridges with an honest pace check, approved snapshots, decisions, vision boards, and an honest Library tutor.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "source": "./plugins/reality-architect",
       "author": {
         "name": "Frank Riemer",

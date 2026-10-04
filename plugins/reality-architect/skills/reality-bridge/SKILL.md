@@ -10,6 +10,8 @@ description: "Plan or check one aim as a Bridge from now to the desired scene - 
 > writing; keep desired, reported, planned, done and meaning apart; never design a move that depends on controlling
 > another person's choices; health and money decisions go to qualified humans.
 
+**Start from the engine.** When Node is available, run `node "<plugin root>/bin/reality.mjs" brief <loop>` with the loop `pace` (the plugin root is two folders above this skill's base directory). Use its computed state and numbers instead of recounting by hand; it is read-only.
+
 A Bridge is one aim, written as `STATE/aims/<slug>.md` (format: `STATE.md` at the root of this plugin). It connects the person's
 **desired** scene to what is **reported** true now, through **planned** acts.
 

@@ -64,6 +64,8 @@ test('snapshot files record their cadence and the honest intention tally', () =>
   const snapshot = snapshotMd(sampleState(TODAY).snapshots[0])
   assert.match(snapshot, /^cadence: weekly$/m)
   assert.match(snapshot, /Intentions: set \d+ · came \d+ · missed \d+/)
+  assert.doesNotMatch(snapshot, /^- - /m, 'bridge lines are single bullets')
+  assert.match(snapshot, /^- Finish the album — [a-z-]+ — reps \d+\/\d+ — moves \d+\/\d+$/m)
 })
 
 test('an aim file labels desired, reported, planned and computed content', () => {

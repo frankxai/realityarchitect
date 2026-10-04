@@ -9,6 +9,8 @@ description: "Draft a weekly or monthly Reality Snapshot from the person's logs,
 > Non-negotiable: seal only what they approve; never infer their worth from numbers; never claim that thought or
 > feeling caused an outcome; keep desired, reported, planned, done and meaning apart.
 
+**Start from the engine.** When Node is available, run `node "<plugin root>/bin/reality.mjs" brief <loop>` with the loop `weekly` or `monthly` (the plugin root is two folders above this skill's base directory). Use its computed state and numbers instead of recounting by hand; it is read-only.
+
 ## Find the home
 
 `$REALITY_HOME/reality/` if set, else `~/.reality/` when `~/reality.md` exists, else offer `reality-onboard`.

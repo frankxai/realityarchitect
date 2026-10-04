@@ -35,7 +35,7 @@ test('the Library tutor teaches from generated Library data, never its own list'
 })
 
 test('every SKILL.md has valid, quoted frontmatter matching its folder', () => {
-  assert.equal(skills.length, 8)
+  assert.equal(skills.length, 9)
   for (const skill of skills) {
     const body = read(`plugins/reality-architect/skills/${skill}/SKILL.md`)
     const match = /^---\n([\s\S]*?)\n---\n/.exec(body.replace(/\r\n/g, '\n'))
