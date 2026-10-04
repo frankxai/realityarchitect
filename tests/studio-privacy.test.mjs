@@ -1,0 +1,70 @@
+import assert from 'node:assert/strict'
+import fs from 'node:fs'
+import path from 'node:path'
+import test from 'node:test'
+import { fileURLToPath } from 'node:url'
+import { clearState, loadState, saveState } from '../lib/studio/persist.ts'
+import { STORAGE_KEY } from '../lib/studio/state.ts'
+import { sampleState } from '../lib/studio/sample.ts'
+
+const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
+
+function filesIn(dir) {
+  const full = path.join(root, dir)
+  if (!fs.existsSync(full)) return []
+  return fs.readdirSync(full, { recursive: true })
+    .filter((name) => /\.(ts|tsx)$/.test(name))
+    .map((name) => path.join(dir, name).replaceAll('\\', '/'))
+}
+
+const studioFiles = [...filesIn('lib/studio'), ...filesIn('components/studio'), ...filesIn('app/studio')]
+const read = (file) => fs.readFileSync(path.join(root, file), 'utf8')
+
+class MemoryStorage {
+  constructor() { this.map = new Map() }
+  getItem(key) { return this.map.has(key) ? this.map.get(key) : null }
+  setItem(key, value) { this.map.set(key, String(value)) }
+  removeItem(key) { this.map.delete(key) }
+}
+
+test('no studio file can send personal content anywhere', () => {
+  assert.ok(studioFiles.length >= 10, 'the scan sees the studio')
+  for (const file of studioFiles) {
+    assert.doesNotMatch(read(file), /\b(?:fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|analytics|telemetry)\b/, file)
+  }
+})
+
+test('browser storage is touched in exactly two audited files', () => {
+  for (const file of studioFiles) {
+    if (file !== 'lib/studio/persist.ts') assert.doesNotMatch(read(file), /localStorage/, file)
+    if (file !== 'lib/studio/images.ts') assert.doesNotMatch(read(file), /indexedDB/, file)
+  }
+})
+
+test('a full storage keeps the session usable and reports why', () => {
+  const quota = { getItem: () => null, setItem: () => { const error = new Error('full'); error.name = 'QuotaExceededError'; throw error }, removeItem() {} }
+  assert.deepEqual(saveState(sampleState('2026-10-04'), quota), { ok: false, reason: 'quota' })
+  assert.deepEqual(saveState(sampleState('2026-10-04'), null), { ok: false, reason: 'unavailable' })
+  const broken = { getItem: () => null, setItem: () => { throw new Error('nope') }, removeItem() {} }
+  assert.deepEqual(saveState(sampleState('2026-10-04'), broken), { ok: false, reason: 'error' })
+})
+
+test('saved state loads back; corrupt state is recovered and kept aside, never lost silently', () => {
+  const storage = new MemoryStorage()
+  assert.equal(loadState(storage).status, 'empty')
+  const sample = sampleState('2026-10-04')
+  assert.deepEqual(saveState(sample, storage), { ok: true })
+  const loaded = loadState(storage)
+  assert.equal(loaded.status, 'loaded')
+  assert.deepEqual(loaded.state, sample)
+
+  storage.setItem(STORAGE_KEY, '{not json')
+  const recovered = loadState(storage)
+  assert.equal(recovered.status, 'recovered')
+  assert.equal(recovered.state.schema, 'reality-studio')
+  assert.equal(storage.getItem(`${STORAGE_KEY}.unreadable`), '{not json')
+
+  assert.equal(loadState(null).status, 'unavailable')
+  assert.equal(clearState(storage), true)
+  assert.equal(storage.getItem(STORAGE_KEY), null)
+})
