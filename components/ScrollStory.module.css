@@ -1,0 +1,199 @@
+/*
+ * The practice in five scenes. Named motion: `dawn-scrub` (frames crossfade, bound to the reader's scroll) and
+ * `beat-rise` (each beat's card rises into place). CSS scroll-driven animations only: no JavaScript, compositor-only
+ * properties (opacity, transform), and the reader's hand drives every frame.
+ *
+ * Default, for reduced motion and for browsers without scroll timelines: a calm static sequence, each beat with its
+ * own image. Nothing is lost; only the motion is.
+ */
+
+.story {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  border-top: 1px solid var(--color-border);
+}
+
+/* 100vw includes the scrollbar; clip the sliver instead of letting the page scroll sideways. */
+:global(html):has(.story) {
+  overflow-x: clip;
+}
+
+.stage {
+  display: none;
+}
+
+.beats {
+  position: relative;
+  display: grid;
+  gap: 4rem;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 4rem 1.25rem;
+}
+
+.beat {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.still {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+}
+
+.stillImage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.card {
+  max-width: 36rem;
+}
+
+.close {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .beat {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .story {
+      view-timeline: --story block;
+    }
+
+    .stage {
+      display: block;
+      position: sticky;
+      top: 0;
+      height: 100svh;
+      overflow: hidden;
+    }
+
+    .frame {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      animation: dawn-scrub linear both;
+      animation-timeline: --story;
+      animation-range: contain var(--from) contain var(--to);
+    }
+
+    .frame:first-child {
+      opacity: 1;
+      animation: none;
+    }
+
+    .image {
+      object-fit: cover;
+      animation: drift linear both;
+      animation-timeline: --story;
+    }
+
+    .veil {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgb(6 7 12 / 0.9) 0%, rgb(6 7 12 / 0.6) 34%, rgb(6 7 12 / 0) 68%),
+        linear-gradient(0deg, rgb(6 7 12 / 0.7) 0%, rgb(6 7 12 / 0) 30%);
+    }
+
+    .beats {
+      display: block;
+      max-width: none;
+      margin-top: -100svh;
+      padding: 0;
+    }
+
+    .intro,
+    .beat {
+      display: grid;
+      align-items: center;
+      min-height: 100svh;
+      padding: 0 clamp(1.25rem, 6vw, 6rem);
+    }
+
+    .beat {
+      grid-template-columns: none;
+    }
+
+    .still {
+      display: none;
+    }
+
+    .card {
+      max-width: 32rem;
+      padding: 1.5rem;
+      border: 1px solid rgb(255 255 255 / 0.06);
+      border-radius: 1rem;
+      background: rgb(6 7 12 / 0.55);
+      backdrop-filter: blur(6px);
+      animation: beat-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 15% cover 40%;
+    }
+
+    .close {
+      min-height: 60svh;
+      align-content: center;
+      padding: 0 clamp(1.25rem, 6vw, 6rem);
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .veil {
+        background: linear-gradient(0deg, rgb(6 7 12 / 0.92) 0%, rgb(6 7 12 / 0.5) 55%, rgb(6 7 12 / 0.15) 100%);
+      }
+
+      .beat {
+        align-items: end;
+        padding-bottom: 12svh;
+      }
+    }
+  }
+}
+
+@keyframes dawn-scrub {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: scale(1.06);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes beat-rise {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

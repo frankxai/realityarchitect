@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArchitectLoopMap } from '@/components/ArchitectLoopMap'
 import { EmailCapture } from '@/components/EmailCapture'
+import { ScrollStory } from '@/components/ScrollStory'
 import { site } from '@/lib/site'
 
 export const metadata: Metadata = {
@@ -90,6 +91,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <ScrollStory />
 
       <section className="border-t border-border py-16 sm:py-24" aria-labelledby="inner-title">
         <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
