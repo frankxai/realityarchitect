@@ -305,7 +305,7 @@ The steps that still need Frank's own click (money, keys, public prices going li
    | Offer | Price | What it gives | Why it holds |
    | --- | --- | --- | --- |
    | Free forever | $0 | Everything local, unlimited; standard, Library, plugin, engine, complete export; **20 renders on us** after sign-up | The core is a gift. Renders cost about $1.34 per new member, paid for by conversion |
-   | **Architect (Pro)** | **$19/month or $190/year** | Encrypted sync on every device, insights over time, cloud loops (opt-in), **150 renders/month** | Typical cost about $5.61 per month (50 renders × $0.067 = $3.35, $1 tokens, Polar 4% + 40¢ + 0.5% = $1.26): about 70% margin. If all 150 renders are used, $12.31: still 35% |
+   | **Architect (Pro)** | **$19/month or $190/year** | Encrypted sync on every device, patterns across devices and a monthly report, cloud loops (opt-in), **150 renders/month**; patterns computed on your own device stay free (OFFER-AND-DELIVERY) | Typical cost about $5.61 per month (50 renders × $0.067 = $3.35, $1 tokens, Polar 4% + 40¢ + 0.5% = $1.26): about 70% margin. If all 150 renders are used, $12.31: still 35% |
    | Founding Architect | **$120/year for the first 1,000, locked for life** | Everything in Architect | Rewards early believers. $10/month against a typical cost of $4.83: about 52% margin. At full use it runs slightly below cost, a gift the first 1,000 have earned |
    | Render packs | **$9 per 120 renders** | Top-up, never expires | Cost about $8.04 + 76¢ fee: break-even by design, a service rather than a profit centre |
    | **Guide** | **$79/month** | 15 client seats with consented views, a practice library, guide analytics | Priced on the guide's income from 15 clients |
