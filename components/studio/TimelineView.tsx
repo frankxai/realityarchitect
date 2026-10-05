@@ -3,6 +3,7 @@
 import { useId, useMemo, useState } from 'react'
 import { DOMAINS, WITNESS_KINDS } from '@/lib/studio/domains'
 import { decisionMd, snapshotMd } from '@/lib/studio/export'
+import { studioPatterns } from '@/lib/studio/reality'
 import { decisionsDue, diffSnapshots, domainTrend, draftSnapshot, snapshotPeriodStart } from '@/lib/studio/snapshot'
 import { localTime, newId } from '@/lib/studio/util'
 import type { Cadence, Decision, Reflection, Snapshot } from '@/lib/studio/types'
@@ -30,6 +31,7 @@ export function TimelineView({ studio }: { studio: StudioApi }) {
   const [approved, setApproved] = useState(false)
   const [cadence, setCadence] = useDraft<Cadence>('snapshot:cadence', 'weekly')
   const draft = useMemo(() => draftSnapshot(state, today, reflection, new Date(), cadence), [state, today, reflection, cadence])
+  const patterns = useMemo(() => studioPatterns(state, today), [state, today])
   const sealedToday = state.snapshots.some((snapshot) => snapshot.day === today)
   const ordered = [...state.snapshots].sort((a, b) => (a.day === b.day ? b.sealedAt.localeCompare(a.sealedAt) : b.day.localeCompare(a.day)))
   const [olderId, setOlderId] = useState('')
@@ -164,6 +166,26 @@ export function TimelineView({ studio }: { studio: StudioApi }) {
               </li>
             ))}
           </ul>
+        )}
+      </section>
+
+      <section className={panelClass} aria-labelledby="patterns-title">
+        <h3 id="patterns-title" className="text-lg font-semibold text-ink">Patterns over time <Tag register="computed" /></h3>
+        <p className="mt-1 text-sm text-muted">
+          The last 30 days, counted on this device by the same engine your agents use. Counts, not causes: misses are
+          counted with hits, and nothing here says why something happened.
+        </p>
+        {patterns.length > 1 ? (
+          <ul className="mt-4 space-y-2 text-sm leading-relaxed text-ink/90">
+            {patterns.map((pattern) => (
+              <li key={pattern.id} className="flex gap-2">
+                <span aria-hidden="true" className="text-accent">·</span>
+                <span>{pattern.text}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-4 text-sm text-muted">Patterns appear once you have a few days of witnessed reps, signs, and look-fors.</p>
         )}
       </section>
 
