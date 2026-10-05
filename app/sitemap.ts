@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { isOpen } from '@/lib/programs/complete-edition'
-import { DAYS } from '@/lib/programs/imaginal-30'
+import { DAYS } from '@/lib/programs/program'
 import { site } from '@/lib/site'
 
 // Routes published after site.updatedAt carry their own last significant update, so lastmod stays truthful.

@@ -3,10 +3,14 @@ import Link from 'next/link'
 import { COMPLETE_EDITION, isOpen, priceLabel } from '@/lib/programs/complete-edition'
 import { ogImage } from '@/lib/site'
 
-const description =
-  'The Complete Edition of the free 30-day program: guided rehearsal audio, the companion book, a printable journal, and a vault for Obsidian. One payment, every update, a refund for 30 days with no questions.'
+const ABOUT =
+  'The Complete Edition of the free 30-day program: guided rehearsal audio, the companion book, a printable journal, and a vault for Obsidian.'
 
 export function generateMetadata(): Metadata {
+  // Purchase terms appear only once the edition can be bought.
+  const description = isOpen()
+    ? `${ABOUT} One payment, every update, and a refund within ${COMPLETE_EDITION.refundDays} days with no questions.`
+    : `${ABOUT} In production.`
   return {
     title: 'The Imaginal Act — Complete Edition',
     description,
@@ -37,7 +41,7 @@ export default function CompleteEdition() {
         <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">The Imaginal Act, with everything around it.</h1>
         <p className="mt-5 text-lg leading-relaxed text-muted">
           The same thirty days, with production for the people who want it: rehearsals to listen to, the companion book, a
-          journal to print, and a vault that opens in Obsidian. Buying it also helps keep the free program free.
+          journal to print, and a vault that opens in Obsidian.
         </p>
       </header>
 
@@ -73,7 +77,7 @@ export default function CompleteEdition() {
             <p className="mt-3 leading-relaxed text-muted">
               One payment through Polar, our merchant of record, which handles tax and receipts. The files arrive by email and
               in your Polar account right away. Every update is included, and if it is not for you, a refund within{' '}
-              {COMPLETE_EDITION.refundDays} days needs no reason.
+              {COMPLETE_EDITION.refundDays} days needs no reason. Buying it also helps keep the free program free.
             </p>
             <a href={COMPLETE_EDITION.checkoutUrl} className={`mt-6 inline-flex items-center rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-bg hover:bg-accent/90 ${FOCUS}`} rel="noopener noreferrer">
               Get the Complete Edition · {priceLabel()}

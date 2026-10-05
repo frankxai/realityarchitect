@@ -31,9 +31,20 @@ test('inline marks nest, and only safe links become links', () => {
   ])
   assert.deepEqual(parseInline('[Studio](/studio)'), [{ kind: 'link', href: '/studio', children: [{ kind: 'text', text: 'Studio' }] }])
   assert.deepEqual(parseInline('[x](javascript:alert(1))'), [{ kind: 'text', text: 'x' }, { kind: 'text', text: ')' }])
-  for (const bad of ['javascript:alert(1)', '//evil.example', 'http://plain.example', 'data:text/html,x']) assert.equal(safeHref(bad), null, bad)
+  for (const bad of ['javascript:alert(1)', '//evil.example', '/\\evil.example', 'http://plain.example', 'data:text/html,x']) assert.equal(safeHref(bad), null, bad)
   for (const good of ['https://www.realityarchitect.ai/studio', '/library#neville', '#the-practice']) assert.equal(safeHref(good), good)
   assert.deepEqual(parseInline('snake_case_name and 2*3*4'), [{ kind: 'text', text: 'snake_case_name and 2*3*4' }])
+})
+
+const LS = String.fromCharCode(0x2028)
+const PS = String.fromCharCode(0x2029)
+
+test('unusual line endings never stall the parser', () => {
+  for (const source of ['# A' + LS + 'B', '# Day 1\r\r## Foo\rText', 'para' + PS + '# Head' + PS + 'more', '#nospace\n']) {
+    const { blocks } = parseMarkdown(source)
+    assert.ok(blocks.length >= 1 && blocks.length <= 4, JSON.stringify(source))
+  }
+  assert.deepEqual(parseMarkdown('# Day 1\r\r## Foo').blocks.map((block) => block.kind), ['heading', 'heading'])
 })
 
 test('weeks cover every day exactly once', () => {
@@ -41,7 +52,8 @@ test('weeks cover every day exactly once', () => {
   assert.deepEqual(covered, Array.from({ length: DAYS }, (_, i) => i + 1))
 })
 
-const present = fs.existsSync(path.join(PROGRAM_DIR, 'README.md'))
+// Locally the content tests wait for the program; in CI a missing program is a failure, not a skip.
+const present = fs.existsSync(path.join(PROGRAM_DIR, 'README.md')) || Boolean(process.env.CI)
 
 test('every day file exists with front matter that matches its place in the program', { skip: !present && 'program not written yet' }, () => {
   const ids = new Set(ENTRIES.map((entry) => entry.id))

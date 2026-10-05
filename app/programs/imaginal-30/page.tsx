@@ -68,7 +68,7 @@ export default function Program() {
       <section aria-labelledby="about" className="mt-16 max-w-3xl">
         <h2 id="about" className="text-2xl font-bold text-ink">{overview.title || 'About the program'}</h2>
         <div className="mt-4">
-          <Prose blocks={overview.blocks} />
+          <Prose blocks={overview.blocks} headingOffset={1} />
         </div>
       </section>
 

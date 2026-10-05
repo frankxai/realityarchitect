@@ -30,6 +30,8 @@ function args(argv) {
     if (key === 'dry' || key === 'keep') out[key] = true
     else out[key] = argv[++i]
   }
+  // ffmpeg's concat lists resolve relative paths against the list file, so every path is made absolute here.
+  for (const key of ['scripts', 'out', 'music', 'cover']) if (out[key]) out[key] = path.resolve(out[key])
   return out
 }
 
@@ -76,8 +78,10 @@ async function elevenlabs(text, context, opts, file) {
 function sapi(text, file) {
   const textFile = `${file}.txt`
   fs.writeFileSync(textFile, text, 'utf8')
-  const script = `Add-Type -AssemblyName System.Speech; $s = New-Object System.Speech.Synthesis.SpeechSynthesizer; $s.Rate = -1; $s.SetOutputToWaveFile('${file.replace(/'/g, "''")}'); $s.Speak([IO.File]::ReadAllText('${textFile.replace(/'/g, "''")}')); $s.Dispose()`
-  run('powershell', ['-NoProfile', '-NonInteractive', '-Command', script])
+  // Paths travel as environment variables, so no file name is ever quoted inside the PowerShell command.
+  const script = 'Add-Type -AssemblyName System.Speech; $s = New-Object System.Speech.Synthesis.SpeechSynthesizer; $s.Rate = -1; $s.SetOutputToWaveFile($env:RA_WAV); $s.Speak([IO.File]::ReadAllText($env:RA_TEXT)); $s.Dispose()'
+  const result = spawnSync('powershell', ['-NoProfile', '-NonInteractive', '-Command', script], { encoding: 'utf8', env: { ...process.env, RA_WAV: file, RA_TEXT: textFile } })
+  if (result.status !== 0) throw new Error(`powershell failed: ${(result.stderr || '').slice(-800)}`)
   fs.rmSync(textFile)
 }
 

@@ -19,10 +19,25 @@ test('the edition discloses the synthesized voice and keeps the refund promise t
   assert.ok(COMPLETE_EDITION.contents.length >= 4)
 })
 
-test('the closed page shows no price and is not indexed', () => {
+/** The component's source with every open-only branch removed: what a visitor can see while the edition is closed. */
+function closedView(source) {
+  const body = source.slice(source.indexOf('export default function'))
+  return body
+    .replace(/\{open \? \(([\s\S]*?)\) : \(/g, '{(')
+    .replace(/open \? `[^`]*` : /g, '')
+}
+
+test('the closed pages show no price, no checkout and no purchase terms, and are not indexed', () => {
   const page = fs.readFileSync('app/programs/imaginal-30/complete/page.tsx', 'utf8')
-  assert.match(page, /robots: isOpen\(\) \? undefined : \{ index: false/)
-  assert.match(page, /open \? `\$\{priceLabel\(\)\}, once` : 'In production'/)
   const index = fs.readFileSync('app/programs/imaginal-30/page.tsx', 'utf8')
-  assert.match(index, /\{open \? \(\s*<Link href="\/programs\/imaginal-30\/complete"[^]*?priceLabel\(\)[^]*?\) : \(/)
+  assert.match(page, /robots: isOpen\(\) \? undefined : \{ index: false/)
+  assert.match(page, /: `\$\{ABOUT\} In production\.`/, 'the closed description says it is in production')
+  for (const [name, source] of [['complete', page], ['index', index]]) {
+    assert.match(source, /priceLabel\(\)/, `${name} shows the price when open`)
+    assert.doesNotMatch(closedView(source), /priceLabel\(\)|checkoutUrl|helps keep the free program free/, `${name}: price, checkout or purchase copy outside an open branch`)
+  }
+  const ABOUT = /const ABOUT =\s*'([^']*)'/.exec(page)[1]
+  for (const text of [ABOUT, COMPLETE_EDITION.narration, ...COMPLETE_EDITION.contents.flatMap((item) => [item.title, item.detail])]) {
+    assert.doesNotMatch(text, /\$\s?\d|\brefund\b|\bpay(?:ment)?\b/i, text)
+  }
 })

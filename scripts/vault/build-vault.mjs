@@ -9,11 +9,14 @@
  */
 import fs from 'node:fs'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { bundleFiles, ROOT } from '../../lib/studio/export.ts'
 import { emptyState } from '../../lib/studio/state.ts'
 import { createZip } from '../../lib/studio/zip.ts'
 import { parseMarkdown, plainText } from '../../lib/programs/markdown.ts'
 
+// Sources are read from the repo, wherever the script is run from.
+const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 const PROGRAM = 'The Imaginal Act'
 const DAYS = 30
 
@@ -226,10 +229,10 @@ function main() {
     if (/studio-backup\.json$|START HERE\.md$/.test(file.path)) continue
     add(file.path, file.text)
   }
-  add(`${ROOT}reality.md`, fs.readFileSync('standard/reality.template.md', 'utf8'))
-  add(`${ROOT}soul.md`, fs.readFileSync('standard/soul.template.md', 'utf8'))
+  add(`${ROOT}reality.md`, fs.readFileSync(path.join(REPO, 'standard', 'reality.template.md'), 'utf8'))
+  add(`${ROOT}soul.md`, fs.readFileSync(path.join(REPO, 'standard', 'soul.template.md'), 'utf8'))
 
-  const dir = path.join('programs', 'imaginal-30')
+  const dir = path.join(REPO, 'programs', 'imaginal-30')
   add(`${ROOT}${PROGRAM}/About the program.md`, fs.readFileSync(path.join(dir, 'README.md'), 'utf8').replace(/\r\n/g, '\n'))
   for (let n = 1; n <= DAYS; n++) {
     const source = fs.readFileSync(path.join(dir, 'days', `day-${String(n).padStart(2, '0')}.md`), 'utf8')

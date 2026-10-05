@@ -66,6 +66,10 @@ export function slugify(text: string): string {
     .replace(/^-+|-+$/g, '')
 }
 
+// Line ends: CRLF, LF, a lone CR, and the Unicode line and paragraph separators (built from char codes so the source
+// stays ASCII).
+const LINE_BREAK = new RegExp(`\\r\\n|[\\n\\r${String.fromCharCode(0x2028, 0x2029)}]`)
+
 const LIST_ITEM = /^(\s*)(?:(\d+)[.)]|[-*+])\s+(.*)$/
 
 /** Splits a document into front matter and blocks. Blank lines end paragraphs; indented lines continue list items. */
@@ -73,7 +77,8 @@ export function parseMarkdown(source: string): Doc {
   const text = source.replace(/^﻿/, '')
   const fm = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(text)
   const front = fm ? parseFrontMatter(fm[1]) : {}
-  const lines = (fm ? text.slice(fm[0].length) : text).split(/\r?\n/)
+  // A lone \r, U+2028 and U+2029 end lines too, so every line the loop sees is one the heading test can match.
+  const lines = (fm ? text.slice(fm[0].length) : text).split(LINE_BREAK)
   const blocks: Block[] = []
   let i = 0
   while (i < lines.length) {
@@ -117,7 +122,8 @@ export function parseMarkdown(source: string): Doc {
       i++
       continue
     }
-    const parts: string[] = []
+    // The first line is always consumed, so a line no other branch takes can never stall the loop.
+    const parts: string[] = [lines[i++].trim()]
     while (i < lines.length && lines[i].trim() && !/^(#{1,3})\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !LIST_ITEM.test(lines[i])) parts.push(lines[i++].trim())
     blocks.push({ kind: 'paragraph', text: parts.join(' ') })
   }
@@ -127,7 +133,7 @@ export function parseMarkdown(source: string): Doc {
 /** Only site-relative, in-page and https links become links; anything else stays text. */
 export function safeHref(href: string): string | null {
   const value = href.trim()
-  if (/^https:\/\//i.test(value) || /^\/(?!\/)/.test(value) || /^#[\w-]+$/.test(value)) return value
+  if (/^https:\/\//i.test(value) || /^\/(?![/\\])/.test(value) || /^#[\w-]+$/.test(value)) return value
   return null
 }
 

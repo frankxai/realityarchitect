@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { parseMarkdown, plainText, sections, type Block } from './markdown.ts'
+import { DAYS, LOOPS, SLUG, WEEKS, weekOf } from './program.ts'
 
 /**
  * The free 30-day program, read from programs/imaginal-30/ at build time. The Markdown files are the source of truth:
@@ -8,17 +9,8 @@ import { parseMarkdown, plainText, sections, type Block } from './markdown.ts'
  * contract).
  */
 
-export const SLUG = 'imaginal-30'
+export { DAYS, LOOPS, SLUG, WEEKS, weekOf }
 export const PROGRAM_DIR = path.join(process.cwd(), 'programs', SLUG)
-export const DAYS = 30
-export const LOOPS = ['morning', 'evening', 'weekly', 'monthly', 'decisions', 'pace'] as const
-
-export const WEEKS = [
-  { week: 1, name: 'See', first: 1, last: 7 },
-  { week: 2, name: 'Bridge', first: 8, last: 14 },
-  { week: 3, name: 'Witness', first: 15, last: 21 },
-  { week: 4, name: 'Compound', first: 22, last: 30 },
-] as const
 
 export type Section = { id: string; title: string; blocks: Block[] }
 
@@ -35,10 +27,6 @@ export type Day = {
 
 export function dayFile(day: number, dir = PROGRAM_DIR): string {
   return path.join(dir, 'days', `day-${String(day).padStart(2, '0')}.md`)
-}
-
-export function weekOf(day: number): number {
-  return WEEKS.find((week) => day >= week.first && day <= week.last)?.week ?? 0
 }
 
 export function readDay(day: number, dir = PROGRAM_DIR): Day {
