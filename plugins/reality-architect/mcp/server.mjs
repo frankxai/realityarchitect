@@ -18,6 +18,7 @@ import { LOOPS, due } from '../engine/loops.mjs'
 import { isDay, localDay } from '../engine/model.mjs'
 import { assessAim } from '../engine/pace.mjs'
 import { loadReality, resolveHome } from '../engine/parse.mjs'
+import { AUDIENCES, checkKernel, toKernel } from '../engine/kernel.mjs'
 import { validate } from '../engine/validate.mjs'
 
 const PLUGIN_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -75,6 +76,12 @@ export const TOOLS = [
     title: 'Search the Library',
     description: 'Reality Theory and the honest canon: each work with what to keep (meaning), the mechanism it rides on, its limits, and sources. Search by words or fetch by id. Needs no home.',
     inputSchema: { type: 'object', properties: { query: { type: 'string', maxLength: 200 }, id: { type: 'string', maxLength: 80 } }, additionalProperties: false },
+  },
+  {
+    name: 'reality_kernel',
+    title: 'Starlight kernel projection',
+    description: "The person's reality as Starlight Reality Architecture kernel v0.1.1 documents: objects, desired branches, diffs, plans, self-reported receipts and events. Audience 'private' is the person's own; 'alliance' is a guide's view, with structure and counts only. Validated against the vendored SIS schemas.",
+    inputSchema: { type: 'object', properties: { audience: { type: 'string', enum: AUDIENCES }, offset: { type: 'string', pattern: '^(Z|[+-]\\d{2}:\\d{2})$', description: 'Offset for local witness times, e.g. +02:00. Defaults to this machine.' }, today: TODAY }, additionalProperties: false },
   },
 ].map((tool) => ({ ...tool, annotations: { title: tool.title, ...READ_ONLY } }))
 
@@ -153,6 +160,17 @@ export function callTool(name, args = {}, env = process.env) {
   if (name === 'reality_graph') {
     const graph = buildGraph(reality, today)
     return { text: JSON.stringify(graph), data: graph }
+  }
+  if (name === 'reality_kernel') {
+    let bundle
+    try {
+      bundle = toKernel(reality, today, { audience: args.audience ?? 'private', offset: args.offset })
+    } catch (error) {
+      throw new ToolError(error.message)
+    }
+    const problems = checkKernel(bundle)
+    if (problems.length) throw new ToolError(`The projection does not conform to the kernel: ${problems.slice(0, 5).join('; ')}`)
+    return { text: JSON.stringify(bundle), data: bundle }
   }
   throw new ToolError(`Unknown tool "${name}".`)
 }

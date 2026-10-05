@@ -44,6 +44,7 @@ node bin/reality.mjs due               # the loops due today, each with its comp
 node bin/reality.mjs brief weekly      # what an agent reads before a loop: quoted Charter, steps, gate, labeled state
 node bin/reality.mjs insights          # patterns over time, as counts, never causes
 node bin/reality.mjs graph             # the typed reality graph as JSON
+node bin/reality.mjs kernel --check    # your reality as Starlight kernel documents, validated (see below)
 node bin/reality.mjs validate          # your files against STATE.md, with file and line
 node bin/reality.mjs skill-check DIR   # a skill folder against the marketplace bar
 ```
@@ -73,10 +74,27 @@ To use it in another client, run `node mcp/server.mjs` with `REALITY_HOME` set.
 | `reality_graph` | the typed reality graph with kernel IDs |
 | `reality_loops` | what each loop does, writes, and needs approval for |
 | `library_search` | a Library entry by id or by words: keep, mechanism, limits |
+| `reality_kernel` | your reality as Starlight kernel v0.1.1 documents, for you (`private`) or a guide (`alliance`) |
 
 Every tool is read-only and marked so. It runs on your machine, reads only your home folder, and sends nothing
 anywhere. Writing stays with the skills, which show the exact text and ask first. The tests check that every tool
 returns exactly what the CLI prints for the same files.
+
+## Starlight, optional
+
+Everything above works on its own. For people who run Starlight (SIS) or work with a guide, `reality kernel` (and the
+`reality_kernel` MCP tool) projects your files onto the Starlight Reality Architecture kernel v0.1.1:
+
+- **Objects:** the person, life domains, aims, skills, systems, snapshots, decisions.
+- **Desired branches:** your scenes. They are never facts.
+- **Diffs:** obstacle, pace, done-when.
+- **Plans:** reps, moves, the done-when review.
+- **Receipts:** self-reported, and they say so.
+- **Events:** witness entries, look-for results.
+
+Every document is checked against SIS's own schemas, vendored and pinned in `engine/vendor/sis/SOURCE.md`, along with
+every reference between them. `--audience alliance` gives a guide structure and counts only: never your meaning, your
+scenes, your words, other people's names or your decisions. Why and how: `docs/adr/ADR-002-reality-architect-and-starlight.md`.
 
 ## The rules every skill follows
 

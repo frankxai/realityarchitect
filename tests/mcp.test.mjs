@@ -29,7 +29,7 @@ function cli(argv, home) {
 }
 
 test('every tool is read-only, titled, and has an object schema', () => {
-  assert.equal(TOOLS.length, 8)
+  assert.equal(TOOLS.length, 9)
   for (const tool of TOOLS) {
     assert.match(tool.name, /^[a-z_]+$/)
     assert.ok(tool.title && tool.description, tool.name)
@@ -48,6 +48,11 @@ test('the tools compute the same answers as the CLI on a real export', (t) => {
   assert.equal(callTool('reality_validate', {}, env).text, cli(['validate'], home))
   // Compared as JSON, the form MCP sends.
   assert.deepEqual(JSON.parse(JSON.stringify(callTool('reality_graph', { today: TODAY }, env).data)), JSON.parse(cli(['graph'], home)))
+  for (const audience of ['private', 'alliance']) {
+    const viaTool = JSON.parse(JSON.stringify(callTool('reality_kernel', { audience, offset: 'Z', today: TODAY }, env).data))
+    assert.deepEqual(viaTool, JSON.parse(cli(['kernel', '--audience', audience, '--offset', 'Z', '--check'], home)), audience)
+  }
+  assert.throws(() => callTool('reality_kernel', { audience: 'public', today: TODAY }, env), /Reality Card/)
   const status = callTool('reality_status', { today: TODAY }, env).data
   assert.ok(status.aims.length >= 1 && Array.isArray(status.due))
 })

@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url'
 import { brief } from '../engine/brief.mjs'
 import { buildGraph } from '../engine/graph.mjs'
 import { insights } from '../engine/insights.mjs'
+import { AUDIENCES, checkKernel, toKernel } from '../engine/kernel.mjs'
 import { LOOPS, due } from '../engine/loops.mjs'
 import { isDay, localDay } from '../engine/model.mjs'
 import { assessAim } from '../engine/pace.mjs'
@@ -23,6 +24,10 @@ const USAGE = `reality <command> [--home DIR] [--today YYYY-MM-DD] [--json]
                     loops: ${LOOPS.map((loop) => loop.id).join(', ')}
   insights          patterns over time, as counts (never causes)
   graph             the typed reality graph, as JSON
+  kernel            your reality as Starlight kernel v0.1.1 documents (JSON)
+                    --audience private|alliance (a guide sees structure and counts only)
+                    --offset Z|+HH:MM for witness times (default: this machine)
+                    --check validates every document against the vendored SIS schemas
   validate          check your files against the standard
   loops             what each loop does, what it may write, and its approval gate
   skill-check DIR   check a skill folder against the marketplace bar
@@ -35,7 +40,8 @@ function parseArgs(argv) {
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index]
     if (arg === '--json') options.json = true
-    else if (arg === '--home' || arg === '--today') options[arg.slice(2)] = argv[(index += 1)]
+    else if (arg === '--check') options.check = true
+    else if (arg === '--home' || arg === '--today' || arg === '--audience' || arg === '--offset') options[arg.slice(2)] = argv[(index += 1)]
     else if (arg === '--help' || arg === '-h') options.help = true
     else options.positional.push(arg)
   }
@@ -113,6 +119,29 @@ export function run(argv, { env = process.env, out = (text) => process.stdout.wr
   if (command === 'insights') {
     const list = insights(reality, today)
     print(list, list.map((insight) => `- ${insight.text}`).join('\n'))
+    return 0
+  }
+  if (command === 'kernel') {
+    const audience = options.audience ?? 'private'
+    if (!AUDIENCES.includes(audience)) {
+      out(`--audience must be one of: ${AUDIENCES.join(', ')}. Public sharing is the Reality Card.`)
+      return 2
+    }
+    let bundle
+    try {
+      bundle = toKernel(reality, today, { audience, offset: options.offset })
+    } catch (error) {
+      out(error.message)
+      return 2
+    }
+    if (options.check) {
+      const problems = checkKernel(bundle)
+      if (problems.length) {
+        out(['The bundle does not conform to the kernel:', ...problems.map((problem) => `- ${problem}`)].join(String.fromCharCode(10)))
+        return 1
+      }
+    }
+    out(JSON.stringify(bundle, null, 2))
     return 0
   }
   if (command === 'graph') {
