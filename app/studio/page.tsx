@@ -30,7 +30,8 @@ export default function StudioPage() {
         The practice in one place: the scene you are building toward, the bridge of skills, systems, reps and bold moves
         that reaches it, and an honest record of what happens. Your words stay in this browser until you export them.{' '}
         <Link href="/privacy" className="text-accent underline-offset-4 hover:underline">How your data is kept</Link> ·{' '}
-        <Link href="/library" className="text-accent underline-offset-4 hover:underline">The Library</Link>
+        <Link href="/library" className="text-accent underline-offset-4 hover:underline">The Library</Link>{' '}·{' '}
+        <Link href="/programs/imaginal-30" className="text-accent underline-offset-4 hover:underline">The 30-day program</Link>
       </p>
       <div className="mt-8">
         <Studio />

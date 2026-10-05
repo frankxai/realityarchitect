@@ -23,6 +23,7 @@ export const site = {
   ],
   nav: [
     { label: 'The Method', href: '/method' },
+    { label: '30 Days', href: '/programs/imaginal-30' },
     { label: 'Studio', href: '/studio' },
     { label: 'Library', href: '/library' },
     { label: 'reality.md', href: '/standard' },

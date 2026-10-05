@@ -68,6 +68,7 @@ export default function Threshold() {
 
       <footer className={styles.closure}>
         <p>Built on SIP. The scene belongs to you.</p>
+        <Link href="/programs/imaginal-30">Practise it for thirty days, free →</Link>
         <Link href="/assess">Ready to build a supporting system? Find its first gap →</Link>
         <Link href="/privacy">Read the data boundary →</Link>
       </footer>
