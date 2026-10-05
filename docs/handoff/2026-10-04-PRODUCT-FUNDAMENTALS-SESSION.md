@@ -13,7 +13,9 @@ As of 2026-10-05:
 | I. SIS | **Waiting on Frank:** kernel CI (its first run passed: 7 positive, 2 negative fixtures), registry v0.1.2, pointer and registry entry | SIS PR #280 |
 | J. Cinematic site | **Live:** homepage story (#53). **Staged:** Veo night-to-dawn clip | `components/ScrollStory.*` · `brand-assets/realityarchitect/story-2026-10-04/` |
 | K. Soulbook guarantee | **Waiting on Frank:** refund policy instead of "if you're not transformed"; placeholder testimonials removed | frankx.ai PR #888 |
-| B–H | Not started | start with B (passkeys ADR), then C (Polar sandbox) |
+| B. Accounts | **Decided:** Better Auth + passkeys + client-side envelope encryption; implement it. **Frank's button:** Neon Frankfurt project + Vercel env | `docs/adr/ADR-001-passkeys-and-studio-cloud-keys.md` |
+| G. Insights over time | **Live:** Timeline "Patterns over time", computed by the engine's `insights()` with Studio-engine parity tested (#58) | `lib/studio/reality.ts` |
+| C–F, H | Not started | next: implement B, then C (Polar sandbox) |
 
 ---
 
