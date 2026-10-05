@@ -1,0 +1,18 @@
+/* Reading styles for the book's EPUB and print HTML. The registers are told apart by their visible bold labels first;
+   the rules and tints below only reinforce them, and hold up on e-ink and in print. */
+body { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; line-height: 1.55; margin: 0 5%; color: #1d1d1f; }
+h1, h2, h3 { font-family: "Helvetica Neue", Arial, sans-serif; line-height: 1.25; }
+h1 { font-size: 1.7em; margin-top: 2.5em; }
+h2 { font-size: 1.3em; margin-top: 1.8em; }
+h3 { font-size: 1.08em; margin-top: 1.4em; }
+p { margin: 0.7em 0; }
+blockquote { margin: 1em 1.5em; font-style: italic; }
+code { font-family: Menlo, Consolas, monospace; font-size: 0.88em; }
+div.meaning, div.mechanism, div.limits, div.practice { margin: 1.2em 0; padding: 0.6em 1em; border-left: 3px solid #999; }
+div.meaning { border-left-color: #b08a3e; background: #fbf6ec; font-style: italic; }
+div.meaning p:first-child, div.mechanism p:first-child, div.limits p:first-child, div.practice p:first-child { font-style: normal; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 0.8em; letter-spacing: 0.08em; text-transform: uppercase; }
+div.mechanism { border-left-color: #2f5bd3; background: #f2f5fd; }
+div.limits { border-left-color: #6b6b6b; background: #f4f4f4; }
+div.practice { border-left-color: #2f7d5b; background: #f1f8f4; }
+nav#toc ol { list-style: none; padding-left: 1em; }
+@media print { body { margin: 0; font-size: 11pt; } h1 { page-break-before: always; } div.meaning, div.mechanism, div.limits, div.practice { page-break-inside: avoid; } }

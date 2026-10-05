@@ -3,8 +3,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-// plugins/ and standard/ ship to people and agents too, so the same rules apply there.
-const roots = ['app', 'components', 'lib', 'public', 'plugins', 'standard']
+// plugins/, standard/ and programs/ ship to people and agents too, so the same rules apply there.
+const roots = ['app', 'components', 'lib', 'public', 'plugins', 'standard', 'programs']
 const files = ['README.md']
 const extensions = new Set(['.ts', '.tsx', '.md', '.txt'])
 const blocked = [
