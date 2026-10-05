@@ -41,7 +41,7 @@ function Paragraph({ text }: { text: string }) {
     const body = text.trim().replace(/^\*\*Meaning\.?\*\*\s*/, '')
     return (
       <div className="rounded-2xl border border-border border-l-2 border-l-dawn/60 bg-surface/70 p-5">
-        <p className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-dawn">Meaning</p>
+        <p className="font-mono text-xs uppercase tracking-[0.16em] text-dawn">Meaning</p>
         <p className="mt-2 font-serif text-lg leading-relaxed text-dawn-2"><Text text={body} /></p>
       </div>
     )
@@ -50,7 +50,7 @@ function Paragraph({ text }: { text: string }) {
     const body = text.trim().replace(/^\*\*Mechanism\.?\*\*\s*/, '')
     return (
       <div className="rounded-2xl border border-border border-l-2 border-l-accent/70 bg-surface/70 p-5">
-        <p className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-accent">Mechanism</p>
+        <p className="font-mono text-xs uppercase tracking-[0.16em] text-accent">Mechanism</p>
         <p className="mt-2 leading-relaxed text-ink"><Text text={body} /></p>
       </div>
     )
@@ -79,6 +79,14 @@ export function Prose({ blocks, headingOffset = 0 }: { blocks: Block[]; headingO
               <blockquote key={index} className="border-l-2 border-dawn/50 pl-4 font-serif text-lg italic leading-relaxed text-dawn-2">
                 <Text text={block.text} />
               </blockquote>
+            )
+          case 'fence':
+            // A file format to copy as it is: kept verbatim, scrollable on a phone instead of wrapping mid-token.
+            return (
+              <figure key={index} className="rounded-xl border border-border bg-bg">
+                {block.lang && <figcaption className="border-b border-border px-4 py-2 font-mono text-xs uppercase tracking-[0.14em] text-muted">{block.lang}</figcaption>}
+                <pre tabIndex={0} role="region" aria-label={`${block.lang || 'Text'} format, scrolls sideways on small screens`} className="overflow-x-auto px-4 py-3 font-mono text-[0.8rem] leading-relaxed text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"><code>{block.text}</code></pre>
+              </figure>
             )
           case 'list': {
             const Tag = block.ordered ? 'ol' : 'ul'

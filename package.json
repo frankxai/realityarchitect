@@ -16,7 +16,7 @@
     "claims:check": "node scripts/check-public-claims.mjs",
     "plugin:data": "node scripts/build-plugin-data.mjs",
     "test": "node --test",
-    "gate": "pnpm lint && pnpm claims:check && pnpm test && pnpm build"
+    "gate": "pnpm lint && pnpm claims:check && pnpm test && pnpm build && node scripts/check-built-pages.mjs"
   },
   "dependencies": {
     "next": "^16.3.6",

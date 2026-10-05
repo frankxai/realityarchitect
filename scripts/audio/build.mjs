@@ -13,10 +13,9 @@
  * Needs ffmpeg and ffprobe on PATH. Music beds are <music>/<cue>.(wav|mp3|flac|m4a); a missing bed means voice only.
  */
 import { spawnSync } from 'node:child_process'
-import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
-import { formatTime, layout, parseScript, tailSeconds, voicedCharacters } from './timeline.mjs'
+import { concatLine, formatTime, layout, parseScript, segmentKey, tailSeconds, voicedCharacters } from './timeline.mjs'
 
 const RATE = 44100
 const TARGET = { I: -16, TP: -1.5, LRA: 11 }
@@ -48,7 +47,6 @@ function duration(file) {
   return seconds
 }
 
-const hash = (value) => crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex').slice(0, 20)
 
 async function elevenlabs(text, context, opts, file) {
   const key = process.env.ELEVENLABS_API_KEY
@@ -87,7 +85,7 @@ function sapi(text, file) {
 
 /** Synthesizes (or reuses) one segment and returns a mono 44.1 kHz WAV path. */
 async function segment(text, context, opts, cacheDir, stats) {
-  const id = hash({ text, provider: opts.provider, voice: opts.voice ?? '', model: opts.model, v: 1 })
+  const id = segmentKey(text, context, opts)
   const wav = path.join(cacheDir, `${id}.wav`)
   if (fs.existsSync(wav)) {
     stats.cached++
@@ -150,7 +148,7 @@ async function buildTrack(file, opts, dirs, report) {
 
   // The voice track: speech and real silence, in order.
   const work = fs.mkdtempSync(path.join(dirs.work, `t${number}-`))
-  const list = plan.voice.map((part) => `file '${(part.kind === 'speech' ? wavs[part.index] : silence(part.seconds, dirs.cache)).replace(/\\/g, '/').replace(/'/g, "'\\''")}'`)
+  const list = plan.voice.map((part) => concatLine(part.kind === 'speech' ? wavs[part.index] : silence(part.seconds, dirs.cache)))
   fs.writeFileSync(path.join(work, 'voice.txt'), list.join('\n'))
   const voice = path.join(work, 'voice.wav')
   const joined = path.join(work, 'voice-raw.wav')
@@ -208,7 +206,7 @@ async function buildTrack(file, opts, dirs, report) {
 function buildBook(report, dirs, opts) {
   const tracks = report.tracks.filter((track) => track.mp3)
   if (tracks.length < 2) return
-  const list = tracks.map((track) => `file '${path.join(dirs.out, track.mp3).replace(/\\/g, '/')}'`)
+  const list = tracks.map((track) => concatLine(path.join(dirs.out, track.mp3)))
   fs.writeFileSync(path.join(dirs.work, 'all.txt'), list.join('\n'))
   let at = 0
   const chapters = [';FFMETADATA1', `title=${opts.album}`, `artist=${opts.artist}`]

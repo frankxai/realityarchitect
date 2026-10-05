@@ -1,6 +1,23 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { CROSSFADE, FINAL_FADE_OUT, SIGNPOST_BEAT, layout, parseScript, tailSeconds, voicedCharacters } from '../scripts/audio/timeline.mjs'
+import { CROSSFADE, FINAL_FADE_OUT, SIGNPOST_BEAT, concatLine, layout, parseScript, segmentKey, tailSeconds, voicedCharacters } from '../scripts/audio/timeline.mjs'
+
+const Q = String.fromCharCode(39)
+const BS = String.fromCharCode(92)
+
+test('concat lists survive backslashes and apostrophes in paths', () => {
+  const windowsPath = ['C:', 'out', `O${Q}Brien`, '05.mp3'].join(BS)
+  assert.equal(concatLine(windowsPath), `file ${Q}C:/out/O${Q}${BS}${Q}${Q}Brien/05.mp3${Q}`)
+  assert.equal(concatLine('/plain/path.wav'), `file ${Q}/plain/path.wav${Q}`)
+})
+
+test('a segment is voiced again when the context sent with it changes', () => {
+  const opts = { provider: 'elevenlabs', voice: 'v1', model: 'eleven_multilingual_v2' }
+  assert.equal(segmentKey('Hello.', { previous: 'A', next: 'B' }, opts), segmentKey('Hello.', { previous: 'A', next: 'B' }, opts))
+  assert.notEqual(segmentKey('Hello.', { previous: 'A' }, opts), segmentKey('Hello.', { previous: 'Z' }, opts))
+  assert.notEqual(segmentKey('Hello.', { next: 'B' }, opts), segmentKey('Hello.', { next: 'C' }, opts))
+  assert.notEqual(segmentKey('Hello.', {}, opts), segmentKey('Hello.', {}, { ...opts, voice: 'v2' }))
+})
 
 const SCRIPT = `---
 track: "05"

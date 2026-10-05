@@ -28,11 +28,12 @@ export default function Program() {
         <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">Program · free · 30 days · about 10 minutes a day</p>
         <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">The Imaginal Act, thirty days.</h1>
         <p className="mt-5 text-lg leading-relaxed text-muted">
-          One small practice a day. You see the life you would love, build a bridge to it with reps and bold moves, and keep
-          an honest record of what happens, misses included. Everything you write stays in your own files.
+          One small practice a day. You see{' '}
+          <span className="whitespace-nowrap font-serif text-[1.05em] text-dawn-2">the life you would love</span>, build a bridge to it with reps and bold
+          moves, and keep an honest record of what happens, misses included. Everything you write stays in your own files.
         </p>
         <div className="mt-7 flex flex-wrap gap-3">
-          <Link href="/programs/imaginal-30/1" className={`inline-flex items-center rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-bg hover:bg-accent/90 ${FOCUS}`}>
+          <Link href="/programs/imaginal-30/1" className={`inline-flex items-center rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-bg hover:bg-accent-hover ${FOCUS}`}>
             Begin day 1
           </Link>
           <Link href="/studio" className={`inline-flex items-center rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-ink hover:border-accent/60 ${FOCUS}`}>
@@ -56,7 +57,7 @@ export default function Program() {
                     <Link href={`/programs/imaginal-30/${day.day}`} className={`group flex items-baseline gap-3 rounded-lg px-2 py-1.5 hover:bg-bg/60 ${FOCUS}`}>
                       <span className="w-7 shrink-0 font-mono text-xs text-muted">{String(day.day).padStart(2, '0')}</span>
                       <span className="min-w-0 flex-1 text-sm text-ink group-hover:text-accent">{day.title}</span>
-                      <span className="shrink-0 font-mono text-[0.68rem] text-muted">{day.minutes} min</span>
+                      <span className="shrink-0 font-mono text-xs text-muted">{day.minutes} min</span>
                     </Link>
                   </li>
                 ))}
@@ -65,11 +66,14 @@ export default function Program() {
         ))}
       </nav>
 
-      <section aria-labelledby="about" className="mt-16 max-w-3xl">
+      <section aria-labelledby="about" className="mt-16 max-w-[35rem]">
         <h2 id="about" className="text-2xl font-bold text-ink">{overview.title || 'About the program'}</h2>
         <div className="mt-4">
           <Prose blocks={overview.blocks} headingOffset={1} />
         </div>
+        <Link href="/programs/imaginal-30/1" className={`mt-8 inline-flex min-h-11 items-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent-hover ${FOCUS}`}>
+          Begin day 1
+        </Link>
       </section>
 
       <section aria-labelledby="complete" className="mt-16 max-w-3xl rounded-2xl border border-border border-l-2 border-l-accent/70 bg-surface/70 p-6 sm:p-8">
@@ -88,7 +92,7 @@ export default function Program() {
           ))}
         </ul>
         {open ? (
-          <Link href="/programs/imaginal-30/complete" className={`mt-6 inline-flex items-center rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-bg hover:bg-accent/90 ${FOCUS}`}>
+          <Link href="/programs/imaginal-30/complete" className={`mt-6 inline-flex items-center rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-bg hover:bg-accent-hover ${FOCUS}`}>
             See the Complete Edition · {priceLabel()}
           </Link>
         ) : (

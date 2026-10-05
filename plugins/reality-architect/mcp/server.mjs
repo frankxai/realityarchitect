@@ -157,44 +157,75 @@ export function callTool(name, args = {}, env = process.env) {
   throw new ToolError(`Unknown tool "${name}".`)
 }
 
-/** Handles one JSON-RPC message; returns the response object, or null for notifications. */
-export function handle(message, env = process.env) {
-  const { id, method, params } = message ?? {}
-  const isRequest = id !== undefined && id !== null
-  const reply = (result) => (isRequest ? { jsonrpc: '2.0', id, result } : null)
-  const fail = (code, text) => (isRequest ? { jsonrpc: '2.0', id, error: { code, message: text } } : null)
-  // An invalid message is always answered (with a null id when it has none), never dropped.
-  if (message?.jsonrpc !== '2.0' || typeof method !== 'string') return { jsonrpc: '2.0', id: id ?? null, error: { code: -32600, message: 'Invalid request' } }
-  switch (method) {
-    case 'initialize': {
-      const requested = params?.protocolVersion
+const INSTRUCTIONS = "Read-only tools over the person's own Reality Architect files. Call reality_status first. Counts are computed, never causes. To write anything, use the plugin skills, which show the exact text and ask first."
+
+const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value)
+
+/** The initialize params MCP requires: protocolVersion, capabilities, and clientInfo with a name and version. */
+function validInitialize(params) {
+  return isPlainObject(params) && typeof params.protocolVersion === 'string' && isPlainObject(params.capabilities) && isPlainObject(params.clientInfo) && typeof params.clientInfo.name === 'string' && typeof params.clientInfo.version === 'string'
+}
+
+/**
+ * One MCP session (one client connection). It follows the lifecycle: a valid `initialize` request, then the client's
+ * `notifications/initialized`, and only then do tools answer; ping always works. Protocol problems (an unknown tool,
+ * malformed params) are JSON-RPC errors; problems the agent can fix in its arguments, or a missing home, come back as a
+ * tool result with isError, so the model sees them.
+ */
+export function createSession(env = process.env) {
+  let phase = 'new' // 'new' → 'initializing' (initialize answered) → 'ready' (initialized notification received)
+  return function handle(message) {
+    const isObject = message !== null && typeof message === 'object' && !Array.isArray(message)
+    // A request has an id member (a string, a number, or null); a notification has none.
+    const hasId = isObject && Object.prototype.hasOwnProperty.call(message, 'id')
+    const id = hasId ? message.id : undefined
+    const validId = id === null || typeof id === 'string' || (typeof id === 'number' && Number.isFinite(id))
+    if (!isObject || message.jsonrpc !== '2.0' || typeof message.method !== 'string' || (hasId && !validId)) {
+      return { jsonrpc: '2.0', id: validId ? id : null, error: { code: -32600, message: 'Invalid request' } }
+    }
+    const { method, params } = message
+    const reply = (result) => (hasId ? { jsonrpc: '2.0', id, result } : null)
+    const fail = (code, text) => (hasId ? { jsonrpc: '2.0', id, error: { code, message: text } } : null)
+
+    if (method === 'initialize') {
+      // A notification cannot initialize, and neither can a request without the required params.
+      if (!hasId) return null
+      if (!validInitialize(params)) return fail(-32602, 'Invalid params: initialize needs protocolVersion, capabilities and clientInfo { name, version }.')
+      phase = 'initializing'
+      const requested = params.protocolVersion
       return reply({
         protocolVersion: PROTOCOL_VERSIONS.includes(requested) ? requested : PROTOCOL_VERSIONS[0],
         capabilities: { tools: { listChanged: false } },
         serverInfo: { name: 'reality-architect', title: 'Reality Architect', version: VERSION },
-        instructions: 'Read-only tools over the person\'s own Reality Architect files. Call reality_status first. Counts are computed, never causes. To write anything, use the plugin skills, which show the exact text and ask first.',
+        instructions: INSTRUCTIONS,
       })
     }
-    case 'ping':
-      return reply({})
-    case 'tools/list':
-      return reply({ tools: TOOLS })
-    case 'tools/call': {
-      try {
-        const { text, data } = callTool(params?.name, params?.arguments ?? {}, env)
-        return reply({ content: [{ type: 'text', text }], structuredContent: data && !Array.isArray(data) ? data : { value: data }, isError: false })
-      } catch (error) {
-        if (error instanceof ToolError) return reply({ content: [{ type: 'text', text: error.message }], isError: true })
-        return reply({ content: [{ type: 'text', text: `The engine failed: ${error.message}` }], isError: true })
-      }
+    if (method === 'ping') return reply({})
+    if (method.startsWith('notifications/')) {
+      if (method === 'notifications/initialized' && !hasId && phase === 'initializing') phase = 'ready'
+      return null
     }
-    default:
-      if (method.startsWith('notifications/')) return null
-      return fail(-32601, `Method not found: ${method}`)
+    if (method !== 'tools/list' && method !== 'tools/call') return fail(-32601, `Method not found: ${method}`)
+    if (phase !== 'ready') return fail(-32002, 'Server not initialized: send initialize, then notifications/initialized.')
+    if (method === 'tools/list') return reply({ tools: TOOLS })
+
+    // tools/call: arguments may be omitted (then {}), but when present they must be an object, never null.
+    const name = params?.name
+    const args = isPlainObject(params) && Object.prototype.hasOwnProperty.call(params, 'arguments') ? params.arguments : {}
+    if (typeof name !== 'string' || !TOOLS.some((tool) => tool.name === name)) return fail(-32602, `Invalid params: unknown tool ${JSON.stringify(name ?? null)}.`)
+    if (args === null || typeof args !== 'object' || Array.isArray(args)) return fail(-32602, 'Invalid params: arguments must be an object.')
+    try {
+      const { text, data } = callTool(name, args, env)
+      return reply({ content: [{ type: 'text', text }], structuredContent: data && !Array.isArray(data) ? data : { value: data }, isError: false })
+    } catch (error) {
+      if (error instanceof ToolError) return reply({ content: [{ type: 'text', text: error.message }], isError: true })
+      return reply({ content: [{ type: 'text', text: `The engine failed: ${error.message}` }], isError: true })
+    }
   }
 }
 
 function serve() {
+  const handle = createSession()
   const lines = readline.createInterface({ input: process.stdin })
   lines.on('line', (line) => {
     if (!line.trim()) return

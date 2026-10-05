@@ -49,11 +49,24 @@ export const COMPLETE_EDITION: Edition = {
   ],
 }
 
-const POLAR_CHECKOUT = /^https:\/\/(?:buy\.polar\.sh|polar\.sh)\/[\w./?=&%-]+$/
+/**
+ * A Polar hosted checkout link and nothing else: https, the buy.polar.sh host, a /polar_cl_<id> path, no credentials,
+ * port or fragment. Any query is allowed, since it carries a discount code or campaign metadata
+ * (?discount_code=LAUNCH&utm_campaign=fall+launch).
+ */
+export function isPolarCheckout(link: string): boolean {
+  let url: URL
+  try {
+    url = new URL(link)
+  } catch {
+    return false
+  }
+  return url.protocol === 'https:' && url.hostname === 'buy.polar.sh' && url.port === '' && !url.username && !url.password && !url.hash && /^\/polar_cl_[A-Za-z0-9]+$/.test(url.pathname)
+}
 
 /** Open only when Frank has opened it and the link goes to Polar's hosted checkout. */
 export function isOpen(edition: Edition = COMPLETE_EDITION): boolean {
-  return edition.open && POLAR_CHECKOUT.test(edition.checkoutUrl)
+  return edition.open && isPolarCheckout(edition.checkoutUrl)
 }
 
 export function priceLabel(edition: Edition = COMPLETE_EDITION): string {

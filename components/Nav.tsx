@@ -29,7 +29,7 @@ export function Nav() {
         </div>
         {/* Below the desktop breakpoint: the app one tap away, everything else behind a real menu button. */}
         <div className="flex items-center gap-2 lg:hidden">
-          <Link href="/studio" className="min-h-10 content-center rounded-lg px-3 max-[359px]:hidden text-sm font-medium text-dawn hover:text-dawn-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dawn">Studio</Link>
+          <Link href="/studio" className="min-h-10 content-center rounded-lg px-3 max-[359px]:hidden text-sm font-medium text-accent hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent">Studio</Link>
           <MobileMenu items={site.nav} github={site.github} />
         </div>
       </nav>

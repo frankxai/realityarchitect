@@ -20,8 +20,29 @@ Look back on seven days, count what happened including the misses, and seal a sn
 1. Set today's look-for in `reality/log/<today>.md`.
 2. Count the week from `reality/witness.md` and your day logs: entries by kind; signs primed and unprimed; look-fors set, came (`yes`) and missed (`no`). A `not marked` counts as set, neither came nor missed.
 3. Answer four questions, one line each. What is true now? What changed? What am I grateful for? One correction for next week?
-4. Read it back. If it is true for you, write `reality/snapshots/<today>.md` (Studio: Timeline). Front matter: `snapshot: <today>`, `cadence: weekly`, `period: <day 1> → <today>`, `approved: true`. Title: `# Snapshot — <today> (approved, immutable)`. Then `## Atlas` with a copy of your Atlas table; `## Witnessed this period` with the lines `sign n · win n · rep n · move n · opening n · lesson n · gratitude n`, `Signs: n primed · n unprimed` and `Intentions: set n · came n · missed n`, using your counts; and `## Reflection` with `- True now:`, `- What changed:`, `- Grateful for:` and `- One correction:`.
+4. Read it back. If it is true for you, write it as `reality/snapshots/<today>.md` (Studio: Timeline), in the shape below, with your own counts and words in place of each `n` and blank.
 5. From now on, it does not change. A correction is a new note or a new snapshot. With the plugin, the `reality-snapshot` skill drafts it and seals it only after your yes.
+
+```markdown
+---
+snapshot: <today>
+cadence: weekly
+period: <day 1> → <today>
+approved: true
+---
+# Snapshot — <today> (approved, immutable)
+## Atlas
+(a copy of your Atlas table)
+## Witnessed this period
+sign n · win n · rep n · move n · opening n · lesson n · gratitude n
+Signs: n primed · n unprimed
+Intentions: set n · came n · missed n
+## Reflection
+- True now:
+- What changed:
+- Grateful for:
+- One correction:
+```
 
 ## Why it works
 
