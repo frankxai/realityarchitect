@@ -7,10 +7,10 @@ test('the Complete Edition opens only with a Polar hosted checkout link', () => 
   const edition = { ...COMPLETE_EDITION }
   assert.equal(isOpen({ ...edition, open: false, checkoutUrl: 'https://buy.polar.sh/polar_cl_abc' }), false, 'Frank has not opened it')
   assert.equal(isOpen({ ...edition, open: true, checkoutUrl: '' }), false, 'no link, no sale')
-  for (const bad of ['http://buy.polar.sh/polar_cl_abc', 'https://buy.polar.sh.evil.example/polar_cl_abc', 'https://example.com/pay', 'javascript:alert(1)', 'https://polar.sh/blog', 'https://polar.sh/realityarchitect', 'https://buy.polar.sh/x', 'https://buy.polar.sh/polar_cl_abc/../x', 'https://buy.polar.sh/polar_cl_abc#x']) {
+  for (const bad of ['http://buy.polar.sh/polar_cl_abc', 'https://buy.polar.sh.evil.example/polar_cl_abc', 'https://example.com/pay', 'javascript:alert(1)', 'https://polar.sh/blog', 'https://polar.sh/realityarchitect', 'https://buy.polar.sh/x', 'https://buy.polar.sh/polar_cl_abc/../x', 'https://buy.polar.sh/polar_cl_abc#x', 'https://user:pw@buy.polar.sh/polar_cl_abc', 'https://buy.polar.sh:8443/polar_cl_abc', 'not a url']) {
     assert.equal(isOpen({ ...edition, open: true, checkoutUrl: bad }), false, bad)
   }
-  for (const good of ['https://buy.polar.sh/polar_cl_abc123', 'https://buy.polar.sh/polar_cl_abc123?discount_code=LAUNCH']) assert.equal(isOpen({ ...edition, open: true, checkoutUrl: good }), true, good)
+  for (const good of ['https://buy.polar.sh/polar_cl_abc123', 'https://buy.polar.sh/polar_cl_abc123?discount_code=LAUNCH', 'https://buy.polar.sh/polar_cl_abc?discount_code=LAUNCH&utm_campaign=fall+launch']) assert.equal(isOpen({ ...edition, open: true, checkoutUrl: good }), true, good)
   if (COMPLETE_EDITION.open) assert.ok(isOpen(), 'an open edition must carry a valid Polar link')
 })
 

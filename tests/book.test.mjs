@@ -9,6 +9,6 @@ test("the book's chapter order comes from the outline's Build order block", () =
 })
 
 test('a chapter name that Pandoc would read as an option is never in the build order', () => {
-  const outline = '## Build order\n\n```\n-o.md\n--output=x.md\n01-ok.md\n```\n'
-  assert.deepEqual(buildOrder(outline), ['01-ok.md'])
+  const outline = '## Build order\n\n```\n-o.md\n--output=x.md\n01-ok.md\n_preface.md\n.introduction.md\n```\n'
+  assert.deepEqual(buildOrder(outline), ['01-ok.md', '_preface.md', '.introduction.md'])
 })

@@ -70,13 +70,26 @@ function ready(env) {
 }
 const call = (handle, name, args, id = 1) => handle({ jsonrpc: '2.0', id, method: 'tools/call', params: { name, arguments: args } })
 
-test('the lifecycle holds: tools answer only after initialize, ping always does', () => {
+test('the lifecycle holds: a valid initialize, then the initialized notification, then tools; ping always', () => {
+  const INIT = { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'test', version: '0' } }
   const handle = createSession({ REALITY_HOME: os.tmpdir() })
   assert.equal(handle({ jsonrpc: '2.0', id: 1, method: 'tools/list' }).error.code, -32002)
   assert.equal(call(handle, 'reality_loops', {}).error.code, -32002)
   assert.deepEqual(handle({ jsonrpc: '2.0', id: 2, method: 'ping' }).result, {})
-  handle({ jsonrpc: '2.0', id: 3, method: 'initialize', params: { protocolVersion: '2025-06-18' } })
-  assert.equal(handle({ jsonrpc: '2.0', id: 4, method: 'tools/list' }).result.tools.length, TOOLS.length)
+
+  // Malformed initialize requests and an initialize notification change nothing.
+  for (const params of [undefined, {}, { protocolVersion: '2025-06-18' }, { ...INIT, clientInfo: { name: 'x' } }, { ...INIT, capabilities: null }]) {
+    assert.equal(handle({ jsonrpc: '2.0', id: 3, method: 'initialize', params }).error.code, -32602, JSON.stringify(params))
+  }
+  assert.equal(handle({ jsonrpc: '2.0', method: 'initialize', params: INIT }), null)
+  handle({ jsonrpc: '2.0', method: 'notifications/initialized' })
+  assert.equal(handle({ jsonrpc: '2.0', id: 4, method: 'tools/list' }).error.code, -32002, 'the notification before a valid initialize does not unlock')
+
+  // A valid initialize alone does not unlock tools; the initialized notification does.
+  assert.equal(handle({ jsonrpc: '2.0', id: 5, method: 'initialize', params: INIT }).result.protocolVersion, '2025-06-18')
+  assert.equal(handle({ jsonrpc: '2.0', id: 6, method: 'tools/list' }).error.code, -32002)
+  assert.equal(handle({ jsonrpc: '2.0', method: 'notifications/initialized' }), null)
+  assert.equal(handle({ jsonrpc: '2.0', id: 7, method: 'tools/list' }).result.tools.length, TOOLS.length)
 })
 
 test('protocol errors are JSON-RPC errors; argument and home problems are tool results the agent can fix', () => {
@@ -96,6 +109,8 @@ test('protocol errors are JSON-RPC errors; argument and home problems are tool r
   assert.equal(call(handle, 'no_such_tool', {}).error.code, -32602)
   assert.equal(handle({ jsonrpc: '2.0', id: 5, method: 'tools/call', params: {} }).error.code, -32602)
   assert.equal(call(handle, 'reality_loops', 'not an object').error.code, -32602)
+  assert.equal(call(handle, 'reality_loops', null).error.code, -32602, 'arguments may be omitted, never null')
+  assert.equal(handle({ jsonrpc: '2.0', id: 7, method: 'tools/call', params: { name: 'reality_loops' } }).result.isError, false, 'omitted arguments are {}')
   assert.equal(handle({ jsonrpc: '2.0', id: 6, method: 'nope' }).error.code, -32601)
   assert.equal(handle({ jsonrpc: '2.0', method: 'notifications/initialized' }), null)
 })

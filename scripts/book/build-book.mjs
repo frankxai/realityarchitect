@@ -26,7 +26,7 @@ function args(argv) {
 export function buildOrder(outline) {
   const section = outline.split(/^## Build order\s*$/m)[1] ?? ''
   const block = /```[^\n]*\n([\s\S]*?)```/.exec(section)
-  return block ? block[1].split(/\r?\n/).map((line) => line.trim()).filter((line) => /^[A-Za-z0-9][\w.-]*\.md$/.test(line)) : []
+  return block ? block[1].split(/\r?\n/).map((line) => line.trim()).filter((line) => /^(?!-)[\w.-]+\.md$/.test(line)) : []
 }
 
 function pandoc(list) {

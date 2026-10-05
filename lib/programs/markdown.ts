@@ -89,13 +89,20 @@ export function parseMarkdown(source: string): Doc {
       continue
     }
     // A fenced block keeps its lines verbatim (a file format, a template), so nothing inside it is parsed.
-    const fence = /^```([\w-]*)\s*$/.exec(line)
+    // As in CommonMark: the fence closes on a run of the same character at least as long as the opening one, so a
+    // four-backtick fence can hold a three-backtick example.
+    const fence = /^(`{3,}|~{3,})([\w-]*)\s*$/.exec(line)
     if (fence) {
+      const marker = fence[1]
+      const closes = (candidate: string) => {
+        const run = /^(`{3,}|~{3,})\s*$/.exec(candidate)
+        return Boolean(run && run[1][0] === marker[0] && run[1].length >= marker.length)
+      }
       const body: string[] = []
       i++
-      while (i < lines.length && !/^```\s*$/.test(lines[i])) body.push(lines[i++])
+      while (i < lines.length && !closes(lines[i])) body.push(lines[i++])
       i++
-      blocks.push({ kind: 'fence', lang: fence[1], text: body.join('\n') })
+      blocks.push({ kind: 'fence', lang: fence[2], text: body.join('\n') })
       continue
     }
     const heading = /^(#{1,3})\s+(.*?)\s*#*\s*$/.exec(line)
@@ -135,7 +142,7 @@ export function parseMarkdown(source: string): Doc {
     }
     // The first line is always consumed, so a line no other branch takes can never stall the loop.
     const parts: string[] = [lines[i++].trim()]
-    while (i < lines.length && lines[i].trim() && !/^(#{1,3})\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !/^```/.test(lines[i]) && !LIST_ITEM.test(lines[i])) parts.push(lines[i++].trim())
+    while (i < lines.length && lines[i].trim() && !/^(#{1,3})\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !/^(?:`{3,}|~{3,})/.test(lines[i]) && !LIST_ITEM.test(lines[i])) parts.push(lines[i++].trim())
     blocks.push({ kind: 'paragraph', text: parts.join(' ') })
   }
   return { front, blocks }
