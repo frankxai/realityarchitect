@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url'
 import { brief } from '../engine/brief.mjs'
 import { buildGraph } from '../engine/graph.mjs'
 import { insights } from '../engine/insights.mjs'
+import { AUDIENCES, checkKernel, toKernel } from '../engine/kernel.mjs'
 import { LOOPS, due } from '../engine/loops.mjs'
 import { isDay, localDay } from '../engine/model.mjs'
 import { assessAim } from '../engine/pace.mjs'
@@ -23,6 +24,10 @@ const USAGE = `reality <command> [--home DIR] [--today YYYY-MM-DD] [--json]
                     loops: ${LOOPS.map((loop) => loop.id).join(', ')}
   insights          patterns over time, as counts (never causes)
   graph             the typed reality graph, as JSON
+  kernel            your reality as Starlight kernel v0.1.1 documents (JSON)
+                    --audience private|alliance, required (a guide sees structure and counts only)
+                    --offset Z|+HH:MM for witness times (default: this machine)
+                    --check validates every document against the vendored SIS schemas
   validate          check your files against the standard
   loops             what each loop does, what it may write, and its approval gate
   skill-check DIR   check a skill folder against the marketplace bar
@@ -30,13 +35,28 @@ const USAGE = `reality <command> [--home DIR] [--today YYYY-MM-DD] [--json]
 The home is --home, else $REALITY_HOME, else ~/reality.md with ~/.reality/.
 Read-only: nothing here writes, sends, or syncs anything.`
 
+const VALUE_FLAGS = new Set(['--home', '--today', '--audience', '--offset'])
+const SWITCHES = new Set(['--json', '--check', '--help', '-h'])
+
+/**
+ * Flags take `--flag value` or `--flag=value`. A value flag without a value, or an unknown flag, is an error rather
+ * than something quietly ignored: `--audience` decides what a guide may see, so it must never fall back silently.
+ */
 function parseArgs(argv) {
-  const options = { positional: [] }
+  const options = { positional: [], errors: [] }
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index]
-    if (arg === '--json') options.json = true
-    else if (arg === '--home' || arg === '--today') options[arg.slice(2)] = argv[(index += 1)]
-    else if (arg === '--help' || arg === '-h') options.help = true
+    const [flag, inline] = arg.startsWith('--') && arg.includes('=') ? [arg.slice(0, arg.indexOf('=')), arg.slice(arg.indexOf('=') + 1)] : [arg, undefined]
+    if (VALUE_FLAGS.has(flag)) {
+      const value = inline ?? argv[index + 1]
+      if (inline === undefined) index += 1
+      if (value === undefined || value === '' || (inline === undefined && value.startsWith('--'))) options.errors.push(`${flag} needs a value.`)
+      else options[flag.slice(2)] = value
+    } else if (SWITCHES.has(flag) && inline === undefined) {
+      if (flag === '--json') options.json = true
+      else if (flag === '--check') options.check = true
+      else options.help = true
+    } else if (arg.startsWith('-')) options.errors.push(`Unknown option "${arg}".`)
     else options.positional.push(arg)
   }
   return options
@@ -45,6 +65,10 @@ function parseArgs(argv) {
 export function run(argv, { env = process.env, out = (text) => process.stdout.write(`${text}\n`), now = new Date() } = {}) {
   const options = parseArgs(argv)
   const [command, argument] = options.positional
+  if (options.errors.length) {
+    out(`${options.errors.join('\n')}\n\n${USAGE}`)
+    return 2
+  }
   if (!command || options.help) {
     out(USAGE)
     return command || options.help ? 0 : 2
@@ -113,6 +137,30 @@ export function run(argv, { env = process.env, out = (text) => process.stdout.wr
   if (command === 'insights') {
     const list = insights(reality, today)
     print(list, list.map((insight) => `- ${insight.text}`).join('\n'))
+    return 0
+  }
+  if (command === 'kernel') {
+    // No default: who may see the result is the person's explicit choice every time.
+    const audience = options.audience
+    if (!AUDIENCES.includes(audience)) {
+      out(`kernel needs --audience ${AUDIENCES.join(' or ')}: "private" is everything, for you; "alliance" is a guide's view. Public sharing is the Reality Card.`)
+      return 2
+    }
+    let bundle
+    try {
+      bundle = toKernel(reality, today, { audience, offset: options.offset })
+    } catch (error) {
+      out(error.message)
+      return 2
+    }
+    if (options.check) {
+      const problems = checkKernel(bundle)
+      if (problems.length) {
+        out(['The bundle does not conform to the kernel:', ...problems.map((problem) => `- ${problem}`)].join(String.fromCharCode(10)))
+        return 1
+      }
+    }
+    out(JSON.stringify(bundle, null, 2))
     return 0
   }
   if (command === 'graph') {
