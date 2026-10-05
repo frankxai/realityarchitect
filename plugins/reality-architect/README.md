@@ -44,7 +44,7 @@ node bin/reality.mjs due               # the loops due today, each with its comp
 node bin/reality.mjs brief weekly      # what an agent reads before a loop: quoted Charter, steps, gate, labeled state
 node bin/reality.mjs insights          # patterns over time, as counts, never causes
 node bin/reality.mjs graph             # the typed reality graph as JSON
-node bin/reality.mjs kernel --check    # your reality as Starlight kernel documents, validated (see below)
+node bin/reality.mjs kernel --audience private --check   # your reality as Starlight kernel documents, validated (see below)
 node bin/reality.mjs validate          # your files against STATE.md, with file and line
 node bin/reality.mjs skill-check DIR   # a skill folder against the marketplace bar
 ```

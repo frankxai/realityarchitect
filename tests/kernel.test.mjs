@@ -83,8 +83,9 @@ test('receipts: reps, moves and an achieved aim, dated by the files, and never m
   state.bridges[0].status = 'achieved'
   state.bridges[0].closedAt = '2026-10-01'
   state.bridges[1].status = 'released'
-  // A rep logged under a name the aim no longer lists.
-  state.witness.unshift({ id: 'w-renamed', at: `${TODAY}T07:00:00.000Z`, day: TODAY, time: '09:00', kind: 'rep', fact: 'An old rep name', meaning: '', action: '', next: '', primed: false, bridgeId: state.bridges[0].id })
+  // The second aim gets a second rep, so its entries must name a rep to be filed under it; one names none.
+  state.bridges[1].reps.push({ id: 'rep-second', name: 'Hill sprints', perWeek: 1 })
+  state.witness.unshift({ id: 'w-renamed', at: `${TODAY}T07:00:00.000Z`, day: TODAY, time: '09:00', kind: 'rep', fact: 'An old rep name', meaning: '', action: '', next: '', primed: false, bridgeId: state.bridges[1].id })
   const { reality } = realityOf(t, state)
   const bundle = kernel(reality)
   assert.deepEqual(checkKernel(bundle), [])
@@ -101,8 +102,13 @@ test('receipts: reps, moves and an achieved aim, dated by the files, and never m
   assert.equal(bundle.objects.find((doc) => doc.id === `ra:aim:${released.slug}`).existence.status, 'deprecated')
   assert.equal(bundle.plans.find((plan) => plan.id.endsWith(released.slug)).status, 'cancelled')
 
-  const renamed = bundle.receipts.find((doc) => doc.action_id === 'rep-other')
-  assert.ok(renamed, 'an unmatched rep gets its own action instead of being counted as rep-1')
+  const firstPlan = bundle.plans.find((plan) => plan.id.endsWith(achieved.slug))
+  const firstReps = bundle.receipts.filter((doc) => doc.plan_id === firstPlan.id && doc.id.startsWith('ra:receipt:witness/'))
+  assert.ok(firstReps.length > 0 && firstReps.every((doc) => doc.action_id === 'rep-1'), 'an aim with one listed rep files every rep entry under it')
+  const secondPlan = bundle.plans.find((plan) => plan.id.endsWith(released.slug))
+  const other = bundle.receipts.filter((doc) => doc.action_id === 'rep-other')
+  assert.ok(other.length > 0 && other.every((doc) => doc.plan_id === secondPlan.id), 'with several reps, an entry naming none goes to the catch-all')
+  assert.equal(secondPlan.actions.find((candidate) => candidate.id === 'rep-other').title, 'A rep not matched to a listed rep')
   const live = new Set(reality.aims.map((aim) => aim.slug))
   const reps = reality.witness.filter((entry) => entry.kind === 'rep' && live.has(entry.bridge) && !entry.bridgeDeleted)
   assert.equal(bundle.receipts.filter((doc) => doc.id.startsWith('ra:receipt:witness/')).length, reps.length)
@@ -131,12 +137,22 @@ test('edge inputs stay valid: a double-logged rep, an aim named by its Obsidian 
     '## Bridge', '- Reps: 2x per week, one easy run', '',
   ].join('\n')
   const longName = `${'Ä'.repeat(20)} ${'very long aim name '.repeat(14)}`
+  // Names outside the ID alphabet: two that leave nothing of it, and two that collapse to the same key.
+  const nonLatin = ['Здоровье', '家族', 'Пробежать 10 км', 'Выучить 10 слов']
   const extra = [
     { path: 'Reality Architect/reality/aims/Run the river 10K.md', text: obsidianAim },
     { path: `Reality Architect/reality/aims/${longName.slice(0, 120)}.md`, text: obsidianAim.replace(/Run the river 10K/g, 'Long') },
+    ...nonLatin.map((name) => ({ path: `Reality Architect/reality/aims/${name}.md`, text: obsidianAim.replace(/Run the river 10K/g, name) })),
   ]
+  state.bridges[0].reach.push({ id: 'r-empty', kind: 'person', name: '', why: '', status: 'wish' })
   const { reality } = realityOf(t, state, extra)
-  for (const audience of AUDIENCES) assert.deepEqual(checkKernel(kernel(reality, audience)), [], audience)
+  for (const audience of AUDIENCES) {
+    const bundle = kernel(reality, audience)
+    assert.deepEqual(checkKernel(bundle), [], audience)
+    const goals = bundle.objects.filter((doc) => doc.type === 'goal').map((doc) => doc.label)
+    for (const name of nonLatin) assert.ok(goals.includes(name), `${audience}: ${name} is its own aim`)
+    assert.equal(new Set(bundle.objects.filter((doc) => doc.type === 'goal').map((doc) => doc.id)).size, reality.aims.length, 'one goal per aim')
+  }
 })
 
 test('a guide sees structure and counts: canaries planted in every private field never reach the alliance view', (t) => {
@@ -167,7 +183,7 @@ test('a guide sees structure and counts: canaries planted in every private field
     entry.meaning = plant('meaning')
     entry.next = plant('next')
     entry.action = plant('did')
-    if (entry.kind !== 'rep') entry.fact = plant('fact')
+    entry.fact = plant(entry.kind === 'rep' ? 'rep fact' : 'fact')
   }
   for (const note of Object.values(state.days)) {
     if (note.lookFor) note.lookFor = plant('look-for')
@@ -192,8 +208,10 @@ test('a guide sees structure and counts: canaries planted in every private field
   }
   const absent = canaries.filter(({ label }) => !label.startsWith('decision') && !label.startsWith('soul') && label !== 'correction').filter(({ token }) => !own.includes(token)).map(({ label }) => label)
   assert.deepEqual([...new Set(absent)], [], 'the person\'s own projection does carry their words')
-  const payloadKeys = new Set(JSON.parse(alliance).events.flatMap((event) => Object.keys(event.payload)))
+  const guide = JSON.parse(alliance)
+  const payloadKeys = new Set(guide.events.flatMap((event) => Object.keys(event.payload)))
   for (const key of payloadKeys) assert.ok(['kind', 'primed', 'result', 'rehearsed', 'granularity'].includes(key), `unexpected guide payload key: ${key}`)
+  for (const doc of guide.objects) assert.ok(['person', 'life_domain', 'goal', 'world_state'].includes(doc.type), `a guide sees no ${doc.type} objects`)
 })
 
 test('the projection is deterministic and honest about time', (t) => {

@@ -104,7 +104,10 @@ This split is how the product stays both meaningful and honest.
 - **Checks.**
   - `checkKernel` validates every document against the vendored SIS schemas.
   - It verifies every reference: relations, evidence, branches, diffs, plans, actions, events and subjects.
-  - It enforces SIS ADR-000's rule directly: an aim is never recorded as real without a receipt.
+  - It enforces SIS ADR-000's rules directly:
+    - An aim is never recorded as real without a receipt, and that evidence must be a receipt in the bundle.
+    - Every relation stated by a real object carries `evidence_ids`. These are the person's source files (for example `reality/aims/x.md`), not other bundle documents. The check requires them to be present; it cannot vouch for what the files say.
+  - Aim IDs stay unique even when names leave nothing of the ID alphabet (Cyrillic, CJK) or collapse to the same key. Such an aim gets a short hash of its own slug. The title is already visible to a guide, so the hash reveals nothing new.
 - **Surfaces.**
   - CLI: `reality kernel --audience private|alliance [--offset +HH:MM] [--check]`
   - MCP: `reality_kernel`, read-only, parity-tested against the CLI
@@ -113,7 +116,8 @@ This split is how the product stays both meaningful and honest.
   - conformance in both audiences;
   - desired stays desired;
   - `owns` reads from the person to the aim;
-  - receipts for reps, moves and achievement, dated by the files, with renamed reps never misattributed;
+  - receipts for reps, moves and achievement, dated by the files. A rep entry is filed under the aim's only rep, or under the rep it names, or else under "A rep not matched to a listed rep". It is never guessed onto a listed rep.
+  - Exporting the Studio's own rep link into `witness.md` would make this exact for aims with several reps. That is a format change for STATE.md, proposed next.
   - look-for results keep their misses;
   - edge inputs: a double-logged rep, an aim named by its Obsidian file, umlauts and long names, short entries;
   - **canaries in every private field never reach a guide**, including short ones, fingerprints and hashes, plus an allowlist of guide payload keys;

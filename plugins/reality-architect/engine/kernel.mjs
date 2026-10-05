@@ -145,11 +145,20 @@ export function toKernel(reality, today, { audience, offset } = {}) {
   }
 
   const planByAim = new Map()
+  const usedKeys = new Set()
+  // One key per aim. A name that leaves nothing of the ID alphabet, or collides with another aim's key, gets a short
+  // hash of its own slug; the title is shown to a guide anyway, so the hash reveals nothing new.
+  const aimKey = (raw) => {
+    let candidate = idKey(raw)
+    if (!/[a-z0-9]/i.test(candidate) || usedKeys.has(candidate)) candidate = `${candidate.replace(/-+$/, '') || 'aim'}-${crypto.createHash('sha256').update(raw).digest('hex').slice(0, 8)}`
+    usedKeys.add(candidate)
+    return candidate
+  }
   for (const aim of [...reality.aims].sort((a, b) => order(a.slug, b.slug))) {
     if (!aim.slug) continue
     const pace = assessAim(aim, reality.witness, today)
-    const aimId = nodeId('aim', aim.slug)
-    const key = idKey(aim.slug)
+    const key = aimKey(aim.slug)
+    const aimId = `ra:aim:${key}`
     const domainId = aim.domain && emitted.has(nodeId('domain', aim.domain)) ? nodeId('domain', aim.domain) : null
     const branchId = `ra:branch:aim/${key}`
     const diffId = `ra:diff:aim/${key}`
@@ -171,12 +180,12 @@ export function toKernel(reality, today, { audience, offset } = {}) {
 
     const dependencies = []
     if (own) {
-      for (const skill of aim.skills ?? []) dependencies.push(object({ id: nodeId('skill', slug(skill)), type: 'skill', label: skill, existence: { realm: 'planned', status: 'proposed' }, epistemics: { kind: 'preference' }, provenance: human([aimFile]), temporal: { observed_at: now } }))
-      for (const system of aim.systems ?? []) dependencies.push(object({ id: nodeId('system', slug(system)), type: 'agent', label: system, existence: { realm: 'planned', status: 'proposed' }, epistemics: { kind: 'preference' }, provenance: human([aimFile]), temporal: { observed_at: now } }))
+      for (const skill of (aim.skills ?? []).filter((name) => String(name).trim())) dependencies.push(object({ id: nodeId('skill', slug(skill)), type: 'skill', label: skill, existence: { realm: 'planned', status: 'proposed' }, epistemics: { kind: 'preference' }, provenance: human([aimFile]), temporal: { observed_at: now } }))
+      for (const system of (aim.systems ?? []).filter((name) => String(name).trim())) dependencies.push(object({ id: nodeId('system', slug(system)), type: 'agent', label: system, existence: { realm: 'planned', status: 'proposed' }, epistemics: { kind: 'preference' }, provenance: human([aimFile]), temporal: { observed_at: now } }))
       for (const reach of aim.reach ?? []) {
         const reached = reach.status === 'reached'
         dependencies.push(object({
-          id: nodeId(reach.kind, slug(reach.name)), type: reach.kind === 'place' ? 'location' : 'person', label: reach.name,
+          id: nodeId(reach.kind, slug(reach.name)), type: reach.kind === 'place' ? 'location' : 'person', label: String(reach.name).trim() || (reach.kind === 'place' ? 'An unnamed place' : 'An unnamed person'),
           ...(reach.why ? { description: reach.why } : {}),
           existence: reached ? { realm: 'real', status: 'asserted' } : { realm: 'desired', status: 'proposed' }, epistemics: { kind: reached ? 'empirical' : 'preference' },
           provenance: human([aimFile]), temporal: { observed_at: now },
@@ -237,7 +246,7 @@ export function toKernel(reality, today, { audience, offset } = {}) {
       status: aim.status === 'achieved' ? 'completed' : aim.status === 'released' ? 'cancelled' : 'executing', notes: null,
     }
     plans.push(plan)
-    planByAim.set(aim.slug, { plan, aim, key })
+    planByAim.set(aim.slug, { plan, aim, key, aimId })
 
     aim.moves.forEach((move, index) => {
       if (!move.done) return
@@ -275,16 +284,18 @@ export function toKernel(reality, today, { audience, offset } = {}) {
     const eventId = `ra:event:witness/${key}`
     const linked = entry.bridge && !entry.bridgeDeleted ? planByAim.get(entry.bridge) : undefined
     const subjects = [SELF]
-    if (linked) subjects.push(nodeId('aim', entry.bridge))
+    if (linked) subjects.push(linked.aimId)
     if (entry.domain && emitted.has(nodeId('domain', entry.domain))) subjects.push(nodeId('domain', entry.domain))
     let receiptId = null
     if (entry.kind === 'rep' && linked) {
-      const index = linked.aim.reps.findIndex((rep) => rep.name.trim().toLowerCase() === entry.fact.trim().toLowerCase())
-      let actionId = index >= 0 ? `rep-${index + 1}` : 'rep-other'
+      // An aim with one listed rep files every rep under it (a rep entry describes the session, not the rep's name).
+      // With several reps, an entry is filed under the rep it names, else under a catch-all that says exactly that.
+      const index = linked.aim.reps.length === 1 ? 0 : linked.aim.reps.findIndex((rep) => rep.name.trim().toLowerCase() === entry.fact.trim().toLowerCase())
+      const actionId = index >= 0 ? `rep-${index + 1}` : 'rep-other'
       if (actionId === 'rep-other' && !linked.plan.actions.some((candidate) => candidate.id === 'rep-other')) {
-        // A rep logged under a name the aim no longer lists (renamed or retired): kept, never misattributed.
+        // Kept and counted, never guessed onto a listed rep.
         linked.plan.actions.splice(linked.aim.reps.length + linked.aim.moves.length, 0, {
-          id: 'rep-other', title: 'A rep logged under a name the aim no longer lists', gap_ids: linked.plan.actions[0].gap_ids, owner: { kind: 'human', id: SELF },
+          id: 'rep-other', title: 'A rep not matched to a listed rep', gap_ids: linked.plan.actions[0].gap_ids, owner: { kind: 'human', id: SELF },
           tool: 'practice', dependencies: [], cost_estimate: null, risk: 'low', governance_tier: 'human_gate',
           expected_evidence: 'A rep entry in reality/witness.md', verification_criterion: 'Logged by the person', stop_condition: 'The aim is achieved or released.', rollback: null, work_packet_id: null,
         })
