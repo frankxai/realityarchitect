@@ -57,6 +57,27 @@ node bin/reality.mjs skill-check DIR   # a skill folder against the marketplace 
   Charter preamble, no outcome promises or causal claims, no teacher names outside the Library data, no paths the
   installed plugin cannot reach, and asking before any write.
 
+## The MCP server
+
+The plugin also starts the same engine as a local MCP server (`mcp/server.mjs`, stdio, no dependencies), so any agent
+in an MCP client reads the numbers the Studio and the CLI show. Installing the plugin wires it up through `.mcp.json`.
+To use it in another client, run `node mcp/server.mjs` with `REALITY_HOME` set.
+
+| Tool | Returns |
+| --- | --- |
+| `reality_status` | your home, each aim's computed pace, and what is due today |
+| `reality_due` | the loops due today, each with its reason |
+| `reality_brief` | what to read before one loop (`morning`, `evening`, `weekly`, `monthly`, `decisions`, `pace`) |
+| `reality_insights` | patterns over a window of days, as counts labeled computed |
+| `reality_validate` | your files against the standard, by file and line |
+| `reality_graph` | the typed reality graph with kernel IDs |
+| `reality_loops` | what each loop does, writes, and needs approval for |
+| `library_search` | a Library entry by id or by words: keep, mechanism, limits |
+
+Every tool is read-only and marked so. It runs on your machine, reads only your home folder, and sends nothing
+anywhere. Writing stays with the skills, which show the exact text and ask first. The tests check that every tool
+returns exactly what the CLI prints for the same files.
+
 ## The rules every skill follows
 
 Every skill begins by reading `CHARTER.md` in this plugin, an exact copy of the
