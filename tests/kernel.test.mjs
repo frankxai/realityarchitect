@@ -155,6 +155,17 @@ test('edge inputs stay valid: a double-logged rep, an aim named by its Obsidian 
   }
 })
 
+test('aim IDs are stable: adding another aim never moves one, and copied files stay distinct', (t) => {
+  const file = (name, slugLine = '') => ({ path: `Reality Architect/reality/aims/${name}.md`, text: ['---', `aim: ${name}`, ...(slugLine ? [slugLine] : []), 'status: active', '---', `# ${name}`, 'Done when (verifiable): it is done.', ''].join('\n') })
+  const idOf = (bundle, label) => bundle.objects.find((doc) => doc.type === 'goal' && doc.label === label).id
+  const alone = kernel(realityOf(t, sampleState(TODAY), [file('Пробежать 10 км')]).reality)
+  const together = kernel(realityOf(t, sampleState(TODAY), [file('Пробежать 10 км'), file('Выучить 10 слов')]).reality)
+  assert.equal(idOf(together, 'Пробежать 10 км'), idOf(alone, 'Пробежать 10 км'), 'the ID depends only on the aim\'s own name')
+  assert.notEqual(idOf(together, 'Выучить 10 слов'), idOf(together, 'Пробежать 10 км'))
+  const copies = realityOf(t, sampleState(TODAY), ['One', 'Two', 'Three'].map((name) => file(name, 'slug: same')))
+  for (const audience of AUDIENCES) assert.deepEqual(checkKernel(kernel(copies.reality, audience)), [], `${audience}: three files with one slug`)
+})
+
 test('a guide sees structure and counts: canaries planted in every private field never reach the alliance view', (t) => {
   const state = sampleState(TODAY)
   const canaries = []

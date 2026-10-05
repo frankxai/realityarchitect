@@ -149,8 +149,13 @@ export function toKernel(reality, today, { audience, offset } = {}) {
   // One key per aim. A name that leaves nothing of the ID alphabet, or collides with another aim's key, gets a short
   // hash of its own slug; the title is shown to a guide anyway, so the hash reveals nothing new.
   const aimKey = (raw) => {
-    let candidate = idKey(raw)
-    if (!/[a-z0-9]/i.test(candidate) || usedKeys.has(candidate)) candidate = `${candidate.replace(/-+$/, '') || 'aim'}-${crypto.createHash('sha256').update(raw).digest('hex').slice(0, 8)}`
+    const clean = idKey(raw)
+    // A slug already in the ID alphabet is its own key. Any slug that had to be cleaned (spaces, non-Latin letters, a
+    // long name) always carries a hash of itself, so its ID depends on nothing but its own name: adding another aim
+    // never moves it. Only identical slugs (a copied file) are told apart by order, with -2, -3.
+    const base = clean === raw && /[a-z0-9]/i.test(clean) ? clean : `${clean.replace(/-+$/, '') || 'aim'}-${crypto.createHash('sha256').update(raw).digest('hex').slice(0, 8)}`
+    let candidate = base
+    for (let copy = 2; usedKeys.has(candidate); copy += 1) candidate = `${base}-${copy}`
     usedKeys.add(candidate)
     return candidate
   }
