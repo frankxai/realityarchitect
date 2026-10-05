@@ -1,5 +1,8 @@
 # Handoff prompt: Reality Architect product fundamentals
 
+> **Superseded on 2026-10-05 by `docs/handoff/2026-10-05-REALITY-ARCHITECT-HANDOVER.md`**, which carries the current
+> state, all repos, and the twelve missions. This file stays as the record of the 2026-10-04 brief.
+
 Paste everything below the line into a new agent session (Claude Code, opened in `C:\Users\frank\.agent-worktrees`,
 or any harness that reads AGENTS.md). It is self-contained.
 
