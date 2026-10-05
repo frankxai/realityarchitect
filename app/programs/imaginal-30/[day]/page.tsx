@@ -104,7 +104,7 @@ export default async function ProgramDay({ params }: { params: Promise<Params> }
       })}
 
       <aside className="mt-12 rounded-2xl border border-border bg-surface/70 p-5 sm:p-6" aria-label="Do the practice">
-        <Link href="/studio" className={`inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent/80 sm:w-auto ${FOCUS}`}>
+        <Link href="/studio" className={`inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent-hover sm:w-auto ${FOCUS}`}>
           Do day {n} in the Studio
         </Link>
         <p className="mt-3 text-sm leading-relaxed text-muted">

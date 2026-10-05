@@ -47,7 +47,7 @@ export default function CompleteEdition() {
         </p>
         {!open && (
           <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3">
-            <Link href="/programs/imaginal-30/1" className={`inline-flex min-h-11 items-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent/80 ${FOCUS}`}>
+            <Link href="/programs/imaginal-30/1" className={`inline-flex min-h-11 items-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent-hover ${FOCUS}`}>
               Begin day 1, free
             </Link>
             <p className="text-sm text-muted">The edition is being made. The free program is complete today.</p>
@@ -89,15 +89,14 @@ export default function CompleteEdition() {
               in your Polar account right away. Every update is included, and if it is not for you, a refund within{' '}
               {COMPLETE_EDITION.refundDays} days needs no reason. Buying it also helps keep the free program free.
             </p>
-            <a href={COMPLETE_EDITION.checkoutUrl} className={`mt-6 inline-flex items-center rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-bg hover:bg-accent/80 ${FOCUS}`} rel="noopener noreferrer">
+            <a href={COMPLETE_EDITION.checkoutUrl} className={`mt-6 inline-flex items-center rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-bg hover:bg-accent-hover ${FOCUS}`} rel="noopener noreferrer">
               Get the Complete Edition · {priceLabel()}
             </a>
           </>
         ) : (
           <p className="mt-3 leading-relaxed text-muted">
             The audio, the book, the journal and the vault are being made now. The free program is ready today and does not
-            change when the edition opens.{' '}
-            <Link href="/programs/imaginal-30/1" className={`text-accent underline-offset-4 hover:underline ${FOCUS}`}>Begin day 1</Link>.
+            change when the edition opens.
           </p>
         )}
       </section>

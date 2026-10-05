@@ -85,7 +85,7 @@ export function Prose({ blocks, headingOffset = 0 }: { blocks: Block[]; headingO
             return (
               <figure key={index} className="rounded-xl border border-border bg-bg">
                 {block.lang && <figcaption className="border-b border-border px-4 py-2 font-mono text-xs uppercase tracking-[0.14em] text-muted">{block.lang}</figcaption>}
-                <pre tabIndex={0} className="overflow-x-auto px-4 py-3 font-mono text-[0.8rem] leading-relaxed text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"><code>{block.text}</code></pre>
+                <pre tabIndex={0} role="region" aria-label={`${block.lang || 'Text'} format, scrolls sideways on small screens`} className="overflow-x-auto px-4 py-3 font-mono text-[0.8rem] leading-relaxed text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"><code>{block.text}</code></pre>
               </figure>
             )
           case 'list': {
