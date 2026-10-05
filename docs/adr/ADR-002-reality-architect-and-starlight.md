@@ -93,7 +93,13 @@ This split is how the product stays both meaningful and honest.
 
 - **Audiences.**
   - `private` is everything, for the person.
-  - `alliance` is a guide's view: aims, done-whens, reps, moves, dates, statuses, pace, witness kinds and look-for results. It never includes meaning, scenes, facts in the person's words, other people's names, decisions or soul.
+  - `alliance` is a guide's view. It includes:
+    - the aims, done-whens, reps and moves, exactly as the person titled them (anything written in a title is shared as written);
+    - dates, statuses and pace;
+    - witness kinds and look-for results, misses included.
+
+    It never includes meaning, scenes, facts or obstacles in the person's words, the people and places they listed, skills, systems, decisions or soul. Witness IDs use ordinals, not hashes of private text, and receipts carry no content hashes, so a guide cannot test guesses against them.
+  - There is no default audience. The CLI requires `--audience` and refuses bad or unknown flags; the MCP tool requires `audience` and checks it before reading any file.
   - Public sharing stays with the Reality Card.
 - **Checks.**
   - `checkKernel` validates every document against the vendored SIS schemas.
@@ -102,15 +108,30 @@ This split is how the product stays both meaningful and honest.
 - **Surfaces.**
   - CLI: `reality kernel --audience private|alliance [--offset +HH:MM] [--check]`
   - MCP: `reality_kernel`, read-only, parity-tested against the CLI
-- **Tests** (`tests/kernel.test.mjs`, 8):
+- **Tests** (`tests/kernel.test.mjs`, 11):
   - the pinned bytes and strict schemas;
   - conformance in both audiences;
   - desired stays desired;
-  - receipts for reps, moves and achievement;
-  - zero leakage of private text to a guide, checked against the sample life's own strings;
+  - `owns` reads from the person to the aim;
+  - receipts for reps, moves and achievement, dated by the files, with renamed reps never misattributed;
+  - look-for results keep their misses;
+  - edge inputs: a double-logged rep, an aim named by its Obsidian file, umlauts and long names, short entries;
+  - **canaries in every private field never reach a guide**, including short ones, fingerprints and hashes, plus an allowlist of guide payload keys;
   - determinism and honest offsets;
-  - the checker catching a fake fact, a broken reference and a schema violation;
-  - the CLI.
+  - the checker catching a fake fact, a fake receipt, a broken reference and a schema violation;
+  - the CLI refusing to fall back to the private view.
+- **Independent review.** A fresh-context reviewer found three critical and six important issues in the first cut:
+  - look-for misses read as "not marked";
+  - duplicate IDs;
+  - slugs that broke the schema;
+  - a CLI that fell back to the private view;
+  - skills and systems shared with a guide;
+  - guessable hashes;
+  - reversed `owns`;
+  - receipts dated by the export day;
+  - a weak leak test.
+
+  All are fixed, each with a test.
 
 ## 5. Next phases
 

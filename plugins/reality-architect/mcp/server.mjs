@@ -18,7 +18,7 @@ import { LOOPS, due } from '../engine/loops.mjs'
 import { isDay, localDay } from '../engine/model.mjs'
 import { assessAim } from '../engine/pace.mjs'
 import { loadReality, resolveHome } from '../engine/parse.mjs'
-import { AUDIENCES, checkKernel, toKernel } from '../engine/kernel.mjs'
+import { AUDIENCES, OFFSET, checkKernel, checkKernelOptions, toKernel } from '../engine/kernel.mjs'
 import { validate } from '../engine/validate.mjs'
 
 const PLUGIN_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -81,7 +81,7 @@ export const TOOLS = [
     name: 'reality_kernel',
     title: 'Starlight kernel projection',
     description: "The person's reality as Starlight Reality Architecture kernel v0.1.1 documents: objects, desired branches, diffs, plans, self-reported receipts and events. Audience 'private' is the person's own; 'alliance' is a guide's view, with structure and counts only. Validated against the vendored SIS schemas.",
-    inputSchema: { type: 'object', properties: { audience: { type: 'string', enum: AUDIENCES }, offset: { type: 'string', pattern: '^(Z|[+-]\\d{2}:\\d{2})$', description: 'Offset for local witness times, e.g. +02:00. Defaults to this machine.' }, today: TODAY }, additionalProperties: false },
+    inputSchema: { type: 'object', properties: { audience: { type: 'string', enum: AUDIENCES, description: "Required. 'private' is everything, for the person; 'alliance' is a guide's view." }, offset: { type: 'string', pattern: OFFSET.source, description: 'Offset for local witness times, e.g. +02:00. Defaults to this machine.' }, today: TODAY }, required: ['audience'], additionalProperties: false },
   },
 ].map((tool) => ({ ...tool, annotations: { title: tool.title, ...READ_ONLY } }))
 
@@ -126,6 +126,14 @@ export function callTool(name, args = {}, env = process.env) {
   if (name === 'reality_brief' && !LOOPS.some((loop) => loop.id === args.loop)) throw new ToolError(`loop must be one of: ${LOOPS.map((loop) => loop.id).join(', ')}.`)
   const days = args.days === undefined ? 30 : Number(args.days)
   if (name === 'reality_insights' && (!Number.isInteger(days) || days < 7 || days > 365)) throw new ToolError('days must be a whole number from 7 to 365.')
+  if (name === 'reality_kernel') {
+    // Who may see the projection is the person's explicit choice: no default audience, checked before any file is read.
+    try {
+      checkKernelOptions({ audience: args.audience, offset: args.offset })
+    } catch (error) {
+      throw new ToolError(error.message)
+    }
+  }
   const today = dayFrom(args)
   const home = homeFrom(env)
   if (name === 'reality_validate') {
@@ -164,7 +172,7 @@ export function callTool(name, args = {}, env = process.env) {
   if (name === 'reality_kernel') {
     let bundle
     try {
-      bundle = toKernel(reality, today, { audience: args.audience ?? 'private', offset: args.offset })
+      bundle = toKernel(reality, today, { audience: args.audience, offset: args.offset })
     } catch (error) {
       throw new ToolError(error.message)
     }

@@ -179,6 +179,11 @@ export function parseAim(text, file = 'aim.md') {
     obstacle: clean(obstacle?.[1]),
     gapClass: obstacle?.[2] ?? '',
     ifThen: clean(plan.split(/\r?\n/).find((line) => /^- If /.test(line))?.slice(2)),
+    // "## Closed (achieved, 2026-10-01)" as the Studio writes it; empty when the day was not recorded.
+    closedAt: (() => {
+      const closed = /^## Closed \((?:achieved|released)(?:, (\d{4}-\d{2}-\d{2}))?\)/m.exec(body)
+      return closed && isDay(closed[1]) ? closed[1] : ''
+    })(),
     ...parseBridgeList(section(map, 'Bridge')),
     file,
   }

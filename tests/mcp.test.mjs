@@ -53,6 +53,9 @@ test('the tools compute the same answers as the CLI on a real export', (t) => {
     assert.deepEqual(viaTool, JSON.parse(cli(['kernel', '--audience', audience, '--offset', 'Z', '--check'], home)), audience)
   }
   assert.throws(() => callTool('reality_kernel', { audience: 'public', today: TODAY }, env), /Reality Card/)
+  for (const args of [{ today: TODAY }, { audience: null, today: TODAY }]) assert.throws(() => callTool('reality_kernel', args, env), /audience must be one of/, 'no default audience over MCP either')
+  assert.throws(() => callTool('reality_kernel', { audience: 'alliance' }, { REALITY_HOME: path.join(os.tmpdir(), 'no-home-here') }), /audience|REALITY_HOME/)
+  assert.throws(() => callTool('reality_kernel', { audience: 'nope' }, { REALITY_HOME: path.join(os.tmpdir(), 'no-home-here') }), /audience must be one of/, 'input is checked before the home')
   const status = callTool('reality_status', { today: TODAY }, env).data
   assert.ok(status.aims.length >= 1 && Array.isArray(status.due))
 })

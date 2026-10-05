@@ -93,8 +93,16 @@ Everything above works on its own. For people who run Starlight (SIS) or work wi
 - **Events:** witness entries, look-for results.
 
 Every document is checked against SIS's own schemas, vendored and pinned in `engine/vendor/sis/SOURCE.md`, along with
-every reference between them. `--audience alliance` gives a guide structure and counts only: never your meaning, your
-scenes, your words, other people's names or your decisions. Why and how: `docs/adr/ADR-002-reality-architect-and-starlight.md`.
+every reference between them.
+
+`--audience` is required every time:
+
+- `private` is everything, for you.
+- `alliance` is a guide's view: your aims, reps and moves as you titled them, with dates, statuses, pace and counts. It
+  never includes your meaning, scenes, facts or obstacles in your words, the people you listed, skills, systems or
+  decisions.
+
+Why and how: `docs/adr/ADR-002-reality-architect-and-starlight.md`.
 
 ## The rules every skill follows
 
