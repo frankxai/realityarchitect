@@ -30,6 +30,7 @@ export const site = {
     { label: 'Apply', href: '/apply' },
     { label: 'Start', href: '/start' },
     { label: 'Vault', href: '/vault' },
+    { label: 'Pricing', href: '/pricing' },
     { label: 'Privacy', href: '/privacy' },
   ],
   vault: {
