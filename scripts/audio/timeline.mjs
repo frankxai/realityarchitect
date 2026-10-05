@@ -9,6 +9,8 @@
  *   A line that opens with "Meaning." or "Mechanism." gets a short beat after the signpost, the same in every track.
  */
 
+import crypto from 'node:crypto'
+
 export const SIGNPOST_BEAT = 0.6
 export const CROSSFADE = 4
 export const FIRST_FADE_IN = 1.5
@@ -102,6 +104,22 @@ export function layout(events, speechDurations, tail = 10) {
     return { cue: change.cue, start, end, fadeIn: index === 0 ? FIRST_FADE_IN : CROSSFADE, fadeOut: next ? CROSSFADE : FINAL_FADE_OUT }
   })
   return { voice, spans, total, voiceEnd }
+}
+
+/**
+ * The cache key of one synthesized segment: the text, the voice settings, and the context sent with it
+ * (previous_text / next_text shape the delivery), so a line in a new place is voiced again, not reused.
+ */
+export function segmentKey(text, context, opts) {
+  const value = { text, previous: context?.previous ?? '', next: context?.next ?? '', provider: opts.provider, voice: opts.voice ?? '', model: opts.model, v: 2 }
+  return crypto.createHash('sha256').update(JSON.stringify(value)).digest('hex').slice(0, 24)
+}
+
+/** One line of an ffmpeg concat list: forward slashes, and a single quote escaped the way the demuxer reads it. */
+export function concatLine(file) {
+  const quote = String.fromCharCode(39)
+  const escaped = file.replace(/\\/g, '/').split(quote).join(`${quote}\\${quote}${quote}`)
+  return `file ${quote}${escaped}${quote}`
 }
 
 export function formatTime(seconds) {

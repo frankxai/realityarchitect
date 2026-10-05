@@ -19,6 +19,7 @@ export type Block =
   | { kind: 'paragraph'; text: string }
   | { kind: 'list'; ordered: boolean; items: string[] }
   | { kind: 'quote'; text: string }
+  | { kind: 'fence'; lang: string; text: string }
 
 export type Doc = { front: FrontMatter; blocks: Block[] }
 
@@ -74,7 +75,7 @@ const LIST_ITEM = /^(\s*)(?:(\d+)[.)]|[-*+])\s+(.*)$/
 
 /** Splits a document into front matter and blocks. Blank lines end paragraphs; indented lines continue list items. */
 export function parseMarkdown(source: string): Doc {
-  const text = source.replace(/^﻿/, '')
+  const text = source.charCodeAt(0) === 0xfeff ? source.slice(1) : source
   const fm = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(text)
   const front = fm ? parseFrontMatter(fm[1]) : {}
   // A lone \r, U+2028 and U+2029 end lines too, so every line the loop sees is one the heading test can match.
@@ -85,6 +86,16 @@ export function parseMarkdown(source: string): Doc {
     const line = lines[i]
     if (!line.trim()) {
       i++
+      continue
+    }
+    // A fenced block keeps its lines verbatim (a file format, a template), so nothing inside it is parsed.
+    const fence = /^```([\w-]*)\s*$/.exec(line)
+    if (fence) {
+      const body: string[] = []
+      i++
+      while (i < lines.length && !/^```\s*$/.test(lines[i])) body.push(lines[i++])
+      i++
+      blocks.push({ kind: 'fence', lang: fence[1], text: body.join('\n') })
       continue
     }
     const heading = /^(#{1,3})\s+(.*?)\s*#*\s*$/.exec(line)
@@ -124,7 +135,7 @@ export function parseMarkdown(source: string): Doc {
     }
     // The first line is always consumed, so a line no other branch takes can never stall the loop.
     const parts: string[] = [lines[i++].trim()]
-    while (i < lines.length && lines[i].trim() && !/^(#{1,3})\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !LIST_ITEM.test(lines[i])) parts.push(lines[i++].trim())
+    while (i < lines.length && lines[i].trim() && !/^(#{1,3})\s/.test(lines[i]) && !/^>\s?/.test(lines[i]) && !/^```/.test(lines[i]) && !LIST_ITEM.test(lines[i])) parts.push(lines[i++].trim())
     blocks.push({ kind: 'paragraph', text: parts.join(' ') })
   }
   return { front, blocks }
@@ -194,9 +205,11 @@ export function sections(blocks: Block[]): { id: string; title: string; blocks: 
   return out
 }
 
+/** Words of prose: a fenced block is a format to copy, not reading, so it does not count. */
 export function wordCount(blocks: Block[]): number {
   let total = 0
   for (const block of blocks) {
+    if (block.kind === 'fence') continue
     const texts = block.kind === 'list' ? block.items : [block.text]
     for (const text of texts) total += plainText(text).split(/\s+/).filter(Boolean).length
   }

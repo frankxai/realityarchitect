@@ -40,6 +40,13 @@ const LOOP_LABEL: Record<string, string> = {
   decisions: 'Decisions loop',
   pace: 'Pace check',
 }
+// Section titles carry an epistemic label, e.g. "Tonight (reported)". It is shown as a quiet tag, not as part of the title.
+const EPISTEMIC = /^(.*?)\s*\((desired|reported|planned|done|meaning|computed)\)\s*$/
+function splitTitle(title: string): { text: string; label: string } {
+  const match = EPISTEMIC.exec(title)
+  return match ? { text: match[1], label: match[2] } : { text: title, label: '' }
+}
+
 const FOCUS = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg'
 
 export default async function ProgramDay({ params }: { params: Promise<Params> }) {
@@ -47,6 +54,8 @@ export default async function ProgramDay({ params }: { params: Promise<Params> }
   if (!n) return notFound()
   const day = readDay(n)
   const week = WEEKS.find((item) => item.week === day.week)
+  const previous = n > 1 ? readDay(n - 1) : null
+  const next = n < DAYS ? readDay(n + 1) : null
 
   return (
     <article className="mx-auto max-w-2xl py-12 sm:py-16" aria-labelledby="day-title">
@@ -65,8 +74,8 @@ export default async function ProgramDay({ params }: { params: Promise<Params> }
           <li className="rounded-full border border-border px-3 py-1 font-mono text-muted">{LOOP_LABEL[day.loop] ?? day.loop}</li>
           {day.library.map((id) => (
             <li key={id}>
-              <Link href={`/library#${id}`} className={`inline-flex rounded-full border border-border px-3 py-1 text-muted hover:border-accent/60 hover:text-ink ${FOCUS}`}>
-                Library: {LABELS.get(id) ?? id}
+              <Link href={`/library#${id}`} className={`inline-flex rounded-full border border-accent/40 px-3 py-1 text-accent hover:border-accent hover:text-ink ${FOCUS}`}>
+                Library: {LABELS.get(id) ?? id} <span aria-hidden="true">&nbsp;→</span>
               </Link>
             </li>
           ))}
@@ -79,33 +88,50 @@ export default async function ProgramDay({ params }: { params: Promise<Params> }
         </div>
       )}
 
-      {day.sections.map((section) => (
+      {day.sections.map((section) => {
+        const title = splitTitle(section.title)
+        return (
         <section key={section.id} aria-labelledby={section.id} className="mt-10">
-          <h2 id={section.id} className="scroll-mt-28 text-xl font-semibold text-ink">
-            <Text text={section.title} />
+          <h2 id={section.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 scroll-mt-28 text-xl font-semibold text-ink">
+            <Text text={title.text} />
+            {title.label && <span className="rounded-full border border-border px-2.5 py-0.5 font-mono text-xs font-normal uppercase tracking-[0.14em] text-muted">{title.label}</span>}
           </h2>
           <div className="mt-4">
             <Prose blocks={section.blocks} headingOffset={1} />
           </div>
         </section>
-      ))}
+        )
+      })}
 
-      <aside className="mt-12 rounded-2xl border border-border bg-surface/70 p-5 text-sm leading-relaxed text-muted">
-        Do today&apos;s practice in the <Link href="/studio" className={`text-accent underline-offset-4 hover:underline ${FOCUS}`}>Studio</Link>, with
-        the Claude Code plugin&apos;s <code className="font-mono text-ink">reality-loop</code> skill, or in your own notes. Your
-        words stay with you.
+      <aside className="mt-12 rounded-2xl border border-border bg-surface/70 p-5 sm:p-6" aria-label="Do the practice">
+        <Link href="/studio" className={`inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent/80 sm:w-auto ${FOCUS}`}>
+          Do day {n} in the Studio
+        </Link>
+        <p className="mt-3 text-sm leading-relaxed text-muted">
+          Or with the Claude Code plugin&apos;s <code className="font-mono text-ink">reality-loop</code> skill, or in your own notes.
+          Your words stay with you.
+        </p>
       </aside>
 
-      <nav aria-label="Days" className="mt-10 flex items-center justify-between gap-4 border-t border-border pt-6 text-sm">
-        {n > 1 ? (
-          <Link href={`/programs/imaginal-30/${n - 1}`} className={`text-muted hover:text-ink ${FOCUS}`} rel="prev">← Day {n - 1}</Link>
+      <nav aria-label="Days" className="mt-10 grid gap-3 border-t border-border pt-6 sm:grid-cols-2">
+        {previous ? (
+          <Link href={`/programs/imaginal-30/${n - 1}`} rel="prev" className={`flex min-h-12 flex-col justify-center rounded-xl border border-border px-4 py-3 hover:border-accent/60 ${FOCUS}`}>
+            <span className="font-mono text-xs uppercase tracking-[0.14em] text-muted">← Day {n - 1}</span>
+            <span className="mt-0.5 text-sm text-ink"><Text text={previous.title} /></span>
+          </Link>
         ) : (
-          <span />
+          <span className="hidden sm:block" />
         )}
-        {n < DAYS ? (
-          <Link href={`/programs/imaginal-30/${n + 1}`} className={`font-semibold text-accent hover:text-ink ${FOCUS}`} rel="next">Day {n + 1} →</Link>
+        {next ? (
+          <Link href={`/programs/imaginal-30/${n + 1}`} rel="next" className={`flex min-h-12 flex-col justify-center rounded-xl border border-accent/40 px-4 py-3 text-right hover:border-accent ${FOCUS}`}>
+            <span className="font-mono text-xs uppercase tracking-[0.14em] text-accent">Day {n + 1} →</span>
+            <span className="mt-0.5 text-sm text-ink"><Text text={next.title} /></span>
+          </Link>
         ) : (
-          <Link href="/programs/imaginal-30" className={`font-semibold text-accent hover:text-ink ${FOCUS}`}>Back to the program →</Link>
+          <Link href="/programs/imaginal-30" className={`flex min-h-12 flex-col justify-center rounded-xl border border-accent/40 px-4 py-3 text-right hover:border-accent ${FOCUS}`}>
+            <span className="font-mono text-xs uppercase tracking-[0.14em] text-accent">The thirty days →</span>
+            <span className="mt-0.5 text-sm text-ink">Back to the program</span>
+          </Link>
         )}
       </nav>
     </article>

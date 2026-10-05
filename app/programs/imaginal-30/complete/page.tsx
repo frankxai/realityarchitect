@@ -37,12 +37,22 @@ export default function CompleteEdition() {
         ← The free program
       </Link>
       <header className="mt-6">
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">Complete Edition · optional</p>
-        <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">The Imaginal Act, with everything around it.</h1>
+        <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+          Complete Edition · {open ? 'optional' : 'in production'}
+        </p>
+        <h1 className="mt-3 text-balance text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">The Imaginal Act, with everything around it.</h1>
         <p className="mt-5 text-lg leading-relaxed text-muted">
           The same thirty days, with production for the people who want it: rehearsals to listen to, the companion book, a
           journal to print, and a vault that opens in Obsidian.
         </p>
+        {!open && (
+          <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3">
+            <Link href="/programs/imaginal-30/1" className={`inline-flex min-h-11 items-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent/80 ${FOCUS}`}>
+              Begin day 1, free
+            </Link>
+            <p className="text-sm text-muted">The edition is being made. The free program is complete today.</p>
+          </div>
+        )}
       </header>
 
       <section aria-labelledby="inside" className="mt-12">
@@ -79,7 +89,7 @@ export default function CompleteEdition() {
               in your Polar account right away. Every update is included, and if it is not for you, a refund within{' '}
               {COMPLETE_EDITION.refundDays} days needs no reason. Buying it also helps keep the free program free.
             </p>
-            <a href={COMPLETE_EDITION.checkoutUrl} className={`mt-6 inline-flex items-center rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-bg hover:bg-accent/90 ${FOCUS}`} rel="noopener noreferrer">
+            <a href={COMPLETE_EDITION.checkoutUrl} className={`mt-6 inline-flex items-center rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-bg hover:bg-accent/80 ${FOCUS}`} rel="noopener noreferrer">
               Get the Complete Edition · {priceLabel()}
             </a>
           </>

@@ -5,7 +5,7 @@ import os from 'node:os'
 import path from 'node:path'
 import test from 'node:test'
 import { run } from '../plugins/reality-architect/bin/reality.mjs'
-import { TOOLS, callTool, handle } from '../plugins/reality-architect/mcp/server.mjs'
+import { TOOLS, callTool, createSession } from '../plugins/reality-architect/mcp/server.mjs'
 import { bundleFiles } from '../lib/studio/export.ts'
 import { sampleState } from '../lib/studio/sample.ts'
 
@@ -61,21 +61,54 @@ test('the Library answers by words or id without a home', () => {
   assert.match(callTool('reality_loops', {}, {}).text, /^morning: /)
 })
 
-test('bad input and a missing home come back as tool errors the agent can relay', () => {
+/** A session that has completed the MCP handshake. */
+function ready(env) {
+  const handle = createSession(env)
+  handle({ jsonrpc: '2.0', id: 0, method: 'initialize', params: { protocolVersion: '2025-11-25', capabilities: {}, clientInfo: { name: 'test', version: '0' } } })
+  handle({ jsonrpc: '2.0', method: 'notifications/initialized' })
+  return handle
+}
+const call = (handle, name, args, id = 1) => handle({ jsonrpc: '2.0', id, method: 'tools/call', params: { name, arguments: args } })
+
+test('the lifecycle holds: tools answer only after initialize, ping always does', () => {
+  const handle = createSession({ REALITY_HOME: os.tmpdir() })
+  assert.equal(handle({ jsonrpc: '2.0', id: 1, method: 'tools/list' }).error.code, -32002)
+  assert.equal(call(handle, 'reality_loops', {}).error.code, -32002)
+  assert.deepEqual(handle({ jsonrpc: '2.0', id: 2, method: 'ping' }).result, {})
+  handle({ jsonrpc: '2.0', id: 3, method: 'initialize', params: { protocolVersion: '2025-06-18' } })
+  assert.equal(handle({ jsonrpc: '2.0', id: 4, method: 'tools/list' }).result.tools.length, TOOLS.length)
+})
+
+test('protocol errors are JSON-RPC errors; argument and home problems are tool results the agent can fix', () => {
   // REALITY_HOME pointing at a folder without reality.md: no home, whatever this machine's ~/reality.md holds.
   const empty = fs.mkdtempSync(path.join(os.tmpdir(), 'ra-mcp-empty-'))
-  const home = handle({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'reality_status', arguments: {} } }, { REALITY_HOME: empty })
+  const home = call(ready({ REALITY_HOME: empty }), 'reality_status', {})
   fs.rmSync(empty, { recursive: true, force: true })
   assert.equal(home.result.isError, true)
   assert.match(home.result.content[0].text, /REALITY_HOME/)
-  for (const [name, args, expected] of [['reality_brief', { loop: 'nope' }, /loop must be one of/], ['reality_status', { today: '2026-02-31' }, /real day/], ['reality_insights', { days: 3 }, /7 to 365/], ['no_such_tool', {}, /Unknown tool/]]) {
-    const response = handle({ jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name, arguments: args } }, { REALITY_HOME: os.tmpdir() })
+
+  const handle = ready({ REALITY_HOME: os.tmpdir() })
+  for (const [name, args, expected] of [['reality_brief', { loop: 'nope' }, /loop must be one of/], ['reality_status', { today: '2026-02-31' }, /real day/], ['reality_insights', { days: 3 }, /7 to 365/]]) {
+    const response = call(handle, name, args)
     assert.equal(response.result.isError, true, name)
     assert.match(response.result.content[0].text, expected, name)
   }
-  assert.equal(handle({ jsonrpc: '2.0', id: 3, method: 'nope' }).error.code, -32601)
+  assert.equal(call(handle, 'no_such_tool', {}).error.code, -32602)
+  assert.equal(handle({ jsonrpc: '2.0', id: 5, method: 'tools/call', params: {} }).error.code, -32602)
+  assert.equal(call(handle, 'reality_loops', 'not an object').error.code, -32602)
+  assert.equal(handle({ jsonrpc: '2.0', id: 6, method: 'nope' }).error.code, -32601)
   assert.equal(handle({ jsonrpc: '2.0', method: 'notifications/initialized' }), null)
-  assert.equal(handle({ id: 4, method: 'ping' }).error.code, -32600)
+})
+
+test('ids: null is a request and is answered; invalid ids and messages are rejected', () => {
+  const handle = createSession({})
+  assert.deepEqual(handle({ jsonrpc: '2.0', id: null, method: 'ping' }), { jsonrpc: '2.0', id: null, result: {} })
+  assert.equal(handle({ jsonrpc: '2.0', id: 'a', method: 'ping' }).id, 'a')
+  for (const bad of [{ jsonrpc: '2.0', id: { x: 1 }, method: 'ping' }, { jsonrpc: '2.0', id: true, method: 'ping' }, { id: 4, method: 'ping' }, [], null, 'text']) {
+    const response = handle(bad)
+    assert.equal(response.error.code, -32600, JSON.stringify(bad))
+  }
+  assert.equal(handle({ id: 4, method: 'ping' }).id, 4, 'a valid id is echoed even when the message is invalid')
 })
 
 test('over stdio: initialize, list, call', async (t) => {

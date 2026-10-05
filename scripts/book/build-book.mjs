@@ -17,6 +17,8 @@ const here = path.dirname(fileURLToPath(import.meta.url))
 function args(argv) {
   const out = { title: 'The Honest Canon', subtitle: 'Reality Theory and the Practice of Architecting a Life', author: 'Frank Riemer' }
   for (let i = 0; i < argv.length; i++) out[argv[i].replace(/^--/, '')] = argv[++i]
+  // Absolute paths, so no chapter path can ever start with "-" and be read by Pandoc as an option.
+  for (const key of ['src', 'out', 'cover']) if (out[key]) out[key] = path.resolve(out[key])
   return out
 }
 
@@ -24,7 +26,7 @@ function args(argv) {
 export function buildOrder(outline) {
   const section = outline.split(/^## Build order\s*$/m)[1] ?? ''
   const block = /```[^\n]*\n([\s\S]*?)```/.exec(section)
-  return block ? block[1].split(/\r?\n/).map((line) => line.trim()).filter((line) => /^[\w.-]+\.md$/.test(line)) : []
+  return block ? block[1].split(/\r?\n/).map((line) => line.trim()).filter((line) => /^[A-Za-z0-9][\w.-]*\.md$/.test(line)) : []
 }
 
 function pandoc(list) {

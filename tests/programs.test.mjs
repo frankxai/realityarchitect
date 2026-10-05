@@ -47,6 +47,16 @@ test('unusual line endings never stall the parser', () => {
   assert.deepEqual(parseMarkdown('# Day 1\r\r## Foo').blocks.map((block) => block.kind), ['heading', 'heading'])
 })
 
+test('a fenced block is kept verbatim, its lines never parsed, and it does not count as prose', () => {
+  const fence = '```'
+  const { blocks } = parseMarkdown(['## The practice', '', '1. Write it.', '', `${fence}markdown`, '---', '# Snapshot — <today>', '- True now:', fence, '', 'After.'].join('\n'))
+  assert.deepEqual(blocks.map((block) => block.kind), ['heading', 'list', 'fence', 'paragraph'])
+  assert.deepEqual(blocks[2], { kind: 'fence', lang: 'markdown', text: ['---', '# Snapshot — <today>', '- True now:'].join('\n') })
+  assert.equal(wordCount(blocks), 2 + 2 + 1)
+  const unclosed = parseMarkdown([`${fence}`, 'a', 'b'].join('\n')).blocks
+  assert.deepEqual(unclosed, [{ kind: 'fence', lang: '', text: ['a', 'b'].join('\n') }])
+})
+
 test('weeks cover every day exactly once', () => {
   const covered = WEEKS.flatMap((week) => Array.from({ length: week.last - week.first + 1 }, (_, i) => week.first + i))
   assert.deepEqual(covered, Array.from({ length: DAYS }, (_, i) => i + 1))

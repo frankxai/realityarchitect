@@ -49,7 +49,9 @@ export const COMPLETE_EDITION: Edition = {
   ],
 }
 
-const POLAR_CHECKOUT = /^https:\/\/(?:buy\.polar\.sh|polar\.sh)\/[\w./?=&%-]+$/
+// A Polar hosted checkout link and nothing else (not polar.sh pages, not other buy.polar.sh paths). An optional query
+// carries a discount code or metadata, e.g. ?discount_code=LAUNCH.
+const POLAR_CHECKOUT = /^https:\/\/buy\.polar\.sh\/polar_cl_[A-Za-z0-9]+(?:\?[\w=&%.-]*)?$/
 
 /** Open only when Frank has opened it and the link goes to Polar's hosted checkout. */
 export function isOpen(edition: Edition = COMPLETE_EDITION): boolean {
