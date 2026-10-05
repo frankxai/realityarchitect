@@ -3,6 +3,18 @@
 Paste everything below the line into a new agent session (Claude Code, opened in `C:\Users\frank\.agent-worktrees`,
 or any harness that reads AGENTS.md). It is self-contained.
 
+## Status (update this block as workstreams land)
+
+As of 2026-10-05:
+
+| Workstream | State | Where |
+| --- | --- | --- |
+| A. Offer and delivery | **Done:** doc merged. **Waiting on Frank:** `/pricing` built (`PAID_OPEN = false`), merge publishes the prices | `docs/strategy/OFFER-AND-DELIVERY.md` (#55) · PR #56 |
+| I. SIS | **Waiting on Frank:** kernel CI (its first run passed: 7 positive, 2 negative fixtures), registry v0.1.2, pointer and registry entry | SIS PR #280 |
+| J. Cinematic site | **Live:** homepage story (#53). **Staged:** Veo night-to-dawn clip | `components/ScrollStory.*` · `brand-assets/realityarchitect/story-2026-10-04/` |
+| K. Soulbook guarantee | **Waiting on Frank:** refund policy instead of "if you're not transformed"; placeholder testimonials removed | frankx.ai PR #888 |
+| B–H | Not started | start with B (passkeys ADR), then C (Polar sandbox) |
+
 ---
 
 You are the lead product engineer for **Reality Architect**: repo `frankxai/realityarchitect`, production
