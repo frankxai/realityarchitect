@@ -100,7 +100,7 @@ Every run shows inputs, scope, output, provider/cost when relevant, and a review
 Use the Starlight engine and existing runtime conventions where applicable; do not create another general-purpose agent orchestration stack inside this repo.
 
 ### Eve
-Vercel Eve is in preview. Evaluate it for a customer-deployed Reality Architect agent template and tightly bounded internal operations, with pinned versions, secrets management and tested security boundaries.
+Vercel Eve is currently in beta; its APIs and behavior may change. Evaluate it for a customer-deployed Reality Architect agent template and tightly bounded internal operations, with pinned versions, secrets management and tested security boundaries.
 Do not embed an always-on commercial Eve agent in the consumer Studio as the default architecture. A paid deployment template can run in the customer's Vercel account with their keys; hosted execution requires isolation, durable jobs, cancellation, limits and support economics first.
 
 ## Identity, Supabase and hosted SaaS
