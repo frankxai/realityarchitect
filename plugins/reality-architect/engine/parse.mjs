@@ -191,6 +191,54 @@ export function parseAim(text, file = 'aim.md') {
 
 const FIELD = { 'Happened (fact)': 'fact', 'Meant (my meaning)': 'meaning', 'Did (action)': 'action', 'Next (planned)': 'next' }
 
+/** The separator between the parts of a witness entry's meta line: a middle dot (U+00B7) with a space on each side. */
+export const META_SEP = ` ${String.fromCharCode(0xb7)} `
+const META_KEY = /^(?:Bridge|Rep|Domain):/
+
+/**
+ * Reads a witness entry's meta line into `entry`: `- Bridge: <aim-slug>`, `Rep: <rep name>` and `Domain: <domain-id>`,
+ * joined by META_SEP (built from its char code, so this source stays ASCII). Returns false when the line is not one.
+ * Each part is optional, and a part that is not there leaves the entry as it was: `entry.rep` exists only when the
+ * line names a rep. `Rep:` (since STATE.md v0.3) names the rep the entry evidences, exactly as the aim's `## Bridge`
+ * lists it. A rep name may contain the separator itself, so the text after `Rep:` runs on until the next part that
+ * starts with a known key.
+ */
+export function readWitnessMeta(line, entry) {
+  const where = /^- (.*(?:Bridge|Rep|Domain):.*)$/.exec(line)
+  if (!where) return false
+  const parts = []
+  for (const part of where[1].split(META_SEP)) {
+    const last = parts.length - 1
+    if (last >= 0 && /^Rep:/.test(parts[last].trim()) && !META_KEY.test(part.trim())) parts[last] += META_SEP + part
+    else parts.push(part)
+  }
+  for (const part of parts) {
+    const bridge = /^Bridge:\s*(.*)$/.exec(part.trim())
+    if (bridge) {
+      entry.bridgeDeleted = /\(deleted\)$/.test(bridge[1])
+      entry.bridge = bridge[1].replace(/\s*\(deleted\)$/, '').trim()
+    }
+    const rep = /^Rep:\s*(.*)$/.exec(part.trim())
+    if (rep) entry.rep = clean(rep[1])
+    const domain = /^Domain:\s*(.*)$/.exec(part.trim())
+    if (domain && DOMAIN_IDS.has(domain[1].trim())) entry.domain = domain[1].trim()
+  }
+  return true
+}
+
+/**
+ * The index of the rep `name` names in `reps` (an aim's listed reps), or -1. The name matches exactly, ignoring the
+ * spaces around it; failing that, it may differ in case only when that leaves exactly one rep. Never a guess.
+ */
+export function matchRep(reps, name) {
+  const wanted = String(name ?? '').trim()
+  if (!wanted) return -1
+  const exact = (reps ?? []).findIndex((rep) => String(rep.name).trim() === wanted)
+  if (exact >= 0) return exact
+  const folded = (reps ?? []).flatMap((rep, index) => (String(rep.name).trim().toLowerCase() === wanted.toLowerCase() ? [index] : []))
+  return folded.length === 1 ? folded[0] : -1
+}
+
 /** Witness entries from witness.md or a day log. Unknown kinds and impossible dates are left for validate.mjs. */
 export function parseWitness(text) {
   const entries = []
@@ -212,17 +260,7 @@ export function parseWitness(text) {
       current[FIELD[field[1]]] = field[2].trim()
       continue
     }
-    const where = /^- (.*(?:Bridge|Domain):.*)$/.exec(line)
-    if (!where) continue
-    for (const part of where[1].split(' · ')) {
-      const bridge = /^Bridge:\s*(.*)$/.exec(part.trim())
-      if (bridge) {
-        current.bridgeDeleted = /\(deleted\)$/.test(bridge[1])
-        current.bridge = bridge[1].replace(/\s*\(deleted\)$/, '').trim()
-      }
-      const domain = /^Domain:\s*(.*)$/.exec(part.trim())
-      if (domain && DOMAIN_IDS.has(domain[1].trim())) current.domain = domain[1].trim()
-    }
+    readWitnessMeta(line, current)
   }
   return entries.filter((entry) => WITNESS_KINDS.includes(entry.kind) && isDay(entry.day))
 }

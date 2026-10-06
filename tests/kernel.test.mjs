@@ -6,13 +6,18 @@ import path from 'node:path'
 import test from 'node:test'
 import { run } from '../plugins/reality-architect/bin/reality.mjs'
 import { AUDIENCES, checkKernel, toKernel } from '../plugins/reality-architect/engine/kernel.mjs'
-import { loadReality, resolveHome } from '../plugins/reality-architect/engine/parse.mjs'
+import { META_SEP, loadReality, resolveHome } from '../plugins/reality-architect/engine/parse.mjs'
+import { validate } from '../plugins/reality-architect/engine/validate.mjs'
 import { assertStrict } from '../plugins/reality-architect/engine/vendor/sis/jsonschema.mjs'
-import { bundleFiles } from '../lib/studio/export.ts'
+import { ROOT, bridgeSlugs, bundleFiles, witnessMd } from '../lib/studio/export.ts'
 import { sampleState } from '../lib/studio/sample.ts'
 
 const TODAY = '2026-10-04'
 const VENDOR = 'plugins/reality-architect/engine/vendor/sis'
+// A Studio export written by the STATE.md v0.2 exporter (plugin 0.4.0, before Rep:), and the kernel bundles that engine
+// projected from it on 2026-10-04 with offset Z. It holds a one-rep aim, a two-rep aim with an entry whose fact names a
+// rep and entries that name none, a rep under a deleted aim, and a done move.
+const V02 = 'tests/fixtures/state-v02'
 
 /** A Studio state exported to files and read back by the engine, as an agent would see it. */
 function realityOf(t, state = sampleState(TODAY), extra = []) {
@@ -203,7 +208,14 @@ test('a guide sees structure and counts: canaries planted in every private field
   for (const decision of state.decisions) {
     for (const field of ['title', 'context', 'options', 'choice', 'why', 'outcome']) decision[field] = plant(`decision ${field}`)
   }
-  const { reality } = realityOf(t, state)
+  // The rep an entry names (STATE.md v0.3) is the person's own word too: a hand-written name the aim does not list.
+  const slug = bridgeSlugs(state).get(state.bridges[0].id)
+  const named = [
+    `### ${TODAY} 21:00${META_SEP}rep`, `- **Happened (fact):** ${plant('rep fact')}`,
+    `- Bridge: ${slug}${META_SEP}Rep: ${plant('rep named on an entry')}${META_SEP}Domain: craft`, '',
+  ].join('\n')
+  const { reality } = realityOf(t, state, [{ path: `${ROOT}reality/witness.md`, text: `${witnessMd(state)}\n${named}` }])
+  assert.ok(reality.witness.some((entry) => entry.rep === canaries.at(-1).token), 'the engine reads the named rep')
   const alliance = JSON.stringify(kernel(reality, 'alliance'))
   const own = JSON.stringify(kernel(reality, 'private'))
   // Same algorithm as the engine's witness fingerprint and the private receipts' content hash.
@@ -223,6 +235,121 @@ test('a guide sees structure and counts: canaries planted in every private field
   const payloadKeys = new Set(guide.events.flatMap((event) => Object.keys(event.payload)))
   for (const key of payloadKeys) assert.ok(['kind', 'primed', 'result', 'rehearsed', 'granularity'].includes(key), `unexpected guide payload key: ${key}`)
   for (const doc of guide.objects) assert.ok(['person', 'life_domain', 'goal', 'world_state'].includes(doc.type), `a guide sees no ${doc.type} objects`)
+})
+
+/** Copies a folder with its line endings normalized, so a CRLF checkout reads the same bytes as CI. */
+function copyHome(from, to) {
+  for (const entry of fs.readdirSync(from, { withFileTypes: true })) {
+    const source = path.join(from, entry.name)
+    const target = path.join(to, entry.name)
+    if (entry.isDirectory()) {
+      fs.mkdirSync(target, { recursive: true })
+      copyHome(source, target)
+    } else fs.writeFileSync(target, fs.readFileSync(source, 'utf8').replace(/\r\n/g, '\n'))
+  }
+}
+
+test('STATE.md v0.2 files, with no Rep:, project byte for byte as they did before v0.3 (snapshot)', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ra-v02-'))
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }))
+  copyHome(path.join(V02, 'home'), dir)
+  for (const file of ['reality/witness.md', ...fs.readdirSync(path.join(dir, 'reality', 'log')).map((name) => `reality/log/${name}`)]) {
+    assert.doesNotMatch(fs.readFileSync(path.join(dir, file), 'utf8'), /Rep:/, `${file} predates Rep:`)
+  }
+  const reality = loadReality(resolveHome(dir))
+  for (const audience of AUDIENCES) {
+    const expected = fs.readFileSync(path.join(V02, `kernel.${audience}.json`), 'utf8').replace(/\r\n/g, '\n')
+    assert.equal(`${JSON.stringify(kernel(reality, audience), null, 2)}\n`, expected, `${audience}: byte-identical to the v0.2 projection`)
+    // The snapshot covers each way a rep was filed before v0.3: the only rep, the rep a fact names, the catch-all.
+    const filed = new Set(JSON.parse(expected).receipts.filter((doc) => doc.id.startsWith('ra:receipt:witness/')).map((doc) => doc.action_id))
+    assert.deepEqual([...filed].sort(), ['rep-1', 'rep-2', 'rep-other'], audience)
+  }
+  assert.deepEqual(validate(resolveHome(dir)).filter((issue) => /Rep:/.test(issue.message)), [], 'no rep warnings for files without Rep:')
+})
+
+test('v0.3: a rep entry names its rep, so a multi-rep aim files the receipt under that rep', (t) => {
+  const state = sampleState(TODAY)
+  const run = state.bridges.find((bridge) => bridge.id === 'sample-run')
+  run.reps.push({ id: 'rep-hills', name: 'Hill sprints', perWeek: 1 })
+  // The fact describes the session; only the Studio's link says which rep it was.
+  state.witness.unshift({ id: 'w-hills', at: `${TODAY}T05:00:00.000Z`, day: TODAY, time: '07:00', kind: 'rep', fact: 'Six hills by the old bridge.', meaning: '', action: '', next: '', primed: false, bridgeId: run.id, repId: 'rep-hills', domain: 'body' })
+  const { reality, home } = realityOf(t, state)
+  const bundle = kernel(reality)
+  assert.deepEqual(checkKernel(bundle), [])
+  const plan = bundle.plans.find((doc) => doc.id === 'ra:plan:aim/run-the-river-10k')
+  assert.deepEqual(plan.actions.filter((action) => action.tool === 'practice').map((action) => action.id), ['rep-1', 'rep-2'], 'nothing left for the catch-all')
+  const receiptOf = (fact) => bundle.receipts.find((doc) => doc.id === bundle.events.find((event) => event.payload.fact === fact).receipt_id)
+  assert.equal(receiptOf('Six hills by the old bridge.').action_id, 'rep-2')
+  for (const entry of state.witness.filter((candidate) => candidate.repId === 'sample-rep-run')) assert.equal(receiptOf(entry.fact).action_id, 'rep-1', entry.fact)
+  assert.equal(bundle.events.find((event) => event.payload.fact === 'Six hills by the old bridge.').payload.rep, 'Hill sprints', 'the person\'s own view keeps the name')
+  assert.deepEqual(validate(resolveHome(home)).filter((issue) => /Rep:/.test(issue.message)), [], 'every exported name is one the aim lists')
+
+  // The same files without Rep: are what v0.2 wrote: the entries fall to the catch-all.
+  const strip = (text) => text.split('\n').map((line) => (line.startsWith('- Bridge:') ? line.split(META_SEP).filter((part) => !part.startsWith('Rep:')).join(META_SEP) : line)).join('\n')
+  const before = realityOf(t, state, [{ path: `${ROOT}reality/witness.md`, text: strip(witnessMd(state)) }]).reality
+  const beforePlan = kernel(before).plans.find((doc) => doc.id === plan.id)
+  assert.ok(beforePlan.actions.some((action) => action.id === 'rep-other'), 'without Rep:, a multi-rep aim cannot place these entries')
+})
+
+test('v0.3: a rep name the aim does not list goes to the catch-all, never guessed, and validation warns', (t) => {
+  const state = sampleState(TODAY)
+  state.bridges.find((bridge) => bridge.id === 'sample-run').reps.push({ id: 'rep-hills', name: 'Hill sprints', perWeek: 1 })
+  const entry = (time, fact, meta) => [`### 2026-10-03 ${time}${META_SEP}rep`, `- **Happened (fact):** ${fact}`, `- ${meta.join(META_SEP)}`, ''].join('\n')
+  const handWritten = [
+    entry('18:00', 'Forty lengths at the pool.', ['Bridge: run-the-river-10k', 'Rep: Swimming', 'Domain: body']),
+    // The album has a single rep: a name it does not list is still not guessed onto it.
+    entry('19:00', 'Mastering practice.', ['Bridge: finish-the-album', 'Rep: Mastering']),
+    // A difference in letter case alone still names the one listed rep.
+    entry('20:00', 'Finishing session on "Harbor".', ['Bridge: finish-the-album', 'Rep: 90-MINUTE finishing session']),
+    entry('21:00', 'Hills with no aim named.', ['Rep: Hill sprints', 'Domain: body']),
+  ].join('\n')
+  const text = `${witnessMd(state)}\n${handWritten}`
+  const { reality, home } = realityOf(t, state, [{ path: `${ROOT}reality/witness.md`, text }])
+  for (const audience of AUDIENCES) {
+    const bundle = kernel(reality, audience)
+    assert.deepEqual(checkKernel(bundle), [], audience)
+    const actionAt = (time) => bundle.receipts.find((doc) => doc.id === bundle.events.find((event) => event.occurred_at === `2026-10-03T${time}:00Z`).receipt_id)?.action_id
+    assert.equal(actionAt('18:00'), 'rep-other', `${audience}: an unknown name on a multi-rep aim`)
+    assert.equal(actionAt('19:00'), 'rep-other', `${audience}: an unknown name on a one-rep aim`)
+    assert.equal(actionAt('20:00'), 'rep-1', `${audience}: case alone`)
+    assert.equal(actionAt('21:00'), undefined, `${audience}: no aim, no receipt`)
+  }
+  const warnings = validate(resolveHome(home)).filter((issue) => issue.file === 'reality/witness.md' && /Rep:/.test(issue.message))
+  const lineOf = (needle) => text.split('\n').findIndex((line) => line.includes(needle)) + 1
+  assert.deepEqual(warnings.map((issue) => [issue.level, issue.line]), [['warning', lineOf('Rep: Swimming')], ['warning', lineOf('Rep: Mastering')], ['warning', lineOf('Rep: Hill sprints')]])
+  assert.match(warnings[0].message, /"Rep: Swimming" is not a rep that reality\/aims\/run-the-river-10k\.md lists/)
+  assert.match(warnings[0].message, /"Run \(any distance\)", "Hill sprints"/)
+  assert.match(warnings[2].message, /names none/)
+})
+
+test('v0.3: a Studio export round trip keeps the rep, even a name that holds the separator', (t) => {
+  const state = sampleState(TODAY)
+  const album = state.bridges.find((bridge) => bridge.id === 'sample-album')
+  album.reps[0].name = `Mix${META_SEP}master, 90 minutes`
+  album.reps.push({ id: 'rep-vocals', name: 'Vocal takes', perWeek: 2 })
+  const add = (id, time, fact, extra) => state.witness.unshift({ id, at: `${TODAY}T${time}:00.000Z`, day: TODAY, time, kind: 'rep', fact, meaning: '', action: '', next: '', primed: false, ...extra })
+  add('w-vocals', '06:00', 'Three takes of the chorus.', { bridgeId: album.id, repId: 'rep-vocals', domain: 'craft' })
+  // A rep removed from its aim, and an aim deleted, write no Rep: at all, so nothing is guessed.
+  add('w-removed', '06:10', 'A rep since removed.', { bridgeId: 'sample-run', repId: 'rep-removed' })
+  add('w-gone', '06:20', 'Under a deleted aim.', { bridgeId: 'gone', bridgeTitle: 'Old aim', repId: 'rep-vocals' })
+  const files = bundleFiles(state, TODAY)
+  assert.match(files.find((file) => file.path === `${ROOT}reality/witness.md`).text, new RegExp(`^- Bridge: finish-the-album${META_SEP}Rep: Vocal takes${META_SEP}Domain: craft$`, 'm'))
+  assert.match(files.find((file) => file.path === `${ROOT}reality/log/${TODAY}.md`).text, /Rep: Vocal takes/, 'the day log carries the same line')
+
+  const { reality } = realityOf(t, state)
+  const names = new Map(state.bridges.flatMap((bridge) => bridge.reps.map((rep) => [`${bridge.id}/${rep.id}`, rep.name])))
+  for (const entry of state.witness) {
+    const read = reality.witness.find((candidate) => candidate.day === entry.day && candidate.time === entry.time && candidate.fact === entry.fact)
+    assert.ok(read, entry.fact)
+    assert.equal(read.rep, names.get(`${entry.bridgeId}/${entry.repId}`), entry.fact)
+  }
+  const bundle = kernel(reality)
+  assert.deepEqual(checkKernel(bundle), [])
+  const albumPlan = bundle.plans.find((doc) => doc.id === 'ra:plan:aim/finish-the-album')
+  const filed = bundle.receipts.filter((doc) => doc.plan_id === albumPlan.id && doc.id.startsWith('ra:receipt:witness/')).map((doc) => doc.action_id)
+  assert.equal(filed.filter((id) => id === 'rep-2').length, 1, 'the vocal take')
+  assert.equal(filed.filter((id) => id === 'rep-1').length, state.witness.filter((entry) => entry.repId === 'sample-rep-finish').length, 'every finishing session, by a name holding the separator')
+  assert.ok(!filed.includes('rep-other'))
 })
 
 test('the projection is deterministic and honest about time', (t) => {

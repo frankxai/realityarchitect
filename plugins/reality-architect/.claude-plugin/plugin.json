@@ -1,6 +1,6 @@
 {
   "name": "reality-architect",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Reality Architect for your agents: skills, a read-only engine (graph, loops, briefs, validation) and a local MCP server that operate on the open reality.md + soul.md + reality/ format. Imagine it, build it, witness it, with meaning and mechanism kept separate.",
   "author": {
     "name": "Frank Riemer",

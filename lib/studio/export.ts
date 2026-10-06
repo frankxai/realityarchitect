@@ -1,5 +1,6 @@
 import { DOMAINS, GAP_CLASSES, domainLabel } from './domains.ts'
 import { assessPace } from './pace.ts'
+import { programLogLines, type ProgramDay } from './program.ts'
 import { addDays, slugify, uniqueSlug } from './util.ts'
 import type { Bridge, Decision, Snapshot, StudioState, WitnessEntry } from './types.ts'
 
@@ -231,11 +232,17 @@ function time(entry: WitnessEntry): string {
   return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
 }
 
-export function witnessEntryMd(entry: WitnessEntry, slugs: Map<string, string>): string {
+/**
+ * One witness entry in STATE.md form. Pass the bridges to name the rep an entry evidences (`Rep:`, since STATE.md
+ * v0.3): its name exactly as the aim file lists it, looked up from `repId` through the entry's own bridge. A rep that
+ * no longer exists, or a deleted bridge, writes no `Rep:`, so nothing is guessed.
+ */
+export function witnessEntryMd(entry: WitnessEntry, slugs: Map<string, string>, bridges: readonly Bridge[] = []): string {
   const tag = entry.kind === 'sign' ? ` · ${entry.primed ? 'primed' : 'unprimed'}` : ''
   const slug = entry.bridgeId ? slugs.get(entry.bridgeId) : undefined
   const bridge = slug ? `Bridge: ${slug}` : entry.bridgeTitle ? `Bridge: ${entry.bridgeTitle} (deleted)` : ''
-  const where = [bridge, entry.domain ? `Domain: ${entry.domain}` : ''].filter(Boolean).join(' · ')
+  const repName = slug && entry.repId ? bridges.find((candidate) => candidate.id === entry.bridgeId)?.reps.find((rep) => rep.id === entry.repId)?.name.trim() : ''
+  const where = [bridge, repName ? `Rep: ${repName}` : '', entry.domain ? `Domain: ${entry.domain}` : ''].filter(Boolean).join(' · ')
   return [
     `### ${entry.day} ${time(entry)} · ${entry.kind}${tag}`,
     `- **Happened (fact):** ${entry.fact}`,
@@ -257,7 +264,7 @@ The ledger: what happened (fact), what it meant to me (meaning), and what I did 
 when I had set out to notice something like them that day. Misses count too; meaning is mine and is not a claim of
 cause.
 
-${entries.length ? entries.map((entry) => witnessEntryMd(entry, slugs)).join('\n\n') : GAP}
+${entries.length ? entries.map((entry) => witnessEntryMd(entry, slugs, state.bridges)).join('\n\n') : GAP}
 `
 }
 
@@ -297,10 +304,13 @@ ${bullet([...wins, ...moves].map((line) => line.slice(2)))}
 `
 }
 
-export function dayLogMd(day: string, state: StudioState): string {
+/** `programDays` (from the server page) adds each day's title and minutes to the program block; without it, the day number stands alone. */
+export function dayLogMd(day: string, state: StudioState, programDays: ProgramDay[] = []): string {
   const slugs = bridgeSlugs(state)
   const note = state.days[day]
   const entries = newestFirst(state.witness.filter((entry) => entry.day === day))
+  // Plain text above the witness entries, not an engine field yet: it uses no witness heading and no day-note label.
+  const program = programLogLines(state.program, day, programDays)
   const lines = note
     ? [
         `- Looking for: ${orGap(note.lookFor)}`,
@@ -312,7 +322,7 @@ export function dayLogMd(day: string, state: StudioState): string {
     : ['- No morning note.']
   return `# ${day}
 ${lines.join('\n')}
-${entries.length ? `\n${entries.map((entry) => witnessEntryMd(entry, slugs)).join('\n\n')}\n` : ''}`
+${program.length ? `\n${program.join('\n')}\n` : ''}${entries.length ? `\n${entries.map((entry) => witnessEntryMd(entry, slugs, state.bridges)).join('\n\n')}\n` : ''}`
 }
 
 export function snapshotMd(snapshot: Snapshot): string {
@@ -418,7 +428,7 @@ ${realityMd(state, today)}
 ${bullet(pace)}
 
 === Witnessed ${since} to ${today} ===
-${recent.length ? recent.map((entry) => witnessEntryMd(entry, slugs)).join('\n\n') : GAP}
+${recent.length ? recent.map((entry) => witnessEntryMd(entry, slugs, state.bridges)).join('\n\n') : GAP}
 `
 }
 
@@ -442,8 +452,11 @@ Private by default. Do not commit this folder to a public repository.
 `
 }
 
-/** Every Markdown and JSON file of the export. The Studio adds the map and the image files. */
-export function bundleFiles(state: StudioState, today: string): { path: string; text: string }[] {
+/**
+ * Every Markdown and JSON file of the export. The Studio adds the map and the image files. `programDays` lets each
+ * day log name its program day's title and minutes.
+ */
+export function bundleFiles(state: StudioState, today: string, programDays: ProgramDay[] = []): { path: string; text: string }[] {
   const slugs = bridgeSlugs(state)
   const files: { path: string; text: string }[] = [
     { path: `${ROOT}START HERE.md`, text: startHere(today) },
@@ -455,8 +468,9 @@ export function bundleFiles(state: StudioState, today: string): { path: string; 
     { path: `${ROOT}reality/systems.md`, text: systemsMd(state) },
   ]
   for (const bridge of state.bridges) files.push({ path: `${ROOT}reality/aims/${slugs.get(bridge.id)}.md`, text: aimMd(bridge, state, today, slugs) })
-  const days = [...new Set([...Object.keys(state.days), ...state.witness.map((entry) => entry.day)])].sort()
-  for (const day of days) files.push({ path: `${ROOT}reality/log/${day}.md`, text: dayLogMd(day, state) })
+  // A program day marked done gets its log even when the person wrote nothing else that day.
+  const days = [...new Set([...Object.keys(state.days), ...state.witness.map((entry) => entry.day), ...(state.program?.done ?? [])])].sort()
+  for (const day of days) files.push({ path: `${ROOT}reality/log/${day}.md`, text: dayLogMd(day, state, programDays) })
   const snapshotNames = new Set<string>()
   for (const snapshot of [...state.snapshots].sort((a, b) => a.sealedAt.localeCompare(b.sealedAt))) {
     const name = uniqueSlug(snapshot.day, snapshotNames)

@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Studio } from '@/components/studio/Studio'
+import { readDays } from '@/lib/programs/imaginal-30'
+import { studioDays } from '@/lib/programs/studio-days'
 import { ogImage } from '@/lib/site'
 
 const description =
@@ -20,6 +22,8 @@ export const metadata: Metadata = {
 }
 
 export default function StudioPage() {
+  // Read on the server at build time: the Studio gets plain titles, minutes and intents, never the file system loader.
+  const programDays = studioDays(readDays())
   return (
     <div className="py-10 sm:py-14">
       <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">Reality Studio · on this device</p>
@@ -34,7 +38,7 @@ export default function StudioPage() {
         <Link href="/programs/imaginal-30" className="text-accent underline-offset-4 hover:underline">The 30-day program</Link>
       </p>
       <div className="mt-8">
-        <Studio />
+        <Studio programDays={programDays} />
       </div>
     </div>
   )
