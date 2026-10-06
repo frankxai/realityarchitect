@@ -141,8 +141,8 @@ This split is how the product stays both meaningful and honest.
 
 | Phase | What | Why it matters | Depends on |
 | --- | --- | --- | --- |
-| 2 | **Signed sealed snapshots.** A DSSE envelope (Ed25519) over the snapshot's canonical JSON, with the key held by the person (Studio Cloud keys, ADR-001). Verified with SIS's `protocol/lib/dsse.mjs` shape. | A record the person cannot quietly rewrite later. This is the honest answer to "evidence": tamper-evident, misses included. | ADR-001 keys |
-| 3 | **A SIP graph profile for the Guide licence.** Projection nodes, visibility `alliance`, rules P1–P5 checked with SIS `conform.mjs` in CI, revocation by key rotation. | A coach sees exactly what was consented to, and a redaction is declared, never silent. | Phase 2; the Guide licence |
+| 2 | **Signed sealed snapshots.** A DSSE envelope (Ed25519) over the snapshot's canonical JSON, with the key held by the person: a local key file the plugin creates outside the `reality/` folder, or a non-extractable WebCrypto key in the browser (ADR-003; ADR-001 is superseded). Verified with SIS's `protocol/lib/dsse.mjs` shape. | A record the person cannot quietly rewrite later. This is the honest answer to "evidence": tamper-evident, misses included. | None (ADR-003) |
+| 3 | **A SIP graph profile for the Guide Kit (ADR-003).** Projection nodes, visibility `alliance`, rules P1–P5 checked with SIS `conform.mjs` in CI, revocation by key rotation. | A coach sees exactly what was consented to, and a redaction is declared, never silent. | Phase 2; the Guide Kit |
 | 4 | **Opt-in sink into the person's own SIS.** Push the private projection to their SIS memory (local MCP), for people who run Starlight. | Every agent in their fleet knows their reality, with receipts. | — |
 | 5 | **Registry v0.1.2.** After SIS #280 merges, use `practice` and `witness_entry` directly instead of `capability` and `event`. | Exact semantics, fewer notes. | SIS #280 (Frank) |
 | 6 | **Upstream the validator.** A small SIS PR adding `minLength`, `minimum` and `maximum` to `protocol/lib/jsonschema.mjs`. | SIS can then validate its own kernel without Python. | — |

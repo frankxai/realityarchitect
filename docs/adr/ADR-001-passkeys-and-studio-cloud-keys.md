@@ -1,7 +1,8 @@
 # ADR-001 — Passkey accounts and Studio Cloud keys
 
-- **Status:** accepted 2026-10-05, under Frank's delegation (FRONTIER §11). Implementation is workstream B of the
-  product-fundamentals handoff.
+- **Status:** superseded 2026-10-06 by [ADR-003](ADR-003-your-agent-your-keys-your-storage.md) (proposed). Frank's
+  product doctrine rules out multi-tenant hosting, so do not build this stack. It was accepted on 2026-10-05 under
+  Frank's delegation (FRONTIER §11) as workstream B of the product-fundamentals handoff. It is kept as history.
 - **Decision:** Better Auth with `@better-auth/passkey` (1.7.x), self-hosted on Vercel (`fra1`) with Postgres on Neon
   Frankfurt. The end-to-end encryption layer is ours, on the client.
 

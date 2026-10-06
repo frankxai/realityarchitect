@@ -2,7 +2,10 @@
 
 For the next agent: this is everything needed to continue at the same bar, without the chat.
 
-- **State.** `main` is at `b5e365d` (PR #64), and production is www.realityarchitect.ai. `node --test` passes 226/226.
+- **State (updated 2026-10-06).** `main` is at `d946181` (PR #67), and production is www.realityarchitect.ai. `node --test` passes 238/238.
+  - Since this file was first written: #65 (this handover), #66 (estate guard) and #67 (ADR-002 and the kernel projection, plugin 0.4.0) merged.
+  - On 2026-10-06, [ADR-003](../adr/ADR-003-your-agent-your-keys-your-storage.md) re-scoped the hosted missions to Frank's product doctrine (§9).
+  - The live work queue is the GitHub board issue (§12).
 - **Frank's prompts, verbatim.** They are in a private local file: `C:\Users\frank\.starlight\restart\2026-10-05-reality-architect-PROMPTS.md`.
   - Read it before planning anything large.
   - It is private on purpose: the prompts name a trademark that must never appear on a public surface. Never copy it into this repo.
@@ -13,7 +16,7 @@ For the next agent: this is everything needed to continue at the same bar, witho
 2. `AGENTS.md` (the two registers).
 3. `docs/strategy/2026-10-05-AGENT-TEAMS.md`.
 4. `docs/strategy/2026-10-05-GTM-PLAN.md`.
-5. `docs/adr/ADR-001-passkeys-and-studio-cloud-keys.md`.
+5. `docs/adr/ADR-003-your-agent-your-keys-your-storage.md` (it supersedes ADR-001) and `docs/adr/ADR-002-reality-architect-and-starlight.md`.
 6. The private prompts file.
 7. `C:\Users\frank\.agent-harness\AMBITION-AND-EXCELLENCE.md` and `C:\Users\frank\.starlight\agent-os\PLAN-2026-10-05.md`.
 
@@ -63,7 +66,7 @@ These are enforced in code and must never be weakened.
   public-facing surface. `docs/strategy/2026-10-04-FRONTIER-ARCHITECTURE.md` §10 records the trademark analysis and
   the naming weave.
 - **Local-first.** The Studio keeps data on the device: `localStorage` `ra.studio.v1` (only in `lib/studio/persist.ts`) and IndexedDB `ra-studio` for images (only in `lib/studio/images.ts`).
-  - The cloud only ever sees end-to-end-encrypted blobs (ADR-001).
+  - No server of ours holds a person's practice. Sync goes to storage the person owns (ADR-003).
 - **Agents ask before writing.** The Agent Charter (`standard/AGENT-CHARTER.md`, 12 articles) applies: agents propose, the person decides, and snapshots are sealed only on approval.
 - **Frank's buttons.** These stay with Frank: money (Polar live, prices going public), publishing and posting, keys and budgets, the Neon project, SIS `main`, frankx.ai production merges, and the Polar organization and onboarding.
 
@@ -161,23 +164,27 @@ The fixes landed in #64 through two fix rounds. Codex pass 2 found **0 Critical 
 
 | Repo / place | State | Next action |
 | --- | --- | --- |
-| `frankxai/realityarchitect` | `main` `b5e365d`, production. Merged on 2026-10-04 and 05: #38, #43, #47, #48, #50–#53, #55, #57–#64 | Missions below |
-| ↳ #56 `/pricing` | Open, green, unmerged | **Frank's button**: merging publishes the plan prices. Rebase onto main first, and keep `PAID_OPEN=false`. |
-| ↳ #54 (Codex, Supabase evidence workspace + guardian, +1833, conflicting) | Draft | **Close as superseded** by ADR-001 (Better Auth + Neon, end-to-end encryption). First extract any evidence-ledger ideas into M10's notes, and confirm no live lane owns it. |
+| `frankxai/realityarchitect` | `main` `d946181`, production. Merged on 2026-10-04 to 06: #38, #43, #47, #48, #50–#53, #55, #57–#67 | The board issue (§12), then the missions below |
+| ↳ #56 `/pricing` | Open, green, unmerged | **Rework before merge (ADR-003 §3).** Drop the monthly plans, render packs and "creators keep 85%". List Free, the Complete Edition, and packs and the Guide Kit with no price yet. Then it is **Frank's button**, because it publishes prices. Keep `PAID_OPEN=false`. |
+| ↳ #54 (Codex, Supabase evidence workspace + guardian, +1833, conflicting) | Draft | **Close as superseded.** ADR-003 rules out any hosted workspace. First extract any evidence-ledger ideas into M10's notes, and confirm no live lane owns it. |
 | ↳ #44 (Codex, Reality Observatory, +383) | Draft | Triage: fold anything the Library and Patterns lack, then close. |
 | ↳ #41 (Cursor, apply CTA in the hero, +2/−1) | Draft | Close: superseded by the new hero (#51). |
 | ↳ #39 (waitlist door, +759) | Draft | Triage against `site.vault.status: 'not-open-for-purchase'` and the program funnel; most likely close. |
 | ↳ #22 (Antigravity, "Quantum Jump" studio, +6400) | Draft | Close: superseded by Studio and Threshold. Its "quantum" framing conflicts with the doctrine. |
 | `frankxai/frankx.ai-vercel-website` | #880 merged (`/manifestation` links to the Studio, Library and Threshold) | |
 | ↳ #888 Soulbook: refund policy instead of an outcome guarantee; placeholder testimonials removed | Open, **Review Gate failing**: two Codex P2s unanswered | (1) Match the refund line in `lib/soulbook/soulbook-data.ts:88` to `app/legal/refund/page.tsx` (14 days, under 25% accessed). (2) Remove the contradiction in `lib/soulbook/soulbook-data.ts:134`: the "no outcomes promised" sentence sits under the book selector's "What you'll transform" outcomes (the component in `components/soulbook/` named at `:267-285` in the Codex comment). Rename the heading to something like "What the book covers", or drop the outcomes. Then answer both threads; Frank merges. |
-| `frankxai/Starlight-Intelligence-System` | #280 open and CLEAN: registers Reality Architect as an external SIP vertical, adds kernel CI, registry v0.1.2 (`life_domain`, `practice`, `witness_entry`) | **Frank's button** (SIS `main`). It unblocks M10's kernel projection. |
-| `C:\Users\frank\brand-assets\realityarchitect\` (local, private) | `products/imaginal-30-complete/audio-scripts/` (14 scripts); `products/imaginal-30-complete/build-2026-10-05/` (journal PDFs, vault ZIP, EPUB); `products/honest-canon/` (16 files, about 34.6k words, fact-checked, with a claims log in `README.md`); `launch/2026-10-imaginal-30/LAUNCH-KIT.md` | M3 |
+| `frankxai/Starlight-Intelligence-System` | #280 open and CLEAN: registers Reality Architect as an external SIP vertical, adds kernel CI, registry v0.1.2 (`life_domain`, `practice`, `witness_entry`) | **Frank's button** (SIS `main`). It no longer blocks Reality Architect: #67 vendored the schemas. Merging it upstreams registry v0.1.2 (ADR-002 P5). |
+| `C:\Users\frank\brand-assets\realityarchitect\` (local, private) | `products/imaginal-30-complete/audio-scripts/` (14 scripts); `products/imaginal-30-complete/build-2026-10-05/` (journal PDFs, vault ZIP, EPUB); `products/honest-canon/` (16 files, about 34.6k words, fact-checked, with a claims log in `README.md`); `launch/2026-10-imaginal-30/LAUNCH-KIT.md`. Not a git repo. Copied on 2026-10-06 to `OneDriveBackupeality-architect-product-source-2026-10-06` (44 files) | M3. **Frank decides a durable, versioned home**: a private repo (for example `frankxai/realityarchitect-editions`) is recommended. |
 | Agent OS `C:\Users\frank\.starlight\agent-os\` | `brands/reality-architect.brand.json` lists two gaps | Its "no local checkout" gap is stale (`~/.agent-worktrees/ra-studio` exists). Adding the register to `REGISTER-BOUNDARIES.md` belongs to the `claude-code-config` lane, after its Phase 1. |
 | Memory | `~/.claude/projects/C--Users-frank/memory/project_reality_architect.md` | Update it at the close of every session |
-| Worktrees | `~/.agent-worktrees/ra-studio` (the current lane), `~/.agent-worktrees/ra-mcp` (merged; safe to remove after confirming that it is clean and its branch is merged) | |
+| `frankxai/product-plans` (private; plans and specs only, draft PRs, never self-merged) | `products/reality-md-starter.md` (a starter spec; its gate has not been run). The workstreams that touch RA are W4 epubcheck `#9`, W5 directory package `#10` and W6 EU checkout `#11` | No checkout goes live without a `PRODUCT-RELEASE-GATE.md` PASS and a row in `graph/products.graph.json` |
+| Worktrees | `~/.agent-worktrees/ra-studio` only. `ra-mcp`, `ra-next-1636`, `ra-north-star` and `ra-threshold` were removed on 2026-10-06; their heads were all in merged PRs. `~/.agent-worktrees/next-fix/realityarchitect` is a separate clone and was kept. | |
 
 ## 8. Verification debts (pay these first)
 
+0. **Codex on #67** (the kernel projection, the CLI's `--audience` and the MCP `reality_kernel` tool). A
+   fresh-context Claude reviewer cleared it over three rounds, but no other model family has reviewed it. Run it with
+   the same RAM rule as item 1. Diff: `git diff 2057f83..d946181` (a squash merge, so this is #67 alone).
 1. **Codex pass 3 on #64's final commit.** It was memory-reaped. Diff: `git diff 326de85^..b5e365d`, or the round-2 delta alone.
    - Re-run only at ≥ 3 GiB free.
    - Fix anything at Critical or High before new building.
@@ -228,46 +235,63 @@ Each mission uses the five-line contract. Work them in order unless Frank reorde
   4. Set `checkoutUrl` and `open: true` in a PR. The gates verify it.
 - **Done when.** A sandbox order downloads all seven files, they open, the refund works, and the built-pages check passes in the open state.
 
-### M4: Accounts and Studio Cloud (Engine + Trust), per ADR-001
+> **M4–M7, M11 and M12 were re-scoped on 2026-10-06 by [ADR-003](../adr/ADR-003-your-agent-your-keys-your-storage.md).**
+> Frank's product doctrine rules out multi-tenant hosting: the customer's agent is the runtime, keys are the person's
+> own, and nothing is delivered one to one. The versions below replace the hosted designs (accounts on Neon, blobs in
+> R2, renders and audio on our keys, monthly plans, Guide seats, a live cohort). Git history has the old text.
 
+### M4: Bring-your-own-storage sync (Engine + Trust), per ADR-003
+
+- **Goal.** The Studio saves to, and restores from, a folder the person picks. That folder is synced by their own
+  iCloud, OneDrive, Google Drive, Dropbox or Git. We run no server.
 - **Design.**
-  - Better Auth with `@better-auth/passkey` 1.7.x on Neon Frankfurt (Frank creates the project and the env vars).
-  - Sign-in is passkey-only, using PRF.
-  - The browser holds an AES-256 data key, wrapped with HKDF(PRF). A mandatory 24-word recovery key gives a second wrapped copy and an Ed25519 recovery identity.
-  - Blobs are AES-GCM-encrypted Studio JSON and images in R2, versioned, with conflict-checked saves reusing the `persist.ts` semantics.
-  - Placeholder emails use `<uuid>@users.invalid`.
-  - `/.well-known/passkey-endpoints` declares `prfUsageDetails`.
-  - Strict CSP and no third-party scripts.
+  - Use the File System Access API where the browser supports it, with an explicit "Choose a folder" step. Elsewhere,
+    use the existing export and import.
+  - Write the same files the export already makes (`reality/…`), so Obsidian, the CLI and the MCP server read them
+    unchanged.
+  - Optional passphrase encryption of the bundle: AES-GCM with a PBKDF2 or Argon2 key derived in the browser. The
+    passphrase is never stored.
+  - On restore, detect conflicts by comparing the bundle's `savedAt` with the device copy, reusing the semantics of
+    `persist.ts`, and let the person choose.
 - **Done when.**
-  - Unit tests for wrap, unwrap, rotation and recovery, using WebCrypto in Node.
-  - An end-to-end test in a preview with a virtual authenticator (CDP `WebAuthn.addVirtualAuthenticator` with PRF).
-  - **Codex: no Critical or High.** The threat model is written into the ADR.
+  - There are tests for a round trip, a wrong passphrase, a tampered ciphertext and a conflict.
+  - A browser QA run passes in Chromium (folder access) and in Safari/Firefox (the export fallback).
+  - Codex finds nothing Critical or High (this is an encryption path).
+- **Don't touch.** The localStorage key `ra.studio.v1`, or any server route.
 
-### M5: Polar subscriptions and entitlements (Commerce + Engine)
+### M5: One-time products and licence keys (Commerce + Engine)
+
+- **Goal.** Paid items are one-time and carry a licence key. These are practice packs and the Guide Kit, plus an
+  optional yearly "every new pack" pass if Frank approves it.
+- **Design.**
+  - The plugin (`reality unlock <key>`) and the Studio check a key against Polar's public licence-validation endpoint
+    for customers, then cache the result on the device. They never send personal data.
+  - Packs are plain folders (a program, loops, prompts), so the same files sell on Polar, Gumroad, Etsy and Whop.
+- **Done when.**
+  - There are tests for valid, revoked, expired and offline-cached keys.
+  - A sandbox order delivers a pack that installs.
+  - The `product-plans` release gate shows PASS, with a registry row. **Frank turns on live mode.**
+
+### M6: Renders with the person's own key (Media + Engine)
 
 - **Design.**
-  - Products: Architect at $19/month or $190/year; Founding Architect at $120/year, capped at the first 1,000.
-  - Webhook route: verify the signature, idempotent by event id, then store the customer state.
-  - Read entitlements on the server from Polar customer state by external id.
-  - Use a credits meter for renders, and check the balance on the server before every call.
-  - The portal handles plan changes and cancellation.
-- **Done when.** In the sandbox, a subscribe, upgrade, cancel and refund cycle passes. Webhook replay is idempotent. **Frank turns on live mode.**
+  - The default path: `reality render` (plugin) prints `imagePrompt` from the person's own scene for the person's
+    agent and image tool to run.
+  - In the Studio, an optional key field stores the key only on the device and calls the provider directly. Allow
+    this only if that provider permits browser calls; if none does, ship the plugin path alone.
+  - Consent comes on every render, and provenance is recorded on the Map board.
+- **Done when.** No request ever reaches our servers (a test asserts the request target), consent is required, and the
+  Map board renders.
 
-### M6: Renders and vision boards (Media + Engine)
+### M7: Personal rehearsal audio, run locally (Audio + Engine)
 
-- **Design.**
-  - Nano Banana 2 through the Vercel AI Gateway with zero data retention, behind a monthly cap (Frank sets the key and the cap).
-  - Consent on every render. The prompt is built from the person's own scene, using `imagePrompt` in `lib/studio/export.ts`.
-  - The result is stored as an end-to-end-encrypted blob, placed on the Map board, and recorded with provenance.
-- **Done when.** Cap enforcement is tested, consent is required, the Map board renders, and no prompt is logged on the server.
-
-### M7: Personal rehearsal audio (Audio + Engine)
-
-- **Design.**
-  - A Vercel Workflow takes the person's scene and "I am" lines (sent only on "make my track"), builds a script from the same template as the companion, and voices it with a stock voice.
-  - The pipeline from `scripts/audio` runs as a function: ffmpeg on Fluid compute, or ElevenLabs only with server-side silence.
-  - The track is delivered as an encrypted blob and charged to credits.
-- **Done when.** The cost per 10-minute track is ≤ $0.60, the loudness spec passes, the consent copy is shown, and nothing persists on the server after delivery.
+- **Design.** `reality audio` packages `scripts/audio` into the plugin. It reads the person's scene and "I am" lines
+  from their files, and voices them with their ElevenLabs key or a local system voice. Their own ffmpeg mixes the
+  track at the same loudness spec.
+- **Done when.**
+  - The loudness spec passes (−16 LUFS ±1, true peak ≤ −1.5).
+  - Without a key, it falls back to the local voice and says so.
+  - Nothing is uploaded anywhere.
 
 ### M8: The Obsidian plugin (Engine + Experience)
 
@@ -286,23 +310,31 @@ Each mission uses the five-line contract. Work them in order unless Frank reorde
 
 ### M10: Reality across time and the SIS projection (Engine + Canon)
 
-- **Needs:** SIS #280 merged.
-- **Design.**
+- **Phase 1 shipped in #67.** `reality kernel --audience private|alliance|public` projects the files onto the six
+  SIS kernel primitives, validated against schemas vendored and pinned to SIS commit `5d4312c`. It needed no SIS
+  merge. Phases P2–P6 are in ADR-002 §7. Next is P2: snapshots signed with a key the person holds.
+- **Design (what remains).**
   - A snapshot diff ("reality diff"): Atlas deltas, bridges, the intentions tally over time.
   - A monthly report the person approves.
   - The graph is projected into SIS kernel ids under registry v0.1.2. It is export-only, and the person owns the files.
 - **Done when.** Diff tests on sample histories, kernel ID conformance tests, and a monthly report as a draft that only an approval seals.
 
-### M11: Marketplace and the Guide licence (Commerce + Trust)
+### M11: An open pack registry and the Guide Kit (Commerce + Trust), per ADR-003
 
 - **Design.**
-  - Paid practice packs via Polar license keys, validated in the plugin. `skill-check` runs in CI for every pack, and creators keep 85%.
-  - The Guide licence costs $79 a month for 15 client seats, with consented, revocable views shared through end-to-end-encrypted re-wrapping.
-- **Done when.** A pack goes from submit through the bar and the license to install. Consent and revocation tests pass.
+  - **Packs.** There is a public pack format and a registry repo where `skill-check` runs in CI on every pack.
+    Creators sell on their own storefronts and keep 100%, and we list the packs that pass the bar. We run no payouts.
+  - **Guide Kit.** It is one-time: a facilitation guide, session templates, a consent form and a review checklist.
+    The client exports `reality kernel --audience alliance` (ADR-002) and shares the file through any channel they
+    choose. The guide reads structure and counts, never content.
+- **Done when.**
+  - A pack goes from pull request through the bar to install.
+  - A test proves that the alliance bundle a guide receives carries no content.
 
-### M12: School and spatial (later)
+### M12: A self-paced course, and spatial (later)
 
-- The School is a six-week cohort built from the Library and the program, with one scholarship for every five paid seats.
+- The course is recorded and self-paced, built from the Library, the program and the audio. There is no live cohort,
+  and pay-what-you-can codes replace scholarships.
 - A WebXR vision board for headsets is explored only after the core retains.
 
 ## 10. Hard-won lessons
@@ -339,14 +371,17 @@ Each mission uses the five-line contract. Work them in order unless Frank reorde
 
 ## 12. Kickoff prompt for the next agent (paste as is)
 
+The live queue is the pinned board issue **#80**, and each of #70–#79 carries a full task contract (repo, base, allowed
+and forbidden paths, done command, human gate). A cloud agent can take one issue with no other context.
+
 ```
-You are the Reality Architect lead for frankxai/realityarchitect (worktree C:\Users\frank\.agent-worktrees\ra-studio).
-Read docs/handoff/2026-10-05-REALITY-ARCHITECT-HANDOVER.md fully, then AGENTS.md, docs/strategy/2026-10-05-AGENT-TEAMS.md,
-the private prompts file it names, and AMBITION-AND-EXCELLENCE.md. Measure free RAM and disk first (zone rules apply).
-1) Pay the verification debts in §8 (Codex pass 3 only at >= 3 GiB free). 2) Triage the five old drafts in §7 with a
-verdict each (land, fold, or close with a link), checking no live lane owns them. 3) Fix frankx.ai #888's two Codex
-P2s and answer the threads. 4) Run M1 through the full loop: five-line contract, TDD, CI green, Codex for risky
-diffs, worker-visual-qa >= 2.3 on the preview, head-pinned merge, production probe, memory receipt. Then M2.
-Never weaken the claims gate, the registers, or the closed-edition checks. Frank's buttons stay Frank's (§2, §7).
-Report only VERIFIED or DELIVERED outcomes, with receipts.
+You are the Reality Architect lead for frankxai/realityarchitect.
+Read docs/handoff/2026-10-05-REALITY-ARCHITECT-HANDOVER.md, ADR-002 and ADR-003, AGENTS.md, and the pinned board issue #80.
+On Frank's machine, measure free RAM and disk first (zone rules apply) and read the private prompts file named at the top.
+1) Pay #70 (cross-family review of #64 and #67) before new building.
+2) Take the board in order. One agent per issue, one draft PR per issue, the task contract is the scope.
+3) For each PR: pnpm gate green, an independent reviewer (Codex for auth, crypto, MCP, API routes, data export),
+   worker-visual-qa >= 2.3 for UI, then a head-pinned merge, a production probe, and a receipt comment on #80.
+Never weaken the claims gate, the registers, the closed-edition checks, or ADR-003 (no hosted service, the person's keys).
+Frank's buttons stay Frank's (#78, #79, SIS #280). Report only VERIFIED or DELIVERED outcomes, with receipts.
 ```
