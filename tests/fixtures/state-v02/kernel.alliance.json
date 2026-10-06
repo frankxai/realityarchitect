@@ -1,0 +1,1860 @@
+{
+  "schema": "reality-architect.kernel-bundle",
+  "version": 1,
+  "kernel": "0.1.1",
+  "audience": "alliance",
+  "generated_at": "2026-10-04T00:00:00Z",
+  "note": "A guide's view, by your consent: your aims, reps and moves as you titled them, with dates, statuses, pace and counts. Your meaning, scenes, words, the people you listed, skills, systems and decisions stay with you.",
+  "objects": [
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:aim:finish-the-album",
+      "type": "goal",
+      "label": "Finish the album",
+      "description": "Done when (verifiable): Ten mastered tracks are uploaded to the distributor.",
+      "existence": {
+        "realm": "planned",
+        "status": "proposed"
+      },
+      "epistemics": {
+        "kind": "preference"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/aims/finish-the-album.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "targets",
+          "target_id": "ra:domain:craft"
+        }
+      ],
+      "branch_ids": [
+        "ra:branch:aim/finish-the-album"
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:aim:run-the-river-10k",
+      "type": "goal",
+      "label": "Run the river 10K",
+      "description": "Done when (verifiable): I finish the autumn river 10K without walking.",
+      "existence": {
+        "realm": "planned",
+        "status": "proposed"
+      },
+      "epistemics": {
+        "kind": "preference"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/aims/run-the-river-10k.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "targets",
+          "target_id": "ra:domain:body"
+        }
+      ],
+      "branch_ids": [
+        "ra:branch:aim/run-the-river-10k"
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:body",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "Body & Vitality",
+      "description": "Now 5/10, wanted 8/10, a priority.",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:character",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "Character & Code",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:circle",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "Circle & Community",
+      "description": "Now 4/10, wanted 7/10, a priority.",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:craft",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "Craft & Contribution",
+      "description": "Now 5/10, wanted 9/10, a priority.",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:golden-age",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "The Golden Age",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:heart",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "Heart & State",
+      "description": "Now 6/10, wanted 8/10.",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:lineage",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "Lineage & Legacy",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:love",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "Love & Union",
+      "description": "Now 8/10, wanted 9/10.",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:mind",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "Mind & Mastery",
+      "description": "Now 7/10, wanted 8/10.",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:sanctuary",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "Sanctuary & Lifestyle",
+      "description": "Now 7/10, wanted 8/10.",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:spirit",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "Spirit & Source",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:domain:wealth",
+      "type": "life_domain",
+      "type_registry_note": "life_domain is proposed for the kernel registry in v0.1.2 (SIS #280); a v0.1.1 reader may treat it as \"other\".",
+      "label": "Wealth & Sovereignty",
+      "description": "Now 4/10, wanted 7/10.",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/atlas.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/atlas.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:self:self",
+      "type": "person",
+      "label": "The person",
+      "existence": {
+        "realm": "real",
+        "status": "asserted"
+      },
+      "epistemics": {
+        "kind": "empirical"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality.md"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "owns",
+          "target_id": "ra:aim:finish-the-album",
+          "evidence_ids": [
+            "reality/aims/finish-the-album.md"
+          ]
+        },
+        {
+          "type": "owns",
+          "target_id": "ra:aim:run-the-river-10k",
+          "evidence_ids": [
+            "reality/aims/run-the-river-10k.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:snapshot:2026-09-20/weekly",
+      "type": "world_state",
+      "label": "weekly snapshot 2026-09-20",
+      "description": "sign 0, win 0, rep 0, move 0, opening 0, lesson 1, gratitude 2; signs 0 primed, 0 unprimed; look-fors set 0, came 0, missed 0",
+      "existence": {
+        "realm": "real",
+        "status": "canonical"
+      },
+      "epistemics": {
+        "kind": "empirical"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/snapshots/2026-09-20.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-09-20T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/snapshots/2026-09-20.md"
+          ]
+        }
+      ]
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:snapshot:2026-09-27/weekly",
+      "type": "world_state",
+      "label": "weekly snapshot 2026-09-27",
+      "description": "sign 0, win 0, rep 5, move 0, opening 0, lesson 0, gratitude 1; signs 0 primed, 0 unprimed; look-fors set 2, came 1, missed 0",
+      "existence": {
+        "realm": "real",
+        "status": "canonical"
+      },
+      "epistemics": {
+        "kind": "empirical"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/snapshots/2026-09-27.md"
+        ],
+        "created_by": [
+          "ra:self:self"
+        ]
+      },
+      "temporal": {
+        "observed_at": "2026-09-27T00:00:00Z"
+      },
+      "relations": [
+        {
+          "type": "part_of",
+          "target_id": "ra:self:self",
+          "evidence_ids": [
+            "reality/snapshots/2026-09-27.md"
+          ]
+        },
+        {
+          "type": "derives_from",
+          "target_id": "ra:snapshot:2026-09-20/weekly",
+          "evidence_ids": [
+            "reality/snapshots/2026-09-27.md"
+          ]
+        }
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:branch:aim/finish-the-album",
+      "label": "The scene for: Finish the album",
+      "baseline_ref": {
+        "kind": "object_set",
+        "ref": "ra:domain:craft",
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "assumptions": [],
+      "desired_changes": [
+        {
+          "object_id": "ra:aim:finish-the-album",
+          "change": "Reach: Ten mastered tracks are uploaded to the distributor.",
+          "target_state": null
+        }
+      ],
+      "verification_criteria": [
+        {
+          "id": "done-when",
+          "criterion": "Ten mastered tracks are uploaded to the distributor.",
+          "evidence_type": "self_report"
+        }
+      ],
+      "epistemics": {
+        "kind": "desired",
+        "confidence": null
+      },
+      "created_at": "2026-10-04T00:00:00Z",
+      "created_by": "ra:self:self",
+      "status": "active"
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:branch:aim/run-the-river-10k",
+      "label": "The scene for: Run the river 10K",
+      "baseline_ref": {
+        "kind": "object_set",
+        "ref": "ra:domain:body",
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "assumptions": [],
+      "desired_changes": [
+        {
+          "object_id": "ra:aim:run-the-river-10k",
+          "change": "Reach: I finish the autumn river 10K without walking.",
+          "target_state": null
+        }
+      ],
+      "verification_criteria": [
+        {
+          "id": "done-when",
+          "criterion": "I finish the autumn river 10K without walking.",
+          "evidence_type": "self_report"
+        }
+      ],
+      "epistemics": {
+        "kind": "desired",
+        "confidence": null
+      },
+      "created_at": "2026-10-04T00:00:00Z",
+      "created_by": "ra:self:self",
+      "status": "active"
+    }
+  ],
+  "diffs": [
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:diff:aim/finish-the-album",
+      "current_ref": {
+        "kind": "object_set",
+        "ref": "ra:domain:craft",
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "target_branch_id": "ra:branch:aim/finish-the-album",
+      "gaps": [
+        {
+          "id": "obstacle",
+          "class": "process",
+          "statement": "A process obstacle (the person keeps the details).",
+          "blocking_object_ids": [
+            "ra:aim:finish-the-album"
+          ],
+          "leverage": "high",
+          "uncertainty": "medium",
+          "suggested_experiment": null
+        }
+      ],
+      "method": {
+        "name": "reality-architect-engine/pace",
+        "deterministic": true,
+        "notes": "Counts from the person's own records. A count is never a cause."
+      },
+      "generated_at": "2026-10-04T00:00:00Z",
+      "generated_by": "reality-architect engine",
+      "summary": "On pace: 5 of 6 planned reps in the last 14 days, no overdue moves."
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:diff:aim/run-the-river-10k",
+      "current_ref": {
+        "kind": "object_set",
+        "ref": "ra:domain:body",
+        "observed_at": "2026-10-04T00:00:00Z"
+      },
+      "target_branch_id": "ra:branch:aim/run-the-river-10k",
+      "gaps": [
+        {
+          "id": "obstacle",
+          "class": "process",
+          "statement": "A process obstacle (the person keeps the details).",
+          "blocking_object_ids": [
+            "ra:aim:run-the-river-10k"
+          ],
+          "leverage": "high",
+          "uncertainty": "medium",
+          "suggested_experiment": null
+        },
+        {
+          "id": "pace",
+          "class": "time",
+          "statement": "Behind: 4 of 8 planned reps in the last 14 days, 1 overdue move.",
+          "blocking_object_ids": [
+            "ra:aim:run-the-river-10k"
+          ],
+          "leverage": "high",
+          "uncertainty": "low",
+          "suggested_experiment": null
+        }
+      ],
+      "method": {
+        "name": "reality-architect-engine/pace",
+        "deterministic": true,
+        "notes": "Counts from the person's own records. A count is never a cause."
+      },
+      "generated_at": "2026-10-04T00:00:00Z",
+      "generated_by": "reality-architect engine",
+      "summary": "Behind: 4 of 8 planned reps in the last 14 days, 1 overdue move."
+    }
+  ],
+  "plans": [
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:plan:aim/finish-the-album",
+      "diff_id": "ra:diff:aim/finish-the-album",
+      "branch_id": "ra:branch:aim/finish-the-album",
+      "actions": [
+        {
+          "gap_ids": [
+            "obstacle"
+          ],
+          "owner": {
+            "kind": "human",
+            "id": "ra:self:self"
+          },
+          "dependencies": [],
+          "cost_estimate": null,
+          "rollback": null,
+          "work_packet_id": null,
+          "id": "rep-1",
+          "title": "90-minute finishing session (3x per week)",
+          "tool": "practice",
+          "risk": "low",
+          "governance_tier": "human_gate",
+          "expected_evidence": "A rep entry in reality/witness.md",
+          "verification_criterion": "At least 3 logged per week",
+          "stop_condition": "The aim is achieved or released, or the person changes the rep."
+        },
+        {
+          "gap_ids": [
+            "obstacle"
+          ],
+          "owner": {
+            "kind": "human",
+            "id": "ra:self:self"
+          },
+          "dependencies": [],
+          "cost_estimate": null,
+          "rollback": null,
+          "work_packet_id": null,
+          "id": "move-1",
+          "title": "Book the mastering engineer",
+          "tool": "bold-move",
+          "risk": "medium",
+          "governance_tier": "human_gate",
+          "expected_evidence": "The move marked done in the aim file",
+          "verification_criterion": "Done",
+          "stop_condition": "Done, or released by the person."
+        },
+        {
+          "gap_ids": [
+            "obstacle"
+          ],
+          "owner": {
+            "kind": "human",
+            "id": "ra:self:self"
+          },
+          "dependencies": [],
+          "cost_estimate": null,
+          "rollback": null,
+          "work_packet_id": null,
+          "id": "move-2",
+          "title": "Host a listening evening for twelve people (by 2026-11-13)",
+          "tool": "bold-move",
+          "risk": "medium",
+          "governance_tier": "human_gate",
+          "expected_evidence": "The move marked done in the aim file",
+          "verification_criterion": "Done on or before 2026-11-13",
+          "stop_condition": "Done, or released by the person."
+        },
+        {
+          "gap_ids": [
+            "obstacle"
+          ],
+          "owner": {
+            "kind": "human",
+            "id": "ra:self:self"
+          },
+          "dependencies": [],
+          "cost_estimate": null,
+          "rollback": null,
+          "work_packet_id": null,
+          "id": "done-when",
+          "title": "Review the done-when: achieved, extend, or release",
+          "tool": "review",
+          "risk": "low",
+          "governance_tier": "human_gate",
+          "expected_evidence": "status: achieved, active or released in the aim file",
+          "verification_criterion": "Ten mastered tracks are uploaded to the distributor.",
+          "stop_condition": "Achieved or released."
+        }
+      ],
+      "created_at": "2026-10-04T00:00:00Z",
+      "created_by": "ra:self:self",
+      "status": "executing",
+      "notes": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:plan:aim/run-the-river-10k",
+      "diff_id": "ra:diff:aim/run-the-river-10k",
+      "branch_id": "ra:branch:aim/run-the-river-10k",
+      "actions": [
+        {
+          "gap_ids": [
+            "obstacle",
+            "pace"
+          ],
+          "owner": {
+            "kind": "human",
+            "id": "ra:self:self"
+          },
+          "dependencies": [],
+          "cost_estimate": null,
+          "rollback": null,
+          "work_packet_id": null,
+          "id": "rep-1",
+          "title": "Run (any distance) (3x per week)",
+          "tool": "practice",
+          "risk": "low",
+          "governance_tier": "human_gate",
+          "expected_evidence": "A rep entry in reality/witness.md",
+          "verification_criterion": "At least 3 logged per week",
+          "stop_condition": "The aim is achieved or released, or the person changes the rep."
+        },
+        {
+          "gap_ids": [
+            "obstacle",
+            "pace"
+          ],
+          "owner": {
+            "kind": "human",
+            "id": "ra:self:self"
+          },
+          "dependencies": [],
+          "cost_estimate": null,
+          "rollback": null,
+          "work_packet_id": null,
+          "id": "rep-2",
+          "title": "Hill sprints (1x per week)",
+          "tool": "practice",
+          "risk": "low",
+          "governance_tier": "human_gate",
+          "expected_evidence": "A rep entry in reality/witness.md",
+          "verification_criterion": "At least 1 logged per week",
+          "stop_condition": "The aim is achieved or released, or the person changes the rep."
+        },
+        {
+          "gap_ids": [
+            "obstacle",
+            "pace"
+          ],
+          "owner": {
+            "kind": "human",
+            "id": "ra:self:self"
+          },
+          "dependencies": [],
+          "cost_estimate": null,
+          "rollback": null,
+          "work_packet_id": null,
+          "id": "move-1",
+          "title": "Register for the race (by 2026-10-02)",
+          "tool": "bold-move",
+          "risk": "medium",
+          "governance_tier": "human_gate",
+          "expected_evidence": "The move marked done in the aim file",
+          "verification_criterion": "Done on or before 2026-10-02",
+          "stop_condition": "Done, or released by the person."
+        },
+        {
+          "id": "rep-other",
+          "title": "A rep not matched to a listed rep",
+          "gap_ids": [
+            "obstacle",
+            "pace"
+          ],
+          "owner": {
+            "kind": "human",
+            "id": "ra:self:self"
+          },
+          "tool": "practice",
+          "dependencies": [],
+          "cost_estimate": null,
+          "risk": "low",
+          "governance_tier": "human_gate",
+          "expected_evidence": "A rep entry in reality/witness.md",
+          "verification_criterion": "Logged by the person",
+          "stop_condition": "The aim is achieved or released.",
+          "rollback": null,
+          "work_packet_id": null
+        },
+        {
+          "gap_ids": [
+            "obstacle",
+            "pace"
+          ],
+          "owner": {
+            "kind": "human",
+            "id": "ra:self:self"
+          },
+          "dependencies": [],
+          "cost_estimate": null,
+          "rollback": null,
+          "work_packet_id": null,
+          "id": "done-when",
+          "title": "Review the done-when: achieved, extend, or release",
+          "tool": "review",
+          "risk": "low",
+          "governance_tier": "human_gate",
+          "expected_evidence": "status: achieved, active or released in the aim file",
+          "verification_criterion": "I finish the autumn river 10K without walking.",
+          "stop_condition": "Achieved or released."
+        }
+      ],
+      "created_at": "2026-10-04T00:00:00Z",
+      "created_by": "ra:self:self",
+      "status": "executing",
+      "notes": null
+    }
+  ],
+  "receipts": [
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:receipt:aim/finish-the-album/move-1",
+      "action_id": "move-1",
+      "plan_id": "ra:plan:aim/finish-the-album",
+      "actor": {
+        "kind": "human",
+        "id": "ra:self:self"
+      },
+      "tool": "bold-move",
+      "input_ref": null,
+      "started_at": "2026-10-02T00:00:00Z",
+      "finished_at": "2026-10-02T00:00:00Z",
+      "result": "success",
+      "verification": {
+        "status": "unverifiable",
+        "criterion": "Done",
+        "notes": "Self-reported in the person's own files. Nothing independent verified it."
+      },
+      "evidence": [
+        {
+          "kind": "artifact",
+          "uri_or_ref": "reality/aims/finish-the-album.md",
+          "content_hash": null
+        }
+      ],
+      "notes": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:receipt:witness/2026-09-21/0715/rep/1",
+      "action_id": "rep-1",
+      "plan_id": "ra:plan:aim/finish-the-album",
+      "actor": {
+        "kind": "human",
+        "id": "ra:self:self"
+      },
+      "tool": "practice",
+      "input_ref": null,
+      "started_at": "2026-09-21T07:15:00Z",
+      "finished_at": "2026-09-21T07:15:00Z",
+      "result": "success",
+      "verification": {
+        "status": "unverifiable",
+        "criterion": "The rep was done",
+        "notes": "Self-reported in the person's own files. Nothing independent verified it."
+      },
+      "evidence": [
+        {
+          "kind": "log",
+          "uri_or_ref": "reality/witness.md#2026-09-21 07:15",
+          "content_hash": null
+        }
+      ],
+      "world_state_update": {
+        "applied": true,
+        "object_ids": [],
+        "event_id": "ra:event:witness/2026-09-21/0715/rep/1"
+      },
+      "notes": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:receipt:witness/2026-09-22/0615/rep/1",
+      "action_id": "rep-other",
+      "plan_id": "ra:plan:aim/run-the-river-10k",
+      "actor": {
+        "kind": "human",
+        "id": "ra:self:self"
+      },
+      "tool": "practice",
+      "input_ref": null,
+      "started_at": "2026-09-22T06:15:00Z",
+      "finished_at": "2026-09-22T06:15:00Z",
+      "result": "success",
+      "verification": {
+        "status": "unverifiable",
+        "criterion": "The rep was done",
+        "notes": "Self-reported in the person's own files. Nothing independent verified it."
+      },
+      "evidence": [
+        {
+          "kind": "log",
+          "uri_or_ref": "reality/witness.md#2026-09-22 06:15",
+          "content_hash": null
+        }
+      ],
+      "world_state_update": {
+        "applied": true,
+        "object_ids": [],
+        "event_id": "ra:event:witness/2026-09-22/0615/rep/1"
+      },
+      "notes": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:receipt:witness/2026-09-23/0715/rep/1",
+      "action_id": "rep-1",
+      "plan_id": "ra:plan:aim/finish-the-album",
+      "actor": {
+        "kind": "human",
+        "id": "ra:self:self"
+      },
+      "tool": "practice",
+      "input_ref": null,
+      "started_at": "2026-09-23T07:15:00Z",
+      "finished_at": "2026-09-23T07:15:00Z",
+      "result": "success",
+      "verification": {
+        "status": "unverifiable",
+        "criterion": "The rep was done",
+        "notes": "Self-reported in the person's own files. Nothing independent verified it."
+      },
+      "evidence": [
+        {
+          "kind": "log",
+          "uri_or_ref": "reality/witness.md#2026-09-23 07:15",
+          "content_hash": null
+        }
+      ],
+      "world_state_update": {
+        "applied": true,
+        "object_ids": [],
+        "event_id": "ra:event:witness/2026-09-23/0715/rep/1"
+      },
+      "notes": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:receipt:witness/2026-09-25/0615/rep/1",
+      "action_id": "rep-other",
+      "plan_id": "ra:plan:aim/run-the-river-10k",
+      "actor": {
+        "kind": "human",
+        "id": "ra:self:self"
+      },
+      "tool": "practice",
+      "input_ref": null,
+      "started_at": "2026-09-25T06:15:00Z",
+      "finished_at": "2026-09-25T06:15:00Z",
+      "result": "success",
+      "verification": {
+        "status": "unverifiable",
+        "criterion": "The rep was done",
+        "notes": "Self-reported in the person's own files. Nothing independent verified it."
+      },
+      "evidence": [
+        {
+          "kind": "log",
+          "uri_or_ref": "reality/witness.md#2026-09-25 06:15",
+          "content_hash": null
+        }
+      ],
+      "world_state_update": {
+        "applied": true,
+        "object_ids": [],
+        "event_id": "ra:event:witness/2026-09-25/0615/rep/1"
+      },
+      "notes": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:receipt:witness/2026-09-26/0715/rep/1",
+      "action_id": "rep-1",
+      "plan_id": "ra:plan:aim/finish-the-album",
+      "actor": {
+        "kind": "human",
+        "id": "ra:self:self"
+      },
+      "tool": "practice",
+      "input_ref": null,
+      "started_at": "2026-09-26T07:15:00Z",
+      "finished_at": "2026-09-26T07:15:00Z",
+      "result": "success",
+      "verification": {
+        "status": "unverifiable",
+        "criterion": "The rep was done",
+        "notes": "Self-reported in the person's own files. Nothing independent verified it."
+      },
+      "evidence": [
+        {
+          "kind": "log",
+          "uri_or_ref": "reality/witness.md#2026-09-26 07:15",
+          "content_hash": null
+        }
+      ],
+      "world_state_update": {
+        "applied": true,
+        "object_ids": [],
+        "event_id": "ra:event:witness/2026-09-26/0715/rep/1"
+      },
+      "notes": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:receipt:witness/2026-09-29/0715/rep/1",
+      "action_id": "rep-1",
+      "plan_id": "ra:plan:aim/finish-the-album",
+      "actor": {
+        "kind": "human",
+        "id": "ra:self:self"
+      },
+      "tool": "practice",
+      "input_ref": null,
+      "started_at": "2026-09-29T07:15:00Z",
+      "finished_at": "2026-09-29T07:15:00Z",
+      "result": "success",
+      "verification": {
+        "status": "unverifiable",
+        "criterion": "The rep was done",
+        "notes": "Self-reported in the person's own files. Nothing independent verified it."
+      },
+      "evidence": [
+        {
+          "kind": "log",
+          "uri_or_ref": "reality/witness.md#2026-09-29 07:15",
+          "content_hash": null
+        }
+      ],
+      "world_state_update": {
+        "applied": true,
+        "object_ids": [],
+        "event_id": "ra:event:witness/2026-09-29/0715/rep/1"
+      },
+      "notes": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:receipt:witness/2026-10-01/0615/rep/1",
+      "action_id": "rep-other",
+      "plan_id": "ra:plan:aim/run-the-river-10k",
+      "actor": {
+        "kind": "human",
+        "id": "ra:self:self"
+      },
+      "tool": "practice",
+      "input_ref": null,
+      "started_at": "2026-10-01T06:15:00Z",
+      "finished_at": "2026-10-01T06:15:00Z",
+      "result": "success",
+      "verification": {
+        "status": "unverifiable",
+        "criterion": "The rep was done",
+        "notes": "Self-reported in the person's own files. Nothing independent verified it."
+      },
+      "evidence": [
+        {
+          "kind": "log",
+          "uri_or_ref": "reality/witness.md#2026-10-01 06:15",
+          "content_hash": null
+        }
+      ],
+      "world_state_update": {
+        "applied": true,
+        "object_ids": [],
+        "event_id": "ra:event:witness/2026-10-01/0615/rep/1"
+      },
+      "notes": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:receipt:witness/2026-10-02/1830/rep/1",
+      "action_id": "rep-2",
+      "plan_id": "ra:plan:aim/run-the-river-10k",
+      "actor": {
+        "kind": "human",
+        "id": "ra:self:self"
+      },
+      "tool": "practice",
+      "input_ref": null,
+      "started_at": "2026-10-02T18:30:00Z",
+      "finished_at": "2026-10-02T18:30:00Z",
+      "result": "success",
+      "verification": {
+        "status": "unverifiable",
+        "criterion": "The rep was done",
+        "notes": "Self-reported in the person's own files. Nothing independent verified it."
+      },
+      "evidence": [
+        {
+          "kind": "log",
+          "uri_or_ref": "reality/witness.md#2026-10-02 18:30",
+          "content_hash": null
+        }
+      ],
+      "world_state_update": {
+        "applied": true,
+        "object_ids": [],
+        "event_id": "ra:event:witness/2026-10-02/1830/rep/1"
+      },
+      "notes": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:receipt:witness/2026-10-04/0815/rep/1",
+      "action_id": "rep-1",
+      "plan_id": "ra:plan:aim/finish-the-album",
+      "actor": {
+        "kind": "human",
+        "id": "ra:self:self"
+      },
+      "tool": "practice",
+      "input_ref": null,
+      "started_at": "2026-10-04T08:15:00Z",
+      "finished_at": "2026-10-04T08:15:00Z",
+      "result": "success",
+      "verification": {
+        "status": "unverifiable",
+        "criterion": "The rep was done",
+        "notes": "Self-reported in the person's own files. Nothing independent verified it."
+      },
+      "evidence": [
+        {
+          "kind": "log",
+          "uri_or_ref": "reality/witness.md#2026-10-04 08:15",
+          "content_hash": null
+        }
+      ],
+      "world_state_update": {
+        "applied": true,
+        "object_ids": [],
+        "event_id": "ra:event:witness/2026-10-04/0815/rep/1"
+      },
+      "notes": null
+    }
+  ],
+  "events": [
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:day/2026-10-02/look-for",
+      "event_type": "lookfor.result",
+      "occurred_at": "2026-10-02T00:00:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "result": "missed",
+        "rehearsed": false,
+        "granularity": "day"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/log/2026-10-02.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:day/2026-10-03/look-for",
+      "event_type": "lookfor.result",
+      "occurred_at": "2026-10-03T00:00:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "result": "came",
+        "rehearsed": true,
+        "granularity": "day"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/log/2026-10-03.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:day/2026-10-04/look-for",
+      "event_type": "lookfor.result",
+      "occurred_at": "2026-10-04T00:00:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "result": "not marked",
+        "rehearsed": true,
+        "granularity": "day"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/log/2026-10-04.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-09-21/0715/rep/1",
+      "event_type": "witness.rep",
+      "occurred_at": "2026-09-21T07:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:finish-the-album",
+        "ra:domain:craft"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "rep"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": "ra:receipt:witness/2026-09-21/0715/rep/1"
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-09-22/0615/rep/1",
+      "event_type": "witness.rep",
+      "occurred_at": "2026-09-22T06:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:run-the-river-10k",
+        "ra:domain:body"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "rep"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": "ra:receipt:witness/2026-09-22/0615/rep/1"
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-09-23/0715/rep/1",
+      "event_type": "witness.rep",
+      "occurred_at": "2026-09-23T07:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:finish-the-album",
+        "ra:domain:craft"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "rep"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": "ra:receipt:witness/2026-09-23/0715/rep/1"
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-09-24/1915/gratitude/1",
+      "event_type": "witness.gratitude",
+      "occurred_at": "2026-09-24T19:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "gratitude"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-09-25/0615/rep/1",
+      "event_type": "witness.rep",
+      "occurred_at": "2026-09-25T06:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:run-the-river-10k",
+        "ra:domain:body"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "rep"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": "ra:receipt:witness/2026-09-25/0615/rep/1"
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-09-26/0715/rep/1",
+      "event_type": "witness.rep",
+      "occurred_at": "2026-09-26T07:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:finish-the-album",
+        "ra:domain:craft"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "rep"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": "ra:receipt:witness/2026-09-26/0715/rep/1"
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-09-28/1115/sign/1",
+      "event_type": "witness.sign",
+      "occurred_at": "2026-09-28T11:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:finish-the-album",
+        "ra:domain:craft"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "sign",
+        "primed": true
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-09-29/0715/rep/1",
+      "event_type": "witness.rep",
+      "occurred_at": "2026-09-29T07:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:finish-the-album",
+        "ra:domain:craft"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "rep"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": "ra:receipt:witness/2026-09-29/0715/rep/1"
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-09-30/1515/opening/1",
+      "event_type": "witness.opening",
+      "occurred_at": "2026-09-30T15:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:finish-the-album",
+        "ra:domain:circle"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "opening"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-10-01/0615/rep/1",
+      "event_type": "witness.rep",
+      "occurred_at": "2026-10-01T06:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:run-the-river-10k",
+        "ra:domain:body"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "rep"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": "ra:receipt:witness/2026-10-01/0615/rep/1"
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-10-01/0700/rep/1",
+      "event_type": "witness.rep",
+      "occurred_at": "2026-10-01T07:00:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "rep"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-10-02/1830/rep/1",
+      "event_type": "witness.rep",
+      "occurred_at": "2026-10-02T18:30:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:run-the-river-10k",
+        "ra:domain:body"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "rep"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": "ra:receipt:witness/2026-10-02/1830/rep/1"
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-10-02/2115/lesson/1",
+      "event_type": "witness.lesson",
+      "occurred_at": "2026-10-02T21:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "lesson"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-10-03/0715/win/1",
+      "event_type": "witness.win",
+      "occurred_at": "2026-10-03T07:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:finish-the-album",
+        "ra:domain:craft"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "win"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": null
+    },
+    {
+      "schemaVersion": "0.1.1",
+      "id": "ra:event:witness/2026-10-04/0815/rep/1",
+      "event_type": "witness.rep",
+      "occurred_at": "2026-10-04T08:15:00Z",
+      "recorded_at": null,
+      "subject_ids": [
+        "ra:self:self",
+        "ra:aim:finish-the-album",
+        "ra:domain:craft"
+      ],
+      "actor_ids": [
+        "ra:self:self"
+      ],
+      "payload": {
+        "kind": "rep"
+      },
+      "provenance": {
+        "source_type": "human",
+        "source_ids": [
+          "reality/witness.md"
+        ],
+        "tool_ref": null
+      },
+      "epistemics": {
+        "kind": "empirical",
+        "confidence": null
+      },
+      "receipt_id": "ra:receipt:witness/2026-10-04/0815/rep/1"
+    }
+  ]
+}

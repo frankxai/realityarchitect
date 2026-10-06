@@ -5,6 +5,7 @@ import { layoutMap, toJsonCanvas } from '@/lib/studio/canvas'
 import { ROOT, bundleFiles, realityMd, soulMd, weeklyPrompt } from '@/lib/studio/export'
 import { clearImages, getImage, imageExtension } from '@/lib/studio/images'
 import { parseImport } from '@/lib/studio/importer'
+import type { ProgramDay } from '@/lib/studio/program'
 import { sampleState } from '@/lib/studio/sample'
 import { emptyState, isEmptyState } from '@/lib/studio/state'
 import type { StudioState } from '@/lib/studio/types'
@@ -22,7 +23,7 @@ const SAVE_TEXT = {
   conflict: 'Another tab saved a different copy of your Studio. Choose which to keep in the notice above the views.',
 } as const
 
-export function DataDialog({ studio, open, onClose, go }: { studio: StudioApi; open: boolean; onClose: () => void; go: Go }) {
+export function DataDialog({ studio, open, onClose, go, programDays = [] }: { studio: StudioApi; open: boolean; onClose: () => void; go: Go; programDays?: ProgramDay[] }) {
   const { state, today, replace, update, announce, saveStatus, forget } = studio
   const dialog = useRef<HTMLDialogElement>(null)
   const fileInput = useRef<HTMLInputElement>(null)
@@ -42,7 +43,7 @@ export function DataDialog({ studio, open, onClose, go }: { studio: StudioApi; o
     setBusy(true)
     try {
       const encoder = new TextEncoder()
-      const files = bundleFiles(state, today).map((file) => ({ path: file.path, data: encoder.encode(file.text) }))
+      const files = bundleFiles(state, today, programDays).map((file) => ({ path: file.path, data: encoder.encode(file.text) }))
       const types: Record<string, string> = {}
       for (const card of state.canvas.cards) {
         if (!card.imageId) continue

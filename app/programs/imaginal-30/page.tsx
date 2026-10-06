@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { CalendarDownload } from '@/components/programs/CalendarDownload'
 import { Prose } from '@/components/programs/Prose'
 import { COMPLETE_EDITION, isOpen, priceLabel } from '@/lib/programs/complete-edition'
+import { calendarDays } from '@/lib/programs/ics'
 import { WEEKS, readDays, readOverview } from '@/lib/programs/imaginal-30'
-import { ogImage } from '@/lib/site'
+import { ogImage, site } from '@/lib/site'
 
 const description =
   'A free 30-day practice, about ten minutes a day: see the life you would love, build the bridge to it, and keep an honest record of what happens. Runs in the Studio, with Claude, or in Obsidian.'
@@ -65,6 +67,9 @@ export default function Program() {
           </section>
         ))}
       </nav>
+
+      {/* Only plain-text titles, intents, lengths and links cross to the client; the file itself is written there. */}
+      <CalendarDownload days={calendarDays(days, site.url)} />
 
       <section aria-labelledby="about" className="mt-16 max-w-[35rem]">
         <h2 id="about" className="text-2xl font-bold text-ink">{overview.title || 'About the program'}</h2>
