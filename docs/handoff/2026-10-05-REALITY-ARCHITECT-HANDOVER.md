@@ -264,7 +264,7 @@ Each mission uses the five-line contract. Work them in order unless Frank reorde
 
 ### M5: One-time products and licence keys (Commerce + Engine)
 
-- **Goal.** Paid items are one-time and carry a licence key. These are practice packs and the Guide Kit, plus an
+- **Goal.** Paid items are one-time, with a licence key only where it adds something. These are practice packs and the Guide Kit, plus an
   optional yearly "every new pack" pass if Frank approves it.
 - **Design.**
   - Packs are plain folders (a program, loops, prompts), so the same files sell on Polar, Gumroad, Etsy and Whop.
