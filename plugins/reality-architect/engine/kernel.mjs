@@ -4,6 +4,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { DOMAINS, isDay, nodeId } from './model.mjs'
 import { assessAim } from './pace.mjs'
+import { matchRep } from './parse.mjs'
 import { validate } from './vendor/sis/jsonschema.mjs'
 
 /**
@@ -24,8 +25,9 @@ import { validate } from './vendor/sis/jsonschema.mjs'
  * Audiences (the SIP visibility lattice, public < alliance < private):
  *   private  - the person's own projection: everything, including their meaning and their scenes.
  *   alliance - a guide the person chose: the aims, done-whens, reps and moves as the person titled them, dates,
- *              statuses, pace, witness kinds and look-for results. Never: meaning, scenes, facts in their words,
- *              obstacles, the people and places they listed, skills, systems, decisions, or soul. IDs carry ordinals,
+ *              statuses, pace, witness kinds and look-for results. Never: meaning, scenes, facts in their words, the
+ *              rep a witness entry names (a guide sees only which listed rep a receipt is filed under), obstacles,
+ *              the people and places they listed, skills, systems, decisions, or soul. IDs carry ordinals,
  *              not hashes of private text, and receipts carry no content hashes. Public sharing is the Reality Card.
  *
  * Pure and deterministic: the same files, day and offset give byte-identical output on any machine and locale.
@@ -293,9 +295,13 @@ export function toKernel(reality, today, { audience, offset } = {}) {
     if (entry.domain && emitted.has(nodeId('domain', entry.domain))) subjects.push(nodeId('domain', entry.domain))
     let receiptId = null
     if (entry.kind === 'rep' && linked) {
-      // An aim with one listed rep files every rep under it (a rep entry describes the session, not the rep's name).
-      // With several reps, an entry is filed under the rep it names, else under a catch-all that says exactly that.
-      const index = linked.aim.reps.length === 1 ? 0 : linked.aim.reps.findIndex((rep) => rep.name.trim().toLowerCase() === entry.fact.trim().toLowerCase())
+      // Since STATE.md v0.3 an entry can name its rep ("Rep: <name>", as the aim lists it). A named rep is filed under
+      // that rep, or under the catch-all when the aim lists no rep by that name, even an aim with a single rep.
+      // Without a name: an aim with one listed rep files every rep under it (a rep entry describes the session, not the
+      // rep's name). With several reps, an entry is filed under the rep its fact names, else under the catch-all.
+      const index = entry.rep
+        ? matchRep(linked.aim.reps, entry.rep)
+        : linked.aim.reps.length === 1 ? 0 : linked.aim.reps.findIndex((rep) => rep.name.trim().toLowerCase() === entry.fact.trim().toLowerCase())
       const actionId = index >= 0 ? `rep-${index + 1}` : 'rep-other'
       if (actionId === 'rep-other' && !linked.plan.actions.some((candidate) => candidate.id === 'rep-other')) {
         // Kept and counted, never guessed onto a listed rep.
@@ -317,6 +323,8 @@ export function toKernel(reality, today, { audience, offset } = {}) {
     const payload = own
       ? {
           kind: entry.kind, fact: entry.fact, ...(entry.kind === 'sign' ? { primed: Boolean(entry.primed) } : {}),
+          // The rep the person named, in their words: kept in their own view, never in a guide's.
+          ...(entry.rep ? { rep: entry.rep } : {}),
           ...(entry.meaning ? { meaning: entry.meaning } : {}), ...(entry.action ? { did: entry.action } : {}), ...(entry.next ? { next: entry.next } : {}),
           registers: { fact: 'reported', meaning: 'meaning', did: 'done', next: 'planned' }, time_basis: 'local wall-clock time with the export offset',
         }

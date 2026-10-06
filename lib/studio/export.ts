@@ -231,11 +231,17 @@ function time(entry: WitnessEntry): string {
   return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`
 }
 
-export function witnessEntryMd(entry: WitnessEntry, slugs: Map<string, string>): string {
+/**
+ * One witness entry in STATE.md form. Pass the bridges to name the rep an entry evidences (`Rep:`, since STATE.md
+ * v0.3): its name exactly as the aim file lists it, looked up from `repId` through the entry's own bridge. A rep that
+ * no longer exists, or a deleted bridge, writes no `Rep:`, so nothing is guessed.
+ */
+export function witnessEntryMd(entry: WitnessEntry, slugs: Map<string, string>, bridges: readonly Bridge[] = []): string {
   const tag = entry.kind === 'sign' ? ` · ${entry.primed ? 'primed' : 'unprimed'}` : ''
   const slug = entry.bridgeId ? slugs.get(entry.bridgeId) : undefined
   const bridge = slug ? `Bridge: ${slug}` : entry.bridgeTitle ? `Bridge: ${entry.bridgeTitle} (deleted)` : ''
-  const where = [bridge, entry.domain ? `Domain: ${entry.domain}` : ''].filter(Boolean).join(' · ')
+  const repName = slug && entry.repId ? bridges.find((candidate) => candidate.id === entry.bridgeId)?.reps.find((rep) => rep.id === entry.repId)?.name.trim() : ''
+  const where = [bridge, repName ? `Rep: ${repName}` : '', entry.domain ? `Domain: ${entry.domain}` : ''].filter(Boolean).join(' · ')
   return [
     `### ${entry.day} ${time(entry)} · ${entry.kind}${tag}`,
     `- **Happened (fact):** ${entry.fact}`,
@@ -257,7 +263,7 @@ The ledger: what happened (fact), what it meant to me (meaning), and what I did 
 when I had set out to notice something like them that day. Misses count too; meaning is mine and is not a claim of
 cause.
 
-${entries.length ? entries.map((entry) => witnessEntryMd(entry, slugs)).join('\n\n') : GAP}
+${entries.length ? entries.map((entry) => witnessEntryMd(entry, slugs, state.bridges)).join('\n\n') : GAP}
 `
 }
 
@@ -312,7 +318,7 @@ export function dayLogMd(day: string, state: StudioState): string {
     : ['- No morning note.']
   return `# ${day}
 ${lines.join('\n')}
-${entries.length ? `\n${entries.map((entry) => witnessEntryMd(entry, slugs)).join('\n\n')}\n` : ''}`
+${entries.length ? `\n${entries.map((entry) => witnessEntryMd(entry, slugs, state.bridges)).join('\n\n')}\n` : ''}`
 }
 
 export function snapshotMd(snapshot: Snapshot): string {
@@ -418,7 +424,7 @@ ${realityMd(state, today)}
 ${bullet(pace)}
 
 === Witnessed ${since} to ${today} ===
-${recent.length ? recent.map((entry) => witnessEntryMd(entry, slugs)).join('\n\n') : GAP}
+${recent.length ? recent.map((entry) => witnessEntryMd(entry, slugs, state.bridges)).join('\n\n') : GAP}
 `
 }
 

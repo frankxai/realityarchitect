@@ -1,12 +1,13 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { DOMAIN_IDS, WITNESS_KINDS, isDay } from './model.mjs'
-import { frontmatter } from './parse.mjs'
+import { frontmatter, matchRep, parseAim, readWitnessMeta } from './parse.mjs'
 
 /**
  * Checks a home against standard/STATE.md and reports what a person or agent should fix, with file and line.
  * `error`: the file breaks the format or a rule (a sealed snapshot without approval, an impossible date).
- * `warning`: readable, but something is likely wrong (a plan written under "Did", a domain we do not know).
+ * `warning`: readable, but something is likely wrong (a plan written under "Did", a domain we do not know, a rep the
+ * aim does not list).
  * Read-only: it never edits a file.
  */
 
@@ -38,13 +39,41 @@ export function validate(home) {
     if (read(path.join(home.state, name)) === null) report('warning', rel(path.join(home.state, name)), 0, `${name} is missing from the state folder.`)
   }
 
+  // The aims by slug, as the kernel links witness entries to them (a later file with the same slug wins there too).
+  const aims = new Map()
+  for (const name of list(path.join(home.state, 'aims'))) {
+    const file = path.join(home.state, 'aims', name)
+    const aim = parseAim(read(file) ?? '', rel(file))
+    if (aim.slug) aims.set(aim.slug, aim)
+  }
+
+  // Since STATE.md v0.3 an entry may name its rep. A name the aim does not list is kept, never guessed: say so.
+  const checkRep = (file, entry) => {
+    if (!entry?.rep) return
+    if (!entry.bridge) return report('warning', file, entry.repLine, `"Rep: ${entry.rep}" is filed through the entry's aim, and this entry names none. Add "Bridge: <aim-slug>" to the same line.`)
+    const aim = entry.bridgeDeleted ? null : aims.get(entry.bridge)
+    if (!aim || matchRep(aim.reps, entry.rep) >= 0) return
+    const listed = aim.reps.length ? `Write it exactly as the aim lists it: ${aim.reps.map((rep) => `"${rep.name}"`).join(', ')}.` : 'The aim lists no reps yet.'
+    report('warning', file, entry.repLine, `"Rep: ${entry.rep}" is not a rep that ${aim.file} lists, so the entry is filed under "A rep not matched to a listed rep", never guessed onto a listed one. ${listed}`)
+  }
+
   const checkWitness = (file, text) => {
+    let entry = null
     text.split(/\r?\n/).forEach((line, index) => {
       if (!line.startsWith('### ')) {
+        if (/^#{1,2} /.test(line)) {
+          checkRep(file, entry)
+          entry = null
+        }
         const did = /^- \*\*Did \(action\):\*\*\s*(.*)$/.exec(line)
         if (did && PLAN_WORDS.test(did[1])) report('warning', file, index + 1, 'This "Did" reads like a plan. What is not done yet belongs under "Next (planned)", so a plan is never counted as evidence.')
+        // As parse.mjs reads it: a field line is never a meta line, whatever its text says.
+        const field = /^- \*\*(Happened \(fact\)|Meant \(my meaning\)|Did \(action\)|Next \(planned\)):\*\*/.test(line)
+        if (entry && !field && readWitnessMeta(line, entry) && /Rep:/.test(line)) entry.repLine = index + 1
         return
       }
+      checkRep(file, entry)
+      entry = { bridge: '', bridgeDeleted: false }
       const head = /^### (\S+) (\S+) · ([a-z]+)(?: · ([a-z]+))?\s*$/.exec(line)
       if (!head) return report('error', file, index + 1, 'A witness heading must read "### YYYY-MM-DD HH:MM · kind" (signs add " · primed" or " · unprimed").')
       if (!isDay(head[1])) report('error', file, index + 1, `"${head[1]}" is not a real calendar day.`)
@@ -52,6 +81,7 @@ export function validate(home) {
       if (!WITNESS_KINDS.includes(head[3])) report('error', file, index + 1, `Unknown kind "${head[3]}". Kinds: ${WITNESS_KINDS.join(', ')}.`)
       if (head[4] && !['primed', 'unprimed'].includes(head[4])) report('error', file, index + 1, `"${head[4]}" must be primed or unprimed.`)
     })
+    checkRep(file, entry)
   }
 
   const witnessFile = path.join(home.state, 'witness.md')

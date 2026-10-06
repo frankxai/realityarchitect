@@ -111,19 +111,20 @@ This split is how the product stays both meaningful and honest.
 - **Surfaces.**
   - CLI: `reality kernel --audience private|alliance [--offset +HH:MM] [--check]`
   - MCP: `reality_kernel`, read-only, parity-tested against the CLI
-- **Tests** (`tests/kernel.test.mjs`, 11):
+- **Tests** (`tests/kernel.test.mjs`, 16):
   - the pinned bytes and strict schemas;
   - conformance in both audiences;
   - desired stays desired;
   - `owns` reads from the person to the aim;
   - receipts for reps, moves and achievement, dated by the files. A rep entry is filed under the aim's only rep, or under the rep it names, or else under "A rep not matched to a listed rep". It is never guessed onto a listed rep.
-  - Exporting the Studio's own rep link into `witness.md` would make this exact for aims with several reps. That is a format change for STATE.md, proposed next.
+  - Shipped in STATE.md v0.3 (plugin 0.4.1, #75): the Studio now exports its own rep link into `witness.md` as `Rep: <name>`, the rep's name exactly as the aim lists it, so filing is exact for aims with several reps. A name the aim does not list still goes to "A rep not matched to a listed rep", and validation warns about it. Files without `Rep:` project byte for byte as before (a snapshot test), and the name an entry gives never reaches a guide.
   - look-for results keep their misses;
   - edge inputs: a double-logged rep, an aim named by its Obsidian file, umlauts and long names, short entries;
   - **canaries in every private field never reach a guide**, including short ones, fingerprints and hashes, plus an allowlist of guide payload keys;
   - determinism and honest offsets;
   - the checker catching a fake fact, a fake receipt, a broken reference and a schema violation;
-  - the CLI refusing to fall back to the private view.
+  - the CLI refusing to fall back to the private view;
+  - STATE.md v0.3 (#75): the v0.2 snapshot, a multi-rep aim filed by the named rep, an unknown name kept under the catch-all with a validation warning, and a Studio export round trip that keeps the rep.
 - **Independent review.** A fresh-context reviewer found three critical and six important issues in the first cut:
   - look-for misses read as "not marked";
   - duplicate IDs;

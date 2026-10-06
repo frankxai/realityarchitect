@@ -1,4 +1,4 @@
-# The reality state directory — v0.2
+# The reality state directory — v0.3
 
 `reality.md` and `soul.md` are contracts the human writes. The **state directory** is the record agents and tools
 maintain, and the human reviews. It is append-mostly: history is the point.
@@ -104,10 +104,32 @@ On pace: 6 of 6 planned reps logged in 14 days; no overdue moves.
 - **Did (action):** Sent her the listening link.
 - **Next (planned):** Play her the final mix when it is done.
 - Bridge: finish-the-album · Domain: craft
+
+### 2026-10-04 07:00 · rep
+- **Happened (fact):** Ninety minutes on the bridge section of "Cedar".
+- Bridge: finish-the-album · Rep: 90-minute finishing session · Domain: craft
 ```
 
 **Did** holds only what is already done. Anything the person intends to do goes under **Next (planned)**, so a plan is
 never counted as evidence.
+
+The last line of an entry links it. `Bridge:` names the aim by its slug and `Domain:` names the life domain. Every
+part is optional.
+
+**Since v0.3, `Rep:` names the rep an entry evidences.** It is written exactly as the aim's `## Bridge` lists it, the
+text after "per week —", so a person can write it by hand. It needs a `Bridge:` on the same line, which says whose rep
+it is. Tools file the rep under it:
+
+- **A listed name.** The rep is counted under that rep, even when the aim has several reps.
+- **A name the aim does not list.** The rep is kept under "A rep not matched to a listed rep", never guessed onto a
+  listed one. Validation warns about it.
+- **No `Rep:`.** The rep is filed as in v0.2:
+  - an aim with one rep counts every rep entry under it;
+  - with several reps, an entry is filed under the rep its fact names, else under "A rep not matched to a listed
+    rep".
+
+A name that differs from the listed one only in letter case still matches, as long as it fits exactly one rep. Files
+written before v0.3 read exactly as before.
 
 Kinds: `sign` (a meaningful coincidence), `win` (an identity vote), `rep` (a practice done), `move` (a bold move
 done), `opening` (an opportunity, a person, a door), `lesson`, `gratitude`. **primed** means the person had set out
