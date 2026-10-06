@@ -2,7 +2,13 @@
 
 For the next agent: this is everything needed to continue at the same bar, without the chat.
 
-- **State (updated 2026-10-06).** `main` is at `d946181` (PR #67), and production is www.realityarchitect.ai. `node --test` passes 238/238.
+> **Start with [`2026-10-07-NEXT-SESSION.md`](2026-10-07-NEXT-SESSION.md).** It has the current state, the paste-ready
+> lead prompt, the queue, and the skills, agents and merge rules. This file stays the deep reference.
+
+- **State (updated 2026-10-06, late).** `main` is at `f3035db` (#89), and production is www.realityarchitect.ai. `pnpm gate` passes with 269 tests.
+  - #86 integrated M1 (the program in the Studio), the `.ics` file and STATE v0.3 rep receipts, closing #72, #74 and #75.
+  - #87 added the upgrade plan, `docs/strategy/2026-10-06-PRODUCT-AND-EXPERIENCE-UPGRADE.md`.
+  - #89 fixed the High alliance-ordering side channel that the #67 cross-family review found. The #67 BLOCK is cleared, and its hardening is #91.
   - Since this file was first written: #65 (this handover), #66 (estate guard) and #67 (ADR-002 and the kernel projection, plugin 0.4.0) merged.
   - On 2026-10-06, [ADR-003](../adr/ADR-003-your-agent-your-keys-your-storage.md) re-scoped the hosted missions to Frank's product doctrine (§9).
   - The live work queue is the GitHub board issue (§12).
@@ -12,13 +18,14 @@ For the next agent: this is everything needed to continue at the same bar, witho
 
 **Read in this order.**
 
-1. This file.
-2. `AGENTS.md` (the two registers).
-3. `docs/strategy/2026-10-05-AGENT-TEAMS.md`.
-4. `docs/strategy/2026-10-05-GTM-PLAN.md`.
-5. `docs/adr/ADR-003-your-agent-your-keys-your-storage.md` (it supersedes ADR-001) and `docs/adr/ADR-002-reality-architect-and-starlight.md`.
-6. The private prompts file.
-7. `C:\Users\frank\.agent-harness\AMBITION-AND-EXCELLENCE.md` and `C:\Users\frank\.starlight\agent-os\PLAN-2026-10-05.md`.
+1. `2026-10-07-NEXT-SESSION.md` (the current prompt and state).
+2. This file.
+3. `AGENTS.md` (the two registers).
+4. `docs/strategy/2026-10-05-AGENT-TEAMS.md`.
+5. `docs/strategy/2026-10-05-GTM-PLAN.md`.
+6. `docs/adr/ADR-003-your-agent-your-keys-your-storage.md` (it supersedes ADR-001) and `docs/adr/ADR-002-reality-architect-and-starlight.md`.
+7. The private prompts file.
+8. `C:\Users\frank\.agent-harness\AMBITION-AND-EXCELLENCE.md` and `C:\Users\frank\.starlight\agent-os\PLAN-2026-10-05.md`.
 
 ---
 
@@ -392,7 +399,9 @@ Each mission uses the five-line contract. Work them in order unless Frank reorde
   - `/complete` shows "Begin day 1, free" and is `noindex`.
   - CI printed: "✓ built pages: 30 days prerendered; the edition is closed, with no price, checkout or purchase terms, and noindex".
 
-## 12. Kickoff prompt for the next agent (paste as is)
+## 12. Kickoff prompt for the next agent (superseded)
+
+> **Superseded on 2026-10-06** by [`2026-10-07-NEXT-SESSION.md`](2026-10-07-NEXT-SESSION.md). Paste that prompt, not this one. The text below is kept as history.
 
 The live queue is the pinned board issue **#80**, and each of #70–#79 carries a full task contract (repo, base, allowed
 and forbidden paths, done command, human gate). A cloud agent can take one issue with no other context.
