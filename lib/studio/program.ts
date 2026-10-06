@@ -11,8 +11,8 @@ import type { ProgramProgress, Snapshot } from './types.ts'
 export const PROGRAM_ID = SLUG
 export const PROGRAM_NAME = 'The Imaginal Act'
 
-/** The middle dot, built from its char code so this source stays ASCII. */
-const SEP = ` ${String.fromCharCode(0xb7)} `
+/** The middle-dot separator, built from its char code so this source (and every view that imports it) stays ASCII. */
+export const SEP = ` ${String.fromCharCode(0xb7)} `
 
 /** What the server page hands the Studio for each day: plain text and numbers, no Markdown. */
 export type ProgramDay = { day: number; title: string; minutes: number; intent: string }

@@ -6,7 +6,9 @@ import { PACE_LABEL, assessPace } from '@/lib/studio/pace'
 import { decisionsDue } from '@/lib/studio/snapshot'
 import { kindCounts } from '@/lib/studio/stats'
 import { localTime, newId } from '@/lib/studio/util'
+import type { ProgramDay } from '@/lib/studio/program'
 import type { DayNote, WitnessEntry } from '@/lib/studio/types'
+import { ProgramToday } from './ProgramPanels'
 import { Field, Tag, button, panelClass } from './ui'
 import type { StudioApi } from './useStudio'
 import { WitnessForm } from './WitnessView'
@@ -14,7 +16,7 @@ import type { Go } from './views'
 
 const EMPTY_NOTE: DayNote = { lookFor: '', lookForResult: '', focusBridgeId: '', rehearsed: false, correction: '' }
 
-export function TodayView({ studio, go }: { studio: StudioApi; go: Go }) {
+export function TodayView({ studio, go, programDays = [] }: { studio: StudioApi; go: Go; programDays?: ProgramDay[] }) {
   const { state, today, update, announce } = studio
   const note = state.days[today] ?? EMPTY_NOTE
   const active = state.bridges.filter((bridge) => bridge.status === 'active')
@@ -63,6 +65,7 @@ export function TodayView({ studio, go }: { studio: StudioApi; go: Go }) {
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_19rem]">
       <div className="space-y-6">
+        <ProgramToday studio={studio} go={go} days={programDays} />
         <section className={panelClass} aria-labelledby="morning-title">
           <p className="font-mono text-xs uppercase tracking-[0.18em] text-dawn">Morning</p>
           <h3 id="morning-title" className="mt-1 text-xl font-semibold text-ink">Begin as the person who already lives there</h3>

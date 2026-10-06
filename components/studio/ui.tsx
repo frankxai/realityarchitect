@@ -141,6 +141,11 @@ export function useDraft<T>(key: string, initial: T): [T, (value: T) => void] {
   return [value, set]
 }
 
+/** Sets a draft before its view mounts, so a link from one view can open another in a chosen state. In memory only. */
+export function presetDraft<T>(key: string, value: T) {
+  drafts.set(key, value)
+}
+
 let keySeq = 0
 const nextKey = () => `item-${(keySeq += 1)}`
 

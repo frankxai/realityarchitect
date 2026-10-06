@@ -6,7 +6,9 @@ import { decisionMd, snapshotMd } from '@/lib/studio/export'
 import { studioPatterns } from '@/lib/studio/reality'
 import { decisionsDue, diffSnapshots, domainTrend, draftSnapshot, snapshotPeriodStart } from '@/lib/studio/snapshot'
 import { localTime, newId } from '@/lib/studio/util'
+import type { ProgramDay } from '@/lib/studio/program'
 import type { Cadence, Decision, Reflection, Snapshot } from '@/lib/studio/types'
+import { ProgramTimeline } from './ProgramPanels'
 import { Area, ConfirmButton, Empty, Field, Tag, button, downloadText, inputClass, panelClass, useDraft } from './ui'
 import type { StudioApi } from './useStudio'
 
@@ -25,7 +27,7 @@ function Sparkline({ points, label }: { points: { day: string; now: number }[]; 
   )
 }
 
-export function TimelineView({ studio }: { studio: StudioApi }) {
+export function TimelineView({ studio, programDays = [] }: { studio: StudioApi; programDays?: ProgramDay[] }) {
   const { state, today, update, announce } = studio
   const [reflection, setReflection] = useDraft<Reflection>('snapshot:reflection', EMPTY_REFLECTION)
   const [approved, setApproved] = useState(false)
@@ -92,6 +94,8 @@ export function TimelineView({ studio }: { studio: StudioApi }) {
           <button type="button" className={button.primary} disabled={!approved} onClick={seal}>Seal snapshot</button>
         </div>
       </section>
+
+      <ProgramTimeline studio={studio} days={programDays} />
 
       <section aria-labelledby="snapshots-title">
         <h3 id="snapshots-title" className="text-lg font-semibold text-ink">Sealed snapshots</h3>

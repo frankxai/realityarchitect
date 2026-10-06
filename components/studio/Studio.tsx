@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { pruneImages } from '@/lib/studio/images'
+import type { ProgramDay } from '@/lib/studio/program'
 import { isEmptyState } from '@/lib/studio/state'
 import { AtlasView } from './AtlasView'
 import { BridgesView } from './BridgesView'
@@ -17,7 +18,8 @@ import { useStudio } from './useStudio'
 import { VIEWS, isView, type Go, type View } from './views'
 import { WitnessView } from './WitnessView'
 
-export function Studio() {
+/** `programDays` comes from the server page (read from the program's Markdown there), so this client never touches the file system. */
+export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
   const studio = useStudio()
   const [view, setView] = useState<View>('today')
   const [openBridge, setOpenBridge] = useState('')
@@ -146,17 +148,17 @@ export function Studio() {
           <h2 id="studio-view-title" ref={heading} tabIndex={-1} className="text-2xl font-bold text-ink focus-visible:outline-none sm:text-3xl">{current.title}</h2>
           <p className="mt-1 max-w-2xl text-sm text-muted">{current.intro}</p>
         </div>
-        {view === 'today' && <TodayView studio={studio} go={go} />}
+        {view === 'today' && <TodayView studio={studio} go={go} programDays={programDays} />}
         {view === 'atlas' && <AtlasView studio={studio} go={go} />}
         {view === 'bridges' && <BridgesView studio={studio} openId={openBridge} setOpenId={setOpenBridge} />}
         {view === 'witness' && <WitnessView studio={studio} />}
         {view === 'map' && <MapView studio={studio} go={go} />}
-        {view === 'timeline' && <TimelineView studio={studio} />}
+        {view === 'timeline' && <TimelineView studio={studio} programDays={programDays} />}
         {view === 'soul' && <SoulView studio={studio} />}
       </section>
 
       <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">{studio.message}</p>
-      <DataDialog studio={studio} open={dataOpen} onClose={() => setDataOpen(false)} go={go} />
+      <DataDialog studio={studio} open={dataOpen} onClose={() => setDataOpen(false)} go={go} programDays={programDays} />
     </div>
   )
 }
