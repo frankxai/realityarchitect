@@ -5,6 +5,15 @@ const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'mdx'],
   experimental: { mdxRs: true },
   poweredByHeader: false,
+  // The public MCP endpoint reads the program days, the Library data and the published SKILL.md files at request time
+  // (lib/mcp/tools.ts), so they ship with that one function and nothing else does.
+  outputFileTracingIncludes: {
+    '/api/mcp': [
+      './programs/imaginal-30/days/*.md',
+      './plugins/reality-architect/skills/reality-library/library.json',
+      './plugins/reality-architect/skills/*/SKILL.md',
+    ],
+  },
   async headers() {
     return [{
       source: '/(.*)',
