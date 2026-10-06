@@ -278,9 +278,23 @@ export function toKernel(reality, today, { audience, offset } = {}) {
 
   // Witness entries, in a fixed order. Repeats of the same entry in the same minute (a double tap, catch-up logging)
   // stay distinct with -2, -3; the guide's view numbers entries within a minute instead of hashing their words.
+  const repIndex = (entry, linked) => entry.rep
+    ? matchRep(linked.aim.reps, entry.rep)
+    : linked.aim.reps.length === 1 ? 0 : linked.aim.reps.findIndex((rep) => rep.name.trim().toLowerCase() === entry.fact.trim().toLowerCase())
+  const sharedOrder = (entry) => {
+    const linked = entry.bridge && !entry.bridgeDeleted ? planByAim.get(entry.bridge) : undefined
+    const domain = entry.domain && emitted.has(nodeId('domain', entry.domain)) ? nodeId('domain', entry.domain) : null
+    const index = entry.kind === 'rep' && linked ? repIndex(entry, linked) : null
+    // Only emitted associations and payload fields can affect alliance ordinals. Rep filing remains intentionally
+    // shared, including legacy fact-to-rep matching; the private words themselves never break an ordering tie.
+    return JSON.stringify([entry.day, entry.time, entry.kind, linked?.aimId ?? null, domain,
+      entry.kind === 'sign' ? Boolean(entry.primed) : null, index === null ? null : index >= 0 ? `rep-${index + 1}` : 'rep-other'])
+  }
   const witness = [...reality.witness]
     .filter((entry) => isDay(entry.day) && /^\d{2}:\d{2}$/.test(entry.time ?? ''))
-    .sort((a, b) => order(`${a.day} ${a.time} ${a.kind} ${a.fact}`, `${b.day} ${b.time} ${b.kind} ${b.fact}`))
+    .sort((a, b) => own
+      ? order(`${a.day} ${a.time} ${a.kind} ${a.fact}`, `${b.day} ${b.time} ${b.kind} ${b.fact}`)
+      : order(sharedOrder(a), sharedOrder(b)))
   const seen = new Map()
   for (const entry of witness) {
     const minute = `${entry.day}/${entry.time.replace(':', '')}/${entry.kind}`
@@ -299,9 +313,7 @@ export function toKernel(reality, today, { audience, offset } = {}) {
       // that rep, or under the catch-all when the aim lists no rep by that name, even an aim with a single rep.
       // Without a name: an aim with one listed rep files every rep under it (a rep entry describes the session, not the
       // rep's name). With several reps, an entry is filed under the rep its fact names, else under the catch-all.
-      const index = entry.rep
-        ? matchRep(linked.aim.reps, entry.rep)
-        : linked.aim.reps.length === 1 ? 0 : linked.aim.reps.findIndex((rep) => rep.name.trim().toLowerCase() === entry.fact.trim().toLowerCase())
+      const index = repIndex(entry, linked)
       const actionId = index >= 0 ? `rep-${index + 1}` : 'rep-other'
       if (actionId === 'rep-other' && !linked.plan.actions.some((candidate) => candidate.id === 'rep-other')) {
         // Kept and counted, never guessed onto a listed rep.

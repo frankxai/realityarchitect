@@ -352,6 +352,35 @@ test('v0.3: a Studio export round trip keeps the rep, even a name that holds the
   assert.ok(!filed.includes('rep-other'))
 })
 
+test('alliance witness ordinals depend only on shared fields, never private fact ordering', (t) => {
+  const { reality } = realityOf(t)
+  const bridge = reality.aims[0].slug
+  reality.aims[0].reps = [{ name: 'First shared rep', perWeek: 1 }, { name: 'Second shared rep', perWeek: 1 }]
+  reality.witness = [
+    { day: TODAY, time: '09:00', kind: 'sign', fact: 'Alpha private words', primed: true, bridge, meaning: 'Private meaning' },
+    { day: TODAY, time: '09:00', kind: 'sign', fact: 'Zulu private words', primed: false, bridge, meaning: 'Other meaning' },
+    { day: TODAY, time: '09:00', kind: 'sign', fact: 'Middle private words', primed: true, domain: 'health' },
+    { day: TODAY, time: '09:00', kind: 'rep', fact: 'Alpha private rep detail', bridge, rep: 'Second shared rep' },
+    { day: TODAY, time: '09:00', kind: 'rep', fact: 'Zulu private rep detail', bridge, rep: 'First shared rep' },
+  ]
+  const shared = JSON.stringify(kernel(reality, 'alliance'))
+  const own = JSON.stringify(kernel(reality, 'private'))
+  const firstFact = reality.witness[0].fact
+  reality.witness[0].fact = reality.witness[1].fact
+  reality.witness[1].fact = firstFact
+  assert.equal(JSON.stringify(kernel(reality, 'alliance')), shared, 'swapping private facts leaves the shared bundle byte-identical')
+  assert.notEqual(JSON.stringify(kernel(reality, 'private')), own, 'private fields remain attached to their original public subjects')
+  for (const entry of reality.witness) {
+    entry.fact = entry.fact.startsWith('Alpha') ? 'Zulu changed words' : entry.fact.startsWith('Zulu') ? 'Alpha changed words' : 'First changed words'
+    entry.meaning = 'Another private meaning'; entry.action = 'Private action'; entry.next = 'Private next'
+  }
+  assert.equal(JSON.stringify(kernel(reality, 'alliance')), shared, 'private edits cannot move ordinals between public priming/subject fields')
+  assert.notEqual(JSON.stringify(kernel(reality, 'private')), own, 'the private projection still carries changed words')
+  reality.witness.reverse()
+  assert.equal(JSON.stringify(kernel(reality, 'alliance')), shared, 'shared ordering is independent of file order')
+  assert.deepEqual(checkKernel(kernel(reality, 'alliance')), [])
+})
+
 test('the projection is deterministic and honest about time', (t) => {
   const { reality } = realityOf(t)
   const once = JSON.stringify(kernel(reality, 'private', '+02:00'))
