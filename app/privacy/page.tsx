@@ -25,7 +25,7 @@ const LOCAL_ONLY = [
 const NOT_COLLECTED = [
   'There is no account, assessment submission endpoint, or app database for these inputs.',
   'The assessment does not put its inputs in URLs, cookies, localStorage, or sessionStorage.',
-  'No analytics or telemetry provider is active in this app, and no provider receives assessment content.',
+  'Vercel Web Analytics and Speed Insights measure page views and page performance only; they never receive assessment content.',
 ]
 
 export default function Privacy() {
@@ -108,9 +108,10 @@ export default function Privacy() {
 
         <h2>Measurement boundary</h2>
         <p>
-          No analytics or telemetry provider is active. Any future measurement would require a separate consent and
-          data-governance decision and would be limited to bounded, non-content lifecycle events. Assessment answers,
-          system names, repeating jobs, and brief text are outside that boundary.
+          Vercel Web Analytics and Speed Insights record page views and page performance (page path, referrer, browser
+          and device class, coarse country, load timings). Measurement is limited to bounded, non-content lifecycle
+          events. Assessment answers, system names, repeating jobs, Studio entries, and brief text are outside that
+          boundary and never sent.
         </p>
 
         <h2>Links to other sites</h2>
