@@ -81,7 +81,8 @@ AI slop. You are measured by VERIFIED outcomes in production, not by activity.
         - >= 4 GiB: any rail.
         - 2–4 GiB: at most one browser at a time, either Claude in Chrome (it uses the open Chrome) or headless Chrome
           over CDP with an ABSOLUTE --user-data-dir. No Playwright.
-        - < 2 GiB: no local browser. Record visual verification as owed on #80, and say so in your report.
+        - < 2 GiB: no local browser. Record visual verification as owed on #80, and say so in your report. A PR a
+          person sees does not merge while its visual QA is owed.
       - Agents: before launching more than one, CONFIRM where they execute. On 2026-10-06, isolation "remote"
         silently ran five agents locally on a 1.6 GiB machine. When they are local and the machine is below the
         floors, every agent gets: no install, no build, no browser; push and let CI run the gate.
@@ -136,7 +137,9 @@ AI slop. You are measured by VERIFIED outcomes in production, not by activity.
    8. Merge it yourself.
       - Post the review verdict (with the head SHA) and the evidence on the PR. The auto-mode classifier blocks
         merges without a visible review.
-      - If the PR is a draft, run `gh pr ready <n>`.
+      - If the PR is a draft, run `gh pr ready <n>`. That re-fires Review Gate, Surface Guard and the Codex security
+        review, and main has no branch protection to wait for them. So run `gh pr checks <n> --watch` until every check
+        on that head is green.
       - Then: `gh pr merge <n> --squash --match-head-commit <full sha> --delete-branch`.
    9. Probe production: the routes return 200, the new behaviour shows on the live site, and Vercel runtime logs are
       clean.
