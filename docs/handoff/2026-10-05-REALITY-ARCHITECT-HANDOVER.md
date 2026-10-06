@@ -2,7 +2,12 @@
 
 For the next agent: this is everything needed to continue at the same bar, without the chat.
 
-- **State (updated 2026-10-06).** `main` is at `d946181` (PR #67), and production is www.realityarchitect.ai. `node --test` passes 238/238.
+> **Start with [`2026-10-07-NEXT-SESSION.md`](2026-10-07-NEXT-SESSION.md).** It has the current state, the paste-ready
+> lead prompt, the queue, and the skills, agents and merge rules. This file stays the deep reference.
+
+- **State (updated 2026-10-06, late).** `main` is at `3eba0cc` (#87), and production is www.realityarchitect.ai. `pnpm gate` passes with 268 tests.
+  - #86 integrated M1 (the program in the Studio), the `.ics` file and STATE v0.3 rep receipts, closing #72, #74 and #75.
+  - #87 added the upgrade plan, `docs/strategy/2026-10-06-PRODUCT-AND-EXPERIENCE-UPGRADE.md`.
   - Since this file was first written: #65 (this handover), #66 (estate guard) and #67 (ADR-002 and the kernel projection, plugin 0.4.0) merged.
   - On 2026-10-06, [ADR-003](../adr/ADR-003-your-agent-your-keys-your-storage.md) re-scoped the hosted missions to Frank's product doctrine (§9).
   - The live work queue is the GitHub board issue (§12).
