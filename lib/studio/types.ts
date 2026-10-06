@@ -204,6 +204,18 @@ export interface CanvasState {
   view: { x: number; y: number; zoom: number }
 }
 
+/**
+ * Progress in the free 30-day program, kept on this device. Day N is the local date `start` + N - 1, so the day moves
+ * with the calendar and a missed day is simply a day that is not in `done`.
+ */
+export interface ProgramProgress {
+  id: 'imaginal-30'
+  /** Local YYYY-MM-DD of day 1. */
+  start: string
+  /** Local YYYY-MM-DD dates of the program days marked done, in date order. */
+  done: string[]
+}
+
 export interface StudioState {
   schema: 'reality-studio'
   version: 1
@@ -219,4 +231,6 @@ export interface StudioState {
   snapshots: Snapshot[]
   decisions: Decision[]
   canvas: CanvasState
+  /** Optional, so every v1 save without it stays valid: present only once the person starts the 30 days. */
+  program?: ProgramProgress
 }

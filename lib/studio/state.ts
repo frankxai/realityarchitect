@@ -1,4 +1,5 @@
 import { DOMAIN_IDS, isDomainId, isGapClass, isWitnessKind } from './domains.ts'
+import { normalizeProgram } from './program.ts'
 import { clampText, isDay, localDay, newId } from './util.ts'
 import type {
   Atlas, Bridge, CanvasCard, CanvasState, DayNote, Decision, DomainState, Move, Reach, Rep, Snapshot, SnapshotBridge,
@@ -278,6 +279,8 @@ export function normalizeState(input: unknown, now: Date = new Date()): StudioSt
   if (!isObject(input)) return base
   const today = localDay(now)
   const stamp = (value: unknown, fallback: string) => (typeof value === 'string' && !Number.isNaN(Date.parse(value)) ? value : fallback)
+  // Optional: the key appears only when a valid program was saved, so a v1 save without one loads unchanged.
+  const program = normalizeProgram(input.program)
   return {
     schema: 'reality-studio',
     version: 1,
@@ -292,6 +295,7 @@ export function normalizeState(input: unknown, now: Date = new Date()): StudioSt
     snapshots: Array.isArray(input.snapshots) ? compact(input.snapshots.slice(0, CAP.records).map(normalizeSnapshot)) : [],
     decisions: Array.isArray(input.decisions) ? compact(input.decisions.slice(0, CAP.records).map(normalizeDecision)) : [],
     canvas: normalizeCanvas(input.canvas),
+    ...(program ? { program } : {}),
   }
 }
 
@@ -300,5 +304,5 @@ export function isEmptyState(state: StudioState): boolean {
   const soul = state.soul
   const soulEmpty = !soul.name && !soul.purpose && !soul.scene && !soul.gifts && !soul.values.length && !soul.iAm.length && !soul.vows.length && !soul.gratitude.length
   const atlasEmpty = Object.values(state.atlas).every((domain) => domain.now === null && domain.want === null && !domain.fact && !domain.scene && !domain.priority)
-  return soulEmpty && atlasEmpty && !state.bridges.length && !state.witness.length && !state.snapshots.length && !state.decisions.length && !state.canvas.cards.length && !Object.keys(state.days).length
+  return soulEmpty && atlasEmpty && !state.bridges.length && !state.witness.length && !state.snapshots.length && !state.decisions.length && !state.canvas.cards.length && !Object.keys(state.days).length && !state.program
 }
