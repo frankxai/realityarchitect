@@ -1,0 +1,38 @@
+{
+  "name": "@reality-architect/cli",
+  "version": "0.1.0",
+  "description": "Unified Cockpit CLI & Stdio MCP Server for Reality Architect — context grounding, reality.md conformance, and empirical diffusion assessment for AI agent harnesses.",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.mjs",
+  "types": "src/index.d.ts",
+  "bin": {
+    "reality-architect": "bin/reality-architect.mjs"
+  },
+  "files": [
+    "src",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@reality-architect/diffusion": "^0.1.0",
+    "@reality-architect/reality-md": "^0.1.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "reality-architect",
+    "reality.md",
+    "mcp",
+    "mcp-server",
+    "ai-agents",
+    "conformance",
+    "diffusion",
+    "model-context-protocol"
+  ]
+}
