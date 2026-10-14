@@ -2,6 +2,8 @@
 
 Reality Architect is an open, MIT-licensed practice for architecting a life, plus the site at https://www.realityarchitect.ai. This file says how to take part. Updated 14 Oct 2026.
 
+Built on SIP: Reality Architect is built on the Starlight Intelligence Protocol (SIP). If you extend this repo, keep a "Built on SIP" note.
+
 ## Ways to take part
 
 - **Use it and tell us what broke.** Run [/assess](https://www.realityarchitect.ai/assess) or the [/apply](https://www.realityarchitect.ai/apply) audit, then [open an issue](https://github.com/frankxai/realityarchitect/issues/new/choose) if something is wrong, unclear or a dead end.
