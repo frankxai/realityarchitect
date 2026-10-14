@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Take the Reality Architect audit
+    url: https://www.realityarchitect.ai/apply
+    about: The 10-step reality.md audit. It runs in your browser; no email needed to finish it.
+  - name: How to contribute
+    url: https://github.com/frankxai/realityarchitect/blob/main/CONTRIBUTING.md
+    about: Ways to take part and what to run before a pull request.
