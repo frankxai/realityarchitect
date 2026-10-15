@@ -72,6 +72,15 @@ export default function Start() {
         <Link href="/threshold" className="mt-4 inline-flex text-sm text-[#e8d5ad] underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8d5ad] focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Enter the Imaginal Act →</Link>
       </section>
 
+      <section className="mt-10 rounded-xl border border-border bg-surface p-6" aria-labelledby="take-part">
+        <h2 id="take-part" className="text-xl font-semibold text-ink">Take part</h2>
+        <p className="mt-3 text-sm leading-7 text-muted">The method and this site are open source (MIT) on GitHub. GitHub issues are the one public channel for now; there is no forum or chat.</p>
+        <ul className="mt-4 space-y-2">
+          <li><a href={`${site.github}/issues/new/choose`} className="text-sm font-medium text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Report a problem or suggest a change →</a></li>
+          <li><a href={site.github} className="text-sm font-medium text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Browse the source →</a></li>
+        </ul>
+      </section>
+
       <div className="mt-12 rounded-2xl border border-accent/30 blueprint glass p-7">
         <h2 className="text-xl font-bold text-ink">For the agents reading this</h2>
         <p className="mt-2 max-w-2xl text-sm text-muted">
