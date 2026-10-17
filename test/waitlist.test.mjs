@@ -2,7 +2,17 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { publicState, createRateLimiter, callerKey } from '../lib/waitlist.mjs'
+import {
+  publicState,
+  createRateLimiter,
+  callerKey,
+  readJsonObject,
+  normaliseEmail,
+  tokenShapeOk,
+  MAX_BODY_BYTES,
+  MAX_EMAIL_LENGTH,
+  MAX_TOKEN_LENGTH,
+} from '../lib/waitlist.mjs'
 import registry from '../data/products.json' with { type: 'json' }
 
 const vault = registry.products.find((p) => p.id === 'realityarchitect-vault')
@@ -81,8 +91,72 @@ test('the route never builds a response body of its own', () => {
   const shaped = src.match(/Response\.json\(\s*(\{\s*\.\.\.)?publicState\(/g) ?? []
   assert.equal(shaped.length, 4, 'GET, join, repeat join and update all answer through publicState')
   assert.ok(!/count:\s/.test(src), 'no hand-built count field in the route')
-  assert.ok(src.includes('writeLimit.take('), 'POST is rate limited')
-  assert.ok(src.includes('readLimit.take('), 'GET is rate limited')
+  assert.ok(src.includes("gate(writeLimit, 'write'"), 'POST is rate limited')
+  assert.ok(src.includes("gate(readLimit, 'read'"), 'GET is rate limited')
+  assert.ok(src.includes('takeDurable(kv'), 'the limit is durable when the store is configured')
+})
+
+test('the bucket map never holds more than its cap, even when nothing has expired', () => {
+  const limit = createRateLimiter({ capacity: 1, windowMs: 60_000, maxEntries: 100, now: () => 0 })
+  for (let i = 0; i < 1000; i++) {
+    limit.take(`10.0.${i >> 8}.${i & 255}`)
+    assert.ok(limit.size <= 100, `holding ${limit.size} after ${i + 1} callers`)
+  }
+  assert.equal(limit.take('10.0.3.231').ok, false, 'a recent caller is still limited')
+})
+
+const post = (body, headers = {}) => new Request('https://example.test/api/waitlist', { method: 'POST', body, headers })
+
+test('the body must be one JSON object: null, arrays, scalars and junk are a 400', async () => {
+  for (const raw of ['null', '[]', '"a@x.io"', '42', 'true', '{"email":', '']) {
+    const r = await readJsonObject(post(raw))
+    assert.equal('body' in r ? 200 : r.status, 400, `body ${JSON.stringify(raw)}`)
+  }
+  assert.equal((await readJsonObject(new Request('https://example.test', { method: 'POST' }))).status, 400)
+  assert.deepEqual(await readJsonObject(post('{"email":"a@x.io"}')), { body: { email: 'a@x.io' } })
+})
+
+test('a body over the byte cap is a 413, whether or not Content-Length says so', async () => {
+  const big = JSON.stringify({ email: 'a@x.io', pain: 'x'.repeat(MAX_BODY_BYTES) })
+  assert.equal((await readJsonObject(post(big))).status, 413)
+  assert.equal((await readJsonObject(post('{}', { 'content-length': String(MAX_BODY_BYTES + 1) }))).status, 413)
+
+  let sent = 0
+  const stream = new ReadableStream({
+    pull(c) {
+      sent += 1024
+      c.enqueue(new TextEncoder().encode('x'.repeat(1024)))
+      if (sent > 64 * 1024) c.close()
+    },
+  })
+  const chunked = new Request('https://example.test', { method: 'POST', body: stream, duplex: 'half' })
+  assert.equal((await readJsonObject(chunked)).status, 413)
+  assert.ok(sent <= MAX_BODY_BYTES + 2048, `stopped reading after ${sent} bytes`)
+})
+
+test('an overlong email is refused, never truncated into a different address', () => {
+  const at = '@x.io'
+  const fits = 'a'.repeat(MAX_EMAIL_LENGTH - at.length) + at
+  assert.equal(normaliseEmail(fits), fits)
+  assert.equal(normaliseEmail('a' + fits), null)
+  assert.equal(normaliseEmail('a'.repeat(400) + at), null)
+  assert.equal(normaliseEmail('  A@X.io '), 'a@x.io')
+  for (const bad of [undefined, null, 42, {}, 'no-at-sign', 'a@b']) assert.equal(normaliseEmail(bad), null)
+})
+
+test('an update token has a bounded shape', () => {
+  assert.equal(tokenShapeOk('t'.repeat(43)), true)
+  assert.equal(tokenShapeOk('t'.repeat(MAX_TOKEN_LENGTH + 1)), false)
+  for (const bad of ['', 42, null, undefined, {}]) assert.equal(tokenShapeOk(bad), false)
+})
+
+test('the route reads the body through the bounded reader and validates before normalising', () => {
+  const src = readFileSync(fileURLToPath(new URL('../app/api/waitlist/route.ts', import.meta.url)), 'utf8')
+  assert.ok(src.includes('readJsonObject(req)'))
+  assert.ok(!src.includes('req.json()'), 'no unbounded parse')
+  assert.ok(src.includes('normaliseEmail(body.email)'))
+  assert.ok(!/clip\(body\.email/.test(src), 'the email is never truncated')
+  assert.ok(src.includes('tokenShapeOk(body.token)'))
 })
 
 test('KV credentials resolve from either the Vercel KV or the Upstash pair, never a mix', async () => {

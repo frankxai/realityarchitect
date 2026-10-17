@@ -7,6 +7,10 @@ import {
   joinWaitlist,
   updateWaitlist,
   waitlistKeys,
+  takeDurable,
+  readJsonObject,
+  normaliseEmail,
+  tokenShapeOk,
 } from '@/lib/waitlist.mjs'
 
 /**
@@ -32,7 +36,6 @@ const KV = kvCredentials(process.env)
 const RESEND_KEY = process.env.RESEND_API_KEY
 const RESEND_AUDIENCE = process.env.RESEND_AUDIENCE_ID
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const URGENCIES = ['now', 'this-quarter', 'exploring']
 const BANDS = ['free-only', 'under-25', '25-99', '100-299', '300-999', 'over-1000', 'company-pays']
 
@@ -53,11 +56,27 @@ async function kv(command: unknown[]): Promise<unknown> {
 }
 
 /**
- * One bucket per caller address, module-scoped so it survives between requests in a warm
- * runtime. See `lib/waitlist.mjs` for what this does and does not defend against.
+ * Two limits per caller address. The in-memory bucket is checked first, so a flood from one
+ * address never reaches the store; the durable window in KV is the one that holds across
+ * instances and restarts. If the store cannot answer, the in-memory verdict stands.
  */
-const writeLimit = createRateLimiter({ capacity: 5, windowMs: 60_000 })
-const readLimit = createRateLimiter({ capacity: 60, windowMs: 60_000 })
+const LIMITS = {
+  write: { capacity: 5, windowMs: 60_000 },
+  read: { capacity: 60, windowMs: 60_000 },
+} as const
+const writeLimit = createRateLimiter(LIMITS.write)
+const readLimit = createRateLimiter(LIMITS.read)
+
+async function gate(local: ReturnType<typeof createRateLimiter>, scope: keyof typeof LIMITS, req: Request) {
+  const caller = callerKey(req.headers)
+  const first = local.take(caller)
+  if (!first.ok || !KV) return first
+  try {
+    return await takeDurable(kv, { scope, caller, ...LIMITS[scope] })
+  } catch {
+    return first
+  }
+}
 
 const tooMany = (retryAfter: number) =>
   Response.json(
@@ -72,21 +91,20 @@ const unconfigured = () =>
   )
 
 export async function POST(req: Request) {
-  const gate = writeLimit.take(callerKey(req.headers))
-  if (!gate.ok) return tooMany(gate.retryAfter)
+  const allowed = await gate(writeLimit, 'write', req)
+  if (!allowed.ok) return tooMany(allowed.retryAfter)
 
-  let body: Record<string, unknown>
-  try {
-    body = await req.json()
-  } catch {
-    return Response.json({ error: 'Invalid body' }, { status: 400 })
-  }
+  const read = await readJsonObject(req)
+  if (!('body' in read)) return Response.json({ error: read.error }, { status: read.status })
+  const body = read.body
 
   const product = find(body.productId)
   if (!product || !product.waitlist.enabled) return Response.json({ error: 'Unknown product' }, { status: 404 })
 
-  const email = clip(body.email, 320)?.toLowerCase()
-  if (!email || !EMAIL_RE.test(email)) return Response.json({ error: 'Valid email required' }, { status: 400 })
+  const email = normaliseEmail(body.email)
+  if (!email) return Response.json({ error: 'Valid email required' }, { status: 400 })
+  if (body.token !== undefined && !tokenShapeOk(body.token))
+    return Response.json({ error: 'Invalid update token' }, { status: 400 })
   if (body.consent !== true) return Response.json({ error: 'Consent required' }, { status: 400 })
   if (!KV) return unconfigured()
 
@@ -162,8 +180,8 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-  const gate = readLimit.take(callerKey(req.headers))
-  if (!gate.ok) return tooMany(gate.retryAfter)
+  const allowed = await gate(readLimit, 'read', req)
+  if (!allowed.ok) return tooMany(allowed.retryAfter)
 
   const product = find(new URL(req.url).searchParams.get('productId'))
   if (!product) return Response.json({ error: 'Unknown product' }, { status: 404 })
