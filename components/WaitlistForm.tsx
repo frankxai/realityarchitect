@@ -24,7 +24,41 @@ const PRICE_BANDS = [
 
 const ROLES = ['Solo operator', 'Engineer', 'Creator', 'Consultant', 'Team lead', 'Exploring']
 
-type State = { position?: number; publicCount: number | null; foundingSeatsLeft: number | null }
+const ROLE_OPTIONS = ROLES.map((r) => ({ value: r, label: r }))
+
+type State = { position?: number; publicCount: number | null; foundingSeatsLeft: number | null; token?: string }
+
+// Declared at module scope so its identity is stable: defined inside the form, every answer
+// re-created the component and remounted the button that had keyboard focus.
+function Choice({
+  options,
+  selected,
+  onPick,
+}: {
+  options: { value: string; label: string }[]
+  selected?: string
+  onPick: (value: string) => void
+}) {
+  return (
+    <div className="mt-2.5 flex flex-wrap gap-2">
+      {options.map((o) => (
+        <button
+          key={o.value}
+          type="button"
+          onClick={() => onPick(o.value)}
+          aria-pressed={selected === o.value}
+          className={`min-h-11 rounded-lg border px-3.5 py-1.5 text-sm transition ${
+            selected === o.value
+              ? 'border-accent bg-accent/15 text-accent'
+              : 'border-border text-muted hover:border-accent/60 hover:text-ink'
+          }`}
+        >
+          {o.label}
+        </button>
+      ))}
+    </div>
+  )
+}
 
 export function WaitlistForm({
   productId,
@@ -44,6 +78,7 @@ export function WaitlistForm({
   const [answers, setAnswers] = useState<{ priceBand?: string; role?: string; pain?: string }>({})
   const [painDraft, setPainDraft] = useState('')
   const [thanks, setThanks] = useState(false)
+  const [answerError, setAnswerError] = useState<string | null>(null)
 
   if (!product) return null
 
@@ -74,38 +109,15 @@ export function WaitlistForm({
   const answer = async (patch: Record<string, string>) => {
     const next = { ...answers, ...patch }
     setAnswers(next)
+    setAnswerError(null)
     try {
-      await post(next)
+      await post({ ...next, token: state?.token })
       if (next.priceBand && next.role && next.pain) setThanks(true)
-    } catch {
-      // The signal that matters is already stored; a failed refinement is not worth an alarm.
+    } catch (err) {
+      // The signup itself is already stored; say what failed and leave it there.
+      setAnswerError(err instanceof Error ? err.message : 'That answer did not save.')
     }
   }
-
-  const Choice = ({
-    field,
-    options,
-  }: {
-    field: 'priceBand' | 'role'
-    options: { value: string; label: string }[]
-  }) => (
-    <div className="mt-2.5 flex flex-wrap gap-2">
-      {options.map((o) => (
-        <button
-          key={o.value}
-          onClick={() => answer({ [field]: o.value })}
-          aria-pressed={answers[field] === o.value}
-          className={`min-h-11 rounded-lg border px-3.5 py-1.5 text-sm transition ${
-            answers[field] === o.value
-              ? 'border-accent bg-accent/15 text-accent'
-              : 'border-border text-muted hover:border-accent/60 hover:text-ink'
-          }`}
-        >
-          {o.label}
-        </button>
-      ))}
-    </div>
-  )
 
   return (
     <section className="mt-6 rounded-2xl border border-border glass p-5 sm:my-10 sm:p-7">
@@ -155,18 +167,22 @@ export function WaitlistForm({
             </p>
           )}
 
-          {!thanks ? (
+          {!state.token ? (
+            <p className="mt-4 text-sm text-muted">
+              This address joined earlier. Its answers can only be changed from the browser that signed it up.
+            </p>
+          ) : !thanks ? (
             <div className="mt-6 space-y-5">
               <p className="text-sm text-muted">
                 Three questions, all skippable. They decide what gets built first and what it costs.
               </p>
               <div>
                 <span className="text-sm font-medium text-ink">What would you expect something like this to cost?</span>
-                <Choice field="priceBand" options={PRICE_BANDS} />
+                <Choice options={PRICE_BANDS} selected={answers.priceBand} onPick={(v) => answer({ priceBand: v })} />
               </div>
               <div>
                 <span className="text-sm font-medium text-ink">Which of these is closest to you?</span>
-                <Choice field="role" options={ROLES.map((r) => ({ value: r, label: r }))} />
+                <Choice options={ROLE_OPTIONS} selected={answers.role} onPick={(v) => answer({ role: v })} />
               </div>
               <div>
                 <label htmlFor={`pain-${productId}`} className="text-sm font-medium text-ink">
@@ -192,6 +208,11 @@ export function WaitlistForm({
                   </button>
                 </div>
               </div>
+              {answerError && (
+                <p role="status" aria-live="polite" className="text-sm text-accent">
+                  {answerError}
+                </p>
+              )}
             </div>
           ) : (
             <p className="mt-4 text-sm text-muted">That&apos;s everything. Nothing else lands until there is something real to open.</p>

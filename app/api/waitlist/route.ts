@@ -1,5 +1,13 @@
 import registry from '@/data/products.json'
-import { publicState, createRateLimiter, callerKey, kvCredentials } from '@/lib/waitlist.mjs'
+import {
+  publicState,
+  createRateLimiter,
+  callerKey,
+  kvCredentials,
+  joinWaitlist,
+  updateWaitlist,
+  waitlistKeys,
+} from '@/lib/waitlist.mjs'
 
 /**
  * Per-product waitlist. Wire-compatible with `starlight/packages/demand-capture`:
@@ -28,7 +36,6 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const URGENCIES = ['now', 'this-quarter', 'exploring']
 const BANDS = ['free-only', 'under-25', '25-99', '100-299', '300-999', 'over-1000', 'company-pays']
 
-const key = (id: string, suffix: string) => `waitlist:${id}:${suffix}`
 const clip = (v: unknown, n: number) => (typeof v === 'string' && v.trim() ? v.trim().slice(0, n) : undefined)
 const oneOf = (v: unknown, allowed: string[]) => (typeof v === 'string' && allowed.includes(v) ? v : undefined)
 const find = (id: unknown): Product | undefined => registry.products.find((p) => p.id === id)
@@ -83,57 +90,75 @@ export async function POST(req: Request) {
   if (body.consent !== true) return Response.json({ error: 'Consent required' }, { status: 400 })
   if (!KV) return unconfigured()
 
-  const url = new URL(req.url)
-  try {
-    // Idempotent on email: a repeat signup re-reads its position and never increments the
-    // count. Re-posting is how someone answers the skippable questions later, and it must not
-    // cost a seat — nor hand anyone a one-line way to inflate the number the page publishes.
-    const existing = await kv(['hget', key(product.id, 'positions'), email])
-    let position: number
-    if (existing) position = Number(existing)
-    else {
-      position = Number(await kv(['incr', key(product.id, 'count')]))
-      await kv(['hset', key(product.id, 'positions'), email, String(position)])
-    }
+  const answers = {
+    name: clip(body.name, 100),
+    role: clip(body.role, 100),
+    pain: clip(body.pain, 400),
+    urgency: oneOf(body.urgency, URGENCIES),
+    priceBand: oneOf(body.priceBand, BANDS),
+    alternative: clip(body.alternative, 200),
+  }
 
-    const signal = {
+  // A request carrying a token is an update to answers already given; only the browser that
+  // received the token at signup holds it. Without one, the request is a join, which never
+  // touches an existing signal.
+  if (body.token !== undefined) {
+    let result
+    try {
+      result = await updateWaitlist(kv, { productId: product.id, email, token: body.token, answers })
+    } catch {
+      return Response.json({ error: 'Could not save your answers. Your place on the list is unchanged.' }, { status: 502 })
+    }
+    if (result.status === 'refused')
+      return Response.json({ error: 'These answers can only be changed from the browser that joined.' }, { status: 403 })
+    return Response.json(publicState(product, result.count, result.position))
+  }
+
+  const url = new URL(req.url)
+  let joined
+  try {
+    joined = await joinWaitlist(kv, {
       productId: product.id,
       email,
-      name: clip(body.name, 100),
-      role: clip(body.role, 100),
-      pain: clip(body.pain, 400),
-      urgency: oneOf(body.urgency, URGENCIES),
-      priceBand: oneOf(body.priceBand, BANDS),
-      alternative: clip(body.alternative, 200),
-      source: clip(body.source, 160) ?? url.pathname,
-      referrer: clip(req.headers.get('referer'), 160),
-      position,
-      createdAt: new Date().toISOString(),
-      consent: true as const,
-    }
-    await kv(['hset', key(product.id, 'signals'), email, JSON.stringify(signal)])
-
-    if (RESEND_KEY && RESEND_AUDIENCE) {
-      // Non-fatal: a Resend outage must not cost the signal already stored in KV.
-      try {
-        await fetch(`https://api.resend.com/audiences/${RESEND_AUDIENCE}/contacts`, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${RESEND_KEY}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email,
-            first_name: signal.name?.split(' ')[0],
-            unsubscribed: false,
-            properties: { waitlist: product.id },
-          }),
-        })
-      } catch {}
-    }
-
-    const count = await kv(['get', key(product.id, 'count')])
-    return Response.json(publicState(product, count ? Number(count) : position, position))
+      signal: {
+        productId: product.id,
+        email,
+        ...answers,
+        source: clip(body.source, 160) ?? url.pathname,
+        referrer: clip(req.headers.get('referer'), 160),
+        createdAt: new Date().toISOString(),
+        consent: true as const,
+      },
+    })
   } catch {
-    return Response.json({ error: 'Could not save your signal. Nothing was stored — try again.' }, { status: 502 })
+    // The join is one atomic script: if it ran, repeating it returns the same place; if it did
+    // not, nothing was written. Either way retrying is safe, which is the only claim made here.
+    return Response.json(
+      { error: 'Could not confirm your signup. Trying again is safe: it never takes a second place.' },
+      { status: 502 }
+    )
   }
+
+  // An address already on the list gets the public view only: no position, no token, no answers.
+  if (joined.status === 'exists') return Response.json(publicState(product, joined.count))
+
+  if (RESEND_KEY && RESEND_AUDIENCE) {
+    // Non-fatal: a Resend outage must not cost the signal already stored in KV.
+    try {
+      await fetch(`https://api.resend.com/audiences/${RESEND_AUDIENCE}/contacts`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${RESEND_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          first_name: answers.name?.split(' ')[0],
+          unsubscribed: false,
+          properties: { waitlist: product.id },
+        }),
+      })
+    } catch {}
+  }
+
+  return Response.json({ ...publicState(product, joined.count, joined.position), token: joined.token })
 }
 
 export async function GET(req: Request) {
@@ -144,7 +169,7 @@ export async function GET(req: Request) {
   if (!product) return Response.json({ error: 'Unknown product' }, { status: 404 })
   if (!KV) return unconfigured()
   try {
-    const count = await kv(['get', key(product.id, 'count')])
+    const count = await kv(['get', waitlistKeys(product.id)[1]])
     return Response.json(publicState(product, count ? Number(count) : 0))
   } catch {
     return Response.json({ error: 'Waitlist unavailable' }, { status: 502 })

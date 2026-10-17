@@ -78,8 +78,8 @@ test('the caller key is the first forwarded hop, with a fallback that is never e
 
 test('the route never builds a response body of its own', () => {
   const src = readFileSync(fileURLToPath(new URL('../app/api/waitlist/route.ts', import.meta.url)), 'utf8')
-  const shaped = src.match(/Response\.json\(\s*publicState\(/g) ?? []
-  assert.equal(shaped.length, 2, 'both GET and POST must answer through publicState')
+  const shaped = src.match(/Response\.json\(\s*(\{\s*\.\.\.)?publicState\(/g) ?? []
+  assert.equal(shaped.length, 4, 'GET, join, repeat join and update all answer through publicState')
   assert.ok(!/count:\s/.test(src), 'no hand-built count field in the route')
   assert.ok(src.includes('writeLimit.take('), 'POST is rate limited')
   assert.ok(src.includes('readLimit.take('), 'GET is rate limited')
