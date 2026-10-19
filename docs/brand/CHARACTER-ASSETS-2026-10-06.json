@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "status": "candidate",
+  "createdAt": "2026-10-06",
+  "brand": "reality-architect",
+  "generationMethod": "built-in image_gen",
+  "workingNames": [
+    "Aro",
+    "Pip",
+    "Kite",
+    "Ledger"
+  ],
+  "productionApproved": false,
+  "assets": [
+    {
+      "id": "ra-family-atelier-v01",
+      "artifact": "exec-bbde959a-3c8b-4e5a-a654-d1d7deed3aa7.png",
+      "sha256": "9bc999c100ad9826daaffe9404f21be486e9a1d6155de5cc381a782b8f66453b",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "prompt": "Use case: stylized-concept.\nAsset type: original Reality Architect mascot-family concept presentation, premium cinematic 3D character design. This is a candidate identity exploration, not existing official characters.\nCreate a wide beautiful restrained character-family campaign image in a dawn-lit architectural atelier. Four original characters with clear distinct silhouettes, absolutely no vendor mascots or borrowed robot designs. Main character Aro: small confident humanoid architect droid, warm ivory ceramic shoulder/torso panels over dark graphite joints, a distinctive inverted-U arch-shaped head housing surrounding a flat smoked glass face inset, TWO short warm vertical capsule eyes, one tiny inset blueprint-blue horizontal chest bar. Head has an open arch silhouette and subtly squared edges, NOT a spherical head. 2.6 heads tall, articulated mitten-like three-finger hands and broad stable boots, warm copper details only at hinge pins. Aro holds a small real vellum model of a bridge in both hands, thoughtful intent rather than superhero pose.\nCompanion Pip: small quadruped mechanical fox, distinctly wedge-shaped ceramic head, two asymmetrical architectural triangular ears, graphite snout and paws, single angular segmented copper-and-ivory tail curled like a folded paper ribbon, warm amber simple dot eyes, no cat/octopus anatomy. Pip is sitting beside Aro looking at the bridge. Pet height 35 percent of Aro.\nKite: smaller floating surveyor droid with a flattened triangular paper-kite silhouette, smoke glass central round lens, ceramic wings and copper edge, one tiny blue status light, no humanoid body.\nLedger: compact low wheeled archive droid shaped like an upright archival folio with a graphite spine, rounded ivory cover-like front, two small vertical eyes and a brass tab at top; holds a single blank vellum card in a simple side gripper, no text.\nComposition: Aro and Pip are dominant central foreground with generous empty upper-left space, supporting Kite and Ledger to the right, all four legible without crowding. Low stone atelier table, one bridge maquette, restrained dark background opening onto dawn, meaningful space, high craft. Palette graphite #06070c, ivory #f7e8c8, copper #ad744b, blueprint #5b8cff used sparingly. Tactile satin ceramic, finely anodized metal, soft realistic light, physically plausible rendering, sophisticated warmth and sculptural originality, premium collectible designer-toy quality without toy-store bright plastic. No holograms, no random sci-fi starfield, no robots at laptops, no logos, no text, no watermark. Do not mimic Mona, Copilot, Clawd, WALL-E, Eve the Pixar robot, Baymax, Astro or any recognizable existing mascot.",
+      "alt": "Aro and the fox companion Pip examine a bridge model with the survey droid Kite and archive droid Ledger in a dawn atelier."
+    },
+    {
+      "id": "ra-aro-pip-duo-v01",
+      "artifact": "exec-d2642f9a-4344-415d-98b3-5226ee7455e3.png",
+      "sha256": "893fe9c9d1e1e2d2fdc93ea093424185816aaab6a0c85bf6a7cc0339e93eeff3",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "prompt": "Use case: stylized-concept.\nAsset type: transparent mascot identity master, candidate Reality Architect brand asset.\nUse the previous image as the exact CHARACTER DESIGN reference, not as a backdrop. Extract and re-render only the original main architect droid Aro and quadruped fox pet Pip as a premium full-body duo on a genuinely transparent background.\nPreserve Aro's arched ivory ceramic head housing, smoked inset face, two short vertical warm amber capsule eyes, graphite articulated joints, tiny blue chest indicator, copper hinge pins, stable boots and exactly the same proportions. Preserve Pip's angular origami-like ivory ceramic fox head and ears, graphite paws/snout, amber eyes and faceted copper-and-ivory curled tail. Do not change their identity into generic spherical robots or realistic fur animals.\nComposition: Aro standing on right, Pip sitting on left at 40 percent Aro height, a little air between silhouettes; both look toward viewer with calm intelligent warmth. Aro holds one blank vellum architecture card in a lowered left hand and makes a gentle open-hand invitation with right. Pip sits attentively. Both entire bodies including feet, tail and ears visible. Wide generous transparent padding, nothing cropped, no overlap of pet tail with droid.\nStudio product-quality render, matte tactile ceramic, dark graphite and restrained copper, soft golden key light, clean crisp silhouette suitable for later web compositing. No table, no platform, no floor, no backdrop, no city, no surrounding scene, no labels, no letters, no watermark, no logo. Preserve actual alpha transparency. This is a character master, not a pretend ready-to-install animated pet sprite sheet.",
+      "alt": "Ivory arch-headed architect droid Aro invites the viewer beside Pip, an angular mechanical fox."
+    },
+    {
+      "id": "sis-academy-founder-crew-v01",
+      "artifact": "exec-ab82f305-78b8-4daa-bcb4-be9dbe9586fd.png",
+      "sha256": "0b960857938b4f8b5a2a1ba0069905ba3b745a85b68a154ea5ac512566c43d10",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "prompt": "Use case: stylized-concept.\nAsset type: proposed Starlight Intelligence Academy character-world editorial scene.\nUse the last two generated images as exact character references for Aro and Pip; preserve their distinctive arch helmet, warm ivory ceramic, graphite joints, two warm vertical eyes, copper hinge pins, angular mechanical fox anatomy and folded copper tail.\nCreate a sophisticated cinematic animated-film-quality image of a human founder and original robot/pet companions within a REAL grounded contemporary academy architecture studio at morning. No fairy-tale castles or fantasy skyline. Warm natural daylight, clean pale stone, brushed aluminum and long gallery windows overlooking quiet canals and contemporary Amsterdam-like architecture; not a generic neon sci-fi spaceship.\nHuman: a proposed stylized miniature adult male founder avatar based on a textual creative brief, not a claim of exact photographic likeness: age 29, swept-up brown hair, beard lighter along the sides, defined moustache and chin beard, natural brown eyes, clean black shirt with BLACK buttons and black trousers, no sunglasses. Intelligent warm calm face, adult proportions stylized at roughly 4 heads tall, direct eye contact with viewer. No superhero outfit or jewelry. He sits on the corner of a wood-and-stone desk beside a small architectural bridge model; Aro stands alongside pointing with one hand at the bridge's connection, Pip is on the desk looking toward the founder. One small floating paper-kite shaped surveyor droid high in the background. Clear human authorship, droids supporting, no anonymous robots at laptops.\nStarlight Academy mode: brighter institutional surfaces, restrained cyan and violet details in the environment, warm gold on human contribution; Reality Architect characters keep their original dawn identity. Paper folios, a physical knowledge-map pinboard with simple precise abstract lines and no readable text. Composition wide editorial poster, human and Aro dominant in right two-thirds, generous light negative space at left for later HTML copy, actual tools and artifact in the foreground. Tactile handcrafted ceramic, copper, natural wood, vivid yet controlled palette, softly cinematic depth, extremely coherent design. No text, no logos, no watermark, no vendor mascots. Keep it premium and inventive rather than babyish.",
+      "alt": "Proposed Mini Frank avatar works on a bridge model beside Aro, Pip and Kite in a bright canal-side academy atelier."
+    }
+  ]
+}
