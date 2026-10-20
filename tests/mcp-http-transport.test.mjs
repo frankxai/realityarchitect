@@ -33,6 +33,12 @@ test('origin verification for public MCP endpoint', async () => {
   const reqVercelDiffOrigin = makeRequest(vercelUrl, PING, { origin: 'https://evil.example' })
   const resVercelDiffOrigin = await POST(reqVercelDiffOrigin)
   assert.equal(resVercelDiffOrigin.status, 403)
+  assert.equal((await resVercelDiffOrigin.json()).error?.code, -32600)
+
+  const resSiteOriginOnPreview = await POST(
+    makeRequest(vercelUrl, PING, { origin: 'https://www.realityarchitect.ai' }),
+  )
+  assert.equal(resSiteOriginOnPreview.status, 200)
 
   const forbiddenOrigins = [
     'null',
@@ -85,6 +91,20 @@ test('invalid UTF-8, empty, and whitespace-only body parsing', async () => {
   assert.equal(resInvalidUtf8.status, 400)
   const jsonInvalidUtf8 = await resInvalidUtf8.json()
   assert.equal(jsonInvalidUtf8.error?.code, -32700)
+
+  // Valid JSON once a lenient decoder swaps the stray byte for U+FFFD, so only strict UTF-8 decoding rejects it.
+  const encoder = new TextEncoder()
+  const strayByteBody = new Uint8Array([
+    ...encoder.encode('{"jsonrpc":"2.0","id":1,"method":"ping","pad":"'),
+    0xff,
+    ...encoder.encode('"}'),
+  ])
+  assert.doesNotThrow(() => JSON.parse(new TextDecoder().decode(strayByteBody)))
+  const resStrayByte = await POST(
+    new Request(ENDPOINT, { method: 'POST', headers: HEADERS, body: strayByteBody }),
+  )
+  assert.equal(resStrayByte.status, 400)
+  assert.equal((await resStrayByte.json()).error?.code, -32700)
 
   const reqEmpty = makeRequest(ENDPOINT, '')
   const resEmpty = await POST(reqEmpty)
