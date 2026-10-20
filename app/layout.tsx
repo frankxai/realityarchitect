@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Nav } from '@/components/Nav'
@@ -8,6 +8,11 @@ import { site } from '@/lib/site'
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
 const grotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-grotesk', display: 'swap' })
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jb', display: 'swap' })
+
+export const viewport: Viewport = {
+  themeColor: '#06070c',
+  colorScheme: 'dark',
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
