@@ -9,6 +9,11 @@ import { TOOLS, callTool, createSession } from '../plugins/reality-architect/mcp
 import { bundleFiles } from '../lib/studio/export.ts'
 import { sampleState } from '../lib/studio/sample.ts'
 
+const isolatedHome = fs.mkdtempSync(path.join(os.tmpdir(), 'ra-mcp-home-'))
+process.env.HOME = isolatedHome
+process.env.USERPROFILE = isolatedHome
+test.after(() => fs.rmSync(isolatedHome, { recursive: true, force: true }))
+
 const TODAY = '2026-10-04'
 
 function sampleHome(t) {
