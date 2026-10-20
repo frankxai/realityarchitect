@@ -9,7 +9,7 @@ import { addDays, buildProgramIcs, icsFileName, isIcsDate, isIcsTime, type IcsDa
  */
 
 const FOCUS = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg'
-const INPUT = `mt-1.5 block min-h-11 w-full rounded-lg border border-border bg-bg px-3.5 py-2 font-mono text-sm text-ink ${FOCUS}`
+const INPUT = `mt-1.5 block min-h-11 w-full rounded-lg border border-border bg-bg px-3.5 py-2 font-mono text-base sm:text-sm text-ink ${FOCUS}`
 const DEFAULT_TIME = '07:00'
 /** The usual length of a day's practice, for a day that does not carry its own. */
 const DEFAULT_MINUTES = 10
