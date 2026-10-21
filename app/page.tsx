@@ -55,8 +55,10 @@ export default function Home() {
     <>
       <section className="blueprint relative -mx-5 overflow-hidden px-5 py-14 sm:py-24">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_75%_14%,rgba(91,140,255,0.16),transparent_34%),radial-gradient(circle_at_88%_72%,rgba(232,213,173,0.10),transparent_32%)]" aria-hidden="true" />
-        <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
-          <div>
+        {/* Three grid children so a phone reads promise → export proof → facts, while desktop keeps the
+            two columns: copy and facts on the left, the export preview spanning both rows on the right. */}
+        <div className="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:gap-x-12 lg:gap-y-9">
+          <div className="lg:col-start-1 lg:row-start-1 lg:self-end">
             <p className="font-mono text-xs font-semibold tracking-[0.04em] text-accent">Open practice · local-first · yours to export</p>
             <h1 className="mt-5 max-w-[13ch] text-5xl font-extrabold leading-[0.98] tracking-[-0.05em] text-ink sm:text-7xl">
               {lead} <span className="font-serif font-normal italic tracking-[-0.02em] text-dawn">{witness}</span>
@@ -69,17 +71,18 @@ export default function Home() {
             <p className="mt-4 text-sm text-muted">
               Building AI systems for that life? <Link href="/assess" className="text-accent underline-offset-4 hover:underline">Find your first system gap</Link>.
             </p>
-            <dl className="mt-9 divide-y divide-border border-y border-border">
-              {PROOF.map(([label, value]) => (
-                <div key={label} className="grid gap-1 py-3 sm:grid-cols-[9rem_1fr]">
-                  <dt className="font-mono text-xs tracking-[0.04em] text-accent">{label}</dt>
-                  <dd className="text-sm text-muted">{value}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
 
-          <div className="border border-border bg-surface/90 p-5 shadow-[0_28px_100px_rgba(0,0,0,0.35)] sm:p-7">
+          <dl className="divide-y divide-border border-y border-border max-lg:order-2 lg:col-start-1 lg:row-start-2 lg:self-start">
+            {PROOF.map(([label, value]) => (
+              <div key={label} className="grid gap-1 py-3 sm:grid-cols-[9rem_1fr]">
+                <dt className="font-mono text-xs tracking-[0.04em] text-accent">{label}</dt>
+                <dd className="text-sm text-muted">{value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="border border-border bg-surface/90 p-5 shadow-[0_28px_100px_rgba(0,0,0,0.35)] sm:p-7 max-lg:order-1 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
             <div className="flex items-center justify-between gap-4 border-b border-border pb-4">
               <div>
                 <p className="font-mono text-[0.66rem] tracking-[0.04em] text-accent">Export preview</p>
