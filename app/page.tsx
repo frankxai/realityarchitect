@@ -66,7 +66,8 @@ export default function Home() {
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{HERO_SUB}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link href="/threshold" className={`rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.22)] focus-visible:ring-accent ${focusRing}`}>Write your first scene</Link>
-              <Link href="/studio" className={`rounded-lg border border-border bg-bg/40 px-6 py-3 text-center font-semibold text-ink hover:border-dawn/60 focus-visible:ring-dawn ${focusRing}`}>Open the Studio</Link>
+              {/* Phones already carry a Studio shortcut in the header, so the hero keeps one action there. */}
+              <Link href="/studio" className={`rounded-lg border border-border bg-bg/40 px-6 py-3 text-center font-semibold text-ink hover:border-dawn/60 focus-visible:ring-dawn max-sm:hidden ${focusRing}`}>Open the Studio</Link>
             </div>
             <p className="mt-4 text-sm text-muted">
               Building AI systems for that life? <Link href="/assess" className="text-accent underline-offset-4 hover:underline">Find your first system gap</Link>.
