@@ -28,7 +28,7 @@ const EXPORT: { text: string; register: 'head' | 'label' | 'system' | 'dawn' }[]
 const LINE: Record<(typeof EXPORT)[number]['register'], string> = {
   head: 'text-ink',
   label: 'mt-3 text-accent',
-  system: 'text-muted',
+  system: 'text-ink/80',
   dawn: 'font-serif text-[0.95rem] italic text-dawn-2',
 }
 
@@ -44,6 +44,9 @@ const PROOF = [
   ['Open standard', 'MIT licensed, and readable by the agents you already use.'],
 ]
 
+// The hero keeps one short sentence so the export proof reaches the first phone screen; the full description stays in metadata.
+const HERO_SUB = 'Author the scene you are building toward, build the bridge to it, and keep an honest record. Local-first Markdown you own.'
+
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg'
 
 export default function Home() {
@@ -58,7 +61,7 @@ export default function Home() {
             <h1 className="mt-5 max-w-[13ch] text-5xl font-extrabold leading-[0.98] tracking-[-0.05em] text-ink sm:text-7xl">
               {lead} <span className="font-serif font-normal italic tracking-[-0.02em] text-dawn">{witness}</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{site.description}</p>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{HERO_SUB}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link href="/threshold" className={`rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.22)] focus-visible:ring-accent ${focusRing}`}>Write your first scene</Link>
               <Link href="/studio" className={`rounded-lg border border-border bg-bg/40 px-6 py-3 text-center font-semibold text-ink hover:border-dawn/60 focus-visible:ring-dawn ${focusRing}`}>Open the Studio</Link>
