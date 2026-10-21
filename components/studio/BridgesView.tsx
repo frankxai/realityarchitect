@@ -11,7 +11,7 @@ import type { Bridge, Move, Reach, Rep, WitnessEntry } from '@/lib/studio/types'
 import { Area, ConfirmButton, Empty, Field, ListEditor, Tag, button, copyText, downloadText, inputClass, panelClass } from './ui'
 import type { StudioApi } from './useStudio'
 
-const small = 'rounded-lg border border-border bg-bg px-3 py-2 text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+const small = 'rounded-lg border border-border bg-bg px-3 py-2 text-base sm:text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
 
 export function BridgesView({ studio, openId, setOpenId }: { studio: StudioApi; openId: string; setOpenId: (id: string) => void }) {
   const { state, today, update, announce } = studio
