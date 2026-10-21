@@ -16,6 +16,7 @@ test('the site installs as an app that opens on the Studio', () => {
   assert.match(manifest, /sizes: '512x512'/)
   assert.match(manifest, /purpose: 'maskable'/)
   assert.match(read('app/pwa-icon/[size]/route.tsx'), /dynamicParams = false/)
+  assert.match(read('app/layout.tsx'), new RegExp(`themeColor:\\s*'${manifest.match(/theme_color:\s*'([^']+)'/)?.[1]}'`))
 })
 
 test('the offline worker is valid script, versioned per build, and caches only site pages and code', () => {
