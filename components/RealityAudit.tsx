@@ -9,6 +9,7 @@ import {
   type AuditAnswers,
   type DomainId,
 } from '@/lib/audit'
+import { WaitlistForm } from '@/components/WaitlistForm'
 
 const TOTAL_STEPS = 10
 
@@ -105,7 +106,6 @@ const MAX_WEEKLY_HOURS = 60
 export function RealityAudit() {
   const [step, setStep] = useState(0)
   const [answers, setAnswers] = useState<AuditAnswers>(() => emptyAnswers())
-  const [captureStatus, setCaptureStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'failed'>('idle')
   const [shareFullDraft, setShareFullDraft] = useState(false)
   const stepRef = useRef<HTMLDivElement>(null)
@@ -151,25 +151,15 @@ export function RealityAudit() {
     }
   }
 
-  async function submitWaitlist(email: string) {
-    setCaptureStatus('sending')
-    try {
-      const res = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          email,
-          name: answers.name || undefined,
-          aim: shareFullDraft ? answers.aim : undefined,
-          statedPriority: shareFullDraft ? divergence.statedLabel : undefined,
-          headline: shareFullDraft ? divergence.headline : undefined,
-        }),
-      })
-      setCaptureStatus(res.ok ? 'done' : 'error')
-    } catch {
-      setCaptureStatus('error')
-    }
-  }
+  // The DemandSignal `pain` field holds 400 characters; the aim is trimmed so the
+  // priority and the audit headline always fit after it.
+  const applicationNote = [
+    `Aim: ${answers.aim.trim().slice(0, 180)}`,
+    `Top priority: ${divergence.statedLabel}`,
+    `Audit: ${divergence.headline}`,
+  ]
+    .join('\n')
+    .slice(0, 400)
 
   return (
     <div ref={stepRef} tabIndex={-1} className="outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
@@ -430,62 +420,43 @@ export function RealityAudit() {
             honest scarcity, not a countdown timer: capacity is real and currently small, not manufactured.
           </p>
 
-          {captureStatus === 'done' ? (
-            <p className="mt-6 rounded-lg border border-accent/40 bg-surface p-5 text-ink">
-              You&apos;re on the list. Frank reviews applications by hand — expect a real reply, not an autoresponder blast.
-            </p>
-          ) : (
-            <form
-              className="mt-6 space-y-4"
-              onSubmit={(event) => {
-                event.preventDefault()
-                const email = (new FormData(event.currentTarget).get('email') as string) || ''
-                submitWaitlist(email)
-              }}
-            >
-              <label className="block text-sm text-muted">
-                Email
-                <input type="email" name="email" required autoComplete="email" placeholder="you@email.com" className={inputClass} />
-              </label>
+          <label className="mt-6 flex min-h-11 items-start gap-3 text-sm text-muted">
+            <input
+              type="checkbox"
+              checked={shareFullDraft}
+              onChange={(event) => setShareFullDraft(event.target.checked)}
+              className="mt-1 h-5 w-5 shrink-0 accent-[var(--color-accent)]"
+            />
+            <span>
+              Also send my stated aim, top priority, and the audit headline above, so this reads as an application, not a bare
+              email. Everything else in the draft (State, Guardrails, the rest) stays in this browser regardless; download or copy
+              it yourself.
+            </span>
+          </label>
 
-              <label className="flex items-start gap-2 text-sm text-muted">
-                <input
-                  type="checkbox"
-                  checked={shareFullDraft}
-                  onChange={(event) => setShareFullDraft(event.target.checked)}
-                  className="mt-1"
-                />
-                <span>
-                  Also send my stated aim, top priority, and the audit headline above — so this reads as an application, not a bare
-                  email. Everything else in the draft (State, Guardrails, the rest) stays in this browser regardless; download or copy
-                  it yourself.
-                </span>
-              </label>
+          <WaitlistForm
+            productId="realityarchitect-vault"
+            headline="Join the Vault waitlist"
+            sub="Your email is the application. Frank reads applications by hand; there is no autoresponder."
+            extra={{
+              name: answers.name.trim() || undefined,
+              pain: shareFullDraft ? applicationNote : undefined,
+            }}
+          />
 
-              <div className="flex items-center gap-3">
-                <button type="button" onClick={back} className="rounded-lg border border-border px-4 py-2.5 text-sm font-semibold text-ink hover:border-accent">
-                  Back
-                </button>
-                <button
-                  type="submit"
-                  disabled={captureStatus === 'sending'}
-                  className="rounded-lg bg-accent px-6 py-2.5 text-sm font-semibold text-bg hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-                >
-                  {captureStatus === 'sending' ? 'Sending…' : 'Join the waitlist'}
-                </button>
-              </div>
-            </form>
-          )}
-
-          {captureStatus === 'error' && (
-            <p role="status" aria-live="polite" className="mt-3 text-sm text-muted">
-              Something went wrong — try again in a moment.
-            </p>
-          )}
+          <div className="flex items-center gap-3">
+            <button type="button" onClick={back} className="rounded-lg border border-border px-4 py-2.5 text-sm font-semibold text-ink hover:border-accent">
+              Back
+            </button>
+          </div>
 
           <p className="mt-6 text-xs text-muted">
-            No account is created. Your email routes through Frank&apos;s existing subscriber system, tagged separately from the
-            newsletter — there is no dedicated application database yet, so acceptance is handled by email, by hand.
+            No account is created. Your email, your name if you gave one, and the three lines above if you ticked the box are
+            stored in the Vault waitlist and used only for the Vault. See{' '}
+            <a href="/privacy#waitlist" className="underline hover:text-ink">
+              privacy
+            </a>
+            .
           </p>
         </section>
       )}

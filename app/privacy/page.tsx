@@ -86,6 +86,20 @@ export default function Privacy() {
           images stay in the storage described above and never pass through it.
         </p>
 
+        <h2 id="waitlist">The Vault waitlist stores what you send it</h2>
+        <p>
+          The waitlist form on <strong>/waitlist</strong>, <strong>/vault</strong> and the last step of the audit on
+          <strong> /apply</strong> is the one place this site sends what you type to a server. Joining stores your email,
+          your consent, the page you joined from, the referring page and the time. On /apply it also stores the name you
+          gave and, only if you tick the box, your stated aim, top priority and audit headline. The questions asked after
+          you join (expected price, role, what you use today) are stored only if you answer them.
+        </p>
+        <p>
+          These records sit in the Vault waitlist database. When an email provider is configured for this list, your
+          address is also added there, tagged for the Vault, so the launch email can reach you. The form tells you nothing
+          else will be sent, and nothing else is. The rest of your reality.md draft never leaves the browser.
+        </p>
+
         <h2>Copy and download happen at your direction</h2>
         <p>
           Choosing <strong>Copy brief</strong> writes the generated Markdown to your device clipboard. Choosing
