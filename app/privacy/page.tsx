@@ -108,9 +108,9 @@ export default function Privacy() {
 
         <h2>Measurement boundary</h2>
         <p>
-          No analytics or telemetry provider is active. Any future measurement would require a separate consent and
-          data-governance decision and would be limited to bounded, non-content lifecycle events. Assessment answers,
-          system names, repeating jobs, and brief text are outside that boundary.
+          Vercel Web Analytics and Speed Insights measure basic, anonymous page performance and visitor counts.
+          They use no cookies and collect no personally identifiable information (PII). Assessment answers,
+          system names, repeating jobs, and brief text are outside that boundary and are never tracked.
         </p>
 
         <h2>Links to other sites</h2>
