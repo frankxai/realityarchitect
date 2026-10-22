@@ -25,7 +25,7 @@ const LOCAL_ONLY = [
 const NOT_COLLECTED = [
   'There is no account, assessment submission endpoint, or app database for these inputs.',
   'The assessment does not put its inputs in URLs, cookies, localStorage, or sessionStorage.',
-  'No analytics or telemetry provider is active in this app, and no provider receives assessment content.',
+  'Analytics providers are active on the site, but they do not receive assessment content.',
 ]
 
 export default function Privacy() {
