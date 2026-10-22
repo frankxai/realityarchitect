@@ -39,7 +39,7 @@ test('privacy route states the local boundary without claiming zero server logs'
   assert.match(privacy, /ordinary server logs still exist/i)
   assert.match(privacy, /IP address, timestamp, requested path/i)
   assert.match(privacy, /do not contain your assessment answers, system name, repeating job, or generated brief/i)
-  assert.match(privacy, /No analytics or telemetry provider is active/i)
+  assert.match(privacy, /Analytics providers are active on the site, but they do not receive assessment content/i)
   assert.doesNotMatch(privacy, /(?:no|zero) (?:server|hosting|cdn) logs/i)
 })
 
