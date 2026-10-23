@@ -19,7 +19,7 @@ export interface MapNode {
   imageId?: string
 }
 
-export interface MapEdge {
+interface MapEdge {
   id: string
   from: string
   to: string
@@ -123,7 +123,7 @@ export function layoutMap(state: StudioState, today: string): MapLayout {
   return { nodes, edges, bounds, visionX }
 }
 
-export interface JsonCanvasNode {
+interface JsonCanvasNode {
   id: string
   type: 'text' | 'file' | 'group'
   x: number

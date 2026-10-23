@@ -54,7 +54,7 @@ export const COMPLETE_EDITION: Edition = {
  * port or fragment. Any query is allowed, since it carries a discount code or campaign metadata
  * (?discount_code=LAUNCH&utm_campaign=fall+launch).
  */
-export function isPolarCheckout(link: string): boolean {
+function isPolarCheckout(link: string): boolean {
   let url: URL
   try {
     url = new URL(link)

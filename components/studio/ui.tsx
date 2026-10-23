@@ -30,7 +30,7 @@ export function Tag({ register }: { register: Register }) {
 const ring = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg'
 
 export const inputClass = `mt-1.5 w-full rounded-lg border border-border bg-bg px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 ${ring} focus-visible:ring-accent`
-export const dawnInputClass = `mt-1.5 w-full rounded-lg border border-dawn/20 bg-bg px-3.5 py-3 font-serif text-base leading-relaxed text-dawn-2 placeholder:text-muted/60 ${ring} focus-visible:ring-dawn`
+const dawnInputClass = `mt-1.5 w-full rounded-lg border border-dawn/20 bg-bg px-3.5 py-3 font-serif text-base leading-relaxed text-dawn-2 placeholder:text-muted/60 ${ring} focus-visible:ring-dawn`
 
 export const button = {
   primary: `inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-bg hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40 ${ring} focus-visible:ring-accent`,

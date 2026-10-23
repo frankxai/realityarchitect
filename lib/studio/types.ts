@@ -68,7 +68,7 @@ export interface Reach {
   status: 'wish' | 'reached'
 }
 
-export type BridgeStatus = 'active' | 'achieved' | 'released'
+type BridgeStatus = 'active' | 'achieved' | 'released'
 
 /** One aim: the bridge from what is reported now to the desired scene. */
 export interface Bridge {
@@ -170,7 +170,7 @@ export interface Snapshot {
   reflection: Reflection
 }
 
-export type DecisionStatus = 'open' | 'decided' | 'reviewed'
+type DecisionStatus = 'open' | 'decided' | 'reviewed'
 
 export interface Decision {
   id: string

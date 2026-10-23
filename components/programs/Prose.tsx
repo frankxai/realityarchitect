@@ -30,7 +30,7 @@ export function Text({ text }: { text: string }) {
 }
 
 /** Which register a paragraph speaks in, when it opens with a bold "Meaning." or "Mechanism." label. */
-export function registerOf(text: string): 'meaning' | 'mechanism' | null {
+function registerOf(text: string): 'meaning' | 'mechanism' | null {
   const match = /^\*\*(Meaning|Mechanism)\.?\*\*/.exec(text.trim())
   return match ? (match[1].toLowerCase() as 'meaning' | 'mechanism') : null
 }

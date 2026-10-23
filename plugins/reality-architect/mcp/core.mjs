@@ -12,7 +12,7 @@ export const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempoten
 /** A problem the agent can fix in its arguments (or a missing home): answered as a tool result with isError. */
 export class ToolError extends Error {}
 
-export const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value)
+const isPlainObject = (value) => value !== null && typeof value === 'object' && !Array.isArray(value)
 
 /** The initialize params MCP requires: protocolVersion, capabilities, and clientInfo with a name and version. */
 function validInitialize(params) {
