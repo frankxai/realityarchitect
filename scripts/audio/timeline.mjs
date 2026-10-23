@@ -13,10 +13,10 @@ import crypto from 'node:crypto'
 
 export const SIGNPOST_BEAT = 0.6
 export const CROSSFADE = 4
-const FIRST_FADE_IN = 1.5
+export const FIRST_FADE_IN = 1.5
 export const FINAL_FADE_OUT = 4
 
-function parseFront(text) {
+export function parseFront(text) {
   const front = {}
   for (const line of text.split(/\r?\n/)) {
     const pair = /^([\w-]+):\s*(.*)$/.exec(line)
@@ -122,7 +122,7 @@ export function concatLine(file) {
   return `file ${quote}${escaped}${quote}`
 }
 
-function formatTime(seconds) {
+export function formatTime(seconds) {
   const s = Math.round(seconds)
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
 }
