@@ -48,4 +48,4 @@ export const ogImage = {
   alt: `${site.name} — ${site.tagline}`,
 }
 
-type Site = typeof site
+export type Site = typeof site
