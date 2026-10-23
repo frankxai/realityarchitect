@@ -15,8 +15,8 @@ test('all images on the most visited routes have alt attributes', async () => {
     const filePath = path.join(process.cwd(), route)
     const content = await fs.readFile(filePath, 'utf-8')
 
-    // Check for standard <img> and Next.js <Image> tags
-    const imgRegex = /<(?:img|Image)\b[^>]*>/g
+    // Check for standard <img> and Next.js <Image> tags, correctly allowing for generic matching ignoring early closing angle brackets from jsx
+    const imgRegex = /<(?:img|Image)\b(?:[^>'"]|"[^"]*"|'[^']*'|{[^}]*})*>/g
     let match
 
     while ((match = imgRegex.exec(content)) !== null) {
