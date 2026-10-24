@@ -280,41 +280,44 @@ export function toKernel(reality, today, { audience, offset } = {}) {
   // stay distinct with -2, -3; the guide's view numbers entries within a minute instead of hashing their words.
   const repIndex = (entry, linked) => entry.rep
     ? matchRep(linked.aim.reps, entry.rep)
-    : linked.aim.reps.length === 1 ? 0 : linked.aim.reps.findIndex((rep) => rep.name.trim().toLowerCase() === entry.fact.trim().toLowerCase())
-  const sharedOrder = (entry) => {
-    const linked = entry.bridge && !entry.bridgeDeleted ? planByAim.get(entry.bridge) : undefined
-    const domain = entry.domain && emitted.has(nodeId('domain', entry.domain)) ? nodeId('domain', entry.domain) : null
-    const index = entry.kind === 'rep' && linked ? repIndex(entry, linked) : null
-    // Only emitted associations and payload fields can affect alliance ordinals. Rep filing remains intentionally
-    // shared, including legacy fact-to-rep matching; the private words themselves never break an ordering tie.
-    return JSON.stringify([entry.day, entry.time, entry.kind, linked?.aimId ?? null, domain,
-      entry.kind === 'sign' ? Boolean(entry.primed) : null, index === null ? null : index >= 0 ? `rep-${index + 1}` : 'rep-other'])
-  }
-  const witness = [...reality.witness]
+    : linked.aim.reps.length === 1 ? 0 : (!own && !entry.rep) ? -1 : linked.aim.reps.findIndex((rep) => rep.name.trim().toLowerCase() === entry.fact.trim().toLowerCase())
+
+  const mappedWitness = [...reality.witness]
     .filter((entry) => isDay(entry.day) && /^\d{2}:\d{2}$/.test(entry.time ?? ''))
-    .sort((a, b) => own
-      ? order(`${a.day} ${a.time} ${a.kind} ${a.fact}`, `${b.day} ${b.time} ${b.kind} ${b.fact}`)
-      : order(sharedOrder(a), sharedOrder(b)))
+    .map((entry) => {
+      const linked = entry.bridge && !entry.bridgeDeleted ? planByAim.get(entry.bridge) : undefined
+      const domain = entry.domain && emitted.has(nodeId('domain', entry.domain)) ? nodeId('domain', entry.domain) : null
+      const index = entry.kind === 'rep' && linked ? repIndex(entry, linked) : null
+      const actionId = index === null ? null : index >= 0 ? `rep-${index + 1}` : 'rep-other'
+      const primed = entry.kind === 'sign' ? Boolean(entry.primed) : null
+      // Only emitted associations and payload fields can affect alliance ordinals.
+      const sharedKey = JSON.stringify([entry.day, entry.time, entry.kind, linked?.aimId ?? null, domain, primed, actionId])
+      return { entry, linked, domain, actionId, sharedKey }
+    })
+
+  const witness = mappedWitness.sort((a, b) => own
+    ? order(`${a.entry.day} ${a.entry.time} ${a.entry.kind} ${a.entry.fact}`, `${b.entry.day} ${b.entry.time} ${b.entry.kind} ${b.entry.fact}`)
+    : order(a.sharedKey, b.sharedKey)
+  )
+
   const seen = new Map()
-  for (const entry of witness) {
+  for (const { entry, linked, domain, actionId } of witness) {
     const minute = `${entry.day}/${entry.time.replace(':', '')}/${entry.kind}`
     const base = own ? `${minute}/${fingerprint(entry.fact)}` : minute
     const count = (seen.get(base) ?? 0) + 1
     seen.set(base, count)
     const key = own ? (count > 1 ? `${base}-${count}` : base) : `${base}/${count}`
     const eventId = `ra:event:witness/${key}`
-    const linked = entry.bridge && !entry.bridgeDeleted ? planByAim.get(entry.bridge) : undefined
     const subjects = [SELF]
     if (linked) subjects.push(linked.aimId)
-    if (entry.domain && emitted.has(nodeId('domain', entry.domain))) subjects.push(nodeId('domain', entry.domain))
+    if (domain) subjects.push(domain)
     let receiptId = null
     if (entry.kind === 'rep' && linked) {
       // Since STATE.md v0.3 an entry can name its rep ("Rep: <name>", as the aim lists it). A named rep is filed under
       // that rep, or under the catch-all when the aim lists no rep by that name, even an aim with a single rep.
       // Without a name: an aim with one listed rep files every rep under it (a rep entry describes the session, not the
       // rep's name). With several reps, an entry is filed under the rep its fact names, else under the catch-all.
-      const index = repIndex(entry, linked)
-      const actionId = index >= 0 ? `rep-${index + 1}` : 'rep-other'
+      // Legacy entries without a name on multi-rep aims file under rep-other in the alliance view.
       if (actionId === 'rep-other' && !linked.plan.actions.some((candidate) => candidate.id === 'rep-other')) {
         // Kept and counted, never guessed onto a listed rep.
         linked.plan.actions.splice(linked.aim.reps.length + linked.aim.moves.length, 0, {
