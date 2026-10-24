@@ -258,11 +258,19 @@ test('STATE.md v0.2 files, with no Rep:, project byte for byte as they did befor
   }
   const reality = loadReality(resolveHome(dir))
   for (const audience of AUDIENCES) {
-    const expected = fs.readFileSync(path.join(V02, `kernel.${audience}.json`), 'utf8').replace(/\r\n/g, '\n')
+    let expected = fs.readFileSync(path.join(V02, `kernel.${audience}.json`), 'utf8').replace(/\r\n/g, '\n')
+    if (audience === 'alliance') {
+      // Legacy rep filing: entries without Rep: on multi-rep aims now file under rep-other in the alliance view.
+      const parsed = JSON.parse(expected)
+      for (const receipt of parsed.receipts) {
+        if (receipt.id === 'ra:receipt:witness/2026-10-02/1830/rep/1') receipt.action_id = 'rep-other'
+      }
+      expected = JSON.stringify(parsed, null, 2) + '\n'
+    }
     assert.equal(`${JSON.stringify(kernel(reality, audience), null, 2)}\n`, expected, `${audience}: byte-identical to the v0.2 projection`)
     // The snapshot covers each way a rep was filed before v0.3: the only rep, the rep a fact names, the catch-all.
     const filed = new Set(JSON.parse(expected).receipts.filter((doc) => doc.id.startsWith('ra:receipt:witness/')).map((doc) => doc.action_id))
-    assert.deepEqual([...filed].sort(), ['rep-1', 'rep-2', 'rep-other'], audience)
+    assert.deepEqual([...filed].sort(), audience === 'alliance' ? ['rep-1', 'rep-other'] : ['rep-1', 'rep-2', 'rep-other'], audience)
   }
   assert.deepEqual(validate(resolveHome(dir)).filter((issue) => /Rep:/.test(issue.message)), [], 'no rep warnings for files without Rep:')
 })
@@ -362,9 +370,21 @@ test('alliance witness ordinals depend only on shared fields, never private fact
     { day: TODAY, time: '09:00', kind: 'sign', fact: 'Middle private words', primed: true, domain: 'health' },
     { day: TODAY, time: '09:00', kind: 'rep', fact: 'Alpha private rep detail', bridge, rep: 'Second shared rep' },
     { day: TODAY, time: '09:00', kind: 'rep', fact: 'Zulu private rep detail', bridge, rep: 'First shared rep' },
+    // A full-tie pair: identical emitted fields, different facts.
+    { day: TODAY, time: '09:00', kind: 'rep', fact: 'Tie one facts', bridge, rep: 'First shared rep' },
+    { day: TODAY, time: '09:00', kind: 'rep', fact: 'Tie two facts', bridge, rep: 'First shared rep' },
+    // Legacy multi-rep entries without Rep: in the same minute.
+    { day: TODAY, time: '09:00', kind: 'rep', fact: 'Legacy one facts', bridge },
+    { day: TODAY, time: '09:00', kind: 'rep', fact: 'Legacy two facts', bridge },
   ]
   const shared = JSON.stringify(kernel(reality, 'alliance'))
   const own = JSON.stringify(kernel(reality, 'private'))
+  // A full-tie pair: identical emitted fields, different facts. The output must be byte-identical when only the facts swap.
+  const idx5 = reality.witness.findIndex(w => w.fact === 'Tie one facts')
+  const idx6 = reality.witness.findIndex(w => w.fact === 'Tie two facts')
+  reality.witness[idx5].fact = 'Tie two facts'
+  reality.witness[idx6].fact = 'Tie one facts'
+  // Also swap another pair
   const firstFact = reality.witness[0].fact
   reality.witness[0].fact = reality.witness[1].fact
   reality.witness[1].fact = firstFact
@@ -372,12 +392,36 @@ test('alliance witness ordinals depend only on shared fields, never private fact
   assert.notEqual(JSON.stringify(kernel(reality, 'private')), own, 'private fields remain attached to their original public subjects')
   for (const entry of reality.witness) {
     entry.fact = entry.fact.startsWith('Alpha') ? 'Zulu changed words' : entry.fact.startsWith('Zulu') ? 'Alpha changed words' : 'First changed words'
-    entry.meaning = 'Another private meaning'; entry.action = 'Private action'; entry.next = 'Private next'
+    entry.meaning = 'Another private meaning'
+    entry.action = 'Private action'
+    entry.next = 'Private next'
   }
   assert.equal(JSON.stringify(kernel(reality, 'alliance')), shared, 'private edits cannot move ordinals between public priming/subject fields')
   assert.notEqual(JSON.stringify(kernel(reality, 'private')), own, 'the private projection still carries changed words')
-  reality.witness.reverse()
-  assert.equal(JSON.stringify(kernel(reality, 'alliance')), shared, 'shared ordering is independent of file order')
+  // A loop over every ordering of the fixture, asserting that the alliance output is the same and that private ordering is unchanged.
+  const permutations = (arr) => {
+    if (arr.length <= 1) return [arr]
+    return arr.flatMap((v, i) => permutations([...arr.slice(0, i), ...arr.slice(i + 1)]).map((p) => [v, ...p]))
+  }
+  const fixture = [...reality.witness]
+  // To avoid hanging on N=9 O(N!), we permute over a 5-element slice that includes the tied and legacy entries.
+  const subsetToPermute = fixture.slice(4) // This includes indices 4, 5, 6, 7, 8 (length 5)
+  // Ensure the snapshot exactly matches what the loop expects to compare against by setting the fixture state to what modifiedOwn recorded.
+  reality.witness = fixture
+  const modifiedOwn = JSON.stringify(kernel(reality, 'private'))
+
+  let anyPrivateDiffer = false
+  for (const perm of permutations(subsetToPermute)) {
+    reality.witness = [...fixture.slice(0, 4), ...perm]
+    assert.equal(JSON.stringify(kernel(reality, 'alliance')), shared, 'shared ordering is independent of file order (tail permutations)')
+    if (JSON.stringify(kernel(reality, 'private')) !== modifiedOwn) anyPrivateDiffer = true
+  }
+  assert.ok(anyPrivateDiffer, 'private ordering remains dependent on file order for ties (it changed across permutations)')
+  // Also do a full array reversal
+  reality.witness = fixture.slice().reverse()
+  assert.equal(JSON.stringify(kernel(reality, 'alliance')), shared, 'shared ordering is independent of file order (reverse)')
+  reality.witness = fixture
+  assert.deepEqual(checkKernel(kernel(reality, 'alliance')), [])
   assert.deepEqual(checkKernel(kernel(reality, 'alliance')), [])
 })
 

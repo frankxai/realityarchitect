@@ -111,7 +111,7 @@ This split is how the product stays both meaningful and honest.
 - **Surfaces.**
   - CLI: `reality kernel --audience private|alliance [--offset +HH:MM] [--check]`
   - MCP: `reality_kernel`, read-only, parity-tested against the CLI
-- **Tests** (`tests/kernel.test.mjs`, 16):
+- **Tests** (`tests/kernel.test.mjs`, 17):
   - the pinned bytes and strict schemas;
   - conformance in both audiences;
   - desired stays desired;
@@ -121,6 +121,7 @@ This split is how the product stays both meaningful and honest.
   - look-for results keep their misses;
   - edge inputs: a double-logged rep, an aim named by its Obsidian file, umlauts and long names, short entries;
   - **canaries in every private field never reach a guide**, including short ones, fingerprints and hashes, plus an allowlist of guide payload keys;
+  - alliance ordinals derive from shared fields only, tested across permutations of tied and legacy entries;
   - determinism and honest offsets;
   - the checker catching a fake fact, a fake receipt, a broken reference and a schema violation;
   - the CLI refusing to fall back to the private view;
