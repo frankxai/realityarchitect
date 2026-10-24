@@ -12,6 +12,10 @@ const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jb', display
 export const viewport: Viewport = {
   themeColor: '#06070c',
   colorScheme: 'dark',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
 }
 
 export const metadata: Metadata = {
