@@ -33,7 +33,7 @@ export function MobileMenu({ items, github }: { items: readonly Item[]; github: 
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
-        className="min-h-10 rounded-lg border border-border px-3 text-sm font-medium text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className="min-h-11 rounded-lg border border-border px-3 text-sm font-medium text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
         {open ? 'Close' : 'Menu'}
       </button>

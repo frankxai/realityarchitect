@@ -24,6 +24,15 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 } },
 }
 
+// Who publishes the site, for search and answer engines; every value comes from the brand config.
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': `${site.url}/#organization`, name: site.name, url: site.url, sameAs: [site.github] },
+    { '@type': 'WebSite', '@id': `${site.url}/#website`, name: site.name, url: site.url, description: site.description, publisher: { '@id': `${site.url}/#organization` } },
+  ],
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${grotesk.variable} ${mono.variable}`}>
@@ -32,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Nav />
         <main id="content" className="mx-auto max-w-5xl px-5">{children}</main>
         <Footer />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       </body>
     </html>
   )
