@@ -60,8 +60,8 @@ export default function Home() {
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{site.description}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link href="/threshold" className={`rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.22)] ${focusRing} focus-visible:ring-accent`}>Begin with the Imaginal Act</Link>
-              <Link href="/studio" className={`rounded-lg border border-border bg-bg/40 px-6 py-3 text-center font-semibold text-ink hover:border-dawn/60 ${focusRing} focus-visible:ring-dawn`}>Open the Studio</Link>
+              <Link href="/threshold" className={`rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg shadow-[0_18px_60px_rgba(91,140,255,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}>Begin with the Imaginal Act</Link>
+              <Link href="/studio" className={`rounded-lg border border-border bg-bg/40 px-6 py-3 text-center font-semibold text-ink hover:border-dawn/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dawn focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}>Open the Studio</Link>
             </div>
             <p className="mt-4 text-sm text-muted">
               Building AI systems for that life? <Link href="/assess" className="text-accent underline-offset-4 hover:underline">Find your first system gap</Link>.
@@ -109,7 +109,7 @@ export default function Home() {
         <ul className="mt-10 grid gap-4 md:grid-cols-3">
           {DOORS.map((door) => (
             <li key={door.href}>
-              <Link href={door.href} className={`group flex h-full flex-col rounded-2xl border border-border bg-surface/80 p-6 hover:border-dawn/50 ${focusRing} focus-visible:ring-dawn`}>
+              <Link href={door.href} className={`group flex h-full flex-col rounded-2xl border border-border bg-surface/80 p-6 hover:border-dawn/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dawn focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}>
                 <span className="font-mono text-[0.68rem] uppercase tracking-[0.18em] text-dawn">{door.verb}</span>
                 <span className="mt-2 text-xl font-semibold text-ink">{door.title}</span>
                 <span className="mt-2 flex-1 text-sm leading-relaxed text-muted">{door.body}</span>
