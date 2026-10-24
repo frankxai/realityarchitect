@@ -8,7 +8,7 @@ export type Shelf = 'meaning' | 'mechanism' | 'frontier'
 /** The same claim tags as the frankx.ai manifestation hub: research-backed, useful framing, or belief held lightly. */
 export type ClaimTag = 'evidence' | 'practice' | 'belief'
 
-export interface Source {
+interface Source {
   label: string
   url: string
 }

@@ -237,7 +237,7 @@ function time(entry: WitnessEntry): string {
  * v0.3): its name exactly as the aim file lists it, looked up from `repId` through the entry's own bridge. A rep that
  * no longer exists, or a deleted bridge, writes no `Rep:`, so nothing is guessed.
  */
-export function witnessEntryMd(entry: WitnessEntry, slugs: Map<string, string>, bridges: readonly Bridge[] = []): string {
+function witnessEntryMd(entry: WitnessEntry, slugs: Map<string, string>, bridges: readonly Bridge[] = []): string {
   const tag = entry.kind === 'sign' ? ` · ${entry.primed ? 'primed' : 'unprimed'}` : ''
   const slug = entry.bridgeId ? slugs.get(entry.bridgeId) : undefined
   const bridge = slug ? `Bridge: ${slug}` : entry.bridgeTitle ? `Bridge: ${entry.bridgeTitle} (deleted)` : ''
@@ -272,7 +272,7 @@ ${entries.length ? entries.map((entry) => witnessEntryMd(entry, slugs, state.bri
  * The registry of agents and automations already running for the person. The Studio records only systems an aim plans
  * to build, so the registry starts empty and those plans are listed apart, labeled planned.
  */
-export function systemsMd(state: StudioState): string {
+function systemsMd(state: StudioState): string {
   const planned = state.bridges
     .filter((bridge) => bridge.status === 'active')
     .flatMap((bridge) => bridge.systems.map((system) => `${system} (planned, ${bridge.title || 'untitled aim'})`))
@@ -487,4 +487,3 @@ export function bundleFiles(state: StudioState, today: string, programDays: Prog
   return files
 }
 
-export { domainLabel }

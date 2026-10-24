@@ -55,7 +55,7 @@ export function draftSnapshot(state: StudioState, today: string, reflection: Ref
   }
 }
 
-export interface DomainDelta {
+interface DomainDelta {
   id: DomainId
   label: string
   nowA: number | null

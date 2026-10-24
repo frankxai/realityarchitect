@@ -17,7 +17,7 @@ export const SEP = ` ${String.fromCharCode(0xb7)} `
 /** What the server page hands the Studio for each day: plain text and numbers, no Markdown. */
 export type ProgramDay = { day: number; title: string; minutes: number; intent: string }
 
-export type ProgramState = 'not-started' | 'day' | 'complete'
+type ProgramState = 'not-started' | 'day' | 'complete'
 
 export interface ProgramStatus {
   state: ProgramState
@@ -42,10 +42,10 @@ export interface ProgramCell {
 }
 
 /** The local date of program day `day` for a given start. */
-export const dayDate = (start: string, day: number): string => addDays(start, day - 1)
+const dayDate = (start: string, day: number): string => addDays(start, day - 1)
 
 /** The program day a date falls on, or null outside the thirty days. */
-export function dayOf(start: string, date: string): number | null {
+function dayOf(start: string, date: string): number | null {
   if (!isDay(start) || !isDay(date)) return null
   const index = daysBetween(start, date) + 1
   return index >= 1 && index <= DAYS ? index : null

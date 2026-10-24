@@ -60,7 +60,7 @@ export function frontmatter(text) {
 }
 
 /** `## Heading` -> its text, in order. */
-export function sections(body) {
+function sections(body) {
   const out = new Map()
   let heading = null
   let lines = []
@@ -89,7 +89,7 @@ function score(value) {
   return text !== '' && Number.isInteger(number) && number >= 0 && number <= 10 ? number : null
 }
 
-export function parseAtlas(text) {
+function parseAtlas(text) {
   const atlas = {}
   for (const line of text.split(/\r?\n/)) {
     const row = cells(line)
@@ -240,7 +240,7 @@ export function matchRep(reps, name) {
 }
 
 /** Witness entries from witness.md or a day log. Unknown kinds and impossible dates are left for validate.mjs. */
-export function parseWitness(text) {
+function parseWitness(text) {
   const entries = []
   let current = null
   for (const line of text.split(/\r?\n/)) {
@@ -265,7 +265,7 @@ export function parseWitness(text) {
   return entries.filter((entry) => WITNESS_KINDS.includes(entry.kind) && isDay(entry.day))
 }
 
-export function parseDay(text, day) {
+function parseDay(text, day) {
   const get = (label) => clean(new RegExp(`^- ${label}:\\s*(.*)$`, 'm').exec(text)?.[1])
   // "yes", "no", or "not marked"; exports add a note after a miss ("no (a miss, counted)"), so read the first word.
   const came = get('Did it come')
@@ -279,7 +279,7 @@ export function parseDay(text, day) {
   }
 }
 
-export function parseSnapshot(text, file = 'snapshot.md') {
+function parseSnapshot(text, file = 'snapshot.md') {
   const { data, body } = frontmatter(text)
   const period = /^(\d{4}-\d{2}-\d{2})\s*→\s*(\d{4}-\d{2}-\d{2})$/.exec(String(data.period ?? '').trim())
   const intentions = /Intentions:\s*set (\d+) · came (\d+) · missed (\d+)/.exec(body)
@@ -317,7 +317,7 @@ export function parseSnapshot(text, file = 'snapshot.md') {
   }
 }
 
-export function parseDecision(text, file = 'decision.md') {
+function parseDecision(text, file = 'decision.md') {
   const { data, body } = frontmatter(text)
   const map = sections(body)
   return {
@@ -334,7 +334,7 @@ export function parseDecision(text, file = 'decision.md') {
   }
 }
 
-export function parseSystems(text) {
+function parseSystems(text) {
   const map = sections(text)
   const items = (block) => block.split(/\r?\n/).map((line) => clean(/^- (.*)$/.exec(line)?.[1])).filter(Boolean)
   return { running: items(section(map, 'Running')), planned: items(section(map, 'Planned')) }

@@ -9,10 +9,10 @@ import { DAYS, LOOPS, SLUG, WEEKS, weekOf } from './program.ts'
  * contract).
  */
 
-export { DAYS, LOOPS, SLUG, WEEKS, weekOf }
+export { DAYS, LOOPS, WEEKS, weekOf }
 export const PROGRAM_DIR = path.join(process.cwd(), 'programs', SLUG)
 
-export type Section = { id: string; title: string; blocks: Block[] }
+type Section = { id: string; title: string; blocks: Block[] }
 
 export type Day = {
   day: number

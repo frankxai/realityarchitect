@@ -44,7 +44,7 @@ function loadLibrary(): Library {
  * Checks arguments against a tool's declared input schema, so the bounds a client sees in tools/list are the bounds the
  * server enforces. A problem is a tool result with isError (the agent can fix it); values are never echoed back.
  */
-export function checkArgs(schema: InputSchema, args: Record<string, unknown>): void {
+function checkArgs(schema: InputSchema, args: Record<string, unknown>): void {
   const names = Object.keys(schema.properties)
   for (const key of Object.keys(args)) {
     if (!Object.prototype.hasOwnProperty.call(schema.properties, key)) {

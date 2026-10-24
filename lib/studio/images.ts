@@ -7,7 +7,7 @@ import { newId } from './util.ts'
 
 const DB = 'ra-studio'
 const STORE = 'images'
-export const MAX_IMAGE_BYTES = 15 * 1024 * 1024
+const MAX_IMAGE_BYTES = 15 * 1024 * 1024
 
 interface ImageRecord {
   id: string
@@ -16,7 +16,7 @@ interface ImageRecord {
   addedAt: string
 }
 
-export function imagesAvailable(): boolean {
+function imagesAvailable(): boolean {
   try {
     return typeof window !== 'undefined' && typeof window.indexedDB !== 'undefined'
   } catch {
@@ -73,12 +73,12 @@ export async function getImage(id: string): Promise<{ blob: Blob; name: string }
   return record ? { blob: record.blob, name: record.name } : null
 }
 
-export async function listImageIds(): Promise<string[]> {
+async function listImageIds(): Promise<string[]> {
   const keys = await run<IDBValidKey[]>('readonly', (store) => store.getAllKeys(), [])
   return keys.map(String)
 }
 
-export async function deleteImage(id: string): Promise<void> {
+async function deleteImage(id: string): Promise<void> {
   await run('readwrite', (store) => store.delete(id), undefined)
 }
 

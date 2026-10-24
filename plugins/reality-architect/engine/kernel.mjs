@@ -33,7 +33,7 @@ import { validate } from './vendor/sis/jsonschema.mjs'
  * Pure and deterministic: the same files, day and offset give byte-identical output on any machine and locale.
  */
 
-export const KERNEL_VERSION = '0.1.1'
+const KERNEL_VERSION = '0.1.1'
 export const AUDIENCES = ['private', 'alliance']
 export const OFFSET = /^(Z|[+-](?:0\d|1[0-4]):[0-5]\d)$/
 const GAP_CLASSES = new Set(['knowledge', 'capability', 'resource', 'coordination', 'technology', 'permission', 'process', 'evidence', 'time'])

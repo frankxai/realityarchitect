@@ -4,7 +4,7 @@
  * has headings, paragraphs, ordered and unordered lists, and block quotes, with **strong**, *em*, `code` and links.
  */
 
-export type FrontValue = string | number | boolean | string[]
+type FrontValue = string | number | boolean | string[]
 export type FrontMatter = Record<string, FrontValue>
 
 export type Inline =
@@ -59,7 +59,7 @@ export function parseFrontMatter(text: string): FrontMatter {
   return front
 }
 
-export function slugify(text: string): string {
+function slugify(text: string): string {
   return text
     .toLowerCase()
     .replace(/[*_`]/g, '')
