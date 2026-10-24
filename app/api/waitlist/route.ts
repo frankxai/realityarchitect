@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server'
+import { upstreamPayload } from '@/lib/waitlist-application'
 
 // Reality Architect has no ESP or database of its own yet. Waitlist signups
-// route server-to-server through the FrankX Resend audience — the estate's
-// existing, working subscribe endpoint — tagged with a distinct source and
-// listType so they are identifiable, not folded silently into the newsletter.
-// No keys live in this repo; the upstream host holds the Resend credential.
+// route server-to-server through the FrankX subscribe endpoint, tagged with a
+// distinct listType and source. That endpoint registers the listType with no
+// newsletter topics and sends no automatic reply, so applicants are not
+// newsletter subscribers. No keys live in this repo; the upstream host holds
+// the Resend credential.
 const UPSTREAM = 'https://www.frankx.ai/api/subscribe'
 
 interface WaitlistPayload {
@@ -34,24 +36,14 @@ export async function POST(request: Request) {
   }
 
   // Only what the application needs to be reviewable is transmitted: email,
-  // an optional name, the stated aim/priority, and the computed headline.
-  // The full reality.md draft (State, Guardrails, everything else typed in)
-  // stays in the browser — it is downloaded or copied by the visitor, never
-  // sent by this endpoint.
+  // an optional name, and, when the visitor ticked the box, the stated aim,
+  // priority and computed headline. The full reality.md draft (State,
+  // Guardrails, everything else typed in) stays in the browser; it is
+  // downloaded or copied by the visitor, never sent by this endpoint.
   const upstream = await fetch(UPSTREAM, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({
-      email,
-      name: typeof name === 'string' ? name.slice(0, 200) : undefined,
-      listType: 'reality-architect-vault-waitlist',
-      source: 'realityarchitect.ai/apply',
-      metadata: {
-        aim: typeof aim === 'string' ? aim.slice(0, 500) : undefined,
-        statedPriority: typeof statedPriority === 'string' ? statedPriority.slice(0, 100) : undefined,
-        headline: typeof headline === 'string' ? headline.slice(0, 500) : undefined,
-      },
-    }),
+    body: JSON.stringify(upstreamPayload({ email, name, aim, statedPriority, headline })),
   })
 
   if (!upstream.ok) {
