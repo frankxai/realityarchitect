@@ -15,10 +15,8 @@ test('all images on the most visited routes have alt attributes', async () => {
     let content
     try {
       content = await fs.readFile(filePath, 'utf-8')
-    } catch {
-      // Build not present
-      console.log(`Skipping ${route}, build not present. Run pnpm build first.`)
-      continue
+    } catch (error) {
+      assert.fail(`Build artifact not found: ${route}. Run 'pnpm build' before testing.`)
     }
 
     const imgRegex = /<img\b([^>]*)>/g
