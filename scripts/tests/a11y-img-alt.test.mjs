@@ -8,7 +8,10 @@ test('all images on the most visited routes have alt attributes', async () => {
     'app/page.tsx',
     'app/start/page.tsx',
     'app/assess/page.tsx',
-    'components/ScrollStory.tsx' // used in page.tsx
+    'components/ScrollStory.tsx',
+    'components/Assessment.tsx',
+    'components/EmailCapture.tsx',
+    'components/ArchitectLoopMap.tsx'
   ]
 
   for (const route of routes) {
