@@ -21,7 +21,11 @@ test('all images on the most visited routes have alt attributes', async () => {
 
     while ((match = imgRegex.exec(content)) !== null) {
       const tagContent = match[0]
-      assert.ok(/(?:\s|^)alt\s*=/.test(tagContent), `Missing alt attribute in ${route} on tag: ${tagContent}`)
+
+      // Strip out string and expression literals to only check actual attribute names
+      const strippedTagContent = tagContent.replace(/"[^"]*"/g, '""').replace(/'[^']*'/g, "''").replace(/{[^}]*}/g, '{}')
+
+      assert.ok(/(?:\s|^)alt\s*=/.test(strippedTagContent), `Missing alt attribute in ${route} on tag: ${tagContent}`)
     }
   }
 })
