@@ -50,7 +50,7 @@ export function TimelineView({ studio, programDays = [] }: { studio: StudioApi; 
     update((next) => { next.snapshots.unshift(snapshot) })
     setReflection(EMPTY_REFLECTION)
     setApproved(false)
-    announce(`${cadence === 'monthly' ? 'Monthly' : 'Weekly'} snapshot sealed for ${today}. It is now permanent.`)
+    announce(`${cadence === 'monthly' ? 'Monthly' : 'Weekly'} snapshot sealed for ${today}. The Studio keeps this approved review unchanged.`)
   }
 
   return (
@@ -65,7 +65,7 @@ export function TimelineView({ studio, programDays = [] }: { studio: StudioApi; 
             </button>
           ))}
         </div>
-        <p className="mt-2 text-sm text-muted">A snapshot becomes permanent only when you say it is true for you. Corrections go into the next one.{sealedToday ? ' You already sealed one today; another gets its own file.' : ''}</p>
+        <p className="mt-2 text-sm text-muted">The Studio keeps an approved snapshot unchanged. Exported files remain editable and are not cryptographically signed. Corrections go into the next review.{sealedToday ? ' You already sealed one today; another gets its own file.' : ''}</p>
         <div className="mt-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_18rem]">
           <div className="grid gap-4">
             <Area label="What is true now?" register="reported" rows={2} value={reflection.trueNow} onChange={(value) => setReflection({ ...reflection, trueNow: value })} />

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { studioDays, dayIntent } from '../lib/programs/studio-days.ts'
+import { studioDays } from '../lib/programs/studio-days.ts'
 
 test('studioDays maps day properties properly and extracts the intent', () => {
   const input = [
@@ -26,8 +26,11 @@ test('studioDays maps day properties properly and extracts the intent', () => {
   ])
 })
 
-test('dayIntent extracts paragraphs from Intent sections and ignores other blocks', () => {
+test('studioDays extracts paragraphs from Intent sections and ignores other blocks', () => {
   const day = {
+    day: 1,
+    title: 'First Day',
+    minutes: 10,
     sections: [
       {
         title: 'Today’s Intent',
@@ -43,10 +46,12 @@ test('dayIntent extracts paragraphs from Intent sections and ignores other block
       }
     ]
   }
-  assert.equal(dayIntent(day), 'This is the intent. Here is more.')
+  assert.equal(studioDays([day])[0].intent, 'This is the intent. Here is more.')
 })
 
-test('dayIntent handles missing sections and empty blocks gracefully', () => {
-  assert.equal(dayIntent({ sections: [] }), '')
-  assert.equal(dayIntent({ sections: [{ title: 'Intent', blocks: [] }] }), '')
+test('studioDays returns empty intent when no intent section or paragraphs exist', () => {
+  for (const sections of [[], [{ title: 'Intent', blocks: [] }]]) {
+    const day = { day: 1, title: 'First Day', minutes: 10, sections }
+    assert.equal(studioDays([day])[0].intent, '')
+  }
 })

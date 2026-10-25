@@ -260,6 +260,37 @@ function parseWitness(text) {
       current[FIELD[field[1]]] = field[2].trim()
       continue
     }
+    if (line.startsWith('- Witness text v1: ')) {
+      try {
+        const text = JSON.parse(line.slice('- Witness text v1: '.length))
+        const keys = ['fact', 'meaning', 'action', 'next']
+        if (text && typeof text === 'object' && !Array.isArray(text) && Object.keys(text).every((key) => keys.includes(key)) && keys.every((key) => typeof text[key] === 'string' && text[key].length <= 20000)) {
+          for (const key of keys) current[key] = text[key]
+        }
+      } catch { /* Raw text remains data and cannot introduce another event or field. */ }
+      continue
+    }
+    if (line.startsWith('- Provenance v1: ')) {
+      try {
+        const data = JSON.parse(line.slice('- Provenance v1: '.length))
+        if (data && typeof data === 'object' && !Array.isArray(data) && data.version === 1) {
+          let url
+          if (typeof data.url === 'string' && data.url.length <= 2000 && /^https:\/\//i.test(data.url)) {
+            try {
+              const parsed = new URL(data.url)
+              if (parsed.protocol === 'https:' && parsed.hostname && !parsed.username && !parsed.password && !data.url.slice(8).split(/[/?#]/, 1)[0].includes('@') && parsed.href.length <= 2000) url = parsed.href
+            } catch { /* Keep the record, discard an invalid URL. */ }
+          }
+          current.provenance = { version: 1, source: data.source === 'file-import' ? 'file-import' : 'manual',
+            label: typeof data.label === 'string' ? data.label.slice(0, 200) : '',
+            ...(url ? { url } : {}),
+            ...(typeof data.sourceAt === 'string' && Number.isFinite(Date.parse(data.sourceAt)) ? { sourceAt: data.sourceAt } : {}),
+            ...(typeof data.importedAt === 'string' && Number.isFinite(Date.parse(data.importedAt)) ? { importedAt: data.importedAt } : {}),
+            privacy: 'private', evidence: 'self-report', verification: 'unverified' }
+        }
+      } catch { /* Malformed optional metadata never changes the event's epistemic status. */ }
+      continue
+    }
     readWitnessMeta(line, current)
   }
   return entries.filter((entry) => WITNESS_KINDS.includes(entry.kind) && isDay(entry.day))
