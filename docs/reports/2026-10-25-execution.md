@@ -105,3 +105,30 @@ Executed workers: primary Codex integrator, estate/memory audit, psychology/edit
 deterministic Lumina engine, independent evaluator. Six actual workers including integrator; roles are responsibilities,
 not ten autonomous services. Work is bounded to this session and branch. No production merge, account access expansion,
 paid service, recurring automation or intimate-history ingestion was performed.
+
+## Frozen candidate receipt
+
+Implementation revision: `a867250ec065a7e2ef585e7a7d0625ca5236bda8`, draft PR
+<https://github.com/frankxai/realityarchitect/pull/122>. `pnpm gate` completed successfully on this exact implementation:
+316/316 tests, typecheck, public-claims check, production build and built-page check. Independent evaluator separately
+ran all 316 tests and inspected this SHA; no unresolved Critical/High code finding remains in the reviewed slice.
+The mechanical interface-guidelines ratchet reports seven UI files, zero errors/warnings. It does not establish visual
+or assistive-technology acceptance. Manual static review used current Vercel Web Interface Guidelines; inherited title
+case advice was overridden by the repo's sentence-case design contract. No new animation or image loading was added.
+Next build completed; field LCP/INP/CLS and first-load route byte budgets were not measured by this run (the installed
+Next build output provides the route table without a per-route first-load size). No performance score is asserted.
+
+GitHub checks at this SHA: Full quality gate, surface-guard, security scan, mechanical Web Interface Guidelines and
+Vercel Preview Comments succeeded. The review-gate run was cancelled; that is not an independent release signoff.
+Vercel Git preview `dpl_2sZWjYViko4Sc4SZ9mnCcKJY3xah` is READY with the same SHA. Opening its `/studio` path in the
+cloud browser redirects to Vercel Login. The browser is not authenticated to this protected preview. Its live personal
+journey, screenshot matrix, focus, reduced-motion and real download/reopen acceptance therefore remain BLOCKED on
+preview authentication. No protection was disabled, no temporary share bypass created, no access rights expanded.
+The localhost browser attempt also failed with connection refused; the browser is separate from this workspace.
+The production baseline was viewed and screenshotted; it is not an after-state receipt for this implementation.
+
+Status: **proposed roadmap, coded candidate, locally and CI tested, independently code-reviewed on the same provider,
+Git-saved/draft PR open, preview deployed, not merged, not production deployed, not operating as a personal AI service,
+not customer-validated**. Native ChatGPT custom UI, direct account connectors, signatures, richer companion identities,
+media and an independent supported agent-client installation remain subsequent engineering work. Research curriculum
+and articles are drafts; no editorial content or paid offer was published.

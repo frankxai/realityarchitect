@@ -1,6 +1,6 @@
 # Independent implementation review — 25 October 2026
 
-Status: **initial findings repaired in the evolving worktree; frozen revision review pending**. This is a fresh-context reviewer separate from the maker, using the same model/provider. It is not the cross-family review required before release of data-export changes. No merge or production approval is supplied.
+Status: **candidate code review passes at the frozen source revision; release gates remain open**. This is a fresh-context reviewer separate from the maker, using the same model/provider. It is not the cross-family review required before release of data-export changes. No merge or production approval is supplied.
 
 ## Scope and evidence
 
@@ -55,6 +55,15 @@ Follow-up inspection found repairs for the initial findings:
 
 Executed after repairs: **47/47** continuity, kernel, privacy, import and observation-import tests, followed by **6/6** continuity tests after the Markdown injection repair. These overlap the earlier tests; they are not additive unique-test totals. `git diff --check` passed. Browser behavior, including focus and lifecycle clearing, still needs an authentic acceptance pass; code inspection is not browser evidence.
 
-Residual refinement sent to integrator: automatic adoption of a same-identity update from another tab should preserve visit-only drafts, rather than resetting them on every storage event. Explicit replacement, deletion and adoption of a different identity should clear them. Agent prompts should additionally mark imported records as untrusted data, never new instructions or consent.
+### Frozen revision verdict
 
-Pending frozen revision and final disposition of the residual refinement. This document is not a release approval.
+Reviewed exact implementation revision: **`a867250ec065a7e2ef585e7a7d0625ca5236bda8`**, proposed in [PR #122](https://github.com/frankxai/realityarchitect/pull/122). This receipt is a later documentation-only update; it does not claim review of future implementation changes.
+
+Both residual refinements are present in this revision:
+
+- Automatic adoption compares `createdAt`, preserves drafts for same-identity saves, and clears/remounts for a different Studio. Explicit `replace`, `forget`, and `takeOther` clear drafts and advance the rendering generation.
+- Generated agent briefs and weekly-review prompts explicitly classify quoted/imported source content as data rather than instructions or consent, and require asking before writes, external sharing, or new source access. This is instruction hygiene, not a proof of universal resistance to model prompt injection.
+
+Independently ran **`pnpm test`: 316/316 pass** against the frozen revision. `git diff --check` passed, and there were no tracked source changes from the reviewed revision at test time. Earlier typecheck and focused results are recorded above; the integrator owns the exact-head full build/security gate evidence.
+
+**Verdict:** no unresolved Critical or High code finding in the reviewed slice after repairs. The candidate is suitable to continue to browser acceptance and the required cross-family export review. This same-provider review does not satisfy that policy by itself. No browser pass, mobile/desktop screenshot inspection, deployed serving receipt, separate agent-client installation, customer validation, merge, or production approval is asserted here. Release remains held until those applicable gates have evidence.
