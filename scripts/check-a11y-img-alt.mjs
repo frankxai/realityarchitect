@@ -18,7 +18,7 @@ function main() {
     }
 
     const content = fs.readFileSync(filePath, 'utf-8')
-    const imgRegex = /<img\b((?:[^>"']|"[^"]*"|'[^']*')*)>/g
+    const imgRegex = /<img\b([^>]*)>/g
     let match
 
     while ((match = imgRegex.exec(content)) !== null) {
