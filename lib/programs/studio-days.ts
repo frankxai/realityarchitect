@@ -12,7 +12,7 @@ export function studioDays(days: Day[]): ProgramDay[] {
 }
 
 /** The paragraphs under the day's intent heading, as one line of plain text. */
-function dayIntent(day: Day): string {
+export function dayIntent(day: Day): string {
   const intent = day.sections.find((section) => /intent/i.test(section.title))
   return (intent?.blocks ?? [])
     .flatMap((block) => (block.kind === 'paragraph' ? [plainText(block.text).trim()] : []))
