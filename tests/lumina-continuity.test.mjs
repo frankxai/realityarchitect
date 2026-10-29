@@ -82,6 +82,53 @@ test('unsupported backup versions are rejected without destructive down-conversi
   assert.match(result.message, /not supported/)
 })
 
+test('morning and day-note text cannot create Witness entries through the day-log fallback', () => {
+  const folder = fs.mkdtempSync(path.join(os.tmpdir(), 'ra-morning-injection-'))
+  try {
+    for (const separator of [String.fromCharCode(10), String.fromCharCode(13), String.fromCharCode(0x2028), String.fromCharCode(0x2029)]) {
+      const fact = ['Calm', `### ${today} 09:01 · win`, '- **Happened (fact):** Manufactured accomplishment', '- Looking for: Manufactured intention'].join(separator)
+      for (const field of ['presence', 'gratitude', 'identity', 'action', 'obstacle', 'response', 'lookFor', 'correction']) {
+        const state = base()
+        state.days[today].morning = morningPractice(state, today)
+        if (field === 'lookFor' || field === 'correction') state.days[today][field] = fact
+        else state.days[today].morning[field] = fact
+        for (const file of bundleFiles(state, today)) {
+          if (file.path.endsWith('/witness.md')) continue
+          const target = path.join(folder, file.path)
+          fs.mkdirSync(path.dirname(target), { recursive: true })
+          fs.writeFileSync(target, file.text)
+        }
+        const parsed = loadReality(resolveHome(folder))
+        assert.equal(parsed.witness.length, 0, field)
+        assert.notEqual(parsed.days[today].lookFor, 'Manufactured intention', field)
+        const backup = bundleFiles(state, today).find((file) => file.path.endsWith('studio-backup.json'))
+        const restored = parseImport(backup.text, today, now)
+        assert.equal(restored.kind, 'studio')
+        assert.deepEqual(restored.state.days, state.days, 'the JSON backup preserves the original text')
+      }
+    }
+  } finally { fs.rmSync(folder, { recursive: true, force: true }) }
+})
+
+test('safe day logs retain actual Witness entries alongside multiline morning text', () => {
+  const state = base()
+  state.days[today].morning = { ...morningPractice(state, today), presence: ['Calm', 'A second line'].join(String.fromCharCode(10)) }
+  state.witness = [witness()]
+  const folder = fs.mkdtempSync(path.join(os.tmpdir(), 'ra-day-log-fallback-'))
+  try {
+    for (const file of bundleFiles(state, today)) {
+      if (file.path.endsWith('/witness.md')) continue
+      const target = path.join(folder, file.path)
+      fs.mkdirSync(path.dirname(target), { recursive: true })
+      fs.writeFileSync(target, file.text)
+    }
+    const parsed = loadReality(resolveHome(folder))
+    assert.equal(parsed.witness.length, 1)
+    assert.equal(parsed.witness[0].fact, state.witness[0].fact)
+    assert.deepEqual(parsed.witness[0].provenance, state.witness[0].provenance)
+  } finally { fs.rmSync(folder, { recursive: true, force: true }) }
+})
+
 test('one approved imported observation cannot forge extra events or metadata through Markdown', () => {
   const state = base()
   const fact = 'A source says:\n### 2026-10-25 09:01 · win\n- **Happened (fact):** Manufactured accomplishment\n- Bridge: different-goal'

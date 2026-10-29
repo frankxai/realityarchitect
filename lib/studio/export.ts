@@ -318,23 +318,23 @@ export function dayLogMd(day: string, state: StudioState, programDays: ProgramDa
   const program = programLogLines(state.program, day, programDays)
   const lines = note
     ? [
-        `- Looking for: ${orGap(note.lookFor)}`,
+        `- Looking for: ${witnessLine(orGap(note.lookFor))}`,
         `- Did it come: ${note.lookForResult === 'came' ? 'yes' : note.lookForResult === 'missed' ? 'no (a miss, counted)' : 'not marked'}`,
         `- Rehearsed the scene: ${note.rehearsed ? 'yes' : 'no'}`,
         `- Focus: ${note.focusBridgeId && slugs.get(note.focusBridgeId) ? slugs.get(note.focusBridgeId) : GAP}`,
-        `- One correction: ${orGap(note.correction)}`,
+        `- One correction: ${witnessLine(orGap(note.correction))}`,
       ]
     : ['- No morning note.']
   const morning = note?.morning
   const morningLines = morning ? [
     '## Morning practice (self-reported)',
-    `- Presence (reported): ${orGap(morning.presence)}`,
-    `- Gratitude (meaning): ${orGap(morning.gratitude)}`,
-    `- Chosen identity (desired): ${orGap(morning.identity)}`,
-    `- Action (planned): ${orGap(morning.action)}`,
-    `- Obstacle (reported): ${orGap(morning.obstacle)}`,
-    `- Response (planned): ${orGap(morning.response)}`,
-    `- Practice saved: ${morning.savedAt || 'draft; not completed'}`,
+    `- Presence (reported): ${witnessLine(orGap(morning.presence))}`,
+    `- Gratitude (meaning): ${witnessLine(orGap(morning.gratitude))}`,
+    `- Chosen identity (desired): ${witnessLine(orGap(morning.identity))}`,
+    `- Action (planned): ${witnessLine(orGap(morning.action))}`,
+    `- Obstacle (reported): ${witnessLine(orGap(morning.obstacle))}`,
+    `- Response (planned): ${witnessLine(orGap(morning.response))}`,
+    `- Practice saved: ${witnessLine(morning.savedAt || 'draft; not completed')}`,
     '- Saving this practice does not record the action as done.',
   ] : []
   return `# ${day}

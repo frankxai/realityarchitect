@@ -39,7 +39,7 @@ export function createFirstBridge(state: StudioState, input: FirstBridgeInput, t
   const obstacle = bounded(input.obstacle, 'Obstacle', 20000)
   const ifThen = bounded(input.ifThen, 'If-then plan', 20000)
   const next = structuredClone(state)
-  if (next.bridges.some((bridge) => same(bridge.title, aspiration) && bridge.reps.some((rep) => same(rep.name, action)))) return next
+  if (next.bridges.some((bridge) => bridge.status === 'active' && same(bridge.title, aspiration) && bridge.reps.some((rep) => same(rep.name, action)))) return next
 
   const bridge = emptyBridge(today)
   bridge.title = aspiration

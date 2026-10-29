@@ -218,6 +218,9 @@ must not upgrade their epistemic status. `reality.md` remains v0.2 and `soul.md`
   Saving the practice never marks its action done. Studio JSON binds a morning to `bridgeId`, so changing focus
   cannot reattribute a different goal's action. Only the latest edited morning is kept for a given day; export
   before replacing it when the earlier draft matters.
+  Morning and day-note text occupies one physical Markdown line per field, with line breaks shown as ↵, so the
+  day-log fallback cannot interpret personal text as extra Witness events or day-note fields. The Studio JSON
+  backup preserves the original multiline text for exact restoration.
 - `soul.md` may add `## Companion (presentation preference)`. Lumina ∞ and Quiet guide use the same ownership and
   evidence rules. The web interface uses authored prompts; an installed skill uses the person's selected agent.
 - A Witness entry may add one `- Provenance v1: <JSON>` line: `{ "version": 1, "source": "manual|file-import",

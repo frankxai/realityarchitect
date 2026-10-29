@@ -53,6 +53,23 @@ test('replay is idempotent and never overwrites authored contracts', () => {
   assert.equal(first.days[TODAY].lookForResult, 'missed')
 })
 
+test('a closed bridge does not prevent starting the same practice again', () => {
+  for (const status of ['released', 'achieved']) {
+    const previous = setup()
+    previous.bridges[0].status = status
+    previous.bridges[0].closedAt = TODAY
+    const original = structuredClone(previous)
+    const next = createFirstBridge(previous, input, TODAY)
+    assert.deepEqual(previous, original)
+    assert.equal(next.bridges.length, 2, status)
+    assert.equal(next.bridges[0].status, status)
+    assert.equal(next.bridges[1].status, 'active')
+    assert.equal(morningPlan(next, TODAY)?.bridge.id, next.bridges[1].id)
+    assert.deepEqual(next.witness, [])
+    assert.deepEqual(createFirstBridge(next, input, TODAY), next, 'active replay remains idempotent')
+  }
+})
+
 test('an explicit outcome criterion stays separate from the first action and self-endorsement', () => {
   const state = createFirstBridge(emptyState(NOW), { ...input, doneWhen: 'I have finished and shared three drawings' }, TODAY)
   const bridge = state.bridges[0]
