@@ -14,10 +14,14 @@
   border-top: 1px solid var(--color-border);
 }
 
-/* 100vw includes the scrollbar; clip the sliver instead of letting the page scroll sideways. */
-:global(html):has(.story) {
-  overflow-x: clip;
+/* Root query units exclude classic scrollbar width, keeping the story truly full bleed. */
+@supports (width: 100cqw) {
+  :global(html):has(.story) { container-type: inline-size; }
+  .story { width: 100cqw; margin-left: calc(50% - 50cqw); }
 }
+
+/* Legacy engines retain the full-bleed fallback without lateral scrolling. */
+:global(html):has(.story) { overflow-x: clip; }
 
 .stage {
   display: none;
