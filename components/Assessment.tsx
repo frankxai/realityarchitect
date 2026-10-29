@@ -115,13 +115,13 @@ The assessment ran locally in the browser. Share this artifact only after removi
         <h2 className="font-mono text-xs font-semibold uppercase tracking-wider text-accent">Build your brief</h2>
         <p className="mt-2 text-sm text-muted">This stays in this browser. No account required. No data is transmitted or saved.</p>
         <div className="mt-6 grid gap-6 sm:grid-cols-2">
-          <label className="flex flex-col text-sm font-medium text-ink">
+          <label htmlFor="systemName" className="flex flex-col text-sm font-medium text-ink">
             System name
-            <input value={systemName} onChange={(event) => setSystemName(event.target.value)} autoComplete="off" placeholder="e.g., Creator research loop" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink placeholder:text-muted/50 outline-none focus-visible:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
+            <input id="systemName" value={systemName} onChange={(event) => setSystemName(event.target.value)} autoComplete="off" placeholder="e.g., Creator research loop" className={`mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink placeholder:text-muted/80 outline-none focus-visible:border-accent ${focusRing}`} />
           </label>
-          <label className="flex flex-col text-sm font-medium text-ink">
+          <label htmlFor="repeatingJob" className="flex flex-col text-sm font-medium text-ink">
             Repeating job
-            <input value={repeatingJob} onChange={(event) => setRepeatingJob(event.target.value)} autoComplete="off" placeholder="e.g., Turn source notes into a reviewed brief" className="mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink placeholder:text-muted/50 outline-none focus-visible:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" />
+            <input id="repeatingJob" value={repeatingJob} onChange={(event) => setRepeatingJob(event.target.value)} autoComplete="off" placeholder="e.g., Turn source notes into a reviewed brief" className={`mt-2 w-full rounded-lg border border-border bg-bg px-4 py-3 text-ink placeholder:text-muted/80 outline-none focus-visible:border-accent ${focusRing}`} />
           </label>
         </div>
       </div>
@@ -156,7 +156,7 @@ The assessment ran locally in the browser. Share this artifact only after removi
       </div>
 
       <div className="mt-6 flex flex-col items-start gap-4 border-t border-border pt-10">
-        <button type="button" disabled={!allAnswered} onClick={() => { setCopyState('idle'); setSubmitted(true) }} className={`w-full sm:w-auto rounded-lg bg-accent px-8 py-4 text-base font-semibold text-bg transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 ${focusRing}`}>
+        <button type="button" disabled={!allAnswered} onClick={() => { setCopyState('idle'); setSubmitted(true) }} className={`w-full sm:w-auto rounded-lg bg-accent px-8 py-4 text-base font-semibold text-bg transition-opacity motion-reduce:transition-none hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 ${focusRing}`}>
           {allAnswered ? 'Export architecture brief' : 'Answer all five to build brief'}
         </button>
         {!allAnswered && <p className="text-sm text-muted">Complete the assessment to generate your local Markdown export.</p>}
@@ -171,18 +171,18 @@ The assessment ran locally in the browser. Share this artifact only after removi
           <div className="mt-8 rounded-lg border border-border bg-bg">
             <div className="border-b border-border bg-surface px-4 py-3 flex justify-between items-center rounded-t-lg">
               <span className="font-mono text-xs font-medium text-muted">architecture-brief.md</span>
-              <button type="button" onClick={copyBrief} className={`rounded-md text-xs font-medium text-accent hover:text-accent/80 transition-colors ${focusRing}`}>
+              <button type="button" onClick={copyBrief} className={`rounded-md text-xs font-medium text-accent hover:text-accent/80 transition-colors motion-reduce:transition-none ${focusRing}`}>
                 {copyState === 'copied' ? 'Copied!' : 'Copy raw'}
               </button>
             </div>
-            <div className="max-h-[32rem] overflow-auto p-4 sm:p-6">
+            <div role="region" aria-label="Architecture brief preview" tabIndex={0} className="max-h-[32rem] overflow-auto p-4 sm:p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent">
               <pre className="whitespace-pre-wrap font-mono text-sm leading-relaxed text-muted">{brief}</pre>
             </div>
           </div>
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-            <button type="button" onClick={downloadBrief} className={`w-full sm:w-auto rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg transition-opacity hover:opacity-90 ${focusRing}`}>Download Markdown</button>
-            <Link href="/start" className={`w-full sm:w-auto rounded-lg border border-border bg-surface px-6 py-3 text-center font-semibold text-ink transition-colors hover:border-accent hover:bg-surface/80 ${focusRing}`}>Open build path</Link>
+            <button type="button" onClick={downloadBrief} className={`w-full sm:w-auto rounded-lg bg-accent px-6 py-3 text-center font-semibold text-bg transition-opacity motion-reduce:transition-none hover:opacity-90 ${focusRing}`}>Download Markdown</button>
+            <Link href="/start" className={`w-full sm:w-auto rounded-lg border border-border bg-surface px-6 py-3 text-center font-semibold text-ink transition-colors motion-reduce:transition-none hover:border-accent hover:bg-surface/80 ${focusRing}`}>Open build path</Link>
           </div>
           <p role="status" aria-live="polite" aria-atomic="true" className="mt-3 text-sm text-muted">{copyState === 'copied' ? 'Brief copied.' : copyState === 'failed' ? 'Copy was blocked by the browser; use the download instead.' : 'Your input has not left this browser.'}</p>
         </section>
