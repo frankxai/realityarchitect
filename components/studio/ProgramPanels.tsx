@@ -51,7 +51,7 @@ export function ProgramToday({ studio, go, days }: { studio: StudioApi; go: Go; 
   return (
     <section className={panelClass} aria-labelledby="program-title">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">{PROGRAM_NAME}{SEP}{statusLabel(status)}</p>
+        <p className="font-mono text-xs tracking-normal text-accent">{PROGRAM_NAME}{SEP}{statusLabel(status)}</p>
         {program && status.state !== 'not-started' && (
           <p className="font-mono text-xs text-muted"><span className="text-ink">{status.doneCount}</span> of {DAYS} marked done</p>
         )}
@@ -71,7 +71,7 @@ export function ProgramToday({ studio, go, days }: { studio: StudioApi; go: Go; 
 
       {status.state !== 'complete' && data?.intent && (
         <div className="mt-4 rounded-xl border border-dawn/20 bg-dawn/5 p-4 sm:p-5">
-          <p className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-dawn">The day&rsquo;s intent</p>
+          <p className="font-mono text-[0.7rem] tracking-normal text-dawn">The day&rsquo;s intent</p>
           <p className="mt-2 font-serif text-lg leading-relaxed text-dawn-2">{data.intent}</p>
         </div>
       )}
@@ -144,7 +144,7 @@ export function ProgramTimeline({ studio, days }: { studio: StudioApi; days: Pro
 
   return (
     <section className={panelClass} aria-labelledby="program-days-title">
-      <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">{PROGRAM_NAME}{SEP}{statusLabel(status)}</p>
+      <p className="font-mono text-xs tracking-normal text-accent">{PROGRAM_NAME}{SEP}{statusLabel(status)}</p>
       <h3 id="program-days-title" className="mt-1 text-lg font-semibold text-ink">The {DAYS} days <Tag register="done" /></h3>
       <p className="mt-2 text-sm leading-relaxed text-muted">
         Started <span className="font-mono text-ink">{program.start}</span>{SEP}<span className="font-mono text-ink">{status.doneCount}</span> marked done

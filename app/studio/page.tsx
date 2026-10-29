@@ -26,7 +26,7 @@ export default function StudioPage() {
   const programDays = studioDays(readDays())
   return (
     <div className="py-10 sm:py-14">
-      <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">Reality Studio · on this device</p>
+      <p className="font-mono text-xs font-semibold tracking-normal text-accent">Reality Studio · on this device</p>
       <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
         Imagine it. Build it. <span className="font-serif font-normal italic text-dawn">Witness it.</span>
       </h1>

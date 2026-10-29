@@ -63,7 +63,7 @@ export default async function ProgramDay({ params }: { params: Promise<Params> }
         ← The Imaginal Act, thirty days
       </Link>
       <header className="mt-6">
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+        <p className="font-mono text-xs font-semibold tracking-normal text-accent">
           Week {day.week}{week ? ` · ${week.name}` : ''} · Day {String(n).padStart(2, '0')} of {DAYS}
         </p>
         <h1 id="day-title" className="mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
@@ -94,7 +94,7 @@ export default async function ProgramDay({ params }: { params: Promise<Params> }
         <section key={section.id} aria-labelledby={section.id} className="mt-10">
           <h2 id={section.id} className="flex flex-wrap items-baseline gap-x-3 gap-y-1 scroll-mt-28 text-xl font-semibold text-ink">
             <Text text={title.text} />
-            {title.label && <span className="rounded-full border border-border px-2.5 py-0.5 font-mono text-xs font-normal uppercase tracking-[0.14em] text-muted">{title.label}</span>}
+            {title.label && <span className="rounded-full border border-border px-2.5 py-0.5 font-mono text-xs font-normal tracking-normal text-muted">{title.label}</span>}
           </h2>
           <div className="mt-4">
             <Prose blocks={section.blocks} headingOffset={1} />
@@ -116,7 +116,7 @@ export default async function ProgramDay({ params }: { params: Promise<Params> }
       <nav aria-label="Days" className="mt-10 grid gap-3 border-t border-border pt-6 sm:grid-cols-2">
         {previous ? (
           <Link href={`/programs/imaginal-30/${n - 1}`} rel="prev" className={`flex min-h-12 flex-col justify-center rounded-xl border border-border px-4 py-3 hover:border-accent/60 ${FOCUS}`}>
-            <span className="font-mono text-xs uppercase tracking-[0.14em] text-muted">← Day {n - 1}</span>
+            <span className="font-mono text-xs tracking-normal text-muted">← Day {n - 1}</span>
             <span className="mt-0.5 text-sm text-ink"><Text text={previous.title} /></span>
           </Link>
         ) : (
@@ -124,12 +124,12 @@ export default async function ProgramDay({ params }: { params: Promise<Params> }
         )}
         {next ? (
           <Link href={`/programs/imaginal-30/${n + 1}`} rel="next" className={`flex min-h-12 flex-col justify-center rounded-xl border border-accent/40 px-4 py-3 text-right hover:border-accent ${FOCUS}`}>
-            <span className="font-mono text-xs uppercase tracking-[0.14em] text-accent">Day {n + 1} →</span>
+            <span className="font-mono text-xs tracking-normal text-accent">Day {n + 1} →</span>
             <span className="mt-0.5 text-sm text-ink"><Text text={next.title} /></span>
           </Link>
         ) : (
           <Link href="/programs/imaginal-30" className={`flex min-h-12 flex-col justify-center rounded-xl border border-accent/40 px-4 py-3 text-right hover:border-accent ${FOCUS}`}>
-            <span className="font-mono text-xs uppercase tracking-[0.14em] text-accent">The thirty days →</span>
+            <span className="font-mono text-xs tracking-normal text-accent">The thirty days →</span>
             <span className="mt-0.5 text-sm text-ink">Back to the program</span>
           </Link>
         )}

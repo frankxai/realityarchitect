@@ -188,12 +188,12 @@ export function WitnessView({ studio }: { studio: StudioApi }) {
             <ol className="mt-4 space-y-6">
               {days.map((day) => (
                 <li key={day}>
-                  <h4 className="font-mono text-xs uppercase tracking-[0.16em] text-muted">{day === today ? `Today · ${day}` : day}</h4>
+                  <h4 className="font-mono text-xs tracking-normal text-muted">{day === today ? `Today · ${day}` : day}</h4>
                   <ul className="mt-2 space-y-3">
                     {visible.filter((entry) => entry.day === day).map((entry) => (
                       <li key={entry.id} className="rounded-xl border border-border bg-surface/60 p-4">
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                          <p className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-accent">
+                          <p className="font-mono text-[0.7rem] tracking-normal text-accent">
                             {witnessLabel(entry.kind)}{entry.kind === 'sign' ? (entry.primed ? ' · primed' : ' · unprimed') : ''}
                             {entry.bridgeId && titles.has(entry.bridgeId) ? ` · ${titles.get(entry.bridgeId)}` : entry.bridgeTitle ? ` · ${entry.bridgeTitle} (deleted)` : ''}
                           </p>

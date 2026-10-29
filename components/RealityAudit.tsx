@@ -15,7 +15,7 @@ const TOTAL_STEPS = 10
 function StepHeader({ step, label }: { step: number; label: string }) {
   return (
     <div className="mb-6">
-      <div className="flex items-center justify-between font-mono text-xs uppercase tracking-[0.18em] text-muted">
+      <div className="flex items-center justify-between font-mono text-xs tracking-normal text-muted">
         <span>Step {step} of {TOTAL_STEPS}</span>
         <span className="text-accent">{label}</span>
       </div>
@@ -390,7 +390,7 @@ export function RealityAudit() {
       {step === 8 && (
         <section className="blueprint-resolve" aria-labelledby="audit-result-title">
           <StepHeader step={9} label="The audit" />
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">
+          <p className="font-mono text-xs font-semibold tracking-normal text-accent">
             {divergence.aligned ? 'Aligned — rare' : 'Divergence found'}
           </p>
           <h2 id="audit-result-title" className="mt-2 text-2xl font-bold text-ink sm:text-3xl">

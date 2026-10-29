@@ -37,7 +37,7 @@ function EntryCard({ entry }: { entry: Entry }) {
         </div>
         <ul className="flex flex-wrap gap-1.5" aria-label="Claim types">
           {entry.tags.map((tag) => (
-            <li key={tag} className="rounded-full border border-border px-2.5 py-0.5 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-muted" title={TAG_LABEL[tag].hint}>
+            <li key={tag} className="rounded-full border border-border px-2.5 py-0.5 font-mono text-[0.62rem] tracking-normal text-muted" title={TAG_LABEL[tag].hint}>
               {TAG_LABEL[tag].label}
             </li>
           ))}
@@ -45,19 +45,19 @@ function EntryCard({ entry }: { entry: Entry }) {
       </div>
       <dl className="mt-5 grid gap-4 text-sm leading-relaxed">
         <div>
-          <dt className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-dawn">Keep</dt>
+          <dt className="font-mono text-[0.68rem] tracking-normal text-dawn">Keep</dt>
           <dd className="mt-1 font-serif text-base text-dawn-2">{entry.keep}</dd>
         </div>
         <div>
-          <dt className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-accent">Mechanism</dt>
+          <dt className="font-mono text-[0.68rem] tracking-normal text-accent">Mechanism</dt>
           <dd className="mt-1 text-ink">{entry.mechanism}</dd>
         </div>
         <div>
-          <dt className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-muted">Limits</dt>
+          <dt className="font-mono text-[0.68rem] tracking-normal text-muted">Limits</dt>
           <dd className="mt-1 text-muted">{entry.limits}</dd>
         </div>
         <div>
-          <dt className="font-mono text-[0.68rem] uppercase tracking-[0.16em] text-muted">In the Studio</dt>
+          <dt className="font-mono text-[0.68rem] tracking-normal text-muted">In the Studio</dt>
           <dd className="mt-1 text-ink">{entry.inStudio}</dd>
         </div>
       </dl>
@@ -78,7 +78,7 @@ export default function Library() {
   return (
     <div className="py-12 sm:py-16">
       <header className="max-w-3xl">
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">The Library · Reality Theory and the honest canon</p>
+        <p className="font-mono text-xs font-semibold tracking-normal text-accent">The Library · Reality Theory and the honest canon</p>
         <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
           Every teaching, with its <span className="font-serif font-normal italic text-dawn">meaning</span> and its mechanism.
         </h1>
@@ -89,7 +89,7 @@ export default function Library() {
         </p>
         <ul className="mt-6 flex flex-wrap gap-2 text-xs text-muted" aria-label="Claim types">
           {Object.entries(TAG_LABEL).map(([tag, value]) => (
-            <li key={tag} className="rounded-full border border-border px-3 py-1"><span className="font-mono uppercase tracking-[0.14em] text-ink">{value.label}</span> · {value.hint}</li>
+            <li key={tag} className="rounded-full border border-border px-3 py-1"><span className="font-mono tracking-normal text-ink">{value.label}</span> · {value.hint}</li>
           ))}
         </ul>
       </header>
@@ -101,7 +101,7 @@ export default function Library() {
       </nav>
 
       <section id="theory" className="scroll-mt-28 py-14" aria-labelledby="theory-title">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Reality Theory</p>
+        <p className="font-mono text-xs tracking-normal text-accent">Reality Theory</p>
         <h2 id="theory-title" className="mt-3 text-3xl font-bold text-ink sm:text-4xl">Three layers, one law.</h2>
         <p className="mt-4 max-w-3xl font-mono text-sm text-ink" aria-label={`The One Law: ${ONE_LAW.join(', then ')}`}>
           {ONE_LAW.join(' → ')}
@@ -134,7 +134,7 @@ export default function Library() {
 
       {SHELVES.map((shelf) => (
         <section key={shelf.id} id={shelf.id} className="scroll-mt-28 border-t border-border py-14" aria-labelledby={`${shelf.id}-title`}>
-          <p className={`font-mono text-xs uppercase tracking-[0.2em] ${SHELF_STYLE[shelf.id].eyebrow}`}>{shelf.id === 'meaning' ? 'Meaning' : shelf.id === 'mechanism' ? 'Mechanism' : 'Frontier'}</p>
+          <p className={`font-mono text-xs tracking-normal ${SHELF_STYLE[shelf.id].eyebrow}`}>{shelf.id === 'meaning' ? 'Meaning' : shelf.id === 'mechanism' ? 'Mechanism' : 'Frontier'}</p>
           <h2 id={`${shelf.id}-title`} className="mt-3 text-3xl font-bold text-ink">{shelf.title}</h2>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">{shelf.intro}</p>
           <div className="mt-8 grid gap-5">
@@ -144,13 +144,13 @@ export default function Library() {
       ))}
 
       <section id="myths" className="scroll-mt-28 border-t border-border py-14" aria-labelledby="myths-title">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">Honesty</p>
+        <p className="font-mono text-xs tracking-normal text-muted">Honesty</p>
         <h2 id="myths-title" className="mt-3 text-3xl font-bold text-ink">What we do not claim</h2>
         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">Common claims, quoted only to correct them. Naming what is false is what earns the right to teach the rest.</p>
         <ul className="mt-8 grid gap-4 md:grid-cols-2">
           {MYTHS.map((myth) => (
             <li key={myth.claim} className="rounded-2xl border border-border bg-surface/70 p-5">
-              <p className="text-sm text-muted"><span className="font-mono text-[0.68rem] uppercase tracking-[0.16em]">The claim · </span>“{myth.claim}”</p>
+              <p className="text-sm text-muted"><span className="font-mono text-[0.68rem] tracking-normal">The claim · </span>“{myth.claim}”</p>
               <p className="mt-3 text-sm leading-relaxed text-ink">{myth.correction}</p>
             </li>
           ))}
@@ -158,7 +158,7 @@ export default function Library() {
       </section>
 
       <section id="paths" className="scroll-mt-28 border-t border-border py-14" aria-labelledby="paths-title">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Reading paths</p>
+        <p className="font-mono text-xs tracking-normal text-accent">Reading paths</p>
         <h2 id="paths-title" className="mt-3 text-3xl font-bold text-ink">Start from what you want</h2>
         <ul className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {PATHS.map((path) => (

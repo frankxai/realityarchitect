@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function Apply() {
   return (
     <div className="py-14">
-      <p className="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-accent">The reality.md Audit</p>
+      <p className="font-mono text-sm font-semibold tracking-normal text-accent">The reality.md Audit</p>
       <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
         The application is the audit.
       </h1>

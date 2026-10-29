@@ -22,8 +22,8 @@ export const site = {
     { name: 'Agentic Income', url: 'https://agenticincome.ai', blurb: 'A separate editorial/product system focused on AI-enabled income workflows.' },
   ],
   nav: [
-    { label: 'The Method', href: '/method' },
-    { label: '30 Days', href: '/programs/imaginal-30' },
+    { label: 'The method', href: '/method' },
+    { label: '30 days', href: '/programs/imaginal-30' },
     { label: 'Studio', href: '/studio' },
     { label: 'Library', href: '/library' },
     { label: 'reality.md', href: '/standard' },

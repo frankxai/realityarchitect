@@ -431,7 +431,7 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
             )}
             <div className="absolute left-0 top-0 origin-top-left" style={{ transform: `translate(${camera.x}px, ${camera.y}px) scale(${camera.zoom})` }}>
               {layout.nodes.length > 0 && (
-                <div aria-hidden="true" className="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.3em]">
+                <div aria-hidden="true" className="whitespace-nowrap font-mono text-[11px] tracking-normal">
                   <span className="absolute text-muted" style={{ left: 0, top: -100 }}>Now · reported</span>
                   <span className="absolute text-accent" style={{ left: 420, top: -100 }}>Bridges · planned and witnessed</span>
                   <span className="absolute text-dawn" style={{ left: layout.visionX, top: -100 }}>Vision · desired</span>
@@ -456,7 +456,7 @@ export function MapView({ studio, go }: { studio: StudioApi; go: Go }) {
                     className={`group absolute overflow-hidden rounded-xl border p-3 shadow-[0_12px_40px_rgba(0,0,0,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${tone.box}`}
                     style={{ left: position.x, top: position.y, width: node.w, minHeight: node.h }}
                   >
-                    {node.title && <p className={`font-mono text-[11px] uppercase tracking-[0.14em] ${tone.title}`}>{node.title}</p>}
+                    {node.title && <p className={`font-mono text-[11px] tracking-normal ${tone.title}`}>{node.title}</p>}
                     {node.tone === 'image' ? (
                       image ? (
                         // A blob URL from this device's own storage; next/image cannot optimize it.
@@ -529,7 +529,7 @@ function VisionBoard({ tiles, images, target, onAdd, onRemove, go }: {
       {...target}
       className="rounded-2xl border border-dawn/20 bg-[#0b0a0e] p-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dawn sm:p-6"
     >
-      <p className="mb-4 font-mono text-xs uppercase tracking-[0.18em] text-dawn">Vision · desired · in your words</p>
+      <p className="mb-4 font-mono text-xs tracking-normal text-dawn">Vision · desired · in your words</p>
       {tiles.length === 0 ? (
         <Empty
           title="Your board fills with your own scenes"
@@ -543,7 +543,7 @@ function VisionBoard({ tiles, images, target, onAdd, onRemove, go }: {
             <li key={tile.id} className="mb-4 break-inside-avoid">
               {tile.kind === 'scene' ? (
                 <figure className="rounded-xl border border-dawn/30 bg-[#15131a] p-5">
-                  <figcaption className="font-mono text-[11px] uppercase tracking-[0.16em] text-dawn">{tile.title}</figcaption>
+                  <figcaption className="font-mono text-[11px] tracking-normal text-dawn">{tile.title}</figcaption>
                   <blockquote className="mt-2 whitespace-pre-wrap font-serif text-lg leading-snug text-dawn-2">{tile.text}</blockquote>
                 </figure>
               ) : (
@@ -590,11 +590,11 @@ function MapList({ nodes }: { nodes: MapNode[] }) {
         if (!items.length) return null
         return (
           <section key={group.title} aria-label={group.title}>
-            <h3 className="font-mono text-xs uppercase tracking-[0.16em] text-muted">{group.title}</h3>
+            <h3 className="font-mono text-xs tracking-normal text-muted">{group.title}</h3>
             <ul className="mt-3 space-y-2">
               {items.map((node) => (
                 <li key={node.id} className={`rounded-xl border p-3 ${TONE[node.tone].box}`}>
-                  {node.title && <p className={`font-mono text-[10px] uppercase tracking-[0.14em] ${TONE[node.tone].title}`}>{node.title}</p>}
+                  {node.title && <p className={`font-mono text-[10px] tracking-normal ${TONE[node.tone].title}`}>{node.title}</p>}
                   <p className={`mt-1 whitespace-pre-wrap text-sm ${TONE[node.tone].body}`}>{node.body || (node.tone === 'image' ? 'Image' : 'Empty note')}</p>
                 </li>
               ))}

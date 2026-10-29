@@ -104,7 +104,7 @@ export function ThresholdStudio() {
   return (
     <section aria-label="Build a Reality Card" className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)]">
       <div className={panel}>
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#e8d5ad]">A private first session · take your time</p>
+        <p className="font-mono text-xs tracking-normal text-[#e8d5ad]">A private first session · take your time</p>
         <h2 tabIndex={-1} ref={heading} className="mt-3 text-2xl font-bold text-ink sm:text-3xl">
           {finished ? 'Carry the scene into the day.' : resting ? 'For now, simply be here.' : LABELS[step]}
         </h2>
@@ -215,7 +215,7 @@ export function ThresholdStudio() {
         )}
       </div>
       <aside className="self-start rounded-xl border border-[#e8d5ad]/25 bg-[#e8d5ad]/5 p-6 lg:sticky lg:top-24">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-[#e8d5ad]">The passage</p>
+        <p className="font-mono text-xs tracking-normal text-[#e8d5ad]">The passage</p>
         <h3 className="mt-4 font-serif text-2xl font-normal text-ink">Feel the moment.<br />Choose the next act.</h3>
         <ol className="mt-6 space-y-5 text-sm text-muted">
           <li><span className="font-semibold text-ink">01 · See it.</span> Describe a life you would want to inhabit on an ordinary day.</li>

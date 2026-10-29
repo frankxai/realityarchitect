@@ -9,7 +9,7 @@ import { addDays, buildProgramIcs, icsFileName, isIcsDate, isIcsTime, type IcsDa
  */
 
 const FOCUS = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg'
-const INPUT = `mt-1.5 block min-h-11 w-full rounded-lg border border-border bg-bg px-3.5 py-2 font-mono text-sm text-ink ${FOCUS}`
+const INPUT = `mt-1.5 block min-h-11 w-full rounded-lg border border-border bg-bg px-3.5 py-2 font-mono text-base sm:text-sm text-ink ${FOCUS}`
 const DEFAULT_TIME = '07:00'
 /** The usual length of a day's practice, for a day that does not carry its own. */
 const DEFAULT_MINUTES = 10
@@ -69,7 +69,7 @@ export function CalendarDownload({ days }: { days: IcsDay[] }) {
 
   return (
     <section aria-labelledby={`${id}-title`} className="mt-12 max-w-3xl rounded-2xl border border-border bg-surface/70 p-5 sm:p-6">
-      <p className="font-mono text-xs uppercase tracking-[0.16em] text-accent">Calendar · made on this device</p>
+      <p className="font-mono text-xs tracking-normal text-accent">Calendar · made on this device</p>
       <h2 id={`${id}-title`} className="mt-1 text-2xl font-bold text-ink">Put the thirty days in your calendar.</h2>
       <p className="mt-3 max-w-[35rem] text-sm leading-relaxed text-muted">
         Choose the day you start and a time. Your browser writes one <code className="font-mono text-ink">.ics</code> file

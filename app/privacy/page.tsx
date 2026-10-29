@@ -31,7 +31,7 @@ const NOT_COLLECTED = [
 export default function Privacy() {
   return (
     <div className="py-14">
-      <p className="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-accent">Privacy · product boundary</p>
+      <p className="font-mono text-sm font-semibold tracking-normal text-accent">Privacy · product boundary</p>
       <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
         Your assessment stays on <span className="text-accent">this device.</span>
       </h1>
@@ -42,7 +42,7 @@ export default function Privacy() {
 
       <div className="mt-10 grid gap-4 md:grid-cols-2">
         <section className="rounded-2xl border border-border glass p-6" aria-labelledby="local-state">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">In your browser</p>
+          <p className="font-mono text-xs font-semibold tracking-normal text-accent">In your browser</p>
           <h2 id="local-state" className="mt-2 text-xl font-bold text-ink">What stays local</h2>
           <ul className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
             {LOCAL_ONLY.map((item) => <li key={item}>— {item}</li>)}
@@ -50,7 +50,7 @@ export default function Privacy() {
         </section>
 
         <section className="rounded-2xl border border-border glass p-6" aria-labelledby="not-collected">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">Not part of the app</p>
+          <p className="font-mono text-xs font-semibold tracking-normal text-accent">Not part of the app</p>
           <h2 id="not-collected" className="mt-2 text-xl font-bold text-ink">What is not collected</h2>
           <ul className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
             {NOT_COLLECTED.map((item) => <li key={item}>— {item}</li>)}

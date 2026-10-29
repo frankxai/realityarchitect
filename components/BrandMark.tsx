@@ -1,11 +1,11 @@
-/** The Reality Architect mark as plain SVG, for generated images (app icons) where CSS classes do not apply. */
-export function BrandMark({ size }: { size: number }) {
+/** Aperture v1: an open threshold, a horizon, and the point where a chosen act begins. */
+export function BrandMark({ size = 32 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64">
-      <rect width="64" height="64" rx="14" fill="#0d0f18" />
-      <path d="M21.5 0v64M42.5 0v64M0 21.5h64M0 42.5h64" stroke="#5b8cff" strokeOpacity="0.18" strokeWidth="2" />
-      <path d="M32 14 50 32 32 50 14 32Z" fill="none" stroke="#5b8cff" strokeWidth="4" strokeLinejoin="round" />
-      <circle cx="32" cy="32" r="4" fill="#a78bfa" />
+    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+      <rect x="1" y="1" width="62" height="62" rx="19" fill="#0d0f18" stroke="#343849" />
+      <path d="M18 47V28a14 14 0 0 1 28 0v19M13 47h38" stroke="#e8d5ad" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M25 40V28a7 7 0 0 1 14 0v12" stroke="#5b8cff" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="32" cy="47" r="3" fill="#e8d5ad" />
     </svg>
   )
 }
