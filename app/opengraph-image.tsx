@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { site } from '@/lib/site'
+import { BrandMark } from '@/components/BrandMark'
 
 export const alt = `${site.name} — ${site.tagline}`
 export const size = { width: 1200, height: 630 }
@@ -33,11 +34,7 @@ export default function OpengraphImage() {
           }}
         />
         <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
-          <svg width="52" height="52" viewBox="0 0 64 64">
-            <rect width="64" height="64" rx="14" fill="#0d0f18" />
-            <path d="M32 14 50 32 32 50 14 32Z" fill="none" stroke="#5b8cff" strokeWidth="3.5" strokeLinejoin="round" />
-            <circle cx="32" cy="32" r="3.5" fill="#a78bfa" />
-          </svg>
+          <BrandMark size={52} />
           <div style={{ fontSize: '30px', fontWeight: 700, color: '#e8eaf2', letterSpacing: '-0.5px' }}>{site.name}</div>
         </div>
         <div

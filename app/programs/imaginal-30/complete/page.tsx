@@ -37,7 +37,7 @@ export default function CompleteEdition() {
         ← The free program
       </Link>
       <header className="mt-6">
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+        <p className="font-mono text-xs font-semibold tracking-normal text-accent">
           Complete Edition · {open ? 'optional' : 'in production'}
         </p>
         <h1 className="mt-3 text-balance text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">The Imaginal Act, with everything around it.</h1>

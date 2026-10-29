@@ -11,7 +11,7 @@ export function Footer() {
             <p className="mt-2 max-w-sm text-sm text-muted">{site.description}</p>
           </div>
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted">The network</div>
+            <div className="text-xs font-semibold tracking-normal text-muted">The network</div>
             <ul className="mt-3 space-y-2 text-sm">
               {site.network.map((n) => (
                 <li key={n.url}>

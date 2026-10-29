@@ -11,7 +11,7 @@ import type { Bridge, Move, Reach, Rep, WitnessEntry } from '@/lib/studio/types'
 import { Area, ConfirmButton, Empty, Field, ListEditor, Tag, button, copyText, downloadText, inputClass, panelClass } from './ui'
 import type { StudioApi } from './useStudio'
 
-const small = 'rounded-lg border border-border bg-bg px-3 py-2 text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+const small = 'rounded-lg border border-border bg-bg px-3 py-2 text-base sm:text-sm text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
 
 export function BridgesView({ studio, openId, setOpenId }: { studio: StudioApi; openId: string; setOpenId: (id: string) => void }) {
   const { state, today, update, announce } = studio
@@ -43,7 +43,7 @@ export function BridgesView({ studio, openId, setOpenId }: { studio: StudioApi; 
                   >
                     <span className="block text-sm font-semibold text-ink">{bridge.title || 'Untitled aim'}</span>
                     <span className="mt-0.5 block text-xs text-muted">{bridge.domain ? domainLabel(bridge.domain) : 'No domain'}{bridge.by ? ` · by ${bridge.by}` : ''}</span>
-                    <span className="mt-1.5 block font-mono text-[0.68rem] uppercase tracking-[0.12em] text-accent">{PACE_LABEL[pace.state]}</span>
+                    <span className="mt-1.5 block font-mono text-[0.68rem] tracking-normal text-accent">{PACE_LABEL[pace.state]}</span>
                   </button>
                 </li>
               )
@@ -98,7 +98,7 @@ function BridgeEditor({ studio, bridge, onDeleted }: { studio: StudioApi; bridge
   return (
     <article className="space-y-6" aria-labelledby={`${id}-title`}>
       <section className={panelClass}>
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">{bridge.status === 'active' ? 'Active bridge' : bridge.status === 'achieved' ? 'Achieved' : 'Released'}</p>
+        <p className="font-mono text-xs tracking-normal text-accent">{bridge.status === 'active' ? 'Active bridge' : bridge.status === 'achieved' ? 'Achieved' : 'Released'}</p>
         <h3 id={`${id}-title`} ref={heading} tabIndex={-1} className="mt-1 text-2xl font-semibold text-ink focus-visible:outline-none">{bridge.title || 'Untitled aim'}</h3>
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           <div className="sm:col-span-2"><Field label="The aim" register="planned" value={bridge.title} onChange={(value) => patch((draft) => { draft.title = value })} placeholder="Finish the album" /></div>

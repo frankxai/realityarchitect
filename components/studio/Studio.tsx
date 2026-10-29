@@ -122,7 +122,7 @@ export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
 
       {empty && view === 'today' && (
         <section className="mt-6 rounded-2xl border border-dawn/25 bg-[radial-gradient(circle_at_80%_0%,rgba(232,213,173,0.10),transparent_50%)] p-6 sm:p-8" aria-labelledby="welcome-title">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-dawn">Welcome</p>
+          <p className="font-mono text-xs tracking-normal text-dawn">Welcome</p>
           <h2 id="welcome-title" className="mt-2 text-2xl font-semibold text-ink">Three doors. Start with any one.</h2>
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
             {[

@@ -50,7 +50,7 @@ export function ScrollStory() {
 
       <div className={styles.beats}>
         <header className={styles.intro}>
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-dawn">The practice, in five scenes</p>
+          <p className="font-mono text-xs tracking-normal text-dawn">The practice, in five scenes</p>
           <h2 id="story-title" className="mt-3 max-w-xl text-3xl font-bold text-ink sm:text-5xl">From the room you are in to the morning you would love.</h2>
         </header>
         {BEATS.map((beat) => (
@@ -59,7 +59,7 @@ export function ScrollStory() {
               <Image src={beat.image} alt="" sizes="(min-width: 768px) 42rem, 100vw" placeholder="blur" className={styles.stillImage} />
             </div>
             <div className={styles.card}>
-              <p className={`font-mono text-[0.7rem] uppercase tracking-[0.2em] ${beat.dawn ? 'text-dawn' : 'text-accent'}`}>
+              <p className={`font-mono text-[0.7rem] tracking-normal ${beat.dawn ? 'text-dawn' : 'text-accent'}`}>
                 {beat.label} · {beat.register}
               </p>
               <h3 id={`story-${beat.id}`} className={`mt-3 text-2xl font-bold sm:text-4xl ${beat.dawn ? 'font-serif font-normal italic text-dawn' : 'text-ink'}`}>{beat.title}</h3>

@@ -54,7 +54,7 @@ export function MethodContent() {
   return (
     <div className="space-y-16 py-14 sm:py-20">
       <section className="blueprint -mx-5 overflow-hidden px-5 py-14 sm:rounded-2xl sm:py-20">
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-accent">The Architect&apos;s Loop</p>
+        <p className="font-mono text-xs font-semibold tracking-normal text-accent">The Architect&apos;s Loop</p>
         <h1 className="mt-4 max-w-4xl text-4xl font-extrabold leading-[1.02] tracking-[-0.04em] text-ink sm:text-6xl">
           Five moves. One dependency order.
         </h1>
@@ -72,7 +72,7 @@ export function MethodContent() {
       </section>
 
       <section aria-labelledby="method-path-title">
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">Assessment → artifact</p>
+        <p className="font-mono text-xs font-semibold tracking-normal text-accent">Assessment → artifact</p>
         <h2 id="method-path-title" className="mt-3 text-3xl font-bold tracking-tight text-ink">The method ends in a buildable handoff.</h2>
         <div className="mt-8 divide-y divide-border border-y border-border">
           {PATH.map(([label, description], index) => (
@@ -86,7 +86,7 @@ export function MethodContent() {
       </section>
 
       <section id="moves" aria-labelledby="moves-title" className="scroll-mt-24">
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">Ordered dependencies</p>
+        <p className="font-mono text-xs font-semibold tracking-normal text-accent">Ordered dependencies</p>
         <h2 id="moves-title" className="mt-3 text-3xl font-bold tracking-tight text-ink">Build the first missing layer—not all five.</h2>
         <div className="mt-8 divide-y divide-border border-y border-border">
           {MOVES.map((move) => (
@@ -98,15 +98,15 @@ export function MethodContent() {
               </div>
               <dl className="grid gap-4 sm:grid-cols-3">
                 <div>
-                  <dt className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-accent">Build</dt>
+                  <dt className="font-mono text-[0.68rem] font-semibold tracking-normal text-accent">Build</dt>
                   <dd className="mt-2 text-sm leading-relaxed text-ink">{move.artifact}</dd>
                 </div>
                 <div>
-                  <dt className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-accent">Accept when</dt>
+                  <dt className="font-mono text-[0.68rem] font-semibold tracking-normal text-accent">Accept when</dt>
                   <dd className="mt-2 text-sm leading-relaxed text-muted">{move.acceptance}</dd>
                 </div>
                 <div>
-                  <dt className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-accent">Guardrail</dt>
+                  <dt className="font-mono text-[0.68rem] font-semibold tracking-normal text-accent">Guardrail</dt>
                   <dd className="mt-2 text-sm leading-relaxed text-muted">{move.guardrail}</dd>
                 </div>
               </dl>
@@ -117,7 +117,7 @@ export function MethodContent() {
 
       <section className="grid gap-8 border-t border-border pt-12 lg:grid-cols-[1fr_1fr]">
         <div>
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">Public boundary</p>
+          <p className="font-mono text-xs font-semibold tracking-normal text-accent">Public boundary</p>
           <h2 className="mt-3 text-2xl font-bold text-ink">A workflow method—not a diagnosis or promise.</h2>
           <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
             The assessment evaluates workflow architecture from the answers you choose. It does not evaluate personality, mental or physical health, financial potential, or future outcomes.

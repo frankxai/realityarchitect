@@ -112,7 +112,7 @@ The assessment ran locally in the browser. Share this artifact only after removi
   return (
     <div>
       <div className="mb-10 rounded-xl border border-border bg-surface p-6 sm:p-8">
-        <h2 className="font-mono text-xs font-semibold uppercase tracking-wider text-accent">Build your brief</h2>
+        <h2 className="font-mono text-xs font-semibold tracking-normal text-accent">Build your brief</h2>
         <p className="mt-2 text-sm text-muted">This stays in this browser. No account required. No data is transmitted or saved.</p>
         <div className="mt-6 grid gap-6 sm:grid-cols-2">
           <label htmlFor="systemName" className="flex flex-col text-sm font-medium text-ink">
@@ -164,7 +164,7 @@ The assessment ran locally in the browser. Share this artifact only after removi
 
       {submitted && (
         <section ref={resultRef} tabIndex={-1} aria-labelledby="assessment-result-title" aria-describedby="assessment-result-summary" className="blueprint-resolve mt-12 rounded-xl border border-accent/30 bg-surface/50 p-6 sm:p-10 backdrop-blur-sm">
-          <p className="font-mono text-xs font-semibold uppercase tracking-[0.18em] text-accent">{gapIndex === -1 ? 'Full system review' : 'Your first architecture gap'}</p>
+          <p className="font-mono text-xs font-semibold tracking-normal text-accent">{gapIndex === -1 ? 'Full system review' : 'Your first architecture gap'}</p>
           <h2 id="assessment-result-title" className="mt-3 text-3xl font-bold text-ink sm:text-4xl">{status}</h2>
           <p id="assessment-result-summary" className="mt-4 max-w-2xl text-lg text-muted">Build <strong className="text-ink font-medium">{recommendation.artifact.toLowerCase()}</strong> next. Your local export includes the acceptance test, guardrail, and step-by-step build order.</p>
 

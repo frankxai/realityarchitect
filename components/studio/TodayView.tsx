@@ -48,7 +48,7 @@ export function TodayView({ studio, go, programDays = [] }: { studio: StudioApi;
   if (resting) {
     return (
       <section className="rounded-2xl border border-dawn/25 bg-[radial-gradient(circle_at_70%_0%,rgba(232,213,173,0.10),transparent_55%)] px-6 py-14 sm:px-14 sm:py-20" aria-labelledby="rest-title">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-dawn">A minute with the scene · no timer</p>
+        <p className="font-mono text-xs tracking-normal text-dawn">A minute with the scene · no timer</p>
         <h3 id="rest-title" ref={restHeading} tabIndex={-1} className="sr-only">Resting with your scene</h3>
         <p className="mt-8 max-w-3xl whitespace-pre-wrap font-serif text-2xl leading-relaxed text-dawn-2 sm:text-3xl">{scene}</p>
         {state.soul.iAm.length > 0 && (
@@ -67,7 +67,7 @@ export function TodayView({ studio, go, programDays = [] }: { studio: StudioApi;
       <div className="space-y-6">
         <ProgramToday studio={studio} go={go} days={programDays} />
         <section className={panelClass} aria-labelledby="morning-title">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-dawn">Morning</p>
+          <p className="font-mono text-xs tracking-normal text-dawn">Morning</p>
           <h3 id="morning-title" className="mt-1 text-xl font-semibold text-ink">Begin as the person who already lives there</h3>
 
           {state.soul.iAm.length > 0 ? (
@@ -139,7 +139,7 @@ export function TodayView({ studio, go, programDays = [] }: { studio: StudioApi;
         </section>
 
         <section className={panelClass} aria-labelledby="evening-title">
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">Evening</p>
+          <p className="font-mono text-xs tracking-normal text-accent">Evening</p>
           <h3 id="evening-title" className="mt-1 text-xl font-semibold text-ink">Witness the day</h3>
           {note.lookFor.trim() && (
             <div className="mt-4 rounded-xl border border-border p-4">
@@ -177,7 +177,7 @@ export function TodayView({ studio, go, programDays = [] }: { studio: StudioApi;
                   <li key={bridge.id}>
                     <button type="button" className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent" onClick={() => go('bridges', bridge.id)}>
                       <span className="block text-sm text-ink">{bridge.title || 'Untitled aim'}</span>
-                      <span className="mt-0.5 block font-mono text-[0.7rem] uppercase tracking-[0.12em] text-accent">{PACE_LABEL[pace.state]}</span>
+                      <span className="mt-0.5 block font-mono text-[0.7rem] tracking-normal text-accent">{PACE_LABEL[pace.state]}</span>
                     </button>
                   </li>
                 )

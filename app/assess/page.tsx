@@ -19,7 +19,7 @@ export default function Assess() {
   return (
     <div className="py-14 sm:py-20 lg:py-24">
       <div className="max-w-4xl mx-auto">
-        <p className="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-accent">The Architect Assessment</p>
+        <p className="font-mono text-sm font-semibold tracking-normal text-accent">The Architect Assessment</p>
         <h1 className="mt-4 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-5xl lg:text-6xl">
           Find the first gap. Export the architecture brief.
         </h1>

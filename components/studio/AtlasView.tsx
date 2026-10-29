@@ -95,7 +95,7 @@ export function AtlasView({ studio, go }: { studio: StudioApi; go: Go }) {
               >
                 <span className="flex items-start justify-between gap-2">
                   <span className="text-sm font-semibold text-ink">{item.label}</span>
-                  {value.priority && <span className="rounded-full border border-dawn/40 px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.12em] text-dawn">Priority</span>}
+                  {value.priority && <span className="rounded-full border border-dawn/40 px-2 py-0.5 font-mono text-[0.6rem] tracking-normal text-dawn">Priority</span>}
                 </span>
                 <span className="mt-1 block font-mono text-xs text-muted">{value.now ?? '–'} now · {value.want ?? '–'} wanted</span>
                 <Bars entry={value} />

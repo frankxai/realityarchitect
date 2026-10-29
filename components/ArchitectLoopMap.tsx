@@ -47,7 +47,7 @@ export function ArchitectLoopMap() {
       <div className="relative flex flex-col gap-4">
         <div className="flex flex-col gap-2 border-b border-border pb-3 sm:flex-row sm:items-start sm:justify-between sm:gap-3 sm:pb-4">
           <div>
-            <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-accent">
+            <p className="font-mono text-[0.65rem] font-semibold tracking-normal text-accent">
               Method map
             </p>
             <h2 className="mt-1 text-lg font-bold tracking-tight text-ink sm:text-2xl">
@@ -55,7 +55,7 @@ export function ArchitectLoopMap() {
             </h2>
           </div>
           <div className="max-w-[18rem] rounded-lg border border-accent/30 bg-accent/10 px-3 py-2 max-sm:hidden">
-            <p className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-accent">
+            <p className="font-mono text-[0.62rem] font-semibold tracking-normal text-accent">
               Next action
             </p>
             <p className="mt-1 text-sm font-semibold text-ink">Find the first unlocked move</p>
@@ -81,7 +81,7 @@ export function ArchitectLoopMap() {
               </div>
               <p className="text-xs leading-relaxed text-muted sm:text-sm">{move.detail}</p>
               <div className="rounded-md border border-border bg-bg/55 px-2.5 py-1.5 sm:min-w-[9.5rem] sm:py-2">
-                <p className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-muted">It buys you</p>
+                <p className="font-mono text-[0.62rem] tracking-normal text-muted">It buys you</p>
                 <p className="mt-0.5 text-xs font-semibold text-ink sm:mt-1 sm:text-sm">{move.buys}</p>
               </div>
             </article>

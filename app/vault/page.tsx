@@ -46,7 +46,7 @@ export default function Vault() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
       <div className="max-w-3xl">
-        <p className="font-mono text-sm font-semibold uppercase tracking-[0.15em] text-accent">Open method · private implementation layer</p>
+        <p className="font-mono text-sm font-semibold tracking-normal text-accent">Open method · private implementation layer</p>
         <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-ink sm:text-5xl lg:text-6xl">Know what is free, what is planned, and what requires human time.</h1>
         <p className="mt-6 text-xl leading-relaxed text-muted">{site.vault.publicBoundary}</p>
       </div>
@@ -62,7 +62,7 @@ export default function Vault() {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-ink">{offer.label}</h3>
-                  <p className="mt-1 font-mono text-xs font-semibold uppercase tracking-[0.1em] text-muted">{offer.status}</p>
+                  <p className="mt-1 font-mono text-xs font-semibold tracking-normal text-muted">{offer.status}</p>
                 </div>
                 <div>
                   <p className="max-w-2xl text-base leading-relaxed text-muted">{offer.description}</p>

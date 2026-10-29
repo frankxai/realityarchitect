@@ -56,7 +56,7 @@ export function TimelineView({ studio, programDays = [] }: { studio: StudioApi; 
   return (
     <div className="space-y-8">
       <section className={panelClass} aria-labelledby="seal-title">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">Seal a snapshot</p>
+        <p className="font-mono text-xs tracking-normal text-accent">Seal a snapshot</p>
         <h3 id="seal-title" className="mt-1 text-xl font-semibold text-ink">What is true from {snapshotPeriodStart(state, today, cadence)} to {today}</h3>
         <div className="mt-3 flex gap-1 rounded-lg border border-border p-1 sm:inline-flex" role="group" aria-label="Review cadence">
           {(['weekly', 'monthly'] as const).map((option) => (
@@ -105,7 +105,7 @@ export function TimelineView({ studio, programDays = [] }: { studio: StudioApi; 
           <ul className="mt-3 grid gap-3 sm:grid-cols-2">
             {ordered.map((snapshot) => (
               <li key={snapshot.id} className="rounded-xl border border-border bg-surface/60 p-4">
-                <p className="font-mono text-xs uppercase tracking-[0.14em] text-accent">{snapshot.day} · {snapshot.cadence} · approved</p>
+                <p className="font-mono text-xs tracking-normal text-accent">{snapshot.day} · {snapshot.cadence} · approved</p>
                 <p className="mt-1 text-xs text-muted">{snapshot.periodStart} → {snapshot.day}</p>
                 {snapshot.reflection.trueNow && <p className="mt-2 text-sm text-ink">{snapshot.reflection.trueNow}</p>}
                 {snapshot.reflection.grateful && <p className="mt-1.5 font-serif text-sm text-dawn">{snapshot.reflection.grateful}</p>}
@@ -242,7 +242,7 @@ function DecisionsPanel({ studio }: { studio: StudioApi }) {
             <li key={decision.id} className={`rounded-xl border p-4 ${due.has(decision.id) ? 'border-dawn/40' : 'border-border'}`}>
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
-                  <p className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-accent">{decision.day} · {decision.status}{decision.reviewOn ? ` · review ${decision.reviewOn}` : ''}{due.has(decision.id) ? (decision.status === 'open' ? ' · time to choose' : ' · due for review') : ''}</p>
+                  <p className="font-mono text-[0.7rem] tracking-normal text-accent">{decision.day} · {decision.status}{decision.reviewOn ? ` · review ${decision.reviewOn}` : ''}{due.has(decision.id) ? (decision.status === 'open' ? ' · time to choose' : ' · due for review') : ''}</p>
                   <p className="mt-1 text-sm font-semibold text-ink">{decision.title}</p>
                   {decision.choice && <p className="mt-1 text-sm text-muted">Chose: {decision.choice}</p>}
                   {decision.outcome && <p className="mt-1 text-sm text-ink">Outcome: {decision.outcome}</p>}

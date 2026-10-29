@@ -35,7 +35,7 @@
 
 ## Motion and performance
 
-Track A CSS only. No GSAP, WebGL, video, or new motion dependency. `blueprint-resolve` is disabled under reduced
+Owner directive 2026-10-29 supersedes the CSS-only constraint for a homepage-only, dynamically imported GSAP atmosphere. It animates decorative light transforms, pauses when hidden/offscreen, exposes a pause control and never loads under reduced motion. No WebGL or video. `blueprint-resolve` is disabled under reduced
 motion. Use Next Image for raster assets. Studio JavaScript is route-scoped; the Map canvas is plain SVG and pointer
 events with a list equivalent for keyboard and screen-reader use.
 

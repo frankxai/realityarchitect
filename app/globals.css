@@ -133,3 +133,42 @@ button { cursor: pointer; }
 .prose-ai li { margin: 0.4rem 0; }
 .prose-ai code { font-family: var(--font-mono); background: var(--color-surface); border: 1px solid var(--color-border); padding: 0.1rem 0.4rem; border-radius: 0.35rem; font-size: 0.9em; }
 .prose-ai strong { color: #fff; }
+
+/* Aperture identity v1. The atmosphere never carries product state. */
+.site-header {
+  background: rgba(8, 10, 17, .82);
+  border-bottom: 1px solid rgba(232, 234, 242, .09);
+  box-shadow: inset 0 1px rgba(255, 255, 255, .04), 0 12px 48px rgba(0, 0, 0, .15);
+  backdrop-filter: blur(24px) saturate(125%);
+  -webkit-backdrop-filter: blur(24px) saturate(125%);
+}
+.nav-link { display: flex; min-height: 44px; align-items: center; gap: .35rem; }
+.nav-link:hover { color: var(--color-ink); }
+.nav-explore summary::-webkit-details-marker { display: none; }
+.nav-explore-panel { background: #0d0f18; box-shadow: 0 24px 64px #0008; }
+.studio-link { display: flex; min-height: 44px; align-items: center; gap: 1rem; padding: .6rem 1.1rem; border: 1px solid #e8d5ad55; border-radius: 99px; color: var(--color-dawn-2); background: #e8d5ad08; }
+.observatory-hero { min-height: 46rem; }
+.observatory-light { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.observatory-light-blue, .observatory-light-dawn { position: absolute; inset: -15%; transform-origin: center; }
+.observatory-light-blue { background: radial-gradient(ellipse at 85% 30%, #5b8cff20, transparent 48%); }
+.observatory-light-dawn { background: radial-gradient(ellipse at 55% 85%, #e8d5ad12, transparent 48%); }
+.observatory-grain { position: absolute; inset: 0; opacity: .13; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.2' d='M0 0h160v160H0z'/%3E%3C/svg%3E"); }
+.atmosphere-control { position: absolute; right: 1.25rem; bottom: 1.25rem; display: flex; min-height: 44px; align-items: center; gap: .75rem; border: 1px solid #ffffff18; border-radius: 99px; padding: .5rem .9rem; color: var(--color-muted); font-size: .75rem; background: #06070c99; }
+.artifact-glass { background: linear-gradient(145deg, #ffffff0d, transparent 38%), #0d0f18e8; box-shadow: inset 0 1px #ffffff16, inset 0 -1px #e8d5ad08, 0 40px 90px #0005; backdrop-filter: blur(24px); }
+.aperture-scene { height: 12rem; position: relative; overflow: hidden; border-radius: 1rem; background: radial-gradient(ellipse at 60% 95%, #e8d5ad30, transparent 60%), linear-gradient(145deg, #111522, #080a10); }
+.aperture-image { object-position: 65% 52%; }
+.practice-door { transition: border-color .25s, background-color .25s, transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s; }
+@media (hover: hover) and (pointer: fine) {
+  .practice-door:hover { transform: translateY(-4px); box-shadow: 0 20px 50px #0003, inset 0 1px #e8d5ad22; }
+  .hero-primary:hover { background: var(--color-dawn-2); box-shadow: 0 8px 40px #e8d5ad20; }
+  .studio-link:hover { border-color: var(--color-dawn); background: #e8d5ad10; }
+}
+@media (max-width: 640px) {
+  .observatory-hero { min-height: auto; }
+  .aperture-scene { height: 10rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  a, button, .practice-door { transition: none; }
+  .practice-door:hover { transform: none; }
+  .atmosphere-control { display: none; }
+}
