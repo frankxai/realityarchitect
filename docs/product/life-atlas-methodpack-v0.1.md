@@ -2,7 +2,7 @@
 
 Status: **implementation candidate on review branch; not a live expert marketplace**.
 Owner: Reality Architect for the person-facing experience; Starlight Intelligence for the evidence/agent substrate.
-Registry authority: `frankxai/agentic-ops/registry` (reviewed main); Design authority: `frankxai/starlight-design-intelligence`.
+Registry authority: `frankxai/agentic-ops/registry` (reviewed main); Design authority: `Starlight-Intelligence/starlight-design-intelligence`.
 
 ## Decision
 
@@ -29,7 +29,8 @@ skins under licensed design packs; shared quality gates do not imply shared bran
 
 ## Edition v1 acceptance
 
-- One explicit Download action, populated from the current `StudioState` only.
+- One explicit Markdown Download action, populated from the current `StudioState` only.
+- A separate `/studio/edition` print/PDF view loads only device-held state and offers a *clearly labeled fictional sample* where no saved state exists. Browser native Print / Save PDF makes the document portable without sending personal text to a print API.
 - All 12 canonical domains in stable order; missing ratings remain `not rated`.
 - Facts, meaning, desires, plans, and completed actions are distinguished.
 - No text or personal state sent to network/analytics; generated file exists only after explicit action.
@@ -74,8 +75,8 @@ model-training permission and commercial licenses must be separate explicit agre
 
 ## Commercial and build sequence
 
-1. **Accepted v1**: device-held, visually coherent Edition export; instrument no private-content telemetry.
-2. **v1.1**: approved client-side editorial PDF renderer using existing GenCreator capability; human QA across screen sizes and print.
+1. **Accepted v1**: device-held Markdown and browser-native print/PDF edition; instrument no private-content telemetry.
+2. **v1.1**: integrate an approved GenCreator editorial template contract and structured layout testing. Avoid duplicating export pipelines.
 3. **v1.2**: Starlight MethodPack schema + independent claim/evidence review service, initially with synthetic cases only.
 4. **v2**: opt-in practitioner marketplace; actual payments only once fulfillment, licenses, disclosures and refunds are verified.
 5. **v3**: tenant-owned private/enterprise workflows with explicit consent, deletion and export tests.
