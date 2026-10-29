@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { DOMAINS } from '@/lib/studio/domains'
 import { atlasEditionMd } from '@/lib/studio/atlas-edition'
@@ -113,10 +114,13 @@ export function AtlasView({ studio, go }: { studio: StudioApi; go: Go }) {
               {state.sample ? ' · fictional sample' : ''}
             </p>
           </div>
-          <button type="button" className={button.dawn + ' shrink-0'} onClick={downloadEdition}
-            disabled={rated === 0 && state.bridges.length === 0 && state.witness.length === 0}>
-            Download my Atlas edition
-          </button>
+          <div className="flex shrink-0 flex-wrap gap-2">
+            <Link href="/studio/edition" className={button.secondary}>View print edition</Link>
+            <button type="button" className={button.dawn} onClick={downloadEdition}
+              disabled={rated === 0 && state.bridges.length === 0 && state.witness.length === 0}>
+              Download Markdown
+            </button>
+          </div>
         </div>
         {rated === 0 && state.bridges.length === 0 && state.witness.length === 0 && (
           <p className="relative mt-4 text-xs text-muted">Rate one domain below to begin your first edition. Blank is not failure.</p>
