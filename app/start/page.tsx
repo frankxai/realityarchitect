@@ -53,7 +53,7 @@ export default function Start() {
           <li key={s.t} className="flex gap-4 rounded-xl border border-border glass p-6">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-accent/15 font-bold text-accent">{i + 1}</span>
             <div>
-              <h3 className="text-lg font-semibold text-ink">{s.t}</h3>
+              <h2 className="text-lg font-semibold text-ink">{s.t}</h2>
               <p className="mt-1.5 text-sm text-muted">{s.d}</p>
               {s.href.startsWith('http') ? (
                 <a href={s.href} className="mt-3 inline-flex text-sm font-medium text-accent underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">{s.cta} →</a>

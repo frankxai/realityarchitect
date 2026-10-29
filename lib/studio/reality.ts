@@ -7,7 +7,7 @@ import type { StudioState } from './types.ts'
  * so the Studio and `reality insights` compute patterns with the same code and agree on every number
  * (tests/studio-patterns.test.mjs proves it against a real export). Pure: nothing leaves the device.
  */
-export function toReality(state: StudioState) {
+function toReality(state: StudioState) {
   const slugs = bridgeSlugs(state)
   return {
     atlas: Object.fromEntries(Object.entries(state.atlas).map(([id, entry]) => [id, { now: entry.now, want: entry.want, priority: entry.priority, fact: entry.fact.trim(), scene: entry.scene.trim() }])),

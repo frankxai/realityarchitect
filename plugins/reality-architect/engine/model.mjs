@@ -48,10 +48,10 @@ export const KERNEL_TYPE = {
 }
 
 /** Node types the kernel registry does not have yet, proposed upstream as additive types. */
-export const KERNEL_GAPS = ['life_domain (Atlas domain)', 'practice (a repeated rep)', 'witness_entry (self-reported event with a meaning)']
+const KERNEL_GAPS = ['life_domain (Atlas domain)', 'practice (a repeated rep)', 'witness_entry (self-reported event with a meaning)']
 
 /** Relation types used here; every one exists in the kernel registry. */
-export const RELATIONS = ['owns', 'targets', 'enables', 'depends_on', 'part_of', 'derives_from', 'supports_claim']
+const RELATIONS = ['owns', 'targets', 'enables', 'depends_on', 'part_of', 'derives_from', 'supports_claim']
 
 export const nodeId = (type, key) => `ra:${type}:${String(key).replace(/[^a-zA-Z0-9._~/-]+/g, '-').slice(0, 200) || 'untitled'}`
 
@@ -64,7 +64,7 @@ export function isDay(value) {
 }
 
 const DAY_MS = 86_400_000
-export const toUtc = (day) => Date.UTC(+day.slice(0, 4), +day.slice(5, 7) - 1, +day.slice(8, 10))
+const toUtc = (day) => Date.UTC(+day.slice(0, 4), +day.slice(5, 7) - 1, +day.slice(8, 10))
 export const daysBetween = (from, to) => (isDay(from) && isDay(to) ? Math.round((toUtc(to) - toUtc(from)) / DAY_MS) : 0)
 export function addDays(day, amount) {
   if (!isDay(day)) return day

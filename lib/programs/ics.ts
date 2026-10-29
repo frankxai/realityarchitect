@@ -172,7 +172,7 @@ export type CalendarSourceDay = {
 }
 
 /** The paragraphs of a day's intent section, as plain text. */
-export function intentOf(day: CalendarSourceDay): string {
+function intentOf(day: CalendarSourceDay): string {
   const section = day.sections.find((item) => /intent/i.test(item.title))
   return (section?.blocks ?? [])
     .flatMap((block) => (block.kind === 'paragraph' ? [plainText(block.text)] : []))

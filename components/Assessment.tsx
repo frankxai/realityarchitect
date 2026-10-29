@@ -175,7 +175,7 @@ The assessment ran locally in the browser. Share this artifact only after removi
                 {copyState === 'copied' ? 'Copied!' : 'Copy raw'}
               </button>
             </div>
-            <div tabIndex={0} className="max-h-[32rem] overflow-auto p-4 sm:p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent">
+            <div role="region" aria-label="Architecture brief preview" tabIndex={0} className="max-h-[32rem] overflow-auto p-4 sm:p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent">
               <pre className="whitespace-pre-wrap font-mono text-sm leading-relaxed text-muted">{brief}</pre>
             </div>
           </div>

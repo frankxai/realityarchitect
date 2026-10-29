@@ -16,7 +16,7 @@ type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>
  * The browser's storage if it can be read right now, else null. The probe only reads: a full storage still loads
  * what is saved, and a failed save reports itself.
  */
-export function getStorage(): StorageLike | null {
+function getStorage(): StorageLike | null {
   try {
     if (typeof window === 'undefined') return null
     const storage = window.localStorage

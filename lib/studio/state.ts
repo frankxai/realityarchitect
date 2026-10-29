@@ -36,11 +36,11 @@ const day = (value: unknown): string => (isDay(value) ? value : '')
 
 const id = (value: unknown): string => (typeof value === 'string' && value.trim() ? value.slice(0, 80) : newId())
 
-export function emptySoul(): Soul {
+function emptySoul(): Soul {
   return { name: '', purpose: '', values: [], iAm: [], scene: '', gifts: '', vows: [], voice: 'direct', gratitude: [] }
 }
 
-export function emptyDomain(): DomainState {
+function emptyDomain(): DomainState {
   return { now: null, want: null, fact: '', scene: '', priority: false }
 }
 
@@ -48,7 +48,7 @@ export function emptyAtlas(): Atlas {
   return Object.fromEntries(DOMAIN_IDS.map((domainId) => [domainId, emptyDomain()])) as Atlas
 }
 
-export function emptyCanvas(): CanvasState {
+function emptyCanvas(): CanvasState {
   return { cards: [], positions: {}, view: { x: 0, y: 0, zoom: 0.6 } }
 }
 
