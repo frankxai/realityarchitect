@@ -2,7 +2,9 @@
 /**
  * Runs after `next build` (in `pnpm gate`): reads the prerendered HTML of the program pages and checks what a visitor
  * actually receives. While the Complete Edition is closed, its page and the program overview must carry no price, no
- * checkout link and no purchase terms, and the edition page must be noindex. The 30 day pages must all exist.
+ * checkout link and no purchase terms, and the edition page must be noindex. The thanks page (Polar's success URL) is
+ * always noindex and, while closed, says there is nothing to collect. Once open, the edition page must link to the
+ * checkout and the thanks page to the buyer's portal. The 30 day pages must all exist.
  * The checks are pure functions (tests/built-pages.test.mjs feeds them split-markup fixtures).
  */
 import fs from 'node:fs'
@@ -48,9 +50,15 @@ function main() {
   const failures = []
   const edition = read('programs/imaginal-30/complete')
   const overview = read('programs/imaginal-30')
+  const thanks = read('programs/imaginal-30/complete/thanks')
   for (let day = 1; day <= DAYS; day++) if (!fs.existsSync(path.join(APP, 'programs', 'imaginal-30', `${day}.html`))) failures.push(`day ${day} was not prerendered`)
-  if (!isOpen()) {
-    for (const [name, page] of [['/programs/imaginal-30/complete', edition], ['/programs/imaginal-30', overview]]) {
+  if (!/<meta name="robots" content="[^"]*noindex/.test(thanks)) failures.push('/programs/imaginal-30/complete/thanks: not marked noindex')
+  if (isOpen()) {
+    if (!edition.includes(`href="${COMPLETE_EDITION.checkoutUrl.replaceAll('&', '&amp;')}"`)) failures.push('/programs/imaginal-30/complete: open, but no link to the checkout')
+    if (!thanks.includes(`href="${COMPLETE_EDITION.portalUrl}"`)) failures.push('/programs/imaginal-30/complete/thanks: open, but no link to the Polar portal')
+  } else {
+    if (!/nothing to collect/i.test(visibleText(thanks))) failures.push('/programs/imaginal-30/complete/thanks: does not say there is nothing to collect while closed')
+    for (const [name, page] of [['/programs/imaginal-30/complete', edition], ['/programs/imaginal-30', overview], ['/programs/imaginal-30/complete/thanks', thanks]]) {
       for (const problem of closedPageProblems(page)) failures.push(`${name}: ${problem} while the edition is closed`)
     }
     if (!/<meta name="robots" content="[^"]*noindex/.test(edition)) failures.push('/programs/imaginal-30/complete: not marked noindex while closed')

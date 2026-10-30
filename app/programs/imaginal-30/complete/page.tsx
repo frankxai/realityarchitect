@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { COMPLETE_EDITION, isOpen, priceLabel } from '@/lib/programs/complete-edition'
+import { COMPLETE_EDITION, FILES, isOpen, priceLabel } from '@/lib/programs/complete-edition'
 import { ogImage } from '@/lib/site'
 
 const ABOUT =
@@ -45,7 +45,16 @@ export default function CompleteEdition() {
           The same thirty days, with production for the people who want it: rehearsals to listen to, the companion book, a
           journal to print, and a vault that opens in Obsidian.
         </p>
-        {!open && (
+        {open ? (
+          <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3">
+            <a href={COMPLETE_EDITION.checkoutUrl} className={`inline-flex min-h-11 items-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent-hover ${FOCUS}`} rel="noopener noreferrer">
+              Get the Complete Edition · {priceLabel()}
+            </a>
+            <a href="#buy" className={`text-sm text-muted underline underline-offset-4 hover:text-ink ${FOCUS}`}>
+              Delivery, licence and refunds
+            </a>
+          </div>
+        ) : (
           <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3">
             <Link href="/programs/imaginal-30/1" className={`inline-flex min-h-11 items-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent-hover ${FOCUS}`}>
               Begin day 1, free
@@ -80,7 +89,7 @@ export default function CompleteEdition() {
         </ul>
       </section>
 
-      <section aria-labelledby="buy" className="mt-12 rounded-2xl border border-border border-l-2 border-l-accent/70 bg-surface/70 p-6 sm:p-8">
+      <section aria-labelledby="buy" className="mt-12 scroll-mt-24 rounded-2xl border border-border border-l-2 border-l-accent/70 bg-surface/70 p-6 sm:p-8">
         <h2 id="buy" className="text-2xl font-bold text-ink">{open ? `${priceLabel()}, once` : 'In production'}</h2>
         {open ? (
           <>
@@ -89,9 +98,30 @@ export default function CompleteEdition() {
               in your Polar account right away. Every update is included, and if it is not for you, a refund within{' '}
               {COMPLETE_EDITION.refundDays} days needs no reason. Buying it also helps keep the free program free.
             </p>
-            <a href={COMPLETE_EDITION.checkoutUrl} className={`mt-6 inline-flex items-center rounded-lg bg-accent px-6 py-3 text-sm font-semibold text-bg hover:bg-accent-hover ${FOCUS}`} rel="noopener noreferrer">
+            <a href={COMPLETE_EDITION.checkoutUrl} className={`mt-6 inline-flex min-h-11 items-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent-hover ${FOCUS}`} rel="noopener noreferrer">
               Get the Complete Edition · {priceLabel()}
             </a>
+            <h3 className="mt-8 text-lg font-semibold text-ink">What happens after you pay</h3>
+            <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-muted">
+              <li>Polar emails your receipt and a personal download link.</li>
+              <li>You land on a page that shows where every file is and where to begin.</li>
+              <li>
+                The files stay in <a href={COMPLETE_EDITION.portalUrl} className={`text-accent underline underline-offset-4 [overflow-wrap:anywhere] hover:text-accent-hover ${FOCUS}`} rel="noopener noreferrer">your Polar portal</a>,
+                with every update, for as long as you want them.
+              </li>
+            </ol>
+            <h3 className="mt-6 text-lg font-semibold text-ink">The files</h3>
+            <ul className="mt-3 space-y-1.5 text-sm leading-relaxed text-muted">
+              {FILES.map((file) => (
+                <li key={file.name}><span className="text-ink">{file.name}</span>: {file.formats}</li>
+              ))}
+            </ul>
+            <p className="mt-6 text-sm leading-relaxed text-muted">
+              Licensed for your own use: listen, read, print and keep copies on your devices. If checkout shows an error or the
+              files do not arrive, write to{' '}
+              <a href={`mailto:${COMPLETE_EDITION.supportEmail}`} className={`text-accent underline underline-offset-4 [overflow-wrap:anywhere] hover:text-accent-hover ${FOCUS}`}>{COMPLETE_EDITION.supportEmail}</a>{' '}
+              and a person will sort it out.
+            </p>
           </>
         ) : (
           <p className="mt-3 leading-relaxed text-muted">

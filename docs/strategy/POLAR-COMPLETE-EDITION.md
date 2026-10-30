@@ -55,11 +55,13 @@ scarcity.
 ## 4. Checkout link
 
 - **Product:** the Complete Edition.
-- **Success URL:** `https://www.realityarchitect.ai/programs/imaginal-30/1?from=complete`. The buyer starts the
-  practice at once, and the files arrive by email and in the Polar portal.
+- **Success URL:** `https://www.realityarchitect.ai/programs/imaginal-30/complete/thanks`. That page lists the files,
+  links to the buyer's Polar portal, says where to begin (day 1), and covers a missing email. It is never indexed and
+  shows "Nothing to collect here yet" while the edition is closed.
 - **Metadata:** `source: site`. Create a second link with `source: newsletter` for the email.
-- **Site:** paste the link into `lib/programs/complete-edition.ts` as `checkoutUrl`, set `open: true`, and open a PR.
-  The tests refuse any URL that is not Polar's hosted checkout.
+- **Benefit description:** paste the body printed by `node scripts/check-edition-launch.mjs` into the File Downloads
+  benefit, and keep it as the reply template for "where are my files?". Polar sends the receipt and the download email
+  itself; the site sends no email and holds no key.
 
 ## 5. LICENSE.txt (personal licence)
 
@@ -78,4 +80,30 @@ Refunds within 30 days, no questions: reply to your receipt.
    on a Kindle via Send to Kindle, the vault in Obsidian on a desktop and a phone, and both journal PDFs printed at
    100%.
 3. Test a refund from the sandbox portal.
-4. Then go live, paste the link, and flip the flag.
+4. Then go live and flip the switch (§7).
+
+## 7. The switch
+
+The whole sale sits behind one object, `COMPLETE_EDITION` in `lib/programs/complete-edition.ts`. There are no
+environment variables and no keys: Polar holds the money, the files and the emails.
+
+| Field | Set to |
+| --- | --- |
+| `checkoutUrl` | the live checkout link, `https://buy.polar.sh/polar_cl_…` (§4) |
+| `portalUrl` | `https://polar.sh/realityarchitect/portal` (the organization slug from §0) |
+| `supportEmail` | a real inbox on the domain that someone reads |
+| `open` | `true` |
+
+`node scripts/check-edition-launch.mjs` names whatever is still missing; `isOpen()` stays false until all four are
+right, and the tests fail if `open` is true while anything is missing.
+
+Flipping it changes, in one deploy:
+
+- `/programs/imaginal-30/complete`: shows the $39 price, the checkout button, what happens after paying, the file list,
+  the licence line, the refund terms and the support address; becomes indexable; joins the sitemap.
+- `/programs/imaginal-30`: the Complete Edition card links to the page with the price instead of "In production".
+- `/programs/imaginal-30/complete/thanks`: shows the delivery page instead of "Nothing to collect here yet".
+- `scripts/check-built-pages.mjs` switches from "no price, no checkout" to "the checkout and portal links are present".
+
+Turning it off again is `open: false`; nothing else needs to change.
+
