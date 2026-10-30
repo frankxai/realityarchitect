@@ -11,6 +11,13 @@ export const site = {
   tagline: 'Imagine it. Build it. Witness it.',
   // The enduring method signature; campaign headlines can change without renaming the method.
   taglineParts: ['Imagine it. Build it.', 'Witness it.'],
+  campaign: {
+    headline: 'Build what you keep imagining.',
+    headlineParts: ['Build what you', 'keep imagining.'],
+    subline: 'Give one ambition a scene, a practical next move, and a record you can return to.',
+    primaryCta: { label: 'Create my Reality Card', href: '/threshold' },
+    microcopy: 'Free. No account. Download a card you own.',
+  },
   description:
     'Build what you keep imagining. Create a free Reality Card, plan your next move, and keep an honest record in Reality Studio. Open files you own.',
   author: 'Frank',

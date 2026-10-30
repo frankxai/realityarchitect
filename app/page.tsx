@@ -46,9 +46,6 @@ const PROOF = [
   ['Open standard', 'MIT licensed, and readable by the agents you already use.'],
 ]
 
-// The first promise leads to a Reality Card; the Studio export shows where the practice can continue.
-const HERO_SUB = 'Give one ambition a scene, a practical next move, and a record you can return to.'
-
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg'
 
 export default function Home() {
@@ -62,15 +59,15 @@ export default function Home() {
           <div className="lg:col-start-1 lg:row-start-1 lg:self-end">
             <p className="font-mono text-xs font-semibold tracking-[0.04em] text-accent">{site.tagline}</p>
             <h1 className="mt-5 max-w-[13ch] text-5xl font-medium leading-[1.04] tracking-[-0.055em] text-ink sm:text-6xl lg:text-[4.4rem]">
-              Build what you <span className="font-serif font-normal italic tracking-[-0.02em] text-dawn">keep imagining.</span>
+              {site.campaign.headlineParts[0]} <span className="font-serif font-normal italic tracking-[-0.02em] text-dawn">{site.campaign.headlineParts[1]}</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{HERO_SUB}</p>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{site.campaign.subline}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link href="/threshold" className={`hero-primary rounded-full bg-dawn px-6 py-3.5 text-center font-semibold text-bg focus-visible:ring-accent ${focusRing}`}>Create my Reality Card</Link>
+              <Link href={site.campaign.primaryCta.href} className={`hero-primary rounded-full bg-dawn px-6 py-3.5 text-center font-semibold text-bg focus-visible:ring-accent ${focusRing}`}>{site.campaign.primaryCta.label}</Link>
               {/* Phones already carry a Studio shortcut in the header, so the hero keeps one action there. */}
               <Link href="/studio" className={`hero-secondary rounded-full border border-border bg-bg/40 px-6 py-3.5 text-center font-medium text-ink hover:border-dawn/60 focus-visible:ring-dawn max-sm:hidden ${focusRing}`}>Open the Studio</Link>
             </div>
-            <p className="mt-4 text-sm text-muted">Free. No account. Download a card you own.</p>
+            <p className="mt-4 text-sm text-muted">{site.campaign.microcopy}</p>
             <p className="mt-4 text-sm text-muted">
               Building AI systems for that life? <Link href="/assess" className="text-accent underline-offset-4 hover:underline">Find your first system gap</Link>.
             </p>
@@ -170,7 +167,7 @@ export default function Home() {
         <h2 id="start-title" className="text-xl font-bold text-ink">Choose the ambition. Make the first move.</h2>
         <p className="mx-auto mt-2 max-w-md text-sm text-muted">Create a private Reality Card with your scene, a fact to face, and an act you choose. Free, with no account required.</p>
         <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/threshold" className={`rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-bg focus-visible:ring-accent ${focusRing}`}>Create my Reality Card</Link>
+          <Link href={site.campaign.primaryCta.href} className={`rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-bg focus-visible:ring-accent ${focusRing}`}>{site.campaign.primaryCta.label}</Link>
           <Link href="/studio" className={`rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-ink hover:border-accent focus-visible:ring-accent ${focusRing}`}>Open the Studio</Link>
         </div>
       </section>
