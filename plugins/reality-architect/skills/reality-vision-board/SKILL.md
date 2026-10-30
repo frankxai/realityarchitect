@@ -9,6 +9,13 @@ description: "Turn the person's own scenes (from soul.md and their aims) into im
 > Non-negotiable: ask before generating, sending or writing anything; send a provider only the prompt they approved;
 > never claim images program the subconscious or attract an outcome.
 
+## Host capability check
+
+Read `HOST.md` at the root of this plugin before the filesystem or engine steps below. In ChatGPT, use this
+conversation and explicitly shared files; when no authorized personal home is available, skip home discovery and
+engine commands and continue with Markdown drafts in chat. Node availability alone is not access to the person's
+device. Honor scoped authorization already given; do not repeat a permission request for the same action.
+
 Images here are reminders for attention and rehearsal: they keep the scene visible.
 
 ## Find the home
@@ -59,3 +66,4 @@ Show the change and write the canvas after a yes.
 
 - Never generate images of other real people, or of the person in compromising, medical or sexual contexts.
 - Never upload their soul.md or reality.md to an image provider.
+

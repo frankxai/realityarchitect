@@ -1,10 +1,19 @@
 # Reality Architect
 
-**Find the system gap. Build the next artifact.**
+**Build what you keep imagining.**
 
-> Go from AI tool-user to system-builder. This repo is two things at once: the **website** at
-> [realityarchitect.ai](https://www.realityarchitect.ai), and the **open method** itself. Humans read the site.
-> Agents read the repo. Both walk the same five moves.
+Give one ambition a scene, a practical next move, and a record you can return to.
+
+**[Create your free Reality Card](https://www.realityarchitect.ai/threshold)** ·
+[See a fictional worked example](./public/examples/first-reality-card.md) ·
+[Continue in Studio](https://www.realityarchitect.ai/studio)
+
+No account is required for the first session. Export your words and keep building with the free thirty-day practice,
+the open standard, and the Reality Architect agent skills.
+
+This repository is the **website** at [realityarchitect.ai](https://www.realityarchitect.ai) and the **open method**.
+For people building AI systems, the five-move Architect's Loop identifies the first gap and the next buildable artifact.
+Humans read the site. Agents read the repo.
 
 ---
 
@@ -115,3 +124,4 @@ Next.js 16 · React 19 · Tailwind v4 (CSS-first) · MDX. Brand lives entirely i
 MIT — fork it, ship it, make it yours. The method is meant to be owned. See [`LICENSE`](./LICENSE).
 
 Built by [Frank](https://frankx.ai) — AI Architect. _Let the work speak._
+

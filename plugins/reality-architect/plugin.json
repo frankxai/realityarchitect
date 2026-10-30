@@ -1,0 +1,44 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "reality-architect",
+  "version": "0.5.0",
+  "description": "Turn one ambition into a Reality Card, a practical Bridge, and an honest record of what happened.",
+  "author": {
+    "name": "Frank Riemer",
+    "email": "frank@frankx.ai",
+    "url": "https://www.realityarchitect.ai"
+  },
+  "homepage": "https://www.realityarchitect.ai",
+  "repository": "https://github.com/frankxai/realityarchitect",
+  "license": "MIT",
+  "keywords": [
+    "reality.md",
+    "soul.md",
+    "life-design",
+    "habits",
+    "journaling",
+    "obsidian",
+    "agent-skills",
+    "sip"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Reality Architect",
+        "shortDescription": "Give your ambition a system",
+        "longDescription": "Build what you keep imagining. Create a Reality Card, turn one chosen ambition into a seven-day Bridge, and review what happened. Ten skills work with the conversation or files you choose to share. You control what is saved. No account connection, background monitoring, or automatic device access is included.",
+        "developerName": "Frank Riemer",
+        "category": "Productivity",
+        "capabilities": [],
+        "defaultPrompt": [
+          "Turn one ambition into a Reality Card and a seven-day Bridge.",
+          "Run my daily Reality Architect practice from what I share here.",
+          "Review my progress and separate what happened from what I planned."
+        ],
+        "logo": "./assets/aperture.svg",
+        "composerIcon": "./assets/aperture.svg",
+        "brandColor": "#5B8CFF"
+      }
+    }
+  }
+}

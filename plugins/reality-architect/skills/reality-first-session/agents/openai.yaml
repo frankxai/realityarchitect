@@ -1,0 +1,6 @@
+interface:
+  display_name: "Reality Architect: first session"
+  short_description: "One ambition, a card, and a seven-day Bridge."
+  default_prompt: "Use $reality-first-session to turn one ambition into a Reality Card and a seven-day Bridge."
+policy:
+  allow_implicit_invocation: true
