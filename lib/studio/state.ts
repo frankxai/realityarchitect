@@ -183,6 +183,22 @@ function normalizeWitness(input: unknown): WitnessEntry | null {
   }
   if (typeof input.bridgeTitle === 'string' && input.bridgeTitle) entry.bridgeTitle = input.bridgeTitle.slice(0, CAP.title)
   if (isDomainId(input.domain)) entry.domain = input.domain
+  if (isObject(input.provenance)) {
+    const source = input.provenance
+    // A file cannot grant itself verification or a wider audience.
+    let safeUrl: string | undefined
+    if (typeof source.url === 'string' && source.url.length <= 2000 && /^https:\/\//i.test(source.url)) {
+      try {
+        const url = new URL(source.url)
+        if (url.protocol === 'https:' && url.hostname && !url.username && !url.password && !source.url.slice(8).split(/[/?#]/, 1)[0].includes('@') && url.href.length <= 2000) safeUrl = url.href
+      } catch { /* Invalid source URLs are discarded, never treated as authority. */ }
+    }
+    entry.provenance = { version: 1, source: source.source === 'file-import' ? 'file-import' : 'manual', label: text(source.label, 200),
+      ...(safeUrl ? { url: safeUrl } : {}),
+      ...(typeof source.sourceAt === 'string' && !Number.isNaN(Date.parse(source.sourceAt)) ? { sourceAt: source.sourceAt } : {}),
+      ...(typeof source.importedAt === 'string' && !Number.isNaN(Date.parse(source.importedAt)) ? { importedAt: source.importedAt } : {}),
+      privacy: 'private', evidence: 'self-report', verification: 'unverified' }
+  }
   return entry
 }
 
@@ -192,7 +208,14 @@ function normalizeDays(input: unknown): Record<string, DayNote> {
   for (const [key, value] of Object.entries(input).slice(-CAP.records * 4)) {
     if (!isDay(key) || !isObject(value)) continue
     const result = value.lookForResult === 'came' || value.lookForResult === 'missed' ? value.lookForResult : ''
-    days[key] = { lookFor: text(value.lookFor, CAP.line), lookForResult: result, focusBridgeId: text(value.focusBridgeId, 80), rehearsed: value.rehearsed === true, correction: text(value.correction, CAP.line) }
+    days[key] = { lookFor: text(value.lookFor, CAP.line), lookForResult: result, focusBridgeId: text(value.focusBridgeId, 80), rehearsed: value.rehearsed === true, correction: text(value.correction, CAP.line),
+      ...(isObject(value.morning) ? { morning: {
+        bridgeId: text(value.morning.bridgeId, 80), gratitude: text(value.morning.gratitude, CAP.line), presence: text(value.morning.presence, CAP.line),
+        identity: text(value.morning.identity, CAP.line), action: text(value.morning.action, CAP.line),
+        obstacle: text(value.morning.obstacle, CAP.line), response: text(value.morning.response, CAP.line),
+        ...(typeof value.morning.savedAt === 'string' && !Number.isNaN(Date.parse(value.morning.savedAt)) ? { savedAt: value.morning.savedAt } : {}),
+      } } : {}),
+    }
   }
   return days
 }
@@ -296,6 +319,8 @@ export function normalizeState(input: unknown, now: Date = new Date()): StudioSt
     decisions: Array.isArray(input.decisions) ? compact(input.decisions.slice(0, CAP.records).map(normalizeDecision)) : [],
     canvas: normalizeCanvas(input.canvas),
     ...(program ? { program } : {}),
+    ...(isObject(input.companion) && (input.companion.id === 'lumina' || input.companion.id === 'neutral')
+      ? { companion: { id: input.companion.id, name: input.companion.id === 'lumina' ? 'Lumina ∞' : 'Quiet guide' } } : {}),
   }
 }
 

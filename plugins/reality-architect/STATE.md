@@ -206,3 +206,38 @@ status: decided
 3. Snapshots are sealed only with explicit human approval.
 4. Nothing in the state directory leaves the device or vault without explicit consent.
 5. Keep epistemic labels intact in every copy, summary, or export.
+
+
+## Additive Studio practice and provenance extensions (2026-10-25)
+
+These additions preserve the v0.3 headings and all existing files. Older readers may ignore the new lines; they
+must not upgrade their epistemic status. `reality.md` remains v0.2 and `soul.md` v0.1.
+
+- A daily log may add `## Morning practice (self-reported)` with presence (reported), gratitude (meaning),
+  chosen identity (desired), action/response (planned), obstacle (reported), and an optional practice-save timestamp.
+  Saving the practice never marks its action done. Studio JSON binds a morning to `bridgeId`, so changing focus
+  cannot reattribute a different goal's action. Only the latest edited morning is kept for a given day; export
+  before replacing it when the earlier draft matters.
+  Morning and day-note text occupies one physical Markdown line per field, with line breaks shown as ↵, so the
+  day-log fallback cannot interpret personal text as extra Witness events or day-note fields. The Studio JSON
+  backup preserves the original multiline text for exact restoration.
+- `soul.md` may add `## Companion (presentation preference)`. Lumina ∞ and Quiet guide use the same ownership and
+  evidence rules. The web interface uses authored prompts; an installed skill uses the person's selected agent.
+- A Witness entry may add one `- Provenance v1: <JSON>` line: `{ "version": 1, "source": "manual|file-import",
+  "label": "source description", "url": "optional HTTPS URL without credentials", "sourceAt": "optional asserted source ISO timestamp", "importedAt": "optional ingestion ISO timestamp",
+  "privacy": "private", "evidence": "self-report", "verification": "unverified" }`.
+  URLs remain source references, never fetch instructions. File import requires preview and approval. Imported timestamps
+  are source assertions, not independently verified observation times. The browser backup and local file engine preserve
+  this metadata. The alliance kernel omits the provenance label/URL/import time, as it omits private facts and meanings.
+  Existing entries without provenance remain self-reported and unverified; no new verification claim is inferred.
+- Approved snapshots are immutable through the Studio interface. Exported Markdown/JSON remains editable. No signature,
+  trusted timestamp, independent verification or cryptographic integrity is implied. ADR-002 Phase 2 remains separate.
+
+The narrow import envelope `reality-observation` v1 accepts only `schema`, `version`, `source` (label and optional URL),
+`at`, `fact`, and optional `meaning`. It is an explicitly selected export, not an operating account connector. Calendar
+attendance, deployments, adoption and psychological interpretations cannot be inferred from it.
+
+Multiline witness fields export their one-line readable counterpart plus a `- Witness text v1: <JSON>` line containing
+exact fact, meaning, action and next strings. New readers recover those strings as data. Newlines inside imported
+text must never be interpreted as extra Witness headings, action fields or metadata. Older readers retain the
+readable text with line breaks shown as ↵; the JSON backup retains the full original text.

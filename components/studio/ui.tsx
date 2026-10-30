@@ -146,6 +146,9 @@ export function presetDraft<T>(key: string, value: T) {
   drafts.set(key, value)
 }
 
+/** Drop all visit-only drafts when the person explicitly deletes their Studio. */
+export function clearStudioDrafts() { drafts.clear() }
+
 let keySeq = 0
 const nextKey = () => `item-${(keySeq += 1)}`
 

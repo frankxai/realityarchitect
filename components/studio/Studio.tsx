@@ -120,7 +120,7 @@ export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
         </ul>
       </nav>
 
-      {empty && view === 'today' && (
+      {empty && view !== 'today' && (
         <section className="mt-6 rounded-2xl border border-dawn/25 bg-[radial-gradient(circle_at_80%_0%,rgba(232,213,173,0.10),transparent_50%)] p-6 sm:p-8" aria-labelledby="welcome-title">
           <p className="font-mono text-xs tracking-normal text-dawn">Welcome</p>
           <h2 id="welcome-title" className="mt-2 text-2xl font-semibold text-ink">Three doors. Start with any one.</h2>
@@ -143,12 +143,12 @@ export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
         </section>
       )}
 
-      <section className="mt-6" aria-labelledby="studio-view-title">
+      <section key={`${state.createdAt}:${studio.generation}`} className="mt-6" aria-labelledby="studio-view-title">
         <div className="mb-5">
           <h2 id="studio-view-title" ref={heading} tabIndex={-1} className="text-2xl font-bold text-ink focus-visible:outline-none sm:text-3xl">{current.title}</h2>
           <p className="mt-1 max-w-2xl text-sm text-muted">{current.intro}</p>
         </div>
-        {view === 'today' && <TodayView studio={studio} go={go} programDays={programDays} />}
+        {view === 'today' && <TodayView studio={studio} go={go} programDays={programDays} onExport={() => setDataOpen(true)} />}
         {view === 'atlas' && <AtlasView studio={studio} go={go} />}
         {view === 'bridges' && <BridgesView studio={studio} openId={openBridge} setOpenId={setOpenBridge} />}
         {view === 'witness' && <WitnessView studio={studio} />}
