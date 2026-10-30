@@ -89,7 +89,7 @@ export default function CompleteEdition() {
         </ul>
       </section>
 
-      <section aria-labelledby="buy" className="mt-12 rounded-2xl border border-border border-l-2 border-l-accent/70 bg-surface/70 p-6 sm:p-8">
+      <section aria-labelledby="buy" className="mt-12 scroll-mt-24 rounded-2xl border border-border border-l-2 border-l-accent/70 bg-surface/70 p-6 sm:p-8">
         <h2 id="buy" className="text-2xl font-bold text-ink">{open ? `${priceLabel()}, once` : 'In production'}</h2>
         {open ? (
           <>
@@ -106,7 +106,7 @@ export default function CompleteEdition() {
               <li>Polar emails your receipt and a personal download link.</li>
               <li>You land on a page that shows where every file is and where to begin.</li>
               <li>
-                The files stay in <a href={COMPLETE_EDITION.portalUrl} className={`text-accent underline underline-offset-4 ${FOCUS}`} rel="noopener noreferrer">your Polar portal</a>,
+                The files stay in <a href={COMPLETE_EDITION.portalUrl} className={`text-accent underline underline-offset-4 [overflow-wrap:anywhere] hover:text-accent-hover ${FOCUS}`} rel="noopener noreferrer">your Polar portal</a>,
                 with every update, for as long as you want them.
               </li>
             </ol>
@@ -119,7 +119,7 @@ export default function CompleteEdition() {
             <p className="mt-6 text-sm leading-relaxed text-muted">
               Licensed for your own use: listen, read, print and keep copies on your devices. If checkout shows an error or the
               files do not arrive, write to{' '}
-              <a href={`mailto:${COMPLETE_EDITION.supportEmail}`} className={`text-accent underline underline-offset-4 ${FOCUS}`}>{COMPLETE_EDITION.supportEmail}</a>{' '}
+              <a href={`mailto:${COMPLETE_EDITION.supportEmail}`} className={`text-accent underline underline-offset-4 [overflow-wrap:anywhere] hover:text-accent-hover ${FOCUS}`}>{COMPLETE_EDITION.supportEmail}</a>{' '}
               and a person will sort it out.
             </p>
           </>

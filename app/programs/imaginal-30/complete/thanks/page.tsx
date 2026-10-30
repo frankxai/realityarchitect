@@ -75,12 +75,12 @@ export default function Thanks() {
         <ul className="mt-4 space-y-3 text-sm leading-relaxed text-muted">
           <li>Give it a few minutes, then look in spam or promotions for a message from Polar.</li>
           <li>
-            Open <a href={portalUrl} className={`text-accent underline underline-offset-4 ${FOCUS}`} rel="noopener noreferrer">your Polar portal</a> and
+            Open <a href={portalUrl} className={`text-accent underline underline-offset-4 [overflow-wrap:anywhere] hover:text-accent-hover ${FOCUS}`} rel="noopener noreferrer">your Polar portal</a> and
             sign in with the email you paid with. Polar sends a one-time code; no password is needed.
           </li>
           <li>
             Still nothing, or a file will not open: write to{' '}
-            <a href={`mailto:${supportEmail}`} className={`text-accent underline underline-offset-4 ${FOCUS}`}>{supportEmail}</a> with the
+            <a href={`mailto:${supportEmail}`} className={`text-accent underline underline-offset-4 [overflow-wrap:anywhere] hover:text-accent-hover ${FOCUS}`}>{supportEmail}</a> with the
             email you paid with, and a person will answer.
           </li>
         </ul>
