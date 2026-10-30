@@ -45,7 +45,16 @@ export default function CompleteEdition() {
           The same thirty days, with production for the people who want it: rehearsals to listen to, the companion book, a
           journal to print, and a vault that opens in Obsidian.
         </p>
-        {!open && (
+        {open ? (
+          <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3">
+            <a href={COMPLETE_EDITION.checkoutUrl} className={`inline-flex min-h-11 items-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent-hover ${FOCUS}`} rel="noopener noreferrer">
+              Get the Complete Edition · {priceLabel()}
+            </a>
+            <a href="#buy" className={`text-sm text-muted underline underline-offset-4 hover:text-ink ${FOCUS}`}>
+              Delivery, licence and refunds
+            </a>
+          </div>
+        ) : (
           <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-3">
             <Link href="/programs/imaginal-30/1" className={`inline-flex min-h-11 items-center rounded-lg bg-accent px-6 text-sm font-semibold text-bg hover:bg-accent-hover ${FOCUS}`}>
               Begin day 1, free
