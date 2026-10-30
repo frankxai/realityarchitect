@@ -11,7 +11,7 @@ side by side, each in its own labeled register, under one law.
 - Blueprint/graphite identity for structure, numbers, and mechanism.
 - The dawn register (warm `#e8d5ad`, Georgia) for meaning, and for the person's own words.
 - Open method, open standard, forkable templates.
-- Concrete, technical, understated language, and contemplative language that says what it is.
+- Confident, specific, human language. Give ambition emotional room and make the next action concrete. Contemplative language says what it is.
 
 ## Cut
 
@@ -25,3 +25,11 @@ side by side, each in its own labeled register, under one law.
 
 Every visitor can identify one gap, author one scene, name one next act or artifact, and export it as Markdown, without
 creating an account or sending private context to a server. Their own words appear in dawn; the system's in blueprint.
+
+## Campaign voice · 30 October 2026
+
+The owner's direction is confident, proud and ambitious. **Build what you keep imagining.** is an invitation to practice;
+**Your ambition deserves a system.** expresses the brand's conviction. Keep **Imagine it. Build it. Witness it.** as the
+method signature. Show the actual card, bridge or record beside the aspiration. Sentence case and the two registers
+remain part of the identity. Customer results, time savings and completed outcomes still require their own evidence.
+

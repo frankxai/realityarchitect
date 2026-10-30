@@ -9,12 +9,12 @@ export const site = {
   domain: 'realityarchitect.ai',
   url: 'https://www.realityarchitect.ai',
   tagline: 'Imagine it. Build it. Witness it.',
-  // The hero sets the last part in the dawn register: the person's own witnessing, not the system's claim.
+  // The enduring method signature; campaign headlines can change without renaming the method.
   taglineParts: ['Imagine it. Build it.', 'Witness it.'],
   description:
-    'The open practice for architecting a life: author the scene you are building toward, bridge to it with skills, systems, reps and bold moves, and keep an honest record of what happens. Local-first, exported as Markdown you own.',
+    'Build what you keep imagining. Create a free Reality Card, plan your next move, and keep an honest record in Reality Studio. Open files you own.',
   author: 'Frank',
-  updatedAt: '2026-10-04',
+  updatedAt: '2026-10-30',
   github: 'https://github.com/frankxai/realityarchitect',
   // The proof layer — this method, already applied. Humans see it works before they build.
   network: [
@@ -49,3 +49,4 @@ export const ogImage = {
 }
 
 export type Site = typeof site
+

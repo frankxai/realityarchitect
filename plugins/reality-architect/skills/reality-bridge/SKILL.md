@@ -10,6 +10,13 @@ description: "Plan or check one aim as a Bridge from now to the desired scene - 
 > writing; keep desired, reported, planned, done and meaning apart; never design a move that depends on controlling
 > another person's choices; health and money decisions go to qualified humans.
 
+## Host capability check
+
+Read `HOST.md` at the root of this plugin before the filesystem or engine steps below. In ChatGPT, use this
+conversation and explicitly shared files; when no authorized personal home is available, skip home discovery and
+engine commands and continue with Markdown drafts in chat. Node availability alone is not access to the person's
+device. Honor scoped authorization already given; do not repeat a permission request for the same action.
+
 **Start from the engine.** When Node is available, run `node "<plugin root>/bin/reality.mjs" brief <loop>` with the loop `pace` (the plugin root is two folders above this skill's base directory). Use its computed state and numbers instead of recounting by hand; it is read-only.
 
 A Bridge is one aim, written as `STATE/aims/<slug>.md` (format: `STATE.md` at the root of this plugin). It connects the person's
@@ -63,3 +70,4 @@ Always show the numbers you used, and suggest **one** change: the smallest that 
 ## Never
 
 - Never promise the aim will happen. Never call a slow week a character flaw.
+

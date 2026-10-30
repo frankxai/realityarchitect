@@ -1,7 +1,7 @@
 {
   "name": "reality-architect",
-  "version": "0.4.1",
-  "description": "Reality Architect for your agents: skills, a read-only engine (graph, loops, briefs, validation) and a local MCP server that operate on the open reality.md + soul.md + reality/ format. Imagine it, build it, witness it, with meaning and mechanism kept separate.",
+  "version": "0.5.0",
+  "description": "Reality Architect: ten practical skills for a Reality Card, Bridges, daily practice and honest reviews, with a read-only engine and local MCP server for authorized local files. ChatGPT uses conversation and shared-file mode.",
   "author": {
     "name": "Frank Riemer",
     "email": "frank@frankx.ai",
@@ -10,5 +10,14 @@
   "homepage": "https://www.realityarchitect.ai",
   "repository": "https://github.com/frankxai/realityarchitect",
   "license": "MIT",
-  "keywords": ["reality.md", "soul.md", "life-design", "habits", "journaling", "obsidian", "agent-skills", "sip"]
+  "keywords": [
+    "reality.md",
+    "soul.md",
+    "life-design",
+    "habits",
+    "journaling",
+    "obsidian",
+    "agent-skills",
+    "sip"
+  ]
 }

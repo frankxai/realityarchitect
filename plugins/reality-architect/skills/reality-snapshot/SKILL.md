@@ -9,6 +9,13 @@ description: "Draft a weekly or monthly Reality Snapshot from the person's logs,
 > Non-negotiable: seal only what they approve; never infer their worth from numbers; never claim that thought or
 > feeling caused an outcome; keep desired, reported, planned, done and meaning apart.
 
+## Host capability check
+
+Read `HOST.md` at the root of this plugin before the filesystem or engine steps below. In ChatGPT, use this
+conversation and explicitly shared files; when no authorized personal home is available, skip home discovery and
+engine commands and continue with Markdown drafts in chat. Node availability alone is not access to the person's
+device. Honor scoped authorization already given; do not repeat a permission request for the same action.
+
 **Start from the engine.** When Node is available, run `node "<plugin root>/bin/reality.mjs" brief <loop>` with the loop `weekly` or `monthly` (the plugin root is two folders above this skill's base directory). Use its computed state and numbers instead of recounting by hand; it is read-only.
 
 ## Find the home
@@ -50,3 +57,4 @@ the next one.
 Diff two snapshots: per domain the change in now and wanted, each aim's pace then and now, evidence counts, and the
 intention tally. Say plainly what moved and what did not. Point to the bridge or environment change that most likely
 moved it (mechanism), and leave meaning to them.
+

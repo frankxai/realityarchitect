@@ -3,7 +3,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import apertureDawn from '@/media/observatory/aperture-dawn-v1.webp'
 import { ArchitectLoopMap } from '@/components/ArchitectLoopMap'
-import { EmailCapture } from '@/components/EmailCapture'
 import { ScrollStory } from '@/components/ScrollStory'
 import { site } from '@/lib/site'
 import { HomeAtmosphere } from '@/components/HomeAtmosphere'
@@ -47,13 +46,12 @@ const PROOF = [
   ['Open standard', 'MIT licensed, and readable by the agents you already use.'],
 ]
 
-// The hero keeps one short sentence so the export proof reaches the first phone screen; the full description stays in metadata.
-const HERO_SUB = 'Author the scene you are building toward, build the bridge to it, and keep an honest record. Local-first Markdown you own.'
+// The first promise leads to a Reality Card; the Studio export shows where the practice can continue.
+const HERO_SUB = 'Give one ambition a scene, a practical next move, and a record you can return to.'
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg'
 
 export default function Home() {
-  const [lead, witness] = site.taglineParts
   return (
     <>
       <section className="observatory-hero relative -mx-5 isolate overflow-hidden px-5 pb-20 pt-14 sm:pb-24 sm:pt-20">
@@ -62,16 +60,17 @@ export default function Home() {
             two columns: copy and facts on the left, the export preview spanning both rows on the right. */}
         <div className="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:gap-x-12 lg:gap-y-9">
           <div className="lg:col-start-1 lg:row-start-1 lg:self-end">
-            <p className="font-mono text-xs font-semibold tracking-[0.04em] text-accent">A practice for the life you are building</p>
+            <p className="font-mono text-xs font-semibold tracking-[0.04em] text-accent">{site.tagline}</p>
             <h1 className="mt-5 max-w-[13ch] text-5xl font-medium leading-[1.04] tracking-[-0.055em] text-ink sm:text-6xl lg:text-[4.4rem]">
-              {lead} <span className="font-serif font-normal italic tracking-[-0.02em] text-dawn">{witness}</span>
+              Build what you <span className="font-serif font-normal italic tracking-[-0.02em] text-dawn">keep imagining.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{HERO_SUB}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link href="/threshold" className={`hero-primary rounded-full bg-dawn px-6 py-3.5 text-center font-semibold text-bg focus-visible:ring-accent ${focusRing}`}>Write your first scene</Link>
+              <Link href="/threshold" className={`hero-primary rounded-full bg-dawn px-6 py-3.5 text-center font-semibold text-bg focus-visible:ring-accent ${focusRing}`}>Create my Reality Card</Link>
               {/* Phones already carry a Studio shortcut in the header, so the hero keeps one action there. */}
               <Link href="/studio" className={`hero-secondary rounded-full border border-border bg-bg/40 px-6 py-3.5 text-center font-medium text-ink hover:border-dawn/60 focus-visible:ring-dawn max-sm:hidden ${focusRing}`}>Open the Studio</Link>
             </div>
+            <p className="mt-4 text-sm text-muted">Free. No account. Download a card you own.</p>
             <p className="mt-4 text-sm text-muted">
               Building AI systems for that life? <Link href="/assess" className="text-accent underline-offset-4 hover:underline">Find your first system gap</Link>.
             </p>
@@ -90,7 +89,7 @@ export default function Home() {
             <div className="aperture-scene mb-6" aria-hidden="true"><Image src={apertureDawn} alt="" fill sizes="(min-width: 1024px) 460px, (min-width: 640px) 90vw, 100vw" placeholder="blur" className="aperture-image object-cover" /></div>
             <div className="flex items-center justify-between gap-4 border-b border-border pb-4">
               <div>
-                <p className="font-mono text-[0.66rem] tracking-[0.04em] text-accent">Export preview</p>
+                <p className="font-mono text-[0.66rem] tracking-[0.04em] text-accent">Illustrative Studio export</p>
                 <h2 className="mt-1 text-lg font-bold text-ink">A scene. A bridge. A record.</h2>
               </div>
               <span className="rounded-full border border-accent/35 px-3 py-1 text-xs font-semibold text-accent">Markdown</span>
@@ -98,7 +97,8 @@ export default function Home() {
             <pre className="mt-5 whitespace-pre-wrap rounded-xl border border-border bg-bg/80 p-4 font-mono text-[0.8125rem] leading-relaxed">
               {EXPORT.map((line) => <span key={line.text} className={`block ${LINE[line.register]}`}>{line.text}</span>)}
             </pre>
-            <p className="mt-4 text-sm leading-relaxed text-muted">The full export adds soul.md, your Atlas of twelve life domains, every bridge, the witness ledger, approved snapshots, decisions, and a Reality Map that opens in Obsidian.</p>
+            <p className="mt-4 text-sm leading-relaxed text-muted">The full Studio export adds soul.md, your Atlas of twelve life domains, every bridge, the witness ledger, approved snapshots, decisions, and a Reality Map that opens in Obsidian.</p>
+            <p className="mt-4 text-sm leading-relaxed text-muted">Fictional example: <a href="/examples/first-reality-card.md" className={`rounded text-accent underline underline-offset-4 focus-visible:ring-accent ${focusRing}`}>See a worked Reality Card</a>.</p>
           </div>
         </div>
       </section>
@@ -143,14 +143,14 @@ export default function Home() {
       <section className="border-t border-border py-16 sm:py-24" aria-labelledby="path-title">
         <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
           <div>
-            <p className="font-mono text-xs tracking-[0.04em] text-accent">Product path</p>
-            <h2 id="path-title" className="mt-3 text-3xl font-bold text-ink sm:text-5xl">Open method first. Paid help only where delivery is real.</h2>
+            <p className="font-mono text-xs tracking-[0.04em] text-accent">Your free practice</p>
+            <h2 id="path-title" className="mt-3 text-3xl font-bold text-ink sm:text-5xl">Your next chapter, with a plan you can use.</h2>
           </div>
           <div className="divide-y divide-border border-y border-border">
             {[
-              ['Free now', 'Assessment, architecture brief, method, standard, and starter templates.'],
-              ['Digital product', 'Planned assessment pack; no checkout until the files, license, support, price, and refund terms are complete.'],
-              ['Guided service', 'A scoped architecture review with availability and deliverables confirmed before payment.'],
+              ['Create your Reality Card', 'Choose one ambition. Write the scene, face a present fact, and name an act you can take. Download your card.'],
+              ['Build your Bridge', 'Bring the ambition into Studio. Plan your reps and bold moves, then record what happened in your Witness ledger.'],
+              ['Make it a practice', 'Follow the free thirty-day program. Export your Studio as open files for your notes or a compatible agent.'],
             ].map(([label, description], index) => (
               <div key={label} className="grid gap-3 py-6 sm:grid-cols-[3rem_10rem_1fr]">
                 <span className="font-mono text-xs text-accent">0{index + 1}</span>
@@ -161,12 +161,20 @@ export default function Home() {
           </div>
         </div>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Link href="/vault" className="rounded-lg border border-border px-5 py-2.5 text-center font-semibold text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">See implementation options</Link>
+          <Link href="/programs/imaginal-30" className="rounded-lg border border-border px-5 py-2.5 text-center font-semibold text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Explore the free thirty days</Link>
           <a href={site.github} className="rounded-lg border border-border px-5 py-2.5 text-center font-semibold text-ink hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Fork the open repo</a>
         </div>
       </section>
 
-      <EmailCapture />
+      <section className="my-10 border-y border-border py-8 text-center" aria-labelledby="start-title">
+        <h2 id="start-title" className="text-xl font-bold text-ink">Choose the ambition. Make the first move.</h2>
+        <p className="mx-auto mt-2 max-w-md text-sm text-muted">Create a private Reality Card with your scene, a fact to face, and an act you choose. Free, with no account required.</p>
+        <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
+          <Link href="/threshold" className={`rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-bg focus-visible:ring-accent ${focusRing}`}>Create my Reality Card</Link>
+          <Link href="/studio" className={`rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-ink hover:border-accent focus-visible:ring-accent ${focusRing}`}>Open the Studio</Link>
+        </div>
+      </section>
     </>
   )
 }
+

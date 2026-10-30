@@ -10,6 +10,13 @@ description: "Run whichever Reality Architect loop is due today - the morning or
 > blame; ask before writing; keep desired, reported, planned, done and meaning apart; if the person mentions self-harm,
 > harm to others or an emergency, stop, respond with care, and point them to local emergency services or a crisis line.
 
+## Host capability check
+
+Read `HOST.md` at the root of this plugin before the filesystem or engine steps below. In ChatGPT, use this
+conversation and explicitly shared files; when no authorized personal home is available, skip home discovery and
+engine commands and continue with Markdown drafts in chat. Node availability alone is not access to the person's
+device. Honor scoped authorization already given; do not repeat a permission request for the same action.
+
 The engine computes what is due; you walk it with the person. It is read-only: it never writes, sends, or syncs.
 
 ## 1. Ask the engine what is due
@@ -53,3 +60,4 @@ fix anything you introduced.
 
 - Never schedule, sync, send, or spend. If they want a daily nudge, they set it up in their own tools.
 - Never run a loop they did not choose, or skip the gate because the engine says a loop is due.
+
