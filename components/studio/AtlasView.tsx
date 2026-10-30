@@ -1,7 +1,9 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { DOMAINS } from '@/lib/studio/domains'
+import { atlasEditionMd } from '@/lib/studio/atlas-edition'
 import { emptyBridge } from '@/lib/studio/state'
 import type { DomainId, DomainState } from '@/lib/studio/types'
 import { Area, Tag, button, panelClass } from './ui'
@@ -70,6 +72,20 @@ export function AtlasView({ studio, go }: { studio: StudioApi; go: Go }) {
     go('bridges', bridge.id)
   }
 
+  const downloadEdition = () => {
+    const body = atlasEditionMd(state, today)
+    const url = URL.createObjectURL(new Blob([body], { type: 'text/markdown;charset=utf-8' }))
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'reality-life-atlas-' + today + '.md'
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    // Allow the browser to begin the transfer before releasing its Blob URL.
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000)
+    announce('Your Life Atlas edition is ready to download. Nothing was uploaded.')
+  }
+
   const entry = selected ? state.atlas[selected] : null
   const domain = selected ? DOMAINS.find((item) => item.id === selected) : null
   const linked = selected ? state.bridges.filter((bridge) => bridge.domain === selected && bridge.status === 'active') : []
@@ -80,6 +96,36 @@ export function AtlasView({ studio, go }: { studio: StudioApi; go: Go }) {
         Rated <span className="font-mono text-ink">{rated}</span> of 12 · priorities <span className="font-mono text-ink">{priorities.length}</span> of {MAX_PRIORITIES}
         {gaps.length > 0 && <> · widest gaps: {gaps.map((item) => `${item.domain.short} (${item.gap})`).join(', ')}</>}
       </p>
+
+      <section className="relative overflow-hidden rounded-2xl border border-dawn/25 bg-surface p-5 sm:p-7" aria-labelledby="atlas-edition-heading">
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-[radial-gradient(ellipse_at_top_right,rgba(232,213,173,0.09),transparent_70%)]" aria-hidden="true" />
+        <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-xl">
+            <p className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-dawn">A personal edition · 01</p>
+            <h3 id="atlas-edition-heading" className="mt-3 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+              A whole life, <span className="font-serif font-normal italic text-dawn">in your own words.</span>
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted">
+              Twelve domains, your chosen priorities, the bridges you are building and the evidence you have witnessed.
+              An editable Markdown edition, compiled entirely on this device; no AI interpretation or diagnosis.
+            </p>
+            <p className="mt-3 font-mono text-xs text-muted">
+              {rated} / 12 domains reflected · {state.bridges.filter((bridge) => bridge.status === 'active').length} active bridges · {state.witness.length} witness entries
+              {state.sample ? ' · fictional sample' : ''}
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-wrap gap-2">
+            <Link href="/studio/edition" className={button.secondary}>View print edition</Link>
+            <button type="button" className={button.dawn} onClick={downloadEdition}
+              disabled={rated === 0 && state.bridges.length === 0 && state.witness.length === 0}>
+              Download Markdown
+            </button>
+          </div>
+        </div>
+        {rated === 0 && state.bridges.length === 0 && state.witness.length === 0 && (
+          <p className="relative mt-4 text-xs text-muted">Rate one domain below to begin your first edition. Blank is not failure.</p>
+        )}
+      </section>
 
       <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {DOMAINS.map((item) => {
