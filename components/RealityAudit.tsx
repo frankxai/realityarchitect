@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   DOMAINS,
@@ -179,7 +180,7 @@ export function RealityAudit() {
           <h2 className="text-2xl font-bold text-ink sm:text-3xl">Complete this sentence: I am someone who…</h2>
           <p className="mt-2 max-w-xl text-sm text-muted">One or two roles, present tense. Every action you take is a vote for one of these.</p>
           <label className="mt-6 block text-sm text-muted">
-            Name (optional — titles your reality.md draft; nothing is sent anywhere yet)
+            Name (optional — titles your reality.md draft; sent only if you join the waitlist at the end)
             <input
               autoFocus
               type="text"
@@ -484,8 +485,9 @@ export function RealityAudit() {
           )}
 
           <p className="mt-6 text-xs text-muted">
-            No account is created. Your email routes through Frank&apos;s existing subscriber system, tagged separately from the
-            newsletter — there is no dedicated application database yet, so acceptance is handled by email, by hand.
+            No account is created. Your email is stored in Frank&apos;s subscriber system, tagged as a Vault application. It does
+            not join the newsletter, and no automatic email is sent. There is no dedicated application database yet, so
+            acceptance is handled by email, by hand. <Link href="/privacy#vault-waitlist" className="underline hover:text-ink">What is sent</Link>.
           </p>
         </section>
       )}

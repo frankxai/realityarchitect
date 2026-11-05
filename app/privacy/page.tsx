@@ -103,7 +103,22 @@ export default function Privacy() {
         </p>
         <p>
           Those page requests do not contain your assessment answers, system name, repeating job, or generated brief.
-          The assessment never places those values in a URL or sends them in a network request.
+          The assessment never places those values in a URL or sends them in a network request. The one optional
+          exception is a Vault waitlist application, described next.
+        </p>
+
+        <h2 id="vault-waitlist">Joining the Vault waitlist sends data</h2>
+        <p>
+          The reality.md Audit at <Link href="/apply">/apply</Link> stays in your browser until you press Join the
+          waitlist. That button sends your email address, the name you typed if any, and, only if you tick the box above
+          it, your stated aim, your top priority, and the audit headline. Nothing else in the draft is sent.
+        </p>
+        <p>
+          The request goes to this site&apos;s <code>/api/waitlist</code> route, which forwards it to the FrankX
+          subscriber system. There it is stored as a contact with the source reality-architect-vault-waitlist in
+          Frank&apos;s email provider, Resend, and as a lead-capture record. Frank reads applications by hand. An
+          application does not add you to the newsletter, and no automatic email is sent. To withdraw yours or have
+          it deleted, ask in Frank&apos;s reply.
         </p>
 
         <h2>Measurement boundary</h2>
