@@ -1,5 +1,7 @@
 'use client'
 
+import { ObservationImport } from './ObservationImport'
+
 import { useId, useMemo, useState } from 'react'
 import { WITNESS_KINDS, isDomainId, witnessLabel } from '@/lib/studio/domains'
 import { setMoveDone } from '@/lib/studio/moves'
@@ -13,14 +15,15 @@ interface WitnessFormProps {
   studio: StudioApi
   compact?: boolean
   initialKind?: WitnessKind
+  draftScope?: string
   onDone?: () => void
 }
 
 /** Record one moment as fact, meaning and action. Shared by Today (compact) and Witness. */
-export function WitnessForm({ studio, compact, initialKind = 'sign', onDone }: WitnessFormProps) {
+export function WitnessForm({ studio, compact, initialKind = 'sign', onDone, draftScope }: WitnessFormProps) {
   const { state, today, update, announce } = studio
   const groupId = useId()
-  const draft = compact ? 'witness-today' : 'witness'
+  const draft = draftScope ?? (compact ? 'witness-today' : 'witness')
   const [kind, setKind] = useDraft<WitnessKind>(`${draft}:kind`, initialKind)
   const [fact, setFact] = useDraft(`${draft}:fact`, '')
   const [meaning, setMeaning] = useDraft(`${draft}:meaning`, '')
@@ -164,6 +167,7 @@ export function WitnessView({ studio }: { studio: StudioApi }) {
           <h3 id="witness-new" className="text-lg font-semibold text-ink">Witness a moment</h3>
           <p className="mt-1 text-sm text-muted">Noticing is a skill. Record what happened, what it meant to you, and what you did with it.</p>
           <div className="mt-5"><WitnessForm studio={studio} /></div>
+          <ObservationImport studio={studio} />
         </section>
 
         <section aria-labelledby="witness-ledger">
@@ -199,7 +203,8 @@ export function WitnessView({ studio }: { studio: StudioApi }) {
                           </p>
                           <ConfirmButton label="Delete" confirmLabel="Confirm delete" className={button.ghost} onConfirm={() => { update((draft) => { draft.witness = draft.witness.filter((item) => item.id !== entry.id) }); announce('Entry deleted.') }} />
                         </div>
-                        <p className="mt-2 text-sm text-ink"><span className="text-muted">Happened · </span>{entry.fact}</p>
+                        <p className="mt-2 text-xs text-muted">Private · {entry.provenance?.source === 'file-import' ? `Imported from ${entry.provenance.label}` : 'Self-reported'} · unverified</p>
+                        <p className="mt-2 break-words text-sm text-ink"><span className="text-muted">Happened · </span>{entry.fact}</p>
                         {entry.meaning && <p className="mt-1.5 font-serif text-base text-dawn"><span className="font-sans text-xs text-muted">Meant to you · </span>{entry.meaning}</p>}
                         {entry.action && <p className="mt-1.5 text-sm text-ink"><span className="text-muted">Did · </span>{entry.action}</p>}
                         {entry.next && <p className="mt-1.5 text-sm text-ink"><span className="text-muted">Next, planned · </span>{entry.next}</p>}

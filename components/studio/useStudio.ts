@@ -1,5 +1,6 @@
 'use client'
 
+import { clearStudioDrafts } from './ui'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { clearState, loadState, saveState, storedText, type LoadStatus } from '@/lib/studio/persist'
 import { emptyState, STORAGE_KEY } from '@/lib/studio/state'
@@ -17,6 +18,7 @@ export type SaveStatus = 'idle' | 'saved' | 'unavailable' | 'quota' | 'error' | 
 export function useStudio() {
   const [state, setState] = useState<StudioState>(() => emptyState())
   const [ready, setReady] = useState(false)
+  const [generation, setGeneration] = useState(0)
   const [loadStatus, setLoadStatus] = useState<LoadStatus>('empty')
   const [keptAside, setKeptAside] = useState(true)
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle')
@@ -52,6 +54,10 @@ export function useStudio() {
 
   const adopt = useCallback(() => {
     const loaded = loadState()
+    if (latest.current.createdAt !== loaded.state.createdAt) {
+      clearStudioDrafts()
+      setGeneration((value) => value + 1)
+    }
     baseline.current = loaded.text
     dirty.current = false
     setState(loaded.state)
@@ -116,6 +122,8 @@ export function useStudio() {
   }, [])
 
   const replace = useCallback((next: StudioState) => {
+    clearStudioDrafts()
+    setGeneration((value) => value + 1)
     dirty.current = true
     edits.current += 1
     setState(next)
@@ -123,6 +131,8 @@ export function useStudio() {
 
   /** Conflict: drop this tab's unsaved changes and take the copy another tab saved. */
   const takeOther = useCallback(() => {
+    clearStudioDrafts()
+    setGeneration((value) => value + 1)
     adopt()
     announce('Loaded the copy saved in the other tab.')
   }, [adopt, announce])
@@ -144,13 +154,15 @@ export function useStudio() {
     const cleared = clearState() || storedText() === null
     baseline.current = cleared ? null : storedText()
     dirty.current = false
+    clearStudioDrafts()
+    setGeneration((value) => value + 1)
     setState(emptyState())
     setLoadStatus('empty')
     setSaveStatus('idle')
     return cleared
   }, [])
 
-  return { state, ready, loadStatus, keptAside, saveStatus, message, announce, update, replace, takeOther, keepMine, forget, today }
+  return { state, ready, generation, loadStatus, keptAside, saveStatus, message, announce, update, replace, takeOther, keepMine, forget, today }
 }
 
 export type StudioApi = ReturnType<typeof useStudio>

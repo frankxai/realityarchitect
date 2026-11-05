@@ -120,6 +120,31 @@ export interface WitnessEntry {
   domain?: DomainId
   /** For signs: the person had set out that day to notice something like it. */
   primed: boolean
+  /** Optional provenance v1. Legacy entries remain self-reported and unverified. */
+  provenance?: {
+    version: 1
+    source: 'manual' | 'file-import'
+    label: string
+    url?: string
+    sourceAt?: string
+    importedAt?: string
+    privacy: 'private'
+    evidence: 'self-report'
+    verification: 'unverified'
+  }
+}
+
+export interface MorningPractice {
+  /** Bind the daily action to its bridge; another focus cannot silently inherit it. */
+  bridgeId: string
+  gratitude: string
+  presence: string
+  identity: string
+  action: string
+  obstacle: string
+  response: string
+  /** Saving a practice is not evidence that its planned action happened. */
+  savedAt?: string
 }
 
 export interface DayNote {
@@ -129,6 +154,7 @@ export interface DayNote {
   focusBridgeId: string
   rehearsed: boolean
   correction: string
+  morning?: MorningPractice
 }
 
 export interface SnapshotBridge {
@@ -233,4 +259,6 @@ export interface StudioState {
   canvas: CanvasState
   /** Optional, so every v1 save without it stays valid: present only once the person starts the 30 days. */
   program?: ProgramProgress
+  /** Optional additive extension; older v1 saves have no companion. */
+  companion?: { id: 'lumina' | 'neutral'; name: string }
 }

@@ -8,6 +8,7 @@ import { kindCounts } from '@/lib/studio/stats'
 import { localTime, newId } from '@/lib/studio/util'
 import type { ProgramDay } from '@/lib/studio/program'
 import type { DayNote, WitnessEntry } from '@/lib/studio/types'
+import { LuminaJourney } from './LuminaJourney'
 import { ProgramToday } from './ProgramPanels'
 import { Field, Tag, button, panelClass } from './ui'
 import type { StudioApi } from './useStudio'
@@ -16,7 +17,7 @@ import type { Go } from './views'
 
 const EMPTY_NOTE: DayNote = { lookFor: '', lookForResult: '', focusBridgeId: '', rehearsed: false, correction: '' }
 
-export function TodayView({ studio, go, programDays = [] }: { studio: StudioApi; go: Go; programDays?: ProgramDay[] }) {
+export function TodayView({ studio, go, programDays = [], onExport }: { studio: StudioApi; go: Go; programDays?: ProgramDay[]; onExport: () => void }) {
   const { state, today, update, announce } = studio
   const note = state.days[today] ?? EMPTY_NOTE
   const active = state.bridges.filter((bridge) => bridge.status === 'active')
@@ -63,7 +64,11 @@ export function TodayView({ studio, go, programDays = [] }: { studio: StudioApi;
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_19rem]">
+    <div className="space-y-6">
+      <LuminaJourney studio={studio} go={go} onExport={onExport} />
+      <details open={state.sample || undefined}>
+        <summary className="cursor-pointer py-3 text-sm text-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">Open the full daily desk and program</summary>
+        <div className="mt-4 grid gap-6 lg:grid-cols-[minmax(0,1fr)_19rem]">
       <div className="space-y-6">
         <ProgramToday studio={studio} go={go} days={programDays} />
         <section className={panelClass} aria-labelledby="morning-title">
@@ -193,6 +198,8 @@ export function TodayView({ studio, go, programDays = [] }: { studio: StudioApi;
           </section>
         )}
       </aside>
+        </div>
+      </details>
     </div>
   )
 }

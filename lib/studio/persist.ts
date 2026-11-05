@@ -41,7 +41,7 @@ export function loadState(storage: StorageLike | null = getStorage(), now: Date 
   if (raw === null) return { state: emptyState(now), status: 'empty', text: null }
   try {
     const parsed: unknown = JSON.parse(raw)
-    if (typeof parsed === 'object' && parsed !== null && (parsed as { schema?: unknown }).schema === 'reality-studio') {
+    if (typeof parsed === 'object' && parsed !== null && (parsed as { schema?: unknown }).schema === 'reality-studio' && (parsed as { version?: unknown }).version === 1) {
       return { state: normalizeState(parsed, now), status: 'loaded', text: raw }
     }
   } catch {

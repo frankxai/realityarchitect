@@ -23,7 +23,10 @@ export function parseImport(text: string, today: string, now: Date = new Date())
   }
   if (!isObject(data)) return { kind: 'error', message: 'This file does not contain a Studio backup or a Reality Card.' }
 
-  if (data.schema === 'reality-studio') return { kind: 'studio', state: normalizeState(data, now) }
+  if (data.schema === 'reality-studio') {
+    if (data.version !== 1) return { kind: 'error', message: 'This Studio backup version is not supported. Keep the original file and open it with a compatible version.' }
+    return { kind: 'studio', state: normalizeState(data, now) }
+  }
 
   if (data.schema === 'sip.reality-card') {
     const desired = isObject(data.desired) ? data.desired : {}
