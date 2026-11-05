@@ -1,0 +1,99 @@
+{
+  "schema": "reality-architect.campaign",
+  "version": 1,
+  "date": "2026-10-30",
+  "timezone": "Europe/Amsterdam",
+  "acceptedSourceCommit": "6d3437b96df16e17552dc04919e3e1d2d50be668",
+  "status": "prepared",
+  "distributionStatus": "not-published",
+  "spendAuthorized": false,
+  "positioning": {
+    "headline": "Build what you keep imagining.",
+    "identity": "Your ambition deserves a system.",
+    "signature": "Imagine it. Build it. Witness it."
+  },
+  "entry": {
+    "name": "Reality Card",
+    "price": 0,
+    "currency": null,
+    "cta": "Create my Reality Card",
+    "destination": "https://www.realityarchitect.ai/threshold",
+    "proof": "public/examples/first-reality-card.md",
+    "proofType": "fictional-worked-example"
+  },
+  "paidContinuation": {
+    "name": "The Imaginal Act — Complete Edition",
+    "status": "closed-in-accepted-source",
+    "configuredPrice": 39,
+    "currency": "USD",
+    "configuredRefundDays": 30,
+    "configuration": "lib/programs/complete-edition.ts",
+    "fulfillmentVerified": false,
+    "checkoutVerified": false
+  },
+  "claims": [
+    {
+      "claim": "Threshold creates an exportable Reality Card",
+      "state": "implemented",
+      "source": "lib/reality-card.ts"
+    },
+    {
+      "claim": "Studio stores entries on the user device and supports exports",
+      "state": "implemented",
+      "source": "SYSTEM.md"
+    },
+    {
+      "claim": "Free thirty-day practice exists",
+      "state": "implemented",
+      "source": "app/programs/imaginal-30/page.tsx"
+    },
+    {
+      "claim": "ChatGPT adaptation provides practice skills",
+      "state": "candidate-in-this-change",
+      "source": "plugins/reality-architect/plugin.json"
+    },
+    {
+      "claim": "New copy improves conversion",
+      "state": "unmeasured",
+      "allowedInAdvertising": false
+    },
+    {
+      "claim": "Complete Edition files delivered through a working checkout",
+      "state": "unverified",
+      "allowedInAdvertising": false
+    }
+  ],
+  "creative": [
+    {
+      "id": "creator-project",
+      "headline": "Your next chapter deserves more than a saved note.",
+      "destination": "/threshold",
+      "status": "draft"
+    },
+    {
+      "id": "visible-work",
+      "headline": "Build something your future self can point to.",
+      "destination": "/threshold",
+      "status": "draft"
+    },
+    {
+      "id": "agent-direction",
+      "headline": "Give your AI a direction worth remembering.",
+      "destination": "/standard",
+      "status": "draft"
+    }
+  ],
+  "pilot": {
+    "design": "twelve-person-activation-pilot",
+    "sampleSize": 12,
+    "inference": "directional-usability-only",
+    "thresholds": {
+      "understandsOffer": 9,
+      "exportsWithoutHelp": 8,
+      "reportsChosenAct": 6
+    },
+    "thresholdBasis": "internal-operating-choice",
+    "telemetryEnabled": false,
+    "collectPrivateCardContents": false
+  }
+}

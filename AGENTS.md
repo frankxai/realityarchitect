@@ -68,7 +68,9 @@ consent.
 
 ## Tone — two registers, one law
 
-Concrete, technical, understated. No hype. Lead with the result, show the artifact, let the work speak.
+Confident, specific, human. The owner's 2026-10-30 campaign direction gives ambition more room: lead with a desirable
+future, show the actual artifact, and give one concrete next action. Use the campaign guidance in
+`docs/marketing/2026-10-30-ambition-campaign.md`; retain the evidence and two-register boundaries below.
 
 Since Frank's 2026-10-04 directive, the product teaches the inner work as well as the systems, in **two registers
 that are always labeled and never blended**:
@@ -129,3 +131,4 @@ coordination layer.
 - CI (`.github/workflows/ci.yml`) is being added via a separate draft PR — once merged, treat it as the gate.
 - **Never commit `.reality.md`, `.env*`, or any secret.** Production and domain changes remain human-gated (see
   above).
+

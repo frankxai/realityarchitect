@@ -10,6 +10,13 @@ description: "Run the Reality Architect daily practice. In the morning - the I a
 > blame; ask before writing; keep desired, reported, planned, done and meaning apart; if the person mentions self-harm,
 > harm to others or an emergency, stop, respond with care, and point them to local emergency services or a crisis line.
 
+## Host capability check
+
+Read `HOST.md` at the root of this plugin before the filesystem or engine steps below. In ChatGPT, use this
+conversation and explicitly shared files; when no authorized personal home is available, skip home discovery and
+engine commands and continue with Markdown drafts in chat. Node availability alone is not access to the person's
+device. Honor scoped authorization already given; do not repeat a permission request for the same action.
+
 **Start from the engine.** When Node is available, run `node "<plugin root>/bin/reality.mjs" brief <loop>` with the loop `morning` or `evening` (the plugin root is two folders above this skill's base directory). Use its computed state and numbers instead of recounting by hand; it is read-only.
 
 Two to ten minutes. No streaks, no scores. A tired day gets the one-line path.
@@ -68,3 +75,4 @@ If they have no energy: ask for one line about today, append it to today's log a
 
 - Never shame a missed day or count a streak.
 - Never say the day went well or badly because of their thoughts or feelings.
+

@@ -1,12 +1,34 @@
 # reality-architect — the agent plugin
 
-Skills that let Claude Code (and any harness that reads `SKILL.md`) practice Reality Architect with you, on the open
+Ten skills that let ChatGPT, Claude Code, and compatible agents practice Reality Architect with you, on the open
 format: `reality.md` (the contract), `soul.md` (the inner contract), and the `reality/` state directory.
 
-**Imagine it. Build it. Witness it.** Meaning and mechanism stay separate; nothing leaves your machine unless you say
-so.
+**Build what you keep imagining.** Start with one Reality Card, a seven-day Bridge, and a next act you control.
 
-## Install
+Imagine it. Build it. Witness it. Meaning and mechanism stay separate.
+
+## ChatGPT and local hosts
+
+The ChatGPT account package is a **skills package**, built from the same source. It works with the conversation and
+files you choose to share. Start with: “Turn one ambition into a Reality Card and a seven-day Bridge.” No vault
+setup is required. It does not automatically read your computer, synchronize notes, or run background reminders.
+Shared chat content is processed by your chosen host; the local Studio's device-only storage promise does not
+apply to material you choose to attach to a cloud conversation.
+
+The repository package also retains the read-only engine and local stdio MCP server for capable local hosts.
+Those local tools require an identified, authorized personal home. An account installation does not connect that
+server to ChatGPT. See [HOST.md](HOST.md) for the exact capability and authorization rules.
+
+To build the deterministic private account ZIP from the repository:
+
+```bash
+node scripts/build-chatgpt-plugin.mjs /tmp/reality-architect-0.5.0.zip
+```
+
+The ZIP includes the skills, their references, Charter, state formats, icons and engine source. It excludes local
+MCP configuration and any App binding. Save it with Plugin Creator; this does not publish a public store listing.
+
+## Install in Claude Code
 
 ```text
 /plugin marketplace add frankxai/realityarchitect
@@ -23,6 +45,7 @@ export REALITY_HOME="$HOME/Notes/Reality Architect"   # or leave unset to use ~/
 
 | Skill | Use it to |
 | --- | --- |
+| `reality-first-session` | create one Reality Card, a seven-day Bridge and a blank Witness review directly in chat |
 | `reality-loop` | ask the engine what is due today, then run that one loop with you, asking before every write |
 | `reality-onboard` | create soul.md, reality.md and reality/ by interview, or unpack a Studio export |
 | `reality-daily` | the morning practice (I am, the scene, one thing to look for, one rep) and the evening witness |
@@ -60,7 +83,7 @@ node bin/reality.mjs skill-check DIR   # a skill folder against the marketplace 
 
 ## The MCP server
 
-The plugin also starts the same engine as a local MCP server (`mcp/server.mjs`, stdio, no dependencies), so any agent
+The repository installation also starts the same engine as a local MCP server (`mcp/server.mjs`, stdio, no dependencies), so any agent
 in an MCP client reads the numbers the Studio and the CLI show. Installing the plugin wires it up through `.mcp.json`.
 To use it in another client, run `node mcp/server.mjs` with `REALITY_HOME` set.
 
@@ -102,7 +125,7 @@ every reference between them.
   never includes your meaning, scenes, facts or obstacles in your words, the people you listed, skills, systems or
   decisions.
 
-Why and how: `docs/adr/ADR-002-reality-architect-and-starlight.md`.
+Why and how: [Reality Architect and Starlight](https://github.com/frankxai/realityarchitect/blob/main/docs/adr/ADR-002-reality-architect-and-starlight.md).
 
 ## The rules every skill follows
 
@@ -119,3 +142,4 @@ money, and crisis questions to humans.
 - **second-brain-os:** the snapshot skill can read its `brain/` vault (never `private/`).
 
 MIT. Built on SIP.
+

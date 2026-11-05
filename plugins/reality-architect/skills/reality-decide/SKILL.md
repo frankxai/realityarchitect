@@ -9,6 +9,13 @@ description: "Record a life or business decision as a dated decision record with
 > Non-negotiable: do not decide for them; ask before writing; keep reported, planned and done apart; medical, legal and
 > financial decisions need a qualified human, and you say so plainly.
 
+## Host capability check
+
+Read `HOST.md` at the root of this plugin before the filesystem or engine steps below. In ChatGPT, use this
+conversation and explicitly shared files; when no authorized personal home is available, skip home discovery and
+engine commands and continue with Markdown drafts in chat. Node availability alone is not access to the person's
+device. Honor scoped authorization already given; do not repeat a permission request for the same action.
+
 **Start from the engine.** When Node is available, run `node "<plugin root>/bin/reality.mjs" brief <loop>` with the loop `decisions` (the plugin root is two folders above this skill's base directory). Use its computed state and numbers instead of recounting by hand; it is read-only.
 
 ## Find the home
@@ -33,3 +40,4 @@ what was known) from outcome (what happened), so luck is not mistaken for judgme
 ## Never
 
 - Never rewrite the original reasons after the fact. The record is valuable because it is honest about the time.
+

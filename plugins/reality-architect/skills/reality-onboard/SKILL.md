@@ -12,6 +12,13 @@ description: "Set up a person's Reality Architect home - soul.md (the inner cont
 > emergency, stop, respond with care, and point them to local emergency services or a crisis line; health and money
 > decisions go to qualified humans.
 
+## Host capability check
+
+Read `HOST.md` at the root of this plugin before the filesystem or engine steps below. In ChatGPT, use this
+conversation and explicitly shared files; when no authorized personal home is available, skip home discovery and
+engine commands and continue with Markdown drafts in chat. Node availability alone is not access to the person's
+device. Honor scoped authorization already given; do not repeat a permission request for the same action.
+
 ## 1. Choose the home, with absolute paths
 
 If `$REALITY_HOME` is set or `~/reality.md` exists, read what is there and offer to fill the gaps instead of starting
@@ -78,3 +85,4 @@ do not rename or delete anything.
 - Never commit these files to a public repository or send them anywhere without explicit consent.
 
 Templates and formats: https://github.com/frankxai/realityarchitect/tree/main/standard
+

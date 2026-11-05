@@ -142,13 +142,38 @@ test('privacy states the Studio storage boundary without claiming more than it d
   assert.match(privacy, /Anyone who can use this browser profile can open the Studio/)
 })
 
-test('the homepage keeps its jobs and adds the inner-architecture doors', () => {
+test('the homepage keeps its product jobs through campaign changes', async () => {
   const home = read('app/page.tsx')
-  assert.match(home, /site\.taglineParts/, 'the hero headline comes from the brand config')
+  const { site } = await import('../lib/site.ts')
+
+  // The campaign now starts with a Reality Card and closes with the same action.
+  // Preserve those jobs and the trust boundary instead of requiring EmailCapture,
+  // whose assessment-only destination no longer matches this homepage journey.
+  const headline = home.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1]
+  assert.ok(headline, 'the homepage has a primary headline')
+  for (const index of [0, 1]) {
+    assert.ok(headline.includes(`site.campaign.headlineParts[${index}]`), 'the hero headline comes from the brand config')
+  }
+  assert.equal(site.campaign.headlineParts.join(' '), site.campaign.headline)
+  assert.match(home, /\{site\.tagline\}/, 'the enduring method signature remains visible')
+  assert.match(home, /\{site\.campaign\.subline\}/)
+  assert.ok(site.campaign.subline.trim())
+
+  assert.equal(site.campaign.primaryCta.href, '/threshold', 'the primary action leads to the working Reality Card')
+  assert.ok(site.campaign.primaryCta.label.trim())
+  const primaryLinks = [...home.matchAll(/<Link\b[^>]*href=\{site\.campaign\.primaryCta\.href\}[^>]*>\{site\.campaign\.primaryCta\.label\}<\/Link>/g)]
+  assert.equal(primaryLinks.length, 2, 'the hero and closing action use the same configured destination and label')
   assert.match(home, /<ArchitectLoopMap \/>/)
-  assert.match(home, /<EmailCapture \/>/)
-  assert.match(home, /href="\/assess"/)
+  assert.match(home, /href="\/assess"/, 'the system assessment remains a secondary route')
   for (const href of ['/threshold', '/studio', '/library']) assert.match(home, new RegExp(`href: '${href}'`))
+
+  assert.match(home, /\{site\.campaign\.microcopy\}/)
+  assert.match(site.campaign.microcopy, /Free\. No account\./)
+  assert.match(home, /Illustrative Studio export/)
+  assert.match(home, /Fictional example:/)
+  assert.match(home, /href="\/examples\/first-reality-card\.md"/)
+  assert.doesNotMatch(home, /<form\b|type="email"|\bfetch\s*\(|\/api\/(?:subscribe|waitlist)/)
+  assert.doesNotMatch(home, /(?:you're in|check your inbox|subscribed|signup (?:complete|successful))/i)
 })
 
 test('the tagline and its two hero parts never drift apart', async () => {
@@ -163,3 +188,4 @@ test('security headers prevent embedding and unsafe base or object content', () 
   assert.match(config, /base-uri 'self'/)
   assert.match(config, /object-src 'none'/)
 })
+

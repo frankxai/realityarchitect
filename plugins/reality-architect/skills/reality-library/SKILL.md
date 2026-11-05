@@ -10,6 +10,13 @@ description: "Teach a manifestation teacher, book or idea honestly from the Real
 > change external events; never mock a person for finding meaning in a teaching; health and money questions go to
 > qualified humans.
 
+## Host capability check
+
+Read `HOST.md` at the root of this plugin before the filesystem or engine steps below. In ChatGPT, use this
+conversation and explicitly shared files; when no authorized personal home is available, skip home discovery and
+engine commands and continue with Markdown drafts in chat. Node availability alone is not access to the person's
+device. Honor scoped authorization already given; do not repeat a permission request for the same action.
+
 ## Teach only from the Library
 
 Use `library.json` in this skill's folder. It is generated from the Library's own data (canonical page:
@@ -43,3 +50,4 @@ are real, and they change the third **through what you then do**: attention → 
 ## Never
 
 - Never quote long passages from copyrighted books; summarize in your own words and point to the source.
+
