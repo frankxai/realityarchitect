@@ -30,6 +30,14 @@ export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
   useEffect(() => {
     const hash = window.location.hash.slice(1)
     if (isView(hash)) setView(hash)
+    const onHashChange = () => {
+      const next = window.location.hash.slice(1)
+      if (!isView(next)) return
+      switched.current = true
+      setView(next)
+    }
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
   const go: Go = useCallback((next, bridgeId) => {

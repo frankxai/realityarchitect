@@ -144,16 +144,16 @@ test('privacy states the Studio storage boundary without claiming more than it d
 
 test('the homepage keeps its jobs and adds the inner-architecture doors', () => {
   const home = read('app/page.tsx')
-  assert.match(home, /site\.taglineParts/, 'the hero headline comes from the brand config')
+  assert.match(home, /site\.headline/, 'the hero headline comes from the brand config')
   assert.match(home, /<ArchitectLoopMap \/>/)
   assert.match(home, /<EmailCapture \/>/)
   assert.match(home, /href="\/assess"/)
   for (const href of ['/threshold', '/studio', '/library']) assert.match(home, new RegExp(`href: '${href}'`))
 })
 
-test('the tagline and its two hero parts never drift apart', async () => {
+test('the homepage headline stays under nine words', async () => {
   const { site } = await import('../lib/site.ts')
-  assert.equal(site.taglineParts.join(' '), site.tagline)
+  assert.ok(site.headline.split(/\s+/).length < 9)
 })
 
 test('security headers prevent embedding and unsafe base or object content', () => {
