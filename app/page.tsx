@@ -48,12 +48,11 @@ const PROOF = [
 ]
 
 // The hero keeps one short sentence so the export proof reaches the first phone screen; the full description stays in metadata.
-const HERO_SUB = 'Author the scene you are building toward, build the bridge to it, and keep an honest record. Local-first Markdown you own.'
+const HERO_SUB = 'Author the scene you are building toward, plan the reps and bold moves that reach it, and keep an honest record. It stays in your browser and exports to reality.md and soul.md.'
 
 const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg'
 
 export default function Home() {
-  const [lead, witness] = site.taglineParts
   return (
     <>
       <section className="observatory-hero relative -mx-5 isolate overflow-hidden px-5 pb-20 pt-14 sm:pb-24 sm:pt-20">
@@ -63,8 +62,8 @@ export default function Home() {
         <div className="grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:gap-x-12 lg:gap-y-9">
           <div className="lg:col-start-1 lg:row-start-1 lg:self-end">
             <p className="font-mono text-xs font-semibold tracking-[0.04em] text-accent">A practice for the life you are building</p>
-            <h1 className="mt-5 max-w-[13ch] text-5xl font-medium leading-[1.04] tracking-[-0.055em] text-ink sm:text-6xl lg:text-[4.4rem]">
-              {lead} <span className="font-serif font-normal italic tracking-[-0.02em] text-dawn">{witness}</span>
+            <h1 className="mt-5 max-w-[16ch] text-5xl font-medium leading-[1.04] tracking-[-0.055em] text-ink sm:text-6xl lg:text-[4.4rem]">
+              {site.headline}
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{HERO_SUB}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -72,7 +71,8 @@ export default function Home() {
               {/* Phones already carry a Studio shortcut in the header, so the hero keeps one action there. */}
               <Link href="/studio" className={`hero-secondary rounded-full border border-border bg-bg/40 px-6 py-3.5 text-center font-medium text-ink hover:border-dawn/60 focus-visible:ring-dawn max-sm:hidden ${focusRing}`}>Open the Studio</Link>
             </div>
-            <p className="mt-4 text-sm text-muted">
+            <p className="mt-4 text-sm text-muted">No account. Opens the Imaginal Act.</p>
+            <p className="mt-2 text-sm text-muted">
               Building AI systems for that life? <Link href="/assess" className="text-accent underline-offset-4 hover:underline">Find your first system gap</Link>.
             </p>
           </div>

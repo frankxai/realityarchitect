@@ -9,8 +9,8 @@ export const site = {
   domain: 'realityarchitect.ai',
   url: 'https://www.realityarchitect.ai',
   tagline: 'Imagine it. Build it. Witness it.',
-  // The hero sets the last part in the dawn register: the person's own witnessing, not the system's claim.
-  taglineParts: ['Imagine it. Build it.', 'Witness it.'],
+  // The on-page H1 for the homepage; the brand line above stays in titles and the social card.
+  headline: 'A local-first life practice, exported as Markdown',
   description:
     'The open practice for architecting a life: author the scene you are building toward, bridge to it with skills, systems, reps and bold moves, and keep an honest record of what happens. Local-first, exported as Markdown you own.',
   author: 'Frank',
