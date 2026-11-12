@@ -38,7 +38,7 @@ const LINE: Record<(typeof EXPORT)[number]['register'], string> = {
 const DOORS = [
   { verb: 'Imagine', title: 'The Imaginal Act', body: 'Author one ordinary scene of a life you would love, face one fact, and choose one act you can verify.', href: '/threshold', cta: 'Enter the scene' },
   { verb: 'Build · Witness', title: 'Reality Studio', body: 'Atlas, bridges, reps, bold moves, signs and snapshots, kept on your device and exported as reality.md and soul.md.', href: '/studio', cta: 'Open the Studio' },
-  { verb: 'Learn', title: 'The Library', body: 'The manifestation canon, taught honestly: what to keep, the mechanism it rides on, and the limits.', href: '/library', cta: 'Read the Library' },
+  { verb: 'Learn', title: 'The Library', body: 'The manifestation canon, with each idea sorted into what to keep, the mechanism it rides on, and its limits.', href: '/library', cta: 'Read the Library' },
 ]
 
 const PROOF = [
@@ -113,7 +113,7 @@ export default function Home() {
           </div>
           <p className="text-muted">
             The systems serve a life. The practice holds both: the scene you are building toward, in your own words, and the
-            bridge of skills, systems, reps and bold moves that reaches it, with an honest record of what happens. Meaning and
+            bridge of skills, systems, reps and bold moves that reaches it, with a record of what happens. Meaning and
             mechanism, always labeled.
           </p>
         </div>
