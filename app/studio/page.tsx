@@ -25,20 +25,31 @@ export default function StudioPage() {
   // Read on the server at build time: the Studio gets plain titles, minutes and intents, never the file system loader.
   const programDays = studioDays(readDays())
   return (
-    <div className="py-10 sm:py-14">
+    <div className="py-5 sm:py-14">
       <p className="font-mono text-xs font-semibold tracking-normal text-accent">Reality Studio · on this device</p>
-      <h1 className="mt-3 max-w-3xl text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
+      <h1 className="mt-2 max-w-3xl text-2xl font-extrabold tracking-tight text-ink sm:mt-3 sm:text-5xl">
         Your scene, bridges and record, on this device
       </h1>
-      <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-        The scene you are building toward, the skills, systems, reps and bold moves that reach it, and an honest record of
+      <p className="mt-4 hidden max-w-2xl text-base leading-relaxed text-muted sm:block">
+        The scene you are building toward, the skills, systems, reps and bold moves that reach it, and a clear record of
         what happens. Your words stay in this browser until you export them.{' '}
         <Link href="/privacy" className="text-accent underline-offset-4 hover:underline">How your data is kept</Link> ·{' '}
         <Link href="/library" className="text-accent underline-offset-4 hover:underline">The Library</Link>{' '}·{' '}
         <Link href="/programs/imaginal-30" className="text-accent underline-offset-4 hover:underline">The 30-day program</Link>
       </p>
-      <a href="#today" className="mt-6 inline-flex min-h-11 items-center rounded-full bg-dawn px-6 py-3 font-semibold text-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">Start today’s page</a>
-      <div className="mt-8">
+      <details className="mt-2 rounded-xl border border-border bg-surface/60 px-3.5 py-2 text-xs text-muted sm:hidden">
+        <summary className="min-h-9 cursor-pointer select-none py-1.5 font-medium text-ink">
+          Saved on this device only · guides and privacy
+        </summary>
+        <p className="pb-2 pt-1 leading-relaxed text-muted">
+          Your words stay in this browser until you export them.{' '}
+          <Link href="/privacy" className="text-accent underline-offset-4 hover:underline">How your data is kept</Link> ·{' '}
+          <Link href="/library" className="text-accent underline-offset-4 hover:underline">The Library</Link> ·{' '}
+          <Link href="/programs/imaginal-30" className="text-accent underline-offset-4 hover:underline">The 30-day program</Link>
+        </p>
+      </details>
+      <a href="#today" className="mt-6 hidden min-h-11 items-center rounded-full bg-dawn px-6 py-3 font-semibold text-bg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:inline-flex">Start today’s page</a>
+      <div className="mt-4 sm:mt-8">
         <Studio programDays={programDays} />
       </div>
     </div>
