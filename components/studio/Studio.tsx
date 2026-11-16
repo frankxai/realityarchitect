@@ -18,12 +18,16 @@ import { useStudio } from './useStudio'
 import { VIEWS, isView, type Go, type View } from './views'
 import { WitnessView } from './WitnessView'
 
+const MOBILE_PRIMARY_IDS: View[] = ['today', 'bridges', 'witness', 'atlas']
+const MOBILE_OVERFLOW_IDS: View[] = ['map', 'timeline', 'soul']
+
 /** `programDays` comes from the server page (read from the program's Markdown there), so this client never touches the file system. */
 export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
   const studio = useStudio()
   const [view, setView] = useState<View>('today')
   const [openBridge, setOpenBridge] = useState('')
   const [dataOpen, setDataOpen] = useState(false)
+  const [moreOpen, setMoreOpen] = useState(false)
   const heading = useRef<HTMLHeadingElement>(null)
   const switched = useRef(false)
 
@@ -42,6 +46,7 @@ export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
 
   const go: Go = useCallback((next, bridgeId) => {
     switched.current = true
+    setMoreOpen(false)
     setView(next)
     if (bridgeId !== undefined) setOpenBridge(bridgeId)
     // Only the view name goes into the address, never personal content.
@@ -71,17 +76,23 @@ export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
   const { state, saveStatus, loadStatus } = studio
   const empty = isEmptyState(state)
   const current = VIEWS.find((entry) => entry.id === view) ?? VIEWS[0]
+  const mobilePrimary = MOBILE_PRIMARY_IDS.map((id) => VIEWS.find((entry) => entry.id === id) ?? VIEWS[0])
+  const mobileOverflow = MOBILE_OVERFLOW_IDS.map((id) => VIEWS.find((entry) => entry.id === id) ?? VIEWS[0])
+  const inOverflow = MOBILE_OVERFLOW_IDS.includes(view)
 
   return (
-    <div>
+    <div className="pb-24 sm:pb-0">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-xs text-muted">
+        <p className="hidden text-xs text-muted sm:block">
           {saveStatus === 'unavailable' || saveStatus === 'quota' || saveStatus === 'error' || saveStatus === 'conflict' ? (
             <span className="text-[#ffb4b4]">Not saving on this device. Open Your data to export.</span>
           ) : (
             <span>Saved on this device only · no account · nothing sent</span>
           )}
         </p>
+        {(saveStatus === 'unavailable' || saveStatus === 'quota' || saveStatus === 'error' || saveStatus === 'conflict') && (
+          <p className="text-xs text-[#ffb4b4] sm:hidden">Not saving on this device. Open Your data to export.</p>
+        )}
         <div className="flex flex-wrap gap-2">
           <InstallApp announce={studio.announce} />
           <button type="button" className={button.secondary} onClick={() => setDataOpen(true)}>Your data · export</button>
@@ -111,7 +122,7 @@ export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
         </p>
       )}
 
-      <nav aria-label="Studio views" className="sticky top-[3.6rem] z-30 -mx-5 mt-5 border-y border-border bg-bg/90 px-5 py-2 backdrop-blur">
+      <nav aria-label="Studio views" className="sticky top-[3.6rem] z-30 -mx-5 mt-5 hidden border-y border-border bg-bg/90 px-5 py-2 backdrop-blur sm:block">
         <ul className="flex gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {VIEWS.map((entry) => (
             <li key={entry.id} className="shrink-0">
@@ -136,7 +147,7 @@ export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
             {[
               { title: 'Write your soul.md', body: 'Purpose, the “I am” lines, the scene of a life you would love.', view: 'soul' as View },
               { title: 'Map your Atlas', body: 'Twelve domains: where you are, where you want to be.', view: 'atlas' as View },
-              { title: 'Build a bridge', body: 'One aim, with reps, bold moves, and an honest pace check.', view: 'bridges' as View },
+              { title: 'Build a bridge', body: 'One aim, with reps, bold moves, and a clear pace check.', view: 'bridges' as View },
             ].map((door) => (
               <button key={door.title} type="button" onClick={() => go(door.view)} className="rounded-xl border border-border bg-bg/60 p-4 text-left hover:border-dawn/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-dawn">
                 <span className="block text-sm font-semibold text-ink">{door.title}</span>
@@ -151,8 +162,8 @@ export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
         </section>
       )}
 
-      <section key={`${state.createdAt}:${studio.generation}`} className="mt-6" aria-labelledby="studio-view-title">
-        <div className="mb-5">
+      <section key={`${state.createdAt}:${studio.generation}`} className="mt-4 sm:mt-6" aria-labelledby="studio-view-title">
+        <div className="mb-4 sm:mb-5">
           <h2 id="studio-view-title" ref={heading} tabIndex={-1} className="text-2xl font-bold text-ink focus-visible:outline-none sm:text-3xl">{current.title}</h2>
           <p className="mt-1 max-w-2xl text-sm text-muted">{current.intro}</p>
         </div>
@@ -164,6 +175,51 @@ export function Studio({ programDays = [] }: { programDays?: ProgramDay[] }) {
         {view === 'timeline' && <TimelineView studio={studio} programDays={programDays} />}
         {view === 'soul' && <SoulView studio={studio} />}
       </section>
+
+      <nav aria-label="Studio pocket dock" className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-bg/95 px-2 pb-[max(0.375rem,env(safe-area-inset-bottom))] pt-1.5 backdrop-blur sm:hidden">
+        {moreOpen && (
+          <div className="mb-2 rounded-xl border border-border bg-surface p-2 shadow-xl">
+            <ul className="grid grid-cols-3 gap-1.5">
+              {mobileOverflow.map((entry) => (
+                <li key={entry.id}>
+                  <button
+                    type="button"
+                    aria-pressed={view === entry.id}
+                    onClick={() => go(entry.id)}
+                    className={`min-h-12 w-full rounded-lg px-2 text-xs font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${view === entry.id ? 'bg-accent/20 text-ink' : 'text-muted hover:text-ink'}`}
+                  >
+                    {entry.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <ul className="grid grid-cols-5 gap-1">
+          {mobilePrimary.map((entry) => (
+            <li key={entry.id}>
+              <button
+                type="button"
+                aria-pressed={view === entry.id}
+                onClick={() => go(entry.id)}
+                className={`flex min-h-12 w-full items-center justify-center rounded-lg px-1.5 text-xs font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${view === entry.id ? 'bg-accent/15 text-ink' : 'text-muted hover:text-ink'}`}
+              >
+                {entry.label}
+              </button>
+            </li>
+          ))}
+          <li>
+            <button
+              type="button"
+              aria-expanded={moreOpen}
+              onClick={() => setMoreOpen((open) => !open)}
+              className={`flex min-h-12 w-full items-center justify-center rounded-lg px-1.5 text-xs font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${inOverflow || moreOpen ? 'bg-dawn/15 text-dawn' : 'text-muted hover:text-ink'}`}
+            >
+              {inOverflow ? current.label : 'More'}
+            </button>
+          </li>
+        </ul>
+      </nav>
 
       <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">{studio.message}</p>
       <DataDialog studio={studio} open={dataOpen} onClose={() => setDataOpen(false)} go={go} programDays={programDays} />

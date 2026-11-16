@@ -32,3 +32,15 @@ test('the offline worker is valid script, versioned per build, and caches only s
 test('the privacy page says what the offline cache holds', () => {
   assert.match(read('app/privacy/page.tsx'), /holds only what every visitor receives/)
 })
+
+test('the Studio mobile pocket dock exposes 48dp touch targets and all seven views', () => {
+  const shell = read('components/studio/Studio.tsx')
+  const studioPage = read('app/studio/page.tsx')
+  assert.match(shell, /aria-label="Studio pocket dock"/)
+  assert.match(shell, /min-h-12/)
+  assert.match(shell, /env\(safe-area-inset-bottom\)/)
+  assert.match(studioPage, /<details\b/)
+  for (const id of ['today', 'bridges', 'witness', 'atlas', 'map', 'timeline', 'soul']) {
+    assert.match(shell, new RegExp(`'${id}'`))
+  }
+})
