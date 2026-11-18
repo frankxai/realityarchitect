@@ -34,3 +34,6 @@ link-checker-report.txt
 
 # Local design-tool cache (impeccable)
 .impeccable/
+.gpu-export/
+.claude/skills/**/__pycache__/
+.claude/agents.replaced/
