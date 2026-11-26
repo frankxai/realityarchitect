@@ -129,3 +129,7 @@ coordination layer.
 - CI (`.github/workflows/ci.yml`) is being added via a separate draft PR — once merged, treat it as the gate.
 - **Never commit `.reality.md`, `.env*`, or any secret.** Production and domain changes remain human-gated (see
   above).
+
+## Portfolio experience review
+
+For interface, editorial and media changes, load the [Frontier Experience Constitution](https://github.com/Starlight-Intelligence/starlight-design-intelligence/blob/e25fab4c5a0dac2ea8c7b91e9397972f5af4b454/portfolio/frontier-experience-constitution.md) and the [reality-architect pack](https://github.com/Starlight-Intelligence/starlight-design-intelligence/blob/e25fab4c5a0dac2ea8c7b91e9397972f5af4b454/brand-packs/reality-architect/DESIGN.md). Open an assessment, change an assumption and reopen the resulting brief. Attach the tested route, candidate revision and responsive evidence to the owning review. Keep scoped asset and release decisions with their existing owners.
