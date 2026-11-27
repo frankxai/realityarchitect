@@ -1,9 +1,12 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import {
+  DATADOG_RUM_INTAKE_SOURCES,
+  DATADOG_RUM_SCRIPT_ORIGIN,
   DATADOG_RUM_SITE,
   allowsRumMeasurement,
   datadogRumConfig,
+  datadogRumCspSources,
   isSensitiveRumPath,
   redactRumEvent,
   redactRumUrl,
@@ -64,5 +67,45 @@ test('redactRumEvent strips queries, hashes, referrers, and vault paths', () => 
   assert.equal(
     redactRumEvent({ type: 'error', view: { url: 'https://www.realityarchitect.ai/vault/private-note' } }),
     false,
+  )
+})
+
+test('redactRumEvent drops exact OAuth/vault routes, percent-encoded paths, and query secrets in errors', () => {
+  assert.equal(isSensitiveRumPath('/vault'), true)
+  assert.equal(isSensitiveRumPath('/auth/callback'), true)
+  assert.equal(isSensitiveRumPath('/%76ault/private-note'), true)
+  assert.equal(isSensitiveRumPath('/method'), false)
+
+  const oauthError = {
+    type: 'error',
+    view: { url: 'https://www.realityarchitect.ai/auth/callback?code=SECRET_CODE' },
+    error: { message: 'OAuth failed at https://www.realityarchitect.ai/auth/callback?code=SECRET_CODE' },
+  }
+  assert.equal(redactRumEvent(oauthError), false)
+
+  const methodError = {
+    type: 'error',
+    view: { url: 'https://www.realityarchitect.ai/method' },
+    error: {
+      message: 'Failed redirect to https://www.realityarchitect.ai/vault?token=SECRET_VAULT',
+      stack: 'at load (https://www.realityarchitect.ai/api/method?key=SECRET_KEY&v=1)',
+    },
+  }
+  assert.equal(redactRumEvent(methodError), true)
+  assert.equal(methodError.error.message, 'Failed redirect to https://www.realityarchitect.ai/vault')
+  assert.equal(methodError.error.stack, 'at load (https://www.realityarchitect.ai/api/method?key=:redacted&v=1)')
+})
+
+test('datadogRumCspSources stays empty when disabled and returns EU script/intake origins when enabled', () => {
+  assert.deepEqual(datadogRumCspSources({}), { scriptSrc: [], connectSrc: [] })
+  assert.deepEqual(
+    datadogRumCspSources({
+      NEXT_PUBLIC_DD_RUM_APPLICATION_ID: 'app-1',
+      NEXT_PUBLIC_DD_RUM_CLIENT_TOKEN: 'pub-1',
+    }),
+    {
+      scriptSrc: [DATADOG_RUM_SCRIPT_ORIGIN],
+      connectSrc: DATADOG_RUM_INTAKE_SOURCES,
+    },
   )
 })

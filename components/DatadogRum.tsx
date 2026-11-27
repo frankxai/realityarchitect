@@ -62,5 +62,5 @@ export function DatadogRum() {
 
   if (!config || !canLoad) return null
 
-  return <Script id="datadog-rum" src={DATADOG_RUM_SCRIPT_URL} strategy="afterInteractive" onLoad={initRum} />
+  return <Script id="datadog-rum" src={DATADOG_RUM_SCRIPT_URL} strategy="afterInteractive" onReady={initRum} />
 }

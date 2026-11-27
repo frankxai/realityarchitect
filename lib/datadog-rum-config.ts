@@ -15,8 +15,10 @@ export const DATADOG_RUM_INTAKE_SOURCES = [
   'https://*.browser-intake-datadoghq.eu',
 ] as const
 
-const CREDENTIAL_PATH_PREFIXES = ['/api/auth/', '/vault/'] as const
+const CREDENTIAL_PATH_PREFIXES = ['/auth/callback/', '/api/auth/', '/vault/'] as const
 const EXPLICIT_DO_NOT_TRACK = new Set(['1', 'yes', 'true', 'on'])
+const SENSITIVE_QUERY_PARAM =
+  /([?&](?:code|token|access_token|refresh_token|id_token|session|session_id|state|key|api_key|secret)=)[^&\s"'#)\]>]+/gi
 
 export function allowsRumMeasurement(
   doNotTrack: string | null | undefined,
@@ -28,9 +30,26 @@ export function allowsRumMeasurement(
   return !EXPLICIT_DO_NOT_TRACK.has(normalized)
 }
 
+function safeDecodePathname(pathname: string): string {
+  let current = pathname
+  for (let i = 0; i < 2; i += 1) {
+    try {
+      const decoded = decodeURIComponent(current)
+      if (decoded === current) break
+      current = decoded
+    } catch {
+      break
+    }
+  }
+  return current.replace(/\/{2,}/g, '/')
+}
+
 function credentialPrefix(pathname: string): string | undefined {
-  const lower = pathname.toLowerCase()
-  return CREDENTIAL_PATH_PREFIXES.find((prefix) => lower.startsWith(prefix) && lower.length > prefix.length)
+  const lower = safeDecodePathname(pathname).toLowerCase()
+  return CREDENTIAL_PATH_PREFIXES.find((prefix) => {
+    const base = prefix.slice(0, -1)
+    return lower === base || lower.startsWith(prefix)
+  })
 }
 
 export function isSensitiveRumPath(pathname: string): boolean {
@@ -39,17 +58,40 @@ export function isSensitiveRumPath(pathname: string): boolean {
 
 export function redactRumPath(pathname: string): string {
   const prefix = credentialPrefix(pathname)
-  return prefix ? `${prefix}:token` : pathname
+  if (!prefix) return pathname
+  const lower = safeDecodePathname(pathname).toLowerCase()
+  const base = prefix.slice(0, -1)
+  return lower === base || lower === prefix ? base : `${prefix}:token`
 }
 
 const escapeRegExp = (text: string): string => text.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')
 
 export function scrubCredentialPaths(text: string): string {
-  return CREDENTIAL_PATH_PREFIXES.reduce(
-    (scrubbed, prefix) =>
-      scrubbed.replace(new RegExp(`${escapeRegExp(prefix)}[^\\s"'?#)\\]>]+`, 'gi'), `${prefix}:token`),
-    text,
-  )
+  const pathScrubbed = CREDENTIAL_PATH_PREFIXES.reduce((scrubbed, prefix) => {
+    const base = prefix.slice(0, -1)
+    const withSubpath = scrubbed.replace(
+      new RegExp(`${escapeRegExp(prefix)}[^\\s"'?#)\\]>]+(?:\\?[^\\s"')\\]>]+)?(?:#[^\\s"')\\]>]+)?`, 'gi'),
+      `${prefix}:token`,
+    )
+    return withSubpath.replace(
+      new RegExp(`${escapeRegExp(base)}\\/?(?:\\?[^\\s"')\\]>]+|#[^\\s"')\\]>]+)`, 'gi'),
+      base,
+    )
+  }, text)
+  return pathScrubbed.replace(SENSITIVE_QUERY_PARAM, '$1:redacted')
+}
+
+export function datadogRumCspSources(env: DatadogRumEnv): {
+  scriptSrc: readonly string[]
+  connectSrc: readonly string[]
+} {
+  if (!datadogRumConfig(env)) {
+    return { scriptSrc: [], connectSrc: [] }
+  }
+  return {
+    scriptSrc: [DATADOG_RUM_SCRIPT_ORIGIN],
+    connectSrc: DATADOG_RUM_INTAKE_SOURCES,
+  }
 }
 
 export function redactRumUrl(raw: string): string {
