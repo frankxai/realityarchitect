@@ -1,0 +1,73 @@
+# Reality Architect — expanded discovery document
+
+> An open method, local system-gap assessment, and exportable architecture brief for building dependable AI workflows, and the practice of architecting a life around them: Imagine it. Build it. Witness it.
+
+This file is the expanded companion to https://www.realityarchitect.ai/llms.txt. The short file is an index; this file carries full section detail so assistants and agents can cite accurate boundaries, routes, and contracts without guessing.
+
+Operator and author: Frank Riemer (https://www.frankx.ai).
+Open repository and starter templates: https://github.com/frankxai/realityarchitect (MIT licensed).
+
+## 1. The Architect's Loop (five sequential moves)
+
+A builder's current constraint is the first move not yet locked in; each move depends on the previous one.
+
+1. **See** — Build an intelligence layer: a local memory vault and context files your agents actually read before acting.
+2. **Design** — Write a clear specification that separates thinking, acceptance criteria, and execution.
+3. **Build** — Compose small, single-purpose agents, skills, and tools with explicit input/output contracts.
+4. **Automate** — Connect triggers, workers, human review gates, and verifiable receipts.
+5. **Compound** — Add a comparable outcome signal and a recurring review cadence so work improves on evidence.
+
+## 2. The reality.md standard (v0.2)
+
+An open, local-first person-level memory contract (parallel to how `CLAUDE.md` and `AGENTS.md` define repo-level instructions):
+
+- `~/reality.md` — The human's operational contract: Identity, Aims, Attention, State, Systems, Environment, Feedback, and Guardrails.
+- `~/soul.md` — The inner contract: Purpose, Values, I am, The scene, Gifts, Vows, Voice, and Gratitude.
+- `~/.reality/` (or `reality/` inside a notes vault, located via `REALITY_HOME`) — Agent-maintained state: aims, daily logs, the witness ledger (separating fact, meaning, and action), evidence, approved snapshots, decisions, and the twelve-domain atlas.
+
+### Agent protocol and charter
+
+Agents interacting with a user's `reality.md` / `soul.md` follow five operations — `READ`, `SURFACE`, `PROPOSE`, `LOG`, `GUARD` — under the Agent Charter:
+- Never certify causation or clinical/medical outcomes.
+- Never blame or coerce the person.
+- Propose rather than impose; require explicit consent before persisting memory or sharing externally.
+- Spec: https://github.com/frankxai/realityarchitect/tree/main/standard
+- Agent Charter: https://github.com/frankxai/realityarchitect/blob/main/standard/AGENT-CHARTER.md
+
+## 3. Two-register discipline (epistemic boundary)
+
+Reality Architect keeps two registers explicitly labeled:
+- **Meaning register**: imagination, the authored scene, personal significance, and what an event means to the person.
+- **Mechanism register**: the studied behavioral, cognitive, or systems pathway.
+
+No claim is made that thoughts, feelings, or physical phenomena directly alter external events. Every recommendation cashes out in an inspectable artifact, a concrete act, or a verifiable acceptance check.
+
+## 4. Live routes and local tools
+
+- Home: https://www.realityarchitect.ai/
+- The Method (five-move loop): https://www.realityarchitect.ai/method
+- The reality.md standard: https://www.realityarchitect.ai/standard
+- The Architect Assessment (runs locally in the browser; exports a Markdown architecture brief): https://www.realityarchitect.ai/assess
+- Reality Studio (local-first daily practice, stored on device): https://www.realityarchitect.ai/studio
+- 30-day practice program: https://www.realityarchitect.ai/programs/imaginal-30
+- The Library (Reality Theory and sourced canon): https://www.realityarchitect.ai/library
+- The Imaginal Act (one authored scene, one verifiable act): https://www.realityarchitect.ai/threshold
+- Start Here: https://www.realityarchitect.ai/start
+- Apply: https://www.realityarchitect.ai/apply
+- Vault (public vs. private boundary): https://www.realityarchitect.ai/vault
+- Privacy: https://www.realityarchitect.ai/privacy
+- Discovery index: https://www.realityarchitect.ai/llms.txt
+- Sitemap: https://www.realityarchitect.ai/sitemap.xml
+
+## 5. Public vs. private boundary
+
+- **Public and complete**: The method, browser-local assessment, exportable Markdown brief, `reality.md` standard, and sanitized starter templates.
+- **Not open for purchase**: Vault status is `not-open-for-purchase`. Private operating configurations, confidential evidence, customer material, and guided review work remain outside the public repository.
+- **Plugin installation**: `/plugin marketplace add frankxai/realityarchitect`
+- Built on the Starlight Intelligence Protocol (SIP): https://starlightintelligence.org
+
+## 6. Nearby sites in the network
+
+- FrankX (creator & founder systems): https://www.frankx.ai
+- Agentic Income (AI-enabled income workflows): https://www.agenticincome.ai
+- Starlight Intelligence (open protocol & multi-agent architecture): https://starlightintelligence.org

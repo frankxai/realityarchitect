@@ -32,8 +32,29 @@ export const metadata: Metadata = {
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
-    { '@type': 'Organization', '@id': `${site.url}/#organization`, name: site.name, url: site.url, sameAs: [site.github] },
-    { '@type': 'WebSite', '@id': `${site.url}/#website`, name: site.name, url: site.url, description: site.description, publisher: { '@id': `${site.url}/#organization` } },
+    {
+      '@type': 'Person',
+      '@id': 'https://www.frankx.ai/#frank-riemer',
+      name: 'Frank Riemer',
+      url: 'https://www.frankx.ai',
+      sameAs: ['https://github.com/frankxai'],
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${site.url}/#organization`,
+      name: site.name,
+      url: site.url,
+      founder: { '@id': 'https://www.frankx.ai/#frank-riemer' },
+      sameAs: [site.github],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${site.url}/#website`,
+      name: site.name,
+      url: site.url,
+      description: site.description,
+      publisher: { '@id': `${site.url}/#organization` },
+    },
   ],
 }
 

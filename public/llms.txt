@@ -34,6 +34,7 @@ Agent Charter: https://github.com/frankxai/realityarchitect/blob/main/standard/A
 - The Library (Reality Theory and the honest canon): https://www.realityarchitect.ai/library
 - The Imaginal Act (one authored scene, one verifiable act): https://www.realityarchitect.ai/threshold
 - Start Here: https://www.realityarchitect.ai/start
+- Expanded discovery document: https://www.realityarchitect.ai/llms-full.txt
 - Source + forkable templates: https://github.com/frankxai/realityarchitect
 
 ## Principles
