@@ -74,3 +74,10 @@ test('the privacy page discloses the Vault waitlist request', () => {
   assert.match(privacy, /does not add you to the newsletter, and no automatic email is sent/)
   assert.match(privacy, /one optional\s+exception is a Vault waitlist application/)
 })
+
+test('next.config redirects /waitlist permanently to /apply so visitors never hit a 404', () => {
+  const cfg = read('next.config.mjs')
+  assert.match(cfg, /source:\s*['"]\/waitlist['"]/)
+  assert.match(cfg, /destination:\s*['"]\/apply['"]/)
+  assert.match(cfg, /permanent:\s*true/)
+})
