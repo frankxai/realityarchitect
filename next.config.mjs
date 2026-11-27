@@ -14,6 +14,15 @@ const nextConfig = {
       './plugins/reality-architect/skills/*/SKILL.md',
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/waitlist',
+        destination: '/apply',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [{
       source: '/(.*)',
