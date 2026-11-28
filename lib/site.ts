@@ -8,8 +8,8 @@ export const site = {
   name: 'Reality Architect',
   domain: 'realityarchitect.ai',
   url: 'https://www.realityarchitect.ai',
-  tagline: 'Imagine it. Build it. Witness it.',
-  // The on-page H1 for the homepage; the brand line above stays in titles and the social card.
+  tagline: 'A local-first life practice, exported as Markdown.',
+  // The on-page H1 for the homepage; matches the brand line in titles and the social card.
   headline: 'A local-first life practice, exported as Markdown',
   description:
     'The open practice for architecting a life: author the scene you are building toward, bridge to it with skills, systems, reps and bold moves, and keep an honest record of what happens. Local-first, exported as Markdown you own.',
