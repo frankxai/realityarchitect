@@ -5,6 +5,7 @@ import { Nav } from '@/components/Nav'
 import { Footer } from '@/components/Footer'
 import { DatadogRum } from '@/components/DatadogRum'
 import { site } from '@/lib/site'
+import { Analytics } from '@vercel/analytics/next'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
 const grotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-grotesk', display: 'swap' })
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="content" className="mx-auto max-w-5xl px-5">{children}</main>
         <Footer />
         <DatadogRum />
+        <Analytics />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }} />
       </body>
     </html>
