@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://realityarchitect.ai/spec/reality.packet.schema.json",
+  "title": "reality.md packet",
+  "description": "The normalized machine form of a reality.md file: frontmatter, the eight sections as raw markdown, and the derived graph. A packet is what agents exchange; the markdown file is what the human owns.",
+  "type": "object",
+  "required": ["standard", "version", "subject", "sections", "graph"],
+  "additionalProperties": false,
+  "properties": {
+    "standard": { "const": "reality.md" },
+    "version": { "$ref": "#/$defs/version" },
+    "updated": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "source": {
+      "type": "string",
+      "description": "Where the packet came from. A locator, never the file body of a private file.",
+      "maxLength": 512
+    },
+    "subject": { "$ref": "#/$defs/subject" },
+    "sections": { "$ref": "#/$defs/sections" },
+    "graph": { "$ref": "#/$defs/graph" }
+  },
+  "$defs": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$",
+      "description": "Standard version, MAJOR.MINOR. See VERSIONING.md."
+    },
+    "subject": {
+      "type": "object",
+      "required": ["id", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/nodeId" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 }
+      }
+    },
+    "sectionKey": {
+      "enum": [
+        "identity",
+        "aims",
+        "attention",
+        "state",
+        "systems",
+        "environment",
+        "feedback",
+        "guardrails",
+        "agentProtocol"
+      ]
+    },
+    "sections": {
+      "type": "object",
+      "description": "Raw markdown body of each canonical section, comments stripped. An absent key is a missing section; an empty array is a present-but-empty section, which is a declared gap.",
+      "additionalProperties": false,
+      "propertyNames": { "$ref": "#/$defs/sectionKey" },
+      "patternProperties": {
+        "^.*$": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "nodeId": {
+      "type": "string",
+      "pattern": "^[a-z]+:[a-z0-9][a-z0-9-]{0,62}$",
+      "description": "kind-prefixed slug, e.g. goal:template-store"
+    },
+    "nodeKind": {
+      "enum": [
+        "Human",
+        "Role",
+        "Goal",
+        "Constraint",
+        "Context",
+        "SystemGap",
+        "Artifact",
+        "Agent",
+        "Authority",
+        "Workflow",
+        "Decision",
+        "Feedback",
+        "Evidence",
+        "Revision"
+      ]
+    },
+    "visibility": {
+      "enum": ["private", "shared", "public"],
+      "description": "private = never leaves the machine; shared = may be sent to a named agent with consent; public = safe to publish."
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source", "method"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "enum": ["human", "agent", "assessment", "migration", "derived"],
+          "description": "Who asserted this node."
+        },
+        "locator": {
+          "type": "string",
+          "maxLength": 256,
+          "description": "Section or file the assertion came from, e.g. 'sections.aims[0]'."
+        },
+        "method": {
+          "enum": ["written", "parsed", "inferred", "migrated"],
+          "description": "How the assertion was produced. 'inferred' nodes must never be presented as the human's own words."
+        }
+      }
+    },
+    "evaluation": {
+      "type": "object",
+      "required": ["rule", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "rule": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 400,
+          "description": "The check that decides whether this node is satisfied. Must be verifiable by reading an artifact, not by self-report of feeling."
+        },
+        "status": { "enum": ["unset", "open", "met", "failed", "retired"] }
+      }
+    },
+    "node": {
+      "type": "object",
+      "required": ["id", "kind", "label", "owner", "provenance", "version", "visibility", "evaluation"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/nodeId" },
+        "kind": { "$ref": "#/$defs/nodeKind" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 400 },
+        "owner": {
+          "$ref": "#/$defs/nodeId",
+          "description": "The node accountable for this one. Always the Human for a personal packet."
+        },
+        "provenance": { "$ref": "#/$defs/provenance" },
+        "version": { "$ref": "#/$defs/version" },
+        "visibility": { "$ref": "#/$defs/visibility" },
+        "evaluation": { "$ref": "#/$defs/evaluation" },
+        "detail": {
+          "type": "object",
+          "description": "Kind-specific fields. Kept open so v0.x can grow without a breaking change.",
+          "additionalProperties": true
+        }
+      }
+    },
+    "rel": {
+      "enum": [
+        "holds",
+        "pursues",
+        "bounds",
+        "informs",
+        "blocks",
+        "closes",
+        "operates",
+        "permits",
+        "denies",
+        "serves",
+        "measures",
+        "evidences",
+        "decides",
+        "revises"
+      ]
+    },
+    "edge": {
+      "type": "object",
+      "required": ["id", "rel", "from", "to", "owner", "provenance", "version", "visibility", "evaluation"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "rel": { "$ref": "#/$defs/rel" },
+        "from": { "$ref": "#/$defs/nodeId" },
+        "to": { "$ref": "#/$defs/nodeId" },
+        "owner": { "$ref": "#/$defs/nodeId" },
+        "provenance": { "$ref": "#/$defs/provenance" },
+        "version": { "$ref": "#/$defs/version" },
+        "visibility": { "$ref": "#/$defs/visibility" },
+        "evaluation": { "$ref": "#/$defs/evaluation" }
+      }
+    },
+    "graph": {
+      "type": "object",
+      "required": ["nodes", "edges"],
+      "additionalProperties": false,
+      "properties": {
+        "nodes": { "type": "array", "items": { "$ref": "#/$defs/node" } },
+        "edges": { "type": "array", "items": { "$ref": "#/$defs/edge" } }
+      }
+    }
+  }
+}
